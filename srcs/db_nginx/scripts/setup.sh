@@ -27,7 +27,7 @@ http {
 
         ssl_certificate $PATH_CRT/my.crt;
         ssl_certificate_key $PATH_CRT/my.key;
-        location / {
+        location /user {
             add_header 'Access-Control-Allow-Origin' 'https://localhost:8000' always;
             add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
             add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type' always;
@@ -42,6 +42,10 @@ http {
                 add_header 'Access-Control-Allow-Credentials' 'true';
                 return 204;
             }
+        }
+        location /chat {
+            alias /usr/share/nginx/html/chat/;
+            index index.html;
         }
     }
     server {
