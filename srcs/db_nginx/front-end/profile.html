@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Color Slider</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="profile.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+
+    <header>
+        <a href="#" class="logo"><img id="logo" src="fourtnite4k/neoon.png" alt="Logo"></a>
+        <ul class="nav">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="#">Chat</a></li>
+            <li><a href="#">Game</a></li>
+        </ul>
+        <div class="action">
+            <!-- <div class="searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input type="text" placeholder="search">
+            </div>-->
+            <a class="bel" href="#"><i class="fa-regular fa-bell"></i></a></li>
+            <div class="profile-box">
+                <div class="img-bx">
+                    <img src="src/profile.jpg" alt="">
+                </div>
+                <a class="name">username</a>
+            </div>
+        </div>
+    </header>
+    <main class="content">
+        <div class="flex-item flex1">
+            <div class="welcome">
+                <h3><i class='bx bxs-user'></i> Welcome <span>username</span></h3>
+                <div class="searchBx">
+                    <a href="#"><i class='bx bx-search'></i></a>
+                    <input type="text" placeholder="search">
+                </div>
+            </div>
+            <div class="profile-items">
+                <div class="items1Box">
+                    <div class="coalition-box">
+                        <img class="background" src="coalition/yyy.png" alt="">
+                        <img class="coalition" src="coalition/comodor.png" alt="">
+                    </div>
+                    <div class="clip">
+                        <div class="flip">
+                            <img src="fourtnite4k/images.jpeg" alt="">
+                        </div>
+                        <div class="title-box">
+                            <div class="sub-title">
+                                <h4>username</h4>
+                                <div class="setting-box">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </div>
+                            </div>
+                            <div class="rank-box">
+                                <h4>Rank</h4>
+                                <h4 id="rank">89</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-bx">
+                    <div class="level-name">
+                        <h4>level <span>5</span></h4>
+                        <h4><span>30</span> Points</h4>
+                    </div>
+                    <div class="level-line">
+                        <div class="level-progress"></div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="skill">
+                        <div class="outer">
+                            <div class="inner">
+                                <div id="number">
+                                    65%
+                                </div>
+                            </div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
+                            <defs>
+                                <linearGradient id="MorningDewGradient">
+                                    <stop offset="0%" stop-color="#a8c0ff" />
+                                    <stop offset="100%" stop-color="#3f2b96" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="45" cy="45" r="40" stroke="url(#GradientColor)" stroke-width="10" fill="none"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h4>winrate</h4>
+                </div>
+                <div class="box">
+                    <div class="skill">
+                        <div class="outer">
+                            <div class="inner">
+                                <div id="lose">
+                                    95%
+                                </div>
+                            </div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
+                            <defs>
+                                <linearGradient id="OceanBlueGradient">
+                                    <stop offset="0%" stop-color="#00c6ff" />
+                                    <stop offset="100%" stop-color="#0072ff" />
+                                </linearGradient>
+                            </defs>
+                            <circle id="LossRate" cx="45" cy="45" r="40" stroke="url(#GradientColor)" stroke-width="10"
+                                fill="none" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h4>Loss rate</h4>
+                </div>
+                <div class="match">
+                    <h4>Total Matchs played</h4>
+                    <h3 id="matchScore">20</h3>
+                </div>
+                <div class="match">
+                    <h4>TTournaments Played</h4>
+                    <h3 id="tournamentsScore">5</h3>
+
+
+
+                </div>
+            </div>
+            <div class="flexContent">
+                <div class="acheivements">
+                    <div class="acheiv-box">
+                        <div class="cards-acheiv">
+                            <div class="Title">
+                                <h2>Acheivement Cards</h2>
+                            </div>
+                            <div class="card-box">
+                                <div class="acheiv">
+                                    <div class="unlock">
+                                        <div class="skill-acheiv">
+                                            <div class="outer-acheiv">
+                                                <div class="inner-acheiv">
+                                                    <div id="progress">
+                                                        25%
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="140px"
+                                                height="140px">
+                                                <defs>
+                                                    <linearGradient id="GradientColor">
+                                                        <stop offset="0%" stop-color="#e91e63" />
+                                                        <stop offset="100%" stop-color="#673ab7" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <circle id="progress-aceiv" cx="70" cy="70" r="60"
+                                                    fill="url(#GradientColor)" stroke-linecap="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="medail-acheiv">
+                            <div class="Title">
+                                <h2>Acheivement Trophy</h2>
+                            </div>
+                            <div class="medail">
+                                <div class="medail-box">
+                                    <img src="acheivements/tour2tro.png" alt="">
+                                    <h3>Paris Olymbic </h3>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="Activity">
+                    <div class="matchhISTORY">
+                    </div>
+                    <div class="tournamentHistory">
+                        <h2>match tournamentHistory</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="flex-item flex2">
+
+        </div> -->
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

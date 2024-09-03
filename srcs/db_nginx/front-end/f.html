@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .circle-slice {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            clip-path: path(
+                'M 100 100
+                   L 100 0
+                   A 100 100 0 0 1 173.2 26.8
+                   L 100 100
+                   Z'
+            );
+        }
+    </style>
+</head>
+<body>
+    <div class="circle-slice"></div>
+</body>
+</html>
