@@ -1,4 +1,4 @@
-import { getCsrfToken, EventNewPage, submitForm } from "./utils.js";
+import { getCsrfToken, EventNewPage,NewPage, submitForm } from "./utils.js";
 
 const handle_data = (data) => {
     console.log(data);
@@ -59,14 +59,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .then(data => {
                             console.log("Response from Django backend:", data);
                             localStorage.setItem('accessToken', data.access);
-                            fetch("https://localhost:8000/api/user/data/",{
-                                headers:{
-                                    'Authorization': `Bearer ${data.access}`,
-                                }
-                            }).then(data => {
-                                return data.json();
-                            }).then(data => console.log("hello::::===>", data));
-                            // console.log("Token stored in localStorage:", localStorage.getItem('accessToken'));
+                            localStorage.setItem('refreshToken', data.refresh);
+                            NewPage("/user/home.html");
                         }).catch(error => {
                             console.error("Error sending code to Django backend:", error);
                         });
@@ -76,55 +70,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     console.log("the catch catch errors");
                 }
             },1000);
-            // window.location.href = data.base_url + "?" + url.toString();
         }).catch(error => {
             console.log("error in loading data of Oauth");
         });
-        // function getQueryParams() {
-        //     const url = new URL(window.location.href);
-        //     const params = new URLSearchParams(url.search);
-        //     let queryParams = {};
-        //     for (const [key, value] of params.entries()) {
-        //         queryParams[key] = value;
-        //     }
-        //     return queryParams;
-        // }
-
-        // const queryParams = getQueryParams();
-
-        // const authCode = queryParams['code'];
-        // if (authCode) {
-        //     console.log("Authorization code:", authCode);
-
-        //     // Send the code to the Django backend
-            // fetch("https://localhost:8000/api/42/callback/", {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({ code: authCode })
-            // })
-            // .then(response => {
-            //     console.log("Callback response received:", response);
-            //     if (!response.ok) {
-            //         throw new Error("Callback request failed");
-            //     }
-            //     return response.json();
-            // })
-            // .then(data => {
-            //     console.log("Response from Django backend:", data);
-            //     localStorage.setItem('accessToken', data.access);
-
-            //     console.log("Token stored in localStorage:", localStorage.getItem('accessToken'));
-
-            // })
-            //     .catch(error => {
-            //         console.error("Error sending code to Django backend:", error);
-            //     });
-        // } else {
-        //     console.log("No authorization code found in the URL");
-        // }
-
-
     });
 }, { once: true });

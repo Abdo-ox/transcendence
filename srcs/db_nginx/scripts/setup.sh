@@ -43,6 +43,7 @@ http {
                 return 204;
             }
         }
+        
         location /chat {
             alias /usr/share/nginx/html/chat/;
             index index.html;

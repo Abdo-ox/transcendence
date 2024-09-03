@@ -112,4 +112,6 @@ def Logout(request):
 def sendUserData(request):
     user = request.user
     print("user:", user, flush=True)
-    return JsonResponse({"hello": "clear"})
+    return JsonResponse({"usename": user.username,
+                        #  "profile_image": user.profile_image
+    })

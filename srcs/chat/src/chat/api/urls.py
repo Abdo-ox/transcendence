@@ -15,7 +15,7 @@ app_name = 'chat'
 
 urlpatterns = [ 
     path('AdminLoginView/', AdminLoginView.as_view()),
-    path('', ChatListView.as_view()),
+    # path('', ChatListView.as_view()),
     path('GetChatID/', GetChatID.as_view()),
     path('UserListView/', UserListView.as_view()),
     path('create/', ChatCreateView.as_view()),

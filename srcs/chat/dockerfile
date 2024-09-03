@@ -1,1 +1,17 @@
+FROM python:3.10
 
+ENV PYTHONUNBUFFERED 1
+ENV PIPENV_VENV_IN_PROJECT 1
+
+WORKDIR /app
+
+COPY Pipfile Pipfile.lock /app/
+
+RUN pip install pipenv
+
+RUN pipenv install --ignore-pipfile
+
+COPY src /app/
+
+
+CMD ["pipenv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

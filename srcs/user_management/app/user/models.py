@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.username
 
     def get_profile_image_filename(self):
         return str(self.profile_image)[str(self.profile_image).index('profile_images/' + str(self.pk) + "/"):]

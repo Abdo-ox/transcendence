@@ -7,6 +7,22 @@ export const getCsrfToken = async () => {
         });
 }
 
+export const getJWT = async (url, method, headers, body) => {
+    const access = localStorage.getItem('accessToken');
+    if (access === null) {
+        console.log("is settent");
+        NewPage("/user/login.html");
+    }
+    else {
+        const response = await fetch(url, {method: method,
+            headers: headers,
+            // body: body
+        });
+        console.log("status_code:", response.status);
+        return access;
+    }
+}
+
 export const NewPage = (url) => {
     fetch(url)
     .then(response => response.text())

@@ -18,6 +18,5 @@ COPY scripts/buildApp.sh /
 
 RUN chmod 777 /buildApp.sh
 
-EXPOSE 8000
 
 CMD ["/buildApp.sh"]
