@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
     const ids = ['username', 'password'];
 
-    EventNewPage('register-btn', '/register.html');
+    EventNewPage('register-btn', '/user/register.html');
 
     document.getElementById('login-btn').addEventListener('click', () => {
         submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);

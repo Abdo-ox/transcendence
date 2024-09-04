@@ -36,6 +36,7 @@ export const getJWT = async (url, method, headers, body) => {
 }
 
 export const NewPage = (url) => {
+    // window.location.pathname = "/chat/index.html"
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -45,7 +46,7 @@ export const NewPage = (url) => {
         const event = new Event('DOMContentLoaded', {
             cancelable: true,
             bubbles: true,
-        });0
+        });
 
         document.head.innerHTML = doc.head.innerHTML;
         document.body.innerHTML = doc.body.innerHTML;
@@ -53,8 +54,9 @@ export const NewPage = (url) => {
         let scripts = doc.querySelectorAll('script');
         document.querySelectorAll('script').forEach(script => script.remove());
         let j = 0;
-
+        
         scripts.forEach(script => {
+            console.log(`||||||||||||||||||||||||=>>>> ${script.src} <<<<<<`);
             let element = document.createElement('script');
             if (script.src) {
                 element.src = script.src;
@@ -67,6 +69,7 @@ export const NewPage = (url) => {
             element.onerror = () => console.log("errrrrrrrrrrrror in on error ");
             document.body.appendChild(element);
         });
+        console.log(`usl iss ->>> ${url}`)
         history.pushState({}, '', url);
     }).catch(error => {
         console.log("can't load page :", error);
