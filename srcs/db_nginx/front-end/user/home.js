@@ -40,17 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });
-
-    // console.log("hello:", localStorage.getItem('accessToken'));
-
-    // fetch("https://localhost:8000/api/user/data/", {
-    //     headers: {
-    //         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-    //     }
-    // }).then(data => {
-    //     return data.json();
-    // }).then(data => console.log("hello::::===>", data))
-    // .catch(error => console.log("catsherror: ", error));
     getJWT('https://localhost:8000/api/user/data/', 'GET', {
            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           }, null );

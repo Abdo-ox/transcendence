@@ -14,11 +14,23 @@ export const getJWT = async (url, method, headers, body) => {
         NewPage("/user/login.html");
     }
     else {
-        const response = await fetch(url, {method: method,
+        let response = await fetch(url, {method: method,
             headers: headers,
             // body: body
         });
-        console.log("status_code:", response.status);
+        console.log("status_code:",localStorage.getItem('refreshToken'));
+        console.log(typeof response.status);
+        if (response.status === 401) {
+            response = await fetch('https://localhost:8000/api/token/refresh/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access}`
+                },
+                body: JSON.stringify({'refresh': localStorage.getItem('refreshToken')})  
+            }).then(response => response.json());
+            console.log("response:", response);
+        }
         return access;
     }
 }
