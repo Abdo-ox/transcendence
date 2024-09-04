@@ -120,11 +120,11 @@ STATICFILES_DIRS = [
 ]
 
 # CORS configuration
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://10.14.53.111:8080",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://localhost:8000",
+#     "https://127.0.0.1:8000",
+    # "http://10.14.53.111:8080",
+# ]
 
 # To allow all origins (for development only)
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True

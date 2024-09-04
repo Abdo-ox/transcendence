@@ -10,7 +10,7 @@ let user = pathname.substring(1); // This removes the leading '/'
 
 console.log(`user is ${user}`); // This will log the user information
 
-if (currentUrl == `http://127.0.0.1:8080/`){
+if (user == `chat/`){
 
   let htmlContent = `
       <h2>Login</h2>
@@ -36,7 +36,7 @@ if (currentUrl == `http://127.0.0.1:8080/`){
     // Optionally, clear the form or provide feedback to the user
     event.target.reset();
 
-    axios.post('http://127.0.0.1:8000/chat/AdminLoginView/', {
+    axios.post('http://127.0.0.1:9000/chat/AdminLoginView/', {
       username: username,
       password: password
     })
@@ -62,7 +62,7 @@ else if(user != ""){
   bodychat('user1');
 }
 function bodychat(username) {
-  const GamePlaySocket = new WebSocket('ws://127.0.0.1:8000/ws/notif/');
+  const GamePlaySocket = new WebSocket('ws://127.0.0.1:9000/ws/notif/');
   GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
   };
@@ -112,7 +112,7 @@ function bodychat(username) {
         const contact = event.target.closest('.contact');
         console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
         const combinUsers = [username, contact.id]
-        axios.post('http://127.0.0.1:8000/chat/create/', {
+        axios.post('http://127.0.0.1:9000/chat/create/', {
           messages: [],
           participants: combinUsers
         })
@@ -220,7 +220,7 @@ document.getElementById('notif').addEventListener('click', event => {
 });
 
   function fetchData() {
-      axios.get('http://127.0.0.1:8000/chat/UserListView/')
+      axios.get('http://127.0.0.1:9000/chat/UserListView/')
           .then(response => {
               const chatobject = response.data;
               // setSuperUsers(chatobject);
@@ -291,7 +291,7 @@ document.getElementById('notif').addEventListener('click', event => {
 
   function chatListview(user, FunctionTarget) {
     console.log(`chatlistview called user is ${user}`)
-    axios.get('http://127.0.0.1:8000/chat/GetChatID/', {
+    axios.get('http://127.0.0.1:9000/chat/GetChatID/', {
       params: {
         username1: user,
         username2: username

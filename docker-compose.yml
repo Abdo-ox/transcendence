@@ -45,7 +45,7 @@ services:
       - net
     volumes:
       - ./srcs/is_ready:/is_ready
-      - ./srcs/chat/src:/app/
+      # - ./srcs/chat/src:/app/
 
 
 networks:

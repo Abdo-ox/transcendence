@@ -1,6 +1,6 @@
 export function createWebSocket(ChatID, username)
 {
-    const chatSocket = new WebSocket('ws://127.0.0.1:8000/ws/chat/' + ChatID + '/');
+    const chatSocket = new WebSocket('ws://127.0.0.1:9000/ws/chat/' + ChatID + '/');
   
     chatSocket.onopen = () => {
       console.log('WebSocket is open now.');
@@ -113,7 +113,7 @@ export function GamePlaySocketEngine(ChatID, From, To) {
   console.log(`the play request from ${From}`)
   console.log(`I'm inside the GamePlaySocketEngine and ChatID equals ${ChatID}`);
 
-  const GamePlaySocket = new WebSocket('ws://127.0.0.1:8000/ws/notif/');
+  const GamePlaySocket = new WebSocket('ws://127.0.0.1:9000/ws/notif/');
   let nameElement = ""
   document.getElementById('game-play').addEventListener('click', event => {
     const contact_profile = event.target.closest('.contact-profile')
