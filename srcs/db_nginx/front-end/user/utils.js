@@ -7,31 +7,39 @@ export const getCsrfToken = async () => {
         });
 }
 
-export const getJWT = async (url, method, headers, body) => {
-    const access = localStorage.getItem('accessToken');
+export const getJWT = async () => {
+    const access = localStorage.getItem('access_token');
     if (access === null) {
         console.log("is settent");
         NewPage("/user/login.html");
     }
     else {
-        let response = await fetch(url, {method: method,
-            headers: headers,
-            // body: body
-        });
-        console.log("status_code:",localStorage.getItem('refreshToken'));
-        console.log(typeof response.status);
-        if (response.status === 401) {
-            response = await fetch('https://localhost:8000/api/token/refresh/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${access}`
-                },
-                body: JSON.stringify({'refresh': localStorage.getItem('refreshToken')})  
-            }).then(response => response.json());
-            console.log("response:", response);
-        }
-        return access;
+        let payload = access.split('.')[1];
+        console.log("|", payload);
+        payload = payload.replace(/-/g, '+').replace(/_/g, '/');
+        console.log("|", payload);
+        payload = atob(payload);
+        console.log("|", payload);
+        const exp = JSON.parse(payload)['exp'];
+        console.log("|", payload);
+    
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (currentTime + 60 <= exp)
+            return access;
+        const refresh = localStorage.getItem('refresh_token');
+        if (refresh == null)
+            NewPage("/user/login.html");
+        console.log("refresh:", refresh);
+        const token_data = await fetch("https://localhost:8000/api/token/refresh/",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                refresh: refresh
+            })
+        }).then(response => response.json());
+        return token_data['access'];
     }
 }
 

@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         })
                         .then(data => {
                             console.log("Response from Django backend:", data);
-                            localStorage.setItem('accessToken', data.access);
-                            localStorage.setItem('refreshToken', data.refresh);
+                            localStorage.setItem('access_token', data.access_token);
+                            localStorage.setItem('refresh_token', data.refresh_token);
                             NewPage("/user/home.html");
                         }).catch(error => {
                             console.error("Error sending code to Django backend:", error);

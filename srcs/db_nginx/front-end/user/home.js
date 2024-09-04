@@ -1,5 +1,6 @@
 import { NewPage, getJWT } from "./utils.js";
 
+console.log(`the access is ${await getJWT()}`);
 
 document.addEventListener('DOMContentLoaded', () => {
     /***window scrool */
@@ -40,7 +41,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });
-    getJWT('https://localhost:8000/api/user/data/', 'GET', {
-           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-          }, null );
 });
