@@ -13,6 +13,7 @@ from project.settings import C as c
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
+from .serializers import UserSerializer
 
 @api_view(['POST'])
 def Login(request):
@@ -36,7 +37,7 @@ def Register(request):
         user = form.save()
         user.set_password(password)
         user.save()
-        print(c.g, f"{user.username}\n{password}\n", c.d)
+        print(c.g, f"{user.username} {password}\n", flush=True)
         return JsonResponse({"state": "registered"})
     errors = json.loads(form.errors.as_json())
     all_errors = []
@@ -111,6 +112,7 @@ def Logout(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendUserData(request):
-    queryset = YourModel.objects.all()
-    serializer = YourModelSerializer(queryset, many=True)
+    print(f"{c.g}send data  of all users", flush=True)
+    queryset = User.objects.all()
+    serializer = UserSerializer(queryset, many=True)
     return JsonResponse(serializer.data, safe=False)

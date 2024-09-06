@@ -11,12 +11,13 @@ class FriendList(models.Model):
         return self.user.username
 
     def addFriend(self, account):
-        if account not in self.friends:
+        if account not in self.friends.all():
+            print("add friend method called", flush=True)
             self.friends.add(account)
 
     def removeFriend(self, account):
         if account in self.friends.all():
-            self.frineds.remove(account)
+            self.friends.remove(account)
 
     def unfriend(self, removee):
         self.removeFriend(removee)
