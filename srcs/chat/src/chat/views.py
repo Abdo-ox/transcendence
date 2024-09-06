@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from .models import Chat, Contact
+from .models import Chat, Contact, User
 
-User = get_user_model()
 
 def get_last_10_messages(chatID): 
     chat = get_object_or_404(Chat, id=chatID)

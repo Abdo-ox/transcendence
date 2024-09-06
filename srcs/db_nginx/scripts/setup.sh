@@ -9,6 +9,8 @@ psql -U $DB_USER -c "drop database $DB_NAME;"
 
 psql -U $DB_USER -c "create database $DB_NAME;"
 
+psql -U $DB_USER -c "CREATE USER chat WITH PASSWORD 'chat';"
+
 psql -U $DB_USER -c "alter user $DB_USER with password '${DB_PASS}'"
 
 
@@ -59,5 +61,6 @@ http {
     }
 }
 EOF
-touch /is_ready/yes
+echo "database is ready"
+touch /is_ready/user_management
 nginx -g "daemon off;"

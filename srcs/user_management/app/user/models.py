@@ -46,10 +46,13 @@ class User(AbstractBaseUser):
     is_superuser  = models.BooleanField(default=False)
     profile_image = models.ImageField(max_length=255)
     hide_email    = models.BooleanField(default=True)
+     
+    class Meta:
+        db_table = 'user_user'
 
     USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
-
+       
     objects = UserManager()
 
     def __str__(self):
@@ -63,3 +66,27 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Contact(models.Model):
+    user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
+    # friends = models.ManyToManyField('self', blank=True)
+    def __str__(self):
+        return self.user.username
+
+
+class Message(models.Model):
+    contact = models.ForeignKey(Contact, related_name='messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.contact.user.username
+
+
+class Chat(models.Model):
+    participants = models.ManyToManyField(Contact, related_name='chats')
+    messages = models.ManyToManyField(Message, blank=True)
+
+    def __str__(self): 
+        return "{}".format(self.pk)

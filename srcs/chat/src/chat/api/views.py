@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from rest_framework import permissions, status
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
@@ -8,7 +8,7 @@ from rest_framework.generics import (
     DestroyAPIView,
     UpdateAPIView
 )
-from chat.models import Chat, Contact
+from chat.models import Chat, Contact, User
 # from chat.views import get_user_contact
 from .serializers import ChatSerializer
 from .serializers import UserSerializer
@@ -18,8 +18,6 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from .serializers import LoginSerializer
-
-User = get_user_model()
 
 
 class AdminLoginView(APIView):
@@ -104,3 +102,16 @@ class ChatDeleteView(DestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
     permission_classes = (permissions.IsAuthenticated, )
+
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+
+def test(request):
+    User = get_user_model()
+    users = User.objects.all()
+    response_content = "hello tests view\n"
+    
+    for user in users:
+        response_content += f"username: {user.username}\n"
+    
+    return HttpResponse(response_content)

@@ -8,7 +8,8 @@ from .views import (
     ChatUpdateView,
     ChatDeleteView,
     AdminLoginView,
-    GetChatID
+    GetChatID,
+    test
 )
 
 app_name = 'chat'
@@ -21,5 +22,6 @@ urlpatterns = [
     path('create/', ChatCreateView.as_view()),
     path('<pk>', ChatDetailView.as_view()),
     path('<pk>/update/', ChatUpdateView.as_view()),
-    path('<pk>/delete/', ChatDeleteView.as_view())
+    path('<pk>/delete/', ChatDeleteView.as_view()),
+    path('test/', test)
 ]

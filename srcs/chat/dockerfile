@@ -19,21 +19,18 @@
 
 FROM python:3.10
 
-ENV PYTHONUNBUFFERED 1
-ENV PIPENV_VENV_IN_PROJECT 1
+WORKDIR /app 
 
-WORKDIR /app
+COPY requirements.txt .
 
-COPY Pipfile Pipfile.lock /app/
+RUN pip install --upgrade pip --root-user-action=ignore && pip  install -r requirements.txt --root-user-action=ignore
 
-RUN pip install pipenv
-
-RUN pipenv install --ignore-pipfile
-
-# Install Redis server
 RUN apt-get update && apt-get install -y redis-server
 
 COPY src /app/
 
-# Start Redis server and Django application
-CMD service redis-server start && pipenv run python manage.py runserver 0.0.0.0:8000
+COPY script/runchat.sh .
+
+RUN chmod 777 runchat.sh
+
+CMD ["./runchat.sh"]
