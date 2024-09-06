@@ -1,8 +1,8 @@
 import { NewPage, getJWT } from "./utils.js";
 
-console.log(`the access is ${await getJWT()}`);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    let access_token = await getJWT();
     /***window scrool */
     window.addEventListener('scroll', function () {
         var header = document.querySelector('header');
@@ -30,14 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
     //     },
     // });
 
-    let t = { a: 'home', b: 'api', func: () => console.log("hello") };
-
-    console.log(typeof t, t);
-    let s = JSON.stringify(t);
-    t = JSON.parse(s);
-    console.log(typeof t, t);
-    console.log(typeof s, s);
-
+    const data = fetch('https://localhost:8000/api/user/data/',{
+        headers:{
+            'Authorization': `Bearer ${access_token}`,
+        }
+    }).then(response => response.json());
+    console.log("data:", data);
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });

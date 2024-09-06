@@ -24,8 +24,18 @@ export const getJWT = async () => {
         console.log("|", payload);
     
         const currentTime = Math.floor(Date.now() / 1000);
-        if (currentTime + 60 <= exp)
+        if (currentTime + 60 <= exp) {
+            const resp = fetch("https://localhost:8000/token/valid",{
+                'Autorizaion': `Bearer ${access}`
+            });
+            if (resp.status == 401) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                NewPage("/user/login.html");
+                return;
+            }
             return access;
+        }
         const refresh = localStorage.getItem('refresh_token');
         if (refresh == null)
             NewPage("/user/login.html");
