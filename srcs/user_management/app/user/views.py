@@ -55,10 +55,11 @@ def printJsonData(data):
             print(f"{c.b}{key}: {value}")
 
 def create_jwt_for_Oauth(user):
-    access_token = AccessToken.for_user(user)
-    access_token['provider'] = '42'
-    print("access token is : ", access_token, flush=True)
-    return {'access': str(access_token)}
+    refreshToken = RefreshToken.for_user(user)
+    accessToken = refreshToken.access_token
+    return {'access_token': str(accessToken),
+            'refresh_token':str(refreshToken)
+            }
 
 @api_view(['POST'])
 def Oauth_42_callback(request):
@@ -110,8 +111,6 @@ def Logout(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendUserData(request):
-    user = request.user
-    print("user:", user, flush=True)
-    return JsonResponse({"usename": user.username,
-                        #  "profile_image": user.profile_image
-    })
+    queryset = YourModel.objects.all()
+    serializer = YourModelSerializer(queryset, many=True)
+    return JsonResponse(serializer.data, safe=False)

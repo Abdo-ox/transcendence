@@ -1,3 +1,22 @@
+# FROM python:3.10
+
+# ENV PYTHONUNBUFFERED 1
+# ENV PIPENV_VENV_IN_PROJECT 1
+
+# WORKDIR /app
+
+# COPY Pipfile Pipfile.lock /app/
+
+# RUN pip install pipenv
+
+# RUN pipenv install --ignore-pipfile
+
+# COPY src /app/
+
+
+# CMD ["pipenv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
 FROM python:3.10
 
 ENV PYTHONUNBUFFERED 1
@@ -11,7 +30,10 @@ RUN pip install pipenv
 
 RUN pipenv install --ignore-pipfile
 
+# Install Redis server
+RUN apt-get update && apt-get install -y redis-server
+
 COPY src /app/
 
-
-CMD ["pipenv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Start Redis server and Django application
+CMD service redis-server start && pipenv run python manage.py runserver 0.0.0.0:8000

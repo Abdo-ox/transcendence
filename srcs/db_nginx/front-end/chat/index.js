@@ -10,50 +10,50 @@ let user = pathname.substring(1); // This removes the leading '/'
 
 console.log(`user is ${user}`); // This will log the user information
 
-if (user == `chat/`){
+// if (user == `chat/`){
 
-  let htmlContent = `
-      <h2>Login</h2>
-      <form action="">
-          <input name="username" type="text" placeholder="Username" required>
-          <input name="password" type="password" placeholder="Password" required>
-          <button name="submit" type="submit">Login</button>
-      </form>
-      `;
-    document.getElementById('frame').innerHTML = htmlContent;
+//   let htmlContent = `
+//       <h2>Login</h2>
+//       <form action="">
+//           <input name="username" type="text" placeholder="Username" required>
+//           <input name="password" type="password" placeholder="Password" required>
+//           <button name="submit" type="submit">Login</button>
+//       </form>
+//       `;
+//     document.getElementById('frame').innerHTML = htmlContent;
 
-  document.getElementById('frame').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+//   document.getElementById('frame').addEventListener('submit', function(event) {
+//     event.preventDefault(); // Prevent the default form submission
 
-    // Get form data
-    const username = event.target.username.value;
-    const password = event.target.password.value;
+//     // Get form data
+//     const username = event.target.username.value;
+//     const password = event.target.password.value;
 
-    // Handle the form data (e.g., send it to a server, log it, etc.)
-    console.log('Username:', username);
-    console.log('Password:', password);
+//     // Handle the form data (e.g., send it to a server, log it, etc.)
+//     console.log('Username:', username);
+//     console.log('Password:', password);
 
-    // Optionally, clear the form or provide feedback to the user
-    event.target.reset();
+//     // Optionally, clear the form or provide feedback to the user
+//     event.target.reset();
 
-    axios.post('http://127.0.0.1:9000/chat/AdminLoginView/', {
-      username: username,
-      password: password
-    })
-    .then(response => {
-      console.log('Status Code:', response.status);
-      console.log('Response Data:', response.data);
-      if (response.status == 200){
-        history.pushState('data to be passed', 'Title of the page', '/chat');
-        bodychat(username);
-      }
-      else{
-        console.log(`the user not found`)
-      }
-    })
-});
-}
-else if (currentUrl == "http://127.0.0.1:8080/chat"){
+//     axios.post('http://127.0.0.1:9000/chat/AdminLoginView/', {
+//       username: username,
+//       password: password
+//     })
+//     .then(response => {
+//       console.log('Status Code:', response.status);
+//       console.log('Response Data:', response.data);
+//       if (response.status == 200){
+//         history.pushState('data to be passed', 'Title of the page', '/chat');
+//         bodychat(username);
+//       }
+//       else{
+//         console.log(`the user not found`)
+//       }
+//     })
+// });
+// }
+if (currentUrl == "http://127.0.0.1:8080/chat"){
   user = "";
   bodychat('user1');
 }
