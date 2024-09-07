@@ -10,7 +10,7 @@ from .settings import C as c
 @api_view(['GET'])
 def getCsrfToken(request):
     token = get_token(request)
-    # print(f"my_token=>{token}")
+    print(f"csrf_token:{token}", flush=True)
     return JsonResponse({'csrf_token': token})
 
 @api_view(['GET'])
@@ -23,22 +23,6 @@ def home(request):
         return render(request, 'home.html', context)
     else:
         return redirect('login')
-
-def uploadProfileImage(request):
-    print("csrf_token:", getCsrfToken())
-    if request.method == 'POST':
-        if 'file' in request.FILES:
-            uploaded_file = request.FILES['file']
-            file_path = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
-            print("filePath:", file_path, flush=True)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
-            return HttpResponse('File uploaded successfully')
-        else:
-            return HttpResponse('No file uploaded', status=400)
-    else:
-        return HttpResponse('Invalid request method', status=405)
 
 def UserData(request):
     users = User.objects.all()

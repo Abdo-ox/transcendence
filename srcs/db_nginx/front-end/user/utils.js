@@ -9,7 +9,7 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access === null) {
+    if (access == null) {
         console.log("is settent");
         NewPage("/user/login.html");
     }
@@ -32,7 +32,6 @@ export const getJWT = async () => {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 NewPage("/user/login.html");
-                return;
             }
             return access;
         }
@@ -54,7 +53,6 @@ export const getJWT = async () => {
 }
 
 export const NewPage = (url) => {
-    // window.location.pathname = "/chat/index.html"
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -74,7 +72,6 @@ export const NewPage = (url) => {
         let j = 0;
         
         scripts.forEach(script => {
-            console.log(`||||||||||||||||||||||||=>>>> ${script.src} <<<<<<`);
             let element = document.createElement('script');
             if (script.src) {
                 element.src = script.src;
@@ -92,6 +89,7 @@ export const NewPage = (url) => {
     }).catch(error => {
         console.log("can't load page :", error);
     });
+    throw "endexecution";
 }
 
 export const EventNewPage = (id, url) => {
@@ -129,6 +127,6 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).then(data => {
         handle_data(data);
     }).catch(error => {
-        console.log("can't submit data error:", error, "|");
+        console.log("catch fetch:can't submit data error:", error, "|");
     })
 }

@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    # 'project.debug.CsrfDebugMiddleware',
 ]
 
 
@@ -80,8 +81,9 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://localhost']
+
+CSRF_TRUSTED_ORIGINS =  ['https://localhost', 'https://127.0.0.1']
+
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',
 ]

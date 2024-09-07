@@ -30,19 +30,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     //     },
     // });
 
-    const data = await fetch('https://localhost:8000/api/user/data/', {
-        headers: {
+    const data = await fetch('https://localhost:8000/api/user/data/',{
+        headers:{
             'Authorization': `Bearer ${access_token}`,
         }
     }).then(response => {
         return response.json();
     });
 
-
     console.clear();
     document.getElementById('profile-image').src = data.profile_image;
-    console.log("data:", typeof data, data.profile_image);
+    console.log("data:",typeof data, data.profile_image);
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });
-});
+}, {onse:true});
