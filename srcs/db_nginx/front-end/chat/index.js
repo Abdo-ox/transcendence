@@ -1,4 +1,5 @@
 import { createWebSocket } from './socketsManager.js';
+import { getJWT } from '../user/utils.js';
 // import { GamePlaySocketEngine } from './socketsManager.js';
 // Define the condition
 let status = -1; // This can be any condition you need
@@ -10,6 +11,11 @@ let user = pathname.substring(1); // This removes the leading '/'
 
 console.log(`user is ${user}`); // This will log the user information
 
+const resp = fetch("https://localhost:8000/token/valid",{
+  headers:{
+  'Autorizaion': `Bearer ${access}`
+  }
+});
 // if (user == `chat/`){
 
 //   let htmlContent = `
