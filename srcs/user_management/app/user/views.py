@@ -96,7 +96,7 @@ def Oauth_42_callback(request):
                 'email': data['email'],
                 'first_name': data['first_name'],
                 'last_name': data['last_name'],
-                'profile_image': data['image']['versions']['medium'],
+                'profile_image': data['image']['versions']['small'],
             }
             print("DATA debug is here *************", flush=True)
             user = User.objects.create_user(data['login'], None, **info_usr)
@@ -113,6 +113,5 @@ def Logout(request):
 @permission_classes([IsAuthenticated])
 def sendUserData(request):
     print(f"{c.g}send data  of all users", flush=True)
-    queryset = User.objects.all()
-    serializer = UserSerializer(queryset, many=True)
+    serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data, safe=False)

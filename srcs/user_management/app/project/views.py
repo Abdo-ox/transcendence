@@ -24,6 +24,22 @@ def home(request):
     else:
         return redirect('login')
 
+def uploadProfileImage(request):
+    print("csrf_token:", getCsrfToken())
+    if request.method == 'POST':
+        if 'file' in request.FILES:
+            uploaded_file = request.FILES['file']
+            file_path = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
+            print("filePath:", file_path, flush=True)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            return HttpResponse('File uploaded successfully')
+        else:
+            return HttpResponse('No file uploaded', status=400)
+    else:
+        return HttpResponse('Invalid request method', status=405)
+
 def UserData(request):
     users = User.objects.all()
     seriaUsers = UserSerializer(users, many=True)

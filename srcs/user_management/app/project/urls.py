@@ -1,12 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, UserData, getCsrfToken, sendOauthData
+from .views import home, UserData, getCsrfToken, sendOauthData, uploadProfileImage
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 from django.http import HttpResponse
 from friendship.views import createFreindRelation
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,4 +18,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('friend/', createFreindRelation),
+    path('upload/', uploadProfileImage),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

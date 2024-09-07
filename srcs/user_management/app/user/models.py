@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class UserManager(BaseUserManager):
     def create_user(self,username, password=None, **data):
-        print(f"\33[32;1mthe usercreation called\33[0m")
+        print(f"\33[32;1mthe usercreation called\33[0m", flush=True)
         if not username:
             raise ValueError('User must have username')
         if not data or 'email' not in data:
@@ -12,7 +12,8 @@ class UserManager(BaseUserManager):
             email = self.normalize_email(data['email']),
             username = username,
             first_name = data['first_name'],
-            last_name = data['last_name']
+            last_name = data['last_name'],
+            profile_image = data.get('profile_image', 'https://localhost:8000/profile_images/unkown.jpj')
         )
         if password:
             user.set_password(password)
@@ -44,7 +45,7 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.ImageField(max_length=255)
+    profile_image = models.TextField(max_length=255, blank=True, default='profile_images/unknown.jpg')
     hide_email    = models.BooleanField(default=True)
      
     class Meta:

@@ -45,7 +45,7 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.ImageField(max_length=255)
+    profile_image = models.TextField(max_length=255, blank=True, default='profile_images/unknown.jpg')
     hide_email    = models.BooleanField(default=True)
     
     class Meta:
