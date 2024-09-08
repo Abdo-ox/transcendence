@@ -25,19 +25,19 @@ http {
         ssl_certificate $PATH_CRT/my.crt;
         ssl_certificate_key $PATH_CRT/my.key;
         location / {
-            alias  /usr/share/nginx/html/user/;
+            alias  /usr/share/nginx/html/user;
             index home.html;
         }
         location /home {
-            alias  /usr/share/nginx/html/user/;
+            alias  /usr/share/nginx/html/user;
             index home.html;
         }
         location /login {
-            alias  /usr/share/nginx/html/user/;
+            alias  /usr/share/nginx/html/user;
             index login.html;
         }
         location /register {
-            alias  /usr/share/nginx/html/user/;
+            alias  /usr/share/nginx/html/user;
             index register.html;
         }
         location /chat {
