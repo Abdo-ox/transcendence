@@ -4,16 +4,11 @@ chown -R postgres:postgres /var/lib/postgresql/15/main
 chown -R postgres:postgres /etc/postgresql/15/main
 chown -R postgres:postgres /var/log/postgresql
 service postgresql start 
-
-psql -U $DB_USER -c "drop database $DB_NAME;"
-
 psql -U $DB_USER -c "create database $DB_NAME;"
-
-psql -U $DB_USER -c "CREATE USER chat WITH PASSWORD 'chat';"
-
-psql -U $DB_USER -c "alter user $DB_USER with password '${DB_PASS}'"
-
-
+if [ $? -eq 0 ];then
+    echo "enter"
+    psql -U $DB_USER -c "alter user $DB_USER with password '${DB_PASS}'"
+fi
 cat << EOF > /etc/nginx/nginx.conf
 user www-data;
 worker_processes auto;

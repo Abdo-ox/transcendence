@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, UserData, getCsrfToken, sendOauthData, uploadProfileImage
+from .views import  getCsrfToken, sendOauthData, uploadProfileImage
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

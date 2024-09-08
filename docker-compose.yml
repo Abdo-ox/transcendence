@@ -32,6 +32,7 @@ services:
     volumes:
       - ./srcs/is_ready:/is_ready
       - ./srcs/db_nginx/front-end:/usr/share/nginx/html
+      - db_nginx:/var/lib/postgresql/15/main
     
   chat:
     build: ./srcs/chat
@@ -49,3 +50,11 @@ services:
 
 networks:
   net:
+
+volumes:
+        db_nginx:
+                driver: local
+                driver_opts:
+                          type: 'none'
+                          o: 'bind'
+                          device: './db'
