@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "./utils.js";
+import { NewPage, getJWT } from "https://localhost/home/utils.js";
 
 
 document.addEventListener('DOMContentLoaded', async () => {

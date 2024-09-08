@@ -1,4 +1,4 @@
-import { getCsrfToken, loadAnotherPage } from "./utils.js";
+import { getCsrfToken, loadAnotherPage } from "https://localhost/home/utils.js";
 
 window.addEventListener('scroll',function(){
     var header = document.querySelector('header');

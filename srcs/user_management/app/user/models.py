@@ -18,6 +18,7 @@ class UserManager(BaseUserManager):
         if password:
             user.set_password(password)
         user.save(using=self._db)
+        contact, created = Contact.objects.get_or_create(user=user)
         return user
 
     def create_superuser(self, username, password, **data):

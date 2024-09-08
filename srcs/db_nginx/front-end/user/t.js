@@ -1,4 +1,4 @@
-import { getCsrfToken } from "./utils.js";
+import { getCsrfToken } from "https://localhost/home/utils.js";
 
 
 let t = await  getCsrfToken();

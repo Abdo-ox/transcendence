@@ -1,4 +1,4 @@
-import { getCsrfToken, EventNewPage,NewPage, submitForm } from "./utils.js";
+import { getCsrfToken, EventNewPage,NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
     console.log(data);
