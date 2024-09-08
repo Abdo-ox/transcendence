@@ -19,6 +19,10 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('friend/', createFreindRelation),
     path('upload/', uploadProfileImage),
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8b80d4e82052db74e712217454aee9059cf4a0e6
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

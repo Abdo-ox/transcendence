@@ -44,4 +44,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });
-}, {onse:true});
+}, {once:true});
