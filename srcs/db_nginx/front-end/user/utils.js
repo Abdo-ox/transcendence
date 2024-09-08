@@ -11,7 +11,7 @@ export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
     if (access == null) {
         console.log("is settent");
-        NewPage("/user/login.html");
+        NewPage("/login");
     }
     else {
         let payload = access.split('.')[1];
@@ -31,13 +31,13 @@ export const getJWT = async () => {
             if (resp.status == 401) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
-                NewPage("/user/login.html");
+                NewPage("/login");
             }
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
         if (refresh == null)
-            NewPage("/user/login.html");
+            NewPage("/login");
         console.log("refresh:", refresh);
         const token_data = await fetch("https://localhost:8000/api/token/refresh/",{
             method: 'POST',

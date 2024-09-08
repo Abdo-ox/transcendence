@@ -73,6 +73,7 @@ header
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     padding: 30px 40px; 
     margin: 20px auto 0; 
+    overflow-y: auto;
 }
 .wrapper:hover
 {

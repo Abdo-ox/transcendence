@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
-<link rel="stylesheet" href="login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+    <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
     <div class="background">
         <header>
             <div class="logo">
-                <img  class="neon" src="src/Neon_sign-removebg-preview.png" alt="">
+                <img class="neon" src="src/Neon_sign-removebg-preview.png" alt="">
             </div>
         </header>
-        <!-- <img src="fourtnite4k/back-Photoroom.png" alt=""> -->
-       <div class="wrapper">
-        <div >
-            <h1> Login</h1>
-            <div class="input-box">
-                <input style="color: #fff;" type="text" id="username" placeholder="Username" required>
-                <i class='bx bxs-user'></i>
-            </div> 
-            <div class="input-box">
-                <input type="password" id="password" placeholder="Password" required>
-                <i class='bx bxs-lock-alt'></i>
+        <div class="wrapper">
+            <div>
+                <h1> Login</h1>
+                <div class="input-box">
+                    <input style="color: #fff;" type="text" id="username" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="remember-forgot">
+                    <label> <input type="checkbox">Remember me </label>
+                    <a href="#"> Forgot password?</a>
+                </div>
+                <button type="submit" id="login-btn" class="btn"> Login </button>
+                <div class="register-link">
+                    <p>Sign in with intra acount</p>
+                    <a class="intra" id="intra-btn">
+                        <img src="https://profile.intra.42.fr/assets/42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg"
+                            alt="">
+                    </a>
+                    <p>Don't have an account?</p>
+                    <a id="register-btn">Register</a>
+                </div>
             </div>
-            <div class="remember-forgot"> 
-                <label > <input type="checkbox" >Remember me </label>
-                <a href="#"> Forgot password?</a>
-            </div>
-            <button type="submit" id="login-btn" class="btn" > Login </button>
-            <div class="register-link"> 
-                <p >Sign in with intra  acount</p>
-                <a class="intra" id="intra-btn">
-                    <img src="https://profile.intra.42.fr/assets/42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg" alt="">
-                </a>
-                <p>Don't have an account?</p>
-                <a id="register-btn">Register</a>
-            </div>
-        </div>
 
-       </div>
-       <div id="debug-output"></div>
+        </div>
+        <div id="debug-output"></div>
     </div>
-    <script src="login.js" type="module"></script>       
-    </body>
+    <script src="login.js" type="module"></script>
+</body>
+
 </html>
