@@ -1,7 +1,13 @@
 import { getCsrfToken, EventNewPage,NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
-    console.log(data);
+    if (data.hasOwnProperty('access'))
+    {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        NewPage("/home");
+    }
+    console.log("passed here", data);
 }
 
 
@@ -58,9 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         })
                         .then(data => {
                             console.log("Response from Django backend:", data);
-                            localStorage.setItem('access_token', data.access_token);
-                            localStorage.setItem('refresh_token', data.refresh_token);
-                            NewPage("/home");
+                            handle_data(data);
                         }).catch(error => {
                             console.error("Error sending code to Django backend:", error);
                         });

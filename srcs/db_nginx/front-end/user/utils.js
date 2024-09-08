@@ -14,6 +14,7 @@ export const getJWT = async () => {
         NewPage("/login");
     }
     else {
+        console.log("in getwt before split",access);
         let payload = access.split('.')[1];
         console.log("|", payload);
         payload = payload.replace(/-/g, '+').replace(/_/g, '/');
@@ -111,6 +112,12 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return ;
         }
     }
+    for(let i = 0; i < 10;i++)
+    {
+    fields['username'] = 'user' + i;
+    fields['email'] = 'email' + i + '@gmail.com';
+    fields['password2'] = 'hello1998';
+    fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers:{
@@ -128,5 +135,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
         handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
-    })
+    }); 
+    }
+    
 }

@@ -13,7 +13,7 @@ from project.settings import C as c
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ChatUserSerializer
 from django.http import HttpResponse
 
 @api_view(['POST'])
@@ -59,8 +59,8 @@ def printJsonData(data):
 def create_jwt_for_Oauth(user):
     refreshToken = RefreshToken.for_user(user)
     accessToken = refreshToken.access_token
-    return {'access_token': str(accessToken),
-            'refresh_token':str(refreshToken)
+    return {'access': str(accessToken),
+            'refresh':str(refreshToken)
             }
 
 @api_view(['POST'])
@@ -113,7 +113,15 @@ def Logout(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendUserData(request):
-    print(f"{c.g}send data  of all users", flush=True)
-    serializer = UserSerializer(request.user)
+    serializer = ChatUserSerializer(request.user)
     return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def sendSuggestionFriend(request):
+    print(f"{c.g}send data  of all users", flush=True)
+    users = User.objects.exclude(username=request.user.username)
+    serializer = UserSerializer(users, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
 
