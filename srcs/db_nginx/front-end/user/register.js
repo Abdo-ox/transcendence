@@ -1,4 +1,4 @@
-import { getCsrfToken, NewPage, submitForm } from "./utils.js";
+import { getCsrfToken, NewPage, submitForm } from "https://localhost/home/utils.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
