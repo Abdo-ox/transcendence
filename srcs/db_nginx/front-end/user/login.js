@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
     const ids = ['username', 'password'];
 
-    EventNewPage('register-btn', '/user/register.html');
+    EventNewPage('register-btn', '/register');
 
     document.getElementById('login-btn').addEventListener('click', () => {
         submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             console.log("Response from Django backend:", data);
                             localStorage.setItem('access_token', data.access_token);
                             localStorage.setItem('refresh_token', data.refresh_token);
-                            NewPage("/user/home.html");
+                            NewPage("/home");
                         }).catch(error => {
                             console.error("Error sending code to Django backend:", error);
                         });
