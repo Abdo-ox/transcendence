@@ -5,6 +5,10 @@ from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px'
 DEBUG = True
 
@@ -65,6 +69,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://localhost",
+    "https://127.0.0.1",
 ]
 
 CORS_ALLOW_METHODS = [
@@ -75,7 +80,8 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://localhost']
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',
 ]

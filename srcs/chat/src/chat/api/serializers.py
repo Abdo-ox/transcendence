@@ -42,6 +42,7 @@ class ChatSerializer(serializers.ModelSerializer):
                 contact = get_user_contact(username)
             except Http404:
                 print("the contact does not exist")
+                return chat
             chat.participants.add(contact)
         chat.save()
         return chat
