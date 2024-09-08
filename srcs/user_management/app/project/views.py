@@ -10,7 +10,7 @@ from .settings import C as c
 @api_view(['GET'])
 def getCsrfToken(request):
     token = get_token(request)
-    # print(f"my_token=>{token}")
+    print(f"csrf_token:{token}", flush=True)
     return JsonResponse({'csrf_token': token})
 
 @api_view(['GET'])

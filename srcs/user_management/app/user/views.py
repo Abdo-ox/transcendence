@@ -115,3 +115,20 @@ def sendUserData(request):
     print(f"{c.g}send data  of all users", flush=True)
     serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data, safe=False)
+
+
+def uploadProfileImage(request):
+    print("csrf_token:", getCsrfToken())
+    if request.method == 'POST':
+        if 'file' in request.FILES:
+            uploaded_file = request.FILES['file']
+            file_path = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
+            print("filePath:", file_path, flush=True)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            return HttpResponse('File uploaded successfully')
+        else:
+            return HttpResponse('No file uploaded', status=400)
+    else:
+        return HttpResponse('Invalid request method', status=405)

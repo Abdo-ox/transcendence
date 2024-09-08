@@ -38,11 +38,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         return response.json();
     });
 
-
     console.clear();
     document.getElementById('profile-image').src = data.profile_image;
-    console.log("data:", typeof data, data.profile_image);
+    console.log("data:",typeof data, data.profile_image);
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });
-});
+}, {onse:true});
