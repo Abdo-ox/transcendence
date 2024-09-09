@@ -35,9 +35,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             'Authorization': `Bearer ${access_token}`,
         }
     }).then(response => response.json()).then(data => {
-        console.log("suggrestion:", data);
+       console.log("data", data);
         const suggestionscontainer = document.getElementById("suggestions-container");
-        data.forEach(user => {
+        const currentUser = document.getElementById("name");
+        const currentprof= document.getElementById("profile-image");
+        currentUser.innerHTML = data.currentUser.username;
+        currentprof.src= data.currentUser.profile_image;
+        data.suggestions.forEach(user => {
             suggestionscontainer.innerHTML += `
             <div class="user">
                     <div class="info-user">
@@ -53,5 +57,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // console.log("data:",typeof data, data.profile_image);
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
+    });
+    document.getElementById("name").addEventListener('click', () => {
+        NewPage("/profile.html");
     });
 }, {once:true});

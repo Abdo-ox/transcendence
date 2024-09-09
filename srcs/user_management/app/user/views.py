@@ -120,9 +120,8 @@ def sendUserData(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendSuggestionFriend(request):
-    print(f"{c.g}send data  of all users", flush=True)
     users = User.objects.exclude(username=request.user.username)
     serializer = UserSerializer(users, many=True)
-    return JsonResponse(serializer.data, safe=False)
-
+    currentUser = UserSerializer(request.user)
+    return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
 

@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpj')
+            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpg')
         )
         if password:
             user.set_password(password)
@@ -47,7 +47,7 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
+    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/home/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
 
     class Meta:
