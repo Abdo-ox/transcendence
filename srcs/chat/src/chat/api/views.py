@@ -51,7 +51,7 @@ class GetChatID(APIView):
     def get(self, request):
         user1 = request.query_params.get('username1')
         user2 = request.query_params.get('username2')
-        print(f"i am {user1} user1 and me {user2} user2")
+        print(f"i am {user1} user1 and me {user2} user2", flush=True)
 
         # Print the parameters in the terminal
         print(f"user1: {user1}, user2: {user2}")

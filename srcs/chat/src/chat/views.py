@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from .models import Chat, Contact, User
+from django.http import Http404
 
 
 def get_last_10_messages(chatID): 
@@ -8,8 +9,16 @@ def get_last_10_messages(chatID):
     return chat.messages.order_by('-timestamp').all()
 
 def get_user_contact(username):
-    user = get_object_or_404(User, username=username)
-    return get_object_or_404(Contact, user=user)
+    # user = get_object_or_404(User, username=username)
+    # print(user, flush=True)
+    try:
+        user = User.objects.get(username=username)
+        contact = Contact.objects.get(user=user)
+        # print(f"User found: {user}", flush=True)  # Debugging output
+    except Contact.DoesNotExist:
+        print(f"Contact with username '{username}' not found.", flush=True)  # Debugging output
+        raise Http404("User does not exist")
+    return contact
 
 def get_current_ChatID(ChatID):
     return get_object_or_404(Chat, id=ChatID)

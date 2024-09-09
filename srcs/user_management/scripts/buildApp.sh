@@ -4,7 +4,7 @@ while [ ! -f "/is_ready/user_management" ]; do
 done
 rm -f /is_ready/user_management
 python manage.py makemigrations
-python manage.py migrate user 
+python manage.py migrate user
 python manage.py migrate  friendship
 echo "RUN SERVER"
 touch /is_ready/chat

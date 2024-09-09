@@ -30,17 +30,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     //     },
     // });
 
-    const data = await fetch('https://localhost:8000/api/user/data/', {
-        headers: {
+    fetch('https://localhost:8000/api/suggest/friend/',{
+        headers:{
             'Authorization': `Bearer ${access_token}`,
         }
-    }).then(response => {
-        return response.json();
+    }).then(response => response.json()).then(data => {
+        console.log("suggrestion:", data);
+        const suggestionscontainer = document.getElementById("suggestions-container");
+        data.forEach(user => {
+            suggestionscontainer.innerHTML += `
+            <div class="user">
+                    <div class="info-user">
+                        <img src="${user.profile_image}">
+                        <h3>${user.username}</h3>
+                    </div>
+                    <button>send</button>
+            </div>`
+        });
     });
-
-    console.clear();
-    document.getElementById('profile-image').src = data.profile_image;
-    console.log("data:",typeof data, data.profile_image);
+    // console.clear();
+    // document.getElementById('profile-image').src = data.profile_image;
+    // console.log("data:",typeof data, data.profile_image);
     document.getElementById("chat-btn").addEventListener('click', () => {
         NewPage("/chat/index.html");
     });

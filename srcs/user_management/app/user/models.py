@@ -13,12 +13,13 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost:8000/profile_images/unkown.jpj')
+            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpj')
         )
         if password:
             user.set_password(password)
         user.save(using=self._db)
         contact, created = Contact.objects.get_or_create(user=user)
+        print(f"Contact created: {created}, Contact: {contact}", flush=True)  # Debugging output
         return user
 
     def create_superuser(self, username, password, **data):
@@ -46,7 +47,7 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.TextField(max_length=255, blank=True, default='profile_images/unknown.jpg')
+    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
     hide_email    = models.BooleanField(default=True)
      
     class Meta:

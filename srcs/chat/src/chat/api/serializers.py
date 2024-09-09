@@ -37,11 +37,13 @@ class ChatSerializer(serializers.ModelSerializer):
             flag = 0
         chat = Chat()
         chat.save()
+        # print(participant, flush=True)
         for username in participants:
             try:
+                print(f"username is ->>>>>>>>>>>>>>>>>>>>>>>> {username}")
                 contact = get_user_contact(username)
             except Http404:
-                print("the contact does not exist")
+                print("the contact does not exist", flush=True)
                 return chat
             chat.participants.add(contact)
         chat.save()
