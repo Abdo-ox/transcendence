@@ -9,23 +9,20 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access == null) {
-        console.log("is settent");
+    console.log("at getjwt-> access:",access);
+    if (access == null || access == undefined) {
         NewPage("/login");
+        return null;
     }
     else {
-        console.log("in getwt before split",access);
         let payload = access.split('.')[1];
-        console.log("|", payload);
         payload = payload.replace(/-/g, '+').replace(/_/g, '/');
-        console.log("|", payload);
         payload = atob(payload);
-        console.log("|", payload);
         const exp = JSON.parse(payload)['exp'];
-        console.log("|", payload);
     
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
+            console.log("enter here");
             const resp = fetch("https://localhost:8000/token/valid",{
                 'Autorizaion': `Bearer ${access}`
             });
@@ -37,10 +34,11 @@ export const getJWT = async () => {
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
-        if (refresh == null)
+
+        if (refresh == null ||  refresh == undefined)
             NewPage("/login");
-        console.log("refresh:", refresh);
-        const token_data = await fetch("https://localhost:8000/api/token/refresh/",{
+        let token = null;
+        const response = await fetch("https://localhost:8000/api/token/refresh/",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,8 +46,16 @@ export const getJWT = async () => {
             body: JSON.stringify({
                 refresh: refresh
             })
-        }).then(response => response.json());
-        return token_data['access'];
+        });
+        if (response.status == 401)
+            NewPage("/login");
+        else {
+            const data = await response.json();
+            token = data.access;
+            localStorage.setItem('access_token', data.access);
+            localStorage.setItem('refresh_token', data.refresh);
+        }
+        return token;
     }
 }
 
