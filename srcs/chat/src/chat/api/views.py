@@ -47,25 +47,25 @@ def get_user_contact(username):
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
 class GetChatID(APIView):
     def get(self, request):
         user1 = request.query_params.get('username1')
         user2 = request.query_params.get('username2')
+        print(f"i am {user1} user1 and me {user2} user2", flush=True)
 
         # Print the parameters in the terminal
         print(f"user1: {user1}, user2: {user2}")
         all_chats = Chat.objects.all()
         for chat in all_chats:
             usernames = [participant.user.username for participant in chat.participants.all()]
+            if len(usernames) < 2:
+                print(f"Skipping chat {chat.id} due to insufficient participants")
+                continue
             if (user1 == usernames[0] or user1 == usernames[1]) and (user2 == usernames[0] or user2 == usernames[1]):
                 print(f'chat id:  {chat.id}')
                 return Response({'ChatID': chat.id}, status=status.HTTP_200_OK)
-        print("the participant does't exist")
-        # Respond with a simple JSON response
+        print("the participant doesn't exist")
         return Response({'message': 'participant not found'}, status=status.HTTP_404_NOT_FOUND)
-
-
 
 class ChatListView(ListAPIView):
     serializer_class = ChatSerializer

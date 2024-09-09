@@ -1,67 +1,34 @@
 import { createWebSocket } from './socketsManager.js';
-// import { GamePlaySocketEngine } from './socketsManager.js';
-// Define the condition
-let status = -1; // This can be any condition you need
+import { getJWT } from 'https://localhost/home/utils.js';
+let status = -1;
 const currentUrl = window.location.href;
 const url = new URL(currentUrl);
 const pathname = url.pathname;
 console.log(`current url  ${currentUrl}`);
 let user = pathname.substring(1); // This removes the leading '/'
+console.log(`username parrame is ${user}`)
 
 console.log(`user is ${user}`); // This will log the user information
 
-// if (user == `chat/`){
+let access_token = await getJWT();
+const data = await fetch('https://localhost:8000/api/user/data/',{
+  headers:{
+      'Authorization': `Bearer ${access_token}`,
+  }
+})
+.then(response => response.json()) // Call json() to parse the response
+.then(data => {
+  console.log(data)
+  console.log(`username ${data}`)
+  bodychat(data)
+  // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
+})
+.catch(error => {
+  console.error('Error:', error); // Handle errors
+});
 
-//   let htmlContent = `
-//       <h2>Login</h2>
-//       <form action="">
-//           <input name="username" type="text" placeholder="Username" required>
-//           <input name="password" type="password" placeholder="Password" required>
-//           <button name="submit" type="submit">Login</button>
-//       </form>
-//       `;
-//     document.getElementById('frame').innerHTML = htmlContent;
-
-//   document.getElementById('frame').addEventListener('submit', function(event) {
-//     event.preventDefault(); // Prevent the default form submission
-
-//     // Get form data
-//     const username = event.target.username.value;
-//     const password = event.target.password.value;
-
-//     // Handle the form data (e.g., send it to a server, log it, etc.)
-//     console.log('Username:', username);
-//     console.log('Password:', password);
-
-//     // Optionally, clear the form or provide feedback to the user
-//     event.target.reset();
-
-//     axios.post('http://127.0.0.1:9000/chat/AdminLoginView/', {
-//       username: username,
-//       password: password
-//     })
-//     .then(response => {
-//       console.log('Status Code:', response.status);
-//       console.log('Response Data:', response.data);
-//       if (response.status == 200){
-//         history.pushState('data to be passed', 'Title of the page', '/chat');
-//         bodychat(username);
-//       }
-//       else{
-//         console.log(`the user not found`)
-//       }
-//     })
-// });
-// }
-if (currentUrl == "http://127.0.0.1:8080/chat"){
-  user = "";
-  bodychat('user1');
-}
-else if(user != ""){
-  console.log('im herer')
-  bodychat('user1');
-}
-function bodychat(username) {
+function bodychat(UserData) {
+  const username = UserData.username;
   const GamePlaySocket = new WebSocket('ws://127.0.0.1:9000/ws/notif/');
   GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
@@ -101,13 +68,14 @@ function bodychat(username) {
     // Append the new element to the body or a specific container
     document.body.appendChild(newFrame);
     fetchData();
-    if (user){
-      console.log(`user is ->>>>>>>> ${user}`)
-      createHtmlPrf();
-      updateProfile(user);
-      chatListview(user, 'createWebSocket');
-      GamePlay();
-    }
+    // const isFriendExists = UserData.friends.some(friend => friend.username === nameToCheck);
+    // if (isFriendExists){
+    //   console.log(`user is ->>>>>>>> ${user}`)
+    //   createHtmlPrf();
+    //   updateProfile(user);
+    //   chatListview(user, 'createWebSocket');
+    //   GamePlay();
+    // }
     document.getElementById('contacts-list').addEventListener('click', event => {
         const contact = event.target.closest('.contact');
         console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
@@ -220,19 +188,9 @@ document.getElementById('notif').addEventListener('click', event => {
 });
 
   function fetchData() {
-      axios.get('http://127.0.0.1:9000/chat/UserListView/')
-          .then(response => {
-              const chatobject = response.data;
-              // setSuperUsers(chatobject);
-              chatobject.forEach(user => {
-              if (user.username !== username) {  // Check if the condition is true
-                createSuperuser(user);  // Call the method if the condition is true
-              }
-            });
-              console.log('Status Code:', response.status);
-              console.log('Response Data:', response.data);
-          })
-          .catch(handleError);
+    UserData.friends.forEach(friend => {
+      createSuperuser(friend)
+    });
   }
 
   function createHtmlPrf(){

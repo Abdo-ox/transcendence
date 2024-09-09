@@ -3,6 +3,7 @@ import { getCsrfToken, EventNewPage,NewPage, submitForm } from "https://localhos
 const handle_data = (data) => {
     if (data.hasOwnProperty('access'))
     {
+        console.log(`access equal ${data.access}`)
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         NewPage("/home");
@@ -13,6 +14,7 @@ const handle_data = (data) => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
+    console.log(csrf_token);
     const ids = ['username', 'password'];
 
     EventNewPage('register-btn', '/register');

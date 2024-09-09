@@ -20,7 +20,18 @@ document.getElementById("img-btn").addEventListener('click', () => {
             headers: {
                 'X-CSRFToken': t 
             },
+<<<<<<< HEAD
+            body:JSON.stringify({username: 'clear', password:"hello"}),
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log("can't submit data error:", error, "|");
+        });
+    // }
+// });
+=======
             body: formData,
         })
     }
 });
+>>>>>>> 8b80d4e82052db74e712217454aee9059cf4a0e6
