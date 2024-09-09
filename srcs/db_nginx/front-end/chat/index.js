@@ -1,5 +1,5 @@
 import { createWebSocket } from './socketsManager.js';
-import { getJWT } from '../user/utils.js';
+import { getJWT } from 'https://localhost/home/utils.js';
 let status = -1;
 const currentUrl = window.location.href;
 const url = new URL(currentUrl);
