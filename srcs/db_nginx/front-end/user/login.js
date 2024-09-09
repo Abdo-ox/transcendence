@@ -14,7 +14,6 @@ const handle_data = (data) => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
-    console.log(csrf_token);
     const ids = ['username', 'password'];
 
     EventNewPage('register-btn', '/register');

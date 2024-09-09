@@ -91,12 +91,11 @@ export const NewPage = (url) => {
             element.onerror = () => console.log("errrrrrrrrrrrror in on error ");
             document.body.appendChild(element);
         });
-        console.log(`usl iss ->>> ${url}`)
         history.pushState({}, '', url);
     }).catch(error => {
         console.log("can't load page :", error);
     });
-    throw "endexecution";
+    throw "change page";
 }
 
 export const EventNewPage = (id, url) => {
