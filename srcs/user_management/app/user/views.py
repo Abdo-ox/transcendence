@@ -33,12 +33,13 @@ def Login(request):
 @api_view(['POST'])
 def Register(request):
     form = RegisterationForm(request.data)
+    print(f"{request.data}", flush=True)
     if form.is_valid():
-        password = form.cleaned_data['password1']
-        user = form.save()
-        user.set_password(password)
-        user.save()
-        print(c.g, f"{user.username} {password}\n", flush=True)
+        User.objects.create_user(form.cleaned_data['username'],form.cleaned_data['password1'],**{
+                'email':form.cleaned_data['email'],
+                'first_name':form.cleaned_data['first_name'],
+                'last_name':form.cleaned_data['last_name'],
+            })
         return JsonResponse({"state": "registered"})
     errors = json.loads(form.errors.as_json())
     all_errors = []

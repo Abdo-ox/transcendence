@@ -49,7 +49,7 @@ class User(AbstractBaseUser):
     is_superuser  = models.BooleanField(default=False)
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
     hide_email    = models.BooleanField(default=True)
-     
+
     class Meta:
         db_table = 'user_user'
 
@@ -72,6 +72,9 @@ class User(AbstractBaseUser):
 
 
 class Contact(models.Model):
+
+    class Meta:
+        db_table = 'chat_contact'
     user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
     # friends = models.ManyToManyField('self', blank=True)
     def __str__(self):
@@ -79,6 +82,8 @@ class Contact(models.Model):
 
 
 class Message(models.Model):
+    class Meta:
+        db_table = 'chat_message'
     contact = models.ForeignKey(Contact, related_name='messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -88,6 +93,8 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
+    class Meta:
+        db_table = 'chat_chat'
     participants = models.ManyToManyField(Contact, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
 
