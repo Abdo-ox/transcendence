@@ -51,7 +51,7 @@ class User(AbstractBaseUser):
     hide_email    = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'user_user'
+        db_table = 'user'
 
     USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
@@ -74,7 +74,7 @@ class User(AbstractBaseUser):
 class Contact(models.Model):
 
     class Meta:
-        db_table = 'chat_contact'
+        db_table = 'contact'
     user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
     # friends = models.ManyToManyField('self', blank=True)
     def __str__(self):
@@ -83,7 +83,7 @@ class Contact(models.Model):
 
 class Message(models.Model):
     class Meta:
-        db_table = 'chat_message'
+        db_table = 'message'
     contact = models.ForeignKey(Contact, related_name='messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -94,7 +94,7 @@ class Message(models.Model):
 
 class Chat(models.Model):
     class Meta:
-        db_table = 'chat_chat'
+        db_table = 'chat'
     participants = models.ManyToManyField(Contact, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
 

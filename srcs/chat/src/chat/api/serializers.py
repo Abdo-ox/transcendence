@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from chat.models import Chat
 from django.contrib.auth import get_user_model
 from chat.views import get_user_contact
@@ -40,11 +40,11 @@ class ChatSerializer(serializers.ModelSerializer):
         # print(participant, flush=True)
         for username in participants:
             try:
-                print(f"username is ->>>>>>>>>>>>>>>>>>>>>>>> {username}")
+                print(f"username is ->>>>>>>>>>>>>>>>>>>>>>>> {username}", flush=True)
                 contact = get_user_contact(username)
             except Http404:
                 print("the contact does not exist", flush=True)
-                return chat
+                return Response({'message': "{username}'s contact username not found"}, status=status.HTTP_404_NOT_FOUND)
             chat.participants.add(contact)
         chat.save()
         return chat
