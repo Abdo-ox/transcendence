@@ -1,8 +1,10 @@
 import { NewPage, getJWT } from "https://localhost/home/utils.js";
-
+console.log("home.js called");
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        console.log("tokeN=>", localStorage.getItem('access_token'));
+        console.log("tokeN=>", localStorage.getItem('refresh_token'));
         let access_token = await getJWT();
         /***window scrool */
         window.addEventListener('scroll', function () {
@@ -53,14 +55,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`
             });
         });
-        // console.clear();
-        // document.getElementById('profile-image').src = data.profile_image;
-        // console.log("data:",typeof data, data.profile_image);
         document.getElementById("chat-btn").addEventListener('click', () => {
-            NewPage("/chat/index.html");
+            NewPage("/chat", true);
+        });
+        document.getElementById("settings-btn").addEventListener('click', () => {
+            NewPage("/settings", true);
         });
         document.getElementById("name").addEventListener('click', () => {
-            NewPage("/profile.html");
+            NewPage("/profile", true);
         });
     } catch(error){
         console.log(error);

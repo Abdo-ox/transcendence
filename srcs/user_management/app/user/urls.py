@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Login, Register, Logout, Oauth_42_callback, sendUserData, sendSuggestionFriend
+from .views import Login, Register, Logout, Oauth_42_callback, sendUserData, sendSuggestionFriend, accountSettings
 
 urlpatterns = [
     path('register/', Register, name='register'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('42/callback/', Oauth_42_callback, name='42'),
     path('user/data/', sendUserData),
     path('suggest/friend/', sendSuggestionFriend),
+    path('settings/', accountSettings),
 ]

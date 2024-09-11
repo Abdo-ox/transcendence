@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const handle_data = (data) => {
         if (data.state === 'registred')
-            NewPage('/login.html');
+            NewPage('/login', true);
         console.log(data);
     }
 
