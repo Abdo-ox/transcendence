@@ -1,0 +1,75 @@
+body {
+    background: rgba(56, 83, 136, 1) !important;
+    color: white !important;
+    height: 100vh;
+    font-family: 'Zen Dots', sans-serif !important;
+    overflow: hidden;
+}
+
+.glass-container {
+    height: 95vh;
+    border: 2px;
+    border-color: rgba(56, 83, 136, 0.1) !important;
+    backdrop-filter: blur(10px);
+    background: rgba(56, 83, 136, 0.1);
+    box-shadow: inset -10px 10px 40px 0px rgba(255,255,255,0.5);
+}
+
+canvas {
+    border-radius: 10px;
+    width: 60%;
+    max-height: 100%;
+    border: 4px solid rgba(33, 54, 236, 0.66);
+    box-shadow:0px 0px 9px 0px rgb(255 255 255 / 39%),
+     0px 1px 20px 5px rgb(0 102 255), 
+    inset 0px 0px 20px 0px rgb(255 255 255 / 66%);
+    object-fit: contain;
+}
+#logo {
+    width: 15%;
+    min-width: 50px;
+}
+
+#vs {
+    width: 150px;
+}
+
+.avatar {
+    width: 20%;
+    max-height: 100%;
+}
+
+.pfp {  
+    width: 60px;
+}
+
+.header {
+    max-height: 15%;
+}
+
+.vs-bar {
+    max-height: 20%;
+}
+
+.canvas-container {
+    max-height: 65%;
+}
+
+.nav {
+    background: #114A80;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 768px){
+    #logo {
+        width: 10%;
+    }
+    .nav {
+        bottom: 50%;
+        left: 0;
+        transform: translateX(0);
+        transform: translateY(50%);
+    }
+}
