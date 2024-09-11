@@ -15,6 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
 from .serializers import UserSerializer, ChatUserSerializer, AccountSerializer
 from django.http import HttpResponse
+from django.utils.crypto import get_random_string
+import os
 
 @api_view(['POST'])
 def Login(request):
@@ -130,8 +132,19 @@ def sendSuggestionFriend(request):
 def accountSettings(request):
     print("hello get current user", flush=True)
     currentUser = AccountSerializer(request.user)
-    return JsonResponse({'current:':currentUser.data}, safe=False)
+    return JsonResponse({'current':currentUser.data}, safe=False)
     
-
-
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def UploadProfile(request):
+    if 'image' in request.FILES:
+        uploaded_file = request.FILES['image']
+        file_path = os.path.join(settings.MEDIA_ROOT, get_random_string(12) + str(request.user.username))
+        print("filePath:", file_path, flush=True)
+        with open(file_path, 'wb+') as destination:
+            for chunk in uploaded_file.chunks():
+                destination.write(chunk)
+        return HttpResponse('File uploaded successfully')
+    else:
+        return HttpResponse('No file uploaded', status=400)
 
