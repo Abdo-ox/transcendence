@@ -1,14 +1,20 @@
 import { createWebSocket } from './socketsManager.js';
 import { getJWT } from 'https://localhost/home/utils.js';
-let status = -1;
-const currentUrl = window.location.href;
-const url = new URL(currentUrl);
-const pathname = url.pathname;
-console.log(`current url  ${currentUrl}`);
-let user = pathname.substring(1); // This removes the leading '/'
-console.log(`username parrame is ${user}`)
 
-console.log(`user is ${user}`); // This will log the user information
+const url = new URL(window.location.href);
+let TargetUser = null;
+// Check if the pathname is '/chat'
+if (url.pathname === '/chat/') {
+  // Get the query parameters
+  const params = new URLSearchParams(url.search);
+
+  // Extract a specific parameter (e.g., 'user')
+  TargetUser = params.get('user');
+  console.log(`user is ============== ${TargetUser}`)
+}
+else{
+  console.log(`usl path name ${url.pathname}`)
+}
 
 let access_token = await getJWT();
 const data = await fetch('https://localhost:8000/api/user/data/',{
@@ -19,7 +25,6 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
 .then(response => response.json()) // Call json() to parse the response
 .then(data => {
   console.log(data)
-  console.log(`username ${data}`)
   bodychat(data)
   // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
 })
@@ -33,14 +38,13 @@ function bodychat(UserData) {
   GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
   };
-  // Define the HTML content to insert
   let htmlContent = 0;
   if (!htmlContent){
   htmlContent = `
 	<div id="sidepanel">
 		<div id="profile">
 			<div class="wrap">
-				<img id="profile-img" src="https://cdn.intra.42.fr/users/7f374d7bb3c60ce254cc0d66f25f1957/werrahma.JPG"/>
+				<img id="profile-img" src="${UserData.profile_image}"/>
 				<p>${username}</p>
 			</div>
 		</div>
@@ -56,26 +60,29 @@ function bodychat(UserData) {
 	</div>
     `;
     const frameElement = document.getElementById('frame');
-    
-    // Remove the element using the variable
+
     if (frameElement) {
       frameElement.remove();
     }
     const newFrame = document.createElement('div');
     newFrame.id = 'frame';
     newFrame.innerHTML = htmlContent;
-    
-    // Append the new element to the body or a specific container
+  
     document.body.appendChild(newFrame);
     fetchData();
-    // const isFriendExists = UserData.friends.some(friend => friend.username === nameToCheck);
-    // if (isFriendExists){
-    //   console.log(`user is ->>>>>>>> ${user}`)
-    //   createHtmlPrf();
-    //   updateProfile(user);
-    //   chatListview(user, 'createWebSocket');
-    //   GamePlay();
-    // }
+    UserData.friends.forEach(friend => {
+      if (friend.username === TargetUser){
+        createHtmlPrf();
+        updateProfile(TargetUser);
+        chatListview(TargetUser, 'createWebSocket');
+        GamePlay();
+        // Create the new URL
+        const newUrl = `https://localhost/chat/?user=${TargetUser}`
+        console.log(`new query --------------- ${newUrl}`)
+        history.pushState(null, '', newUrl);
+      }
+    });
+
     document.getElementById('contacts-list').addEventListener('click', event => {
         const contact = event.target.closest('.contact');
         console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
@@ -222,7 +229,8 @@ document.getElementById('notif').addEventListener('click', event => {
 
       // const contactStatus = document.createElement('span');
       // contactStatus.className = 'contact-status busy';
-
+    // ------------------------------- show the user data catched -------------------------------------
+      // console.log(`friend object equal ======= ${JSON.stringify(user)}`)
       const img = document.createElement('img');
       img.src = "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
       img.alt = '';
@@ -260,7 +268,6 @@ document.getElementById('notif').addEventListener('click', event => {
         createWebSocket(response.data.ChatID, user);
         // GamePlaySocketEngine(response.data.ChatID, username, user);
       }
-      // else if (FunctionTarget === 'GamePlaysock')
     })
     .catch(handleError);
   }
@@ -299,8 +306,10 @@ document.getElementById('notif').addEventListener('click', event => {
       contactProfile.appendChild(name);
       contactProfile.appendChild(joingame);
       profileContainer.appendChild(contactProfile);
-
-      history.pushState('data to be passed', 'Title of the page', '/' + user);
-  }
+  
+      const newUrl = `https://localhost/chat/?user=${user}`
+      console.log(`new query --------------- ${newUrl}`)
+      history.pushState(null, '', newUrl);
+    }
 }
 
