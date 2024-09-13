@@ -13,7 +13,7 @@ from project.settings import C as c
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
-from .serializers import UserSerializer, ChatUserSerializer
+from .serializers import UserSerializer, ChatUserSerializer, AccountSerializer
 from django.http import HttpResponse
 
 @api_view(['POST'])
@@ -35,7 +35,7 @@ def Register(request):
     form = RegisterationForm(request.data)
     print(f"{request.data}", flush=True)
     if form.is_valid():
-        User.objects.create_user(form.cleaned_data['username'],form.cleaned_data['password1'],**{
+        User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
                 'email':form.cleaned_data['email'],
                 'first_name':form.cleaned_data['first_name'],
                 'last_name':form.cleaned_data['last_name'],
@@ -101,7 +101,7 @@ def Oauth_42_callback(request):
                 'profile_image': data['image']['versions']['small'],
             }
             print("DATA debug is here *************", flush=True)
-            user = User.objects.create_user(data['login'], None, **info_usr)
+            user = User.objects.create_user(data['login'], True, None, **info_usr)
             return JsonResponse(create_jwt_for_Oauth(user))
         return JsonResponse({'error': 'cannot log with 42 intranet please try again'})
     except json.JSONDecodeError:
@@ -120,9 +120,18 @@ def sendUserData(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendSuggestionFriend(request):
-    print(f"{c.g}send data  of all users", flush=True)
     users = User.objects.exclude(username=request.user.username)
     serializer = UserSerializer(users, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    currentUser = UserSerializer(request.user)
+    return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def accountSettings(request):
+    print("hello get current user", flush=True)
+    currentUser = AccountSerializer(request.user)
+    return JsonResponse({'current:':currentUser.data}, safe=False)
+    
+
 
 

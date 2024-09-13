@@ -34,7 +34,8 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
 
 function bodychat(UserData) {
   const username = UserData.username;
-  const GamePlaySocket = new WebSocket('ws://127.0.0.1:9000/ws/notif/');
+  let token = localStorage.getItem('access_token');;
+  const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${token}`);
   GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
   };
@@ -70,6 +71,7 @@ function bodychat(UserData) {
   
     document.body.appendChild(newFrame);
     fetchData();
+    if (UserData.friends){
     UserData.friends.forEach(friend => {
       if (friend.username === TargetUser){
         createHtmlPrf();
@@ -81,7 +83,7 @@ function bodychat(UserData) {
         console.log(`new query --------------- ${newUrl}`)
         history.pushState(null, '', newUrl);
       }
-    });
+    });}
 
     document.getElementById('contacts-list').addEventListener('click', event => {
         const contact = event.target.closest('.contact');

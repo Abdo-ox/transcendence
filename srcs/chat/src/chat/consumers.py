@@ -2,6 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import Message
+from django.contrib.auth.models import AnonymousUser
 from .views import get_last_10_messages, get_user_contact, get_current_ChatID, get_participants
 
 class NotificationConsumer(WebsocketConsumer):
@@ -13,11 +14,18 @@ class NotificationConsumer(WebsocketConsumer):
         }
         return self.send_chat_message(content)
     def connect(self):
+        # Check if the user is authenticated
         self.room_group_name = 'notif'
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
-        )
-        self.accept()
+        if self.scope['user'] == AnonymousUser():
+            print("anonymousUser", flush=True)
+            # If not authenticated, close the connection
+            self.close()
+        else:
+            print(f"user is ------------>> {self.scope['user']}", flush=True)
+            async_to_sync(self.channel_layer.group_add)(
+                self.room_group_name, self.channel_name
+            )
+            self.accept()
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -84,13 +92,17 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
-
+        if self.scope['user'] == AnonymousUser():
+            print("anonymousUser", flush=True)
+            self.close()
         # Join room group
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
-        )
+        else:
+            print(f"user is ------------>> {self.scope['user']}", flush=True)
+            async_to_sync(self.channel_layer.group_add)(
+                self.room_group_name, self.channel_name
+            )
 
-        self.accept()
+            self.accept()
 
     def disconnect(self, close_code):
         # Leave room group
