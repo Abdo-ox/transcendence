@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://localhost/home/setting.css">
 </head>
+
 <body>
     <header>
         <a href="#" class="logo"><img id="logo" src="/home/fourtnite4k/neoon.png" alt="Logo"></a>
         <ul class="nav">
             <li id="home-btn"><a>Home</a></li>
-            <li><a href="#">Chat</a></li>
-            <li><a href="#">Game</a></li>
+            <li id="chat-btn"><a href="#">Chat</a></li>
+            <li id="Game-btn"><a href="#">Game</a></li>
         </ul>
         <div class="action">
             <a class="bel" href="#"><i class="fa-regular fa-bell"></i></a></li>
@@ -29,7 +31,7 @@
         <div class="flex-item flex1">
             <h2>Settings</h2>
             <div class="compte">
-                <img src="/home/fourtnite4k/images.jpeg" alt="">
+                <img id="profile-image1" src="/home/fourtnite4k/images.jpeg" alt="">
                 <div class="title">
                     <h3>Elmoutouakil khadija</h3>
                     <h4>Acount Settings</h4>
@@ -50,15 +52,21 @@
             <div class="profile-cadre">
                 <img class="background" src="/home/acheivements/back2 (2).jpeg" alt="">
                 <div class="prof-container">
-                    <img class="prof" src="/home/fourtnite4k/images.jpeg" alt="">
-                    <label for="upload" class="edit-icon">
-                        <i class="fas fa-pen"></i>
+                    <img id="profile-image2" class="prof" src="/home/fourtnite4k/images.jpeg" alt="">
+                    <i id="pen" class="fas fa-pen"></i>
                     </label>
-                    <input type="file" id="upload" style="display: none;" accept="image/*">
+                </div>
+                <!-- the wrapper containere -->
+                <div id="crop-image-container" class="crop-image-container">
+                    <h3 class="text-center">Upload and Crop Image</h3>
+                    <input type="file" id="upload" class="form-control" accept="image/*">
+                    <div id="image-wrapper" class="image-wrapper">
+                    </div>
+                    <button id="crop-btn" class=" btn-primary mt-3">Crop Image</button>
                 </div>
             </div>
             <div class="profile-menu">
-                <h2 class="profi" onclick="showProfile()" >Profile</h2>
+                <h2 class="profi" onclick="showProfile()">Profile</h2>
                 <div class="line"></div>
                 <h2 class="secure" onclick="showSecurity()">Security</h2>
             </div>
@@ -83,7 +91,7 @@
                         <input type="email" id="email" name="email">
                     </div>
                 </div>
-                <button class="btn">Save</button>
+                <button id="save-btn" class="btn">Save</button>
             </div>
             <div class="group-menu" id="security-section" style="display: none;">
                 <div class="group">
@@ -95,7 +103,7 @@
                         <label for="confirm-password">Confirm Password:</label>
                         <input type="password" id="confirm-password" name="confirm-password">
                     </div>
-                <button class="btn" style="margin-top:17px;">Update</button>
+                    <button class="btn" style="margin-top:17px;">Update</button>
                 </div>
                 <!-- <div class="form-group">
                     <label for="two-factor">Two-Factor Authentication:</label>
@@ -103,7 +111,8 @@
                 </div> -->
             </div>
         </div>
-    </div>
-    <script  src="/home/settings.js" type="module"></script>
+        </div>
+        <script src="/home/settings.js" type="module"></script>
 </body>
+
 </html>
