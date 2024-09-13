@@ -9,38 +9,35 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access == null) {
-        console.log("is settent");
-        NewPage("/login");
+    if (access == null || access == undefined) {
+        NewPage("/login", true);
+        return null;
     }
     else {
-        console.log("in getwt before split",access);
         let payload = access.split('.')[1];
-        console.log("|", payload);
         payload = payload.replace(/-/g, '+').replace(/_/g, '/');
-        console.log("|", payload);
         payload = atob(payload);
-        console.log("|", payload);
         const exp = JSON.parse(payload)['exp'];
-        console.log("|", payload);
     
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
+            console.log("enter here");
             const resp = fetch("https://localhost:8000/token/valid",{
                 'Autorizaion': `Bearer ${access}`
             });
             if (resp.status == 401) {
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
-                NewPage("/login");
+                console.error("remove the atems form the local storage");
+                // moveItem('access_token');
+                // localStorage.removeItem('refresh_token');
+                NewPage("/login", true);
             }
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
-        if (refresh == null)
-            NewPage("/login");
-        console.log("refresh:", refresh);
-        const token_data = await fetch("https://localhost:8000/api/token/refresh/",{
+        if (refresh == null ||  refresh == undefined)
+            NewPage("/login", true);
+        let token = null;
+        const response = await fetch("https://localhost:8000/api/token/refresh/",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,12 +45,19 @@ export const getJWT = async () => {
             body: JSON.stringify({
                 refresh: refresh
             })
-        }).then(response => response.json());
-        return token_data['access'];
+        });
+        if (response.status == 401)
+            NewPage("/login", true);
+        else {
+            const data = await response.json();
+            token = data.access;
+            localStorage.setItem('access_token', data.access);
+        }
+        return token;
     }
 }
 
-export const NewPage = (url) => {
+export const NewPage = (url, thr) => {
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -74,23 +78,30 @@ export const NewPage = (url) => {
         
         scripts.forEach(script => {
             let element = document.createElement('script');
+            console.log("defer:", script.defer);
+            console.log("sync:", script.sync);
+            console.log("async:", script.async);
             if (script.src) {
-                element.src = script.src;
+                console.log("src js:=>", script.src);
+                element.src = script.src + '?t=' + new Date().getTime(); 
                 element.type = 'module';
             }
             element.onload = () => {
-                if (++j == scripts.length) 
+                console.log("onlodad called for :", script.src);
+                if (++j == scripts.length) {
+                    console.log("dispatch event");
                     document.dispatchEvent(event);
+                }
             };
-            element.onerror = () => console.log("errrrrrrrrrrrror in on error ");
+            element.onerror = () => console.log("errrror in on error ");
             document.body.appendChild(element);
         });
-        console.log(`usl iss ->>> ${url}`)
         history.pushState({}, '', url);
     }).catch(error => {
         console.log("can't load page :", error);
     });
-    throw "endexecution";
+    if (thr)
+        throw "change page to:=>" + url;
 }
 
 export const EventNewPage = (id, url) => {

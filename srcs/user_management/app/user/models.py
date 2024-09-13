@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class UserManager(BaseUserManager):
-    def create_user(self,username, password=None, **data):
+    def create_user(self,username, intra=False, password=None, **data):
         print(f"\33[32;1mthe usercreation called\33[0m", flush=True)
         if not username:
             raise ValueError('User must have username')
@@ -13,7 +13,8 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpg')
+            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpg'),
+            intraNet = intra
         )
         if password:
             user.set_password(password)
@@ -49,9 +50,9 @@ class User(AbstractBaseUser):
     is_superuser  = models.BooleanField(default=False)
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/home/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
-
+    intraNet      = models.BooleanField(default=False)
     class Meta:
-        db_table = 'user_user'
+        db_table = 'user'
 
     USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
@@ -74,7 +75,7 @@ class User(AbstractBaseUser):
 class Contact(models.Model):
 
     class Meta:
-        db_table = 'chat_contact'
+        db_table = 'contact'
     user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
     # friends = models.ManyToManyField('self', blank=True)
     def __str__(self):
@@ -83,7 +84,7 @@ class Contact(models.Model):
 
 class Message(models.Model):
     class Meta:
-        db_table = 'chat_message'
+        db_table = 'message'
     contact = models.ForeignKey(Contact, related_name='messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -94,7 +95,7 @@ class Message(models.Model):
 
 class Chat(models.Model):
     class Meta:
-        db_table = 'chat_chat'
+        db_table = 'chat'
     participants = models.ManyToManyField(Contact, related_name='chats')
     messages = models.ManyToManyField(Message, blank=True)
 

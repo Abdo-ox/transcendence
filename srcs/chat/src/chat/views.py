@@ -9,14 +9,14 @@ def get_last_10_messages(chatID):
     return chat.messages.order_by('-timestamp').all()
 
 def get_user_contact(username):
-    # user = get_object_or_404(User, username=username)
-    # print(user, flush=True)
     try:
         user = User.objects.get(username=username)
         contact = Contact.objects.get(user=user)
         # print(f"User found: {user}", flush=True)  # Debugging output
     except Contact.DoesNotExist:
         print(f"Contact with username '{username}' not found.", flush=True)  # Debugging output
+        raise Http404("Contact does not exist")
+    except User.DoesNotExist:
         raise Http404("User does not exist")
     return contact
 
