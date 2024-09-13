@@ -4,6 +4,8 @@ while [ ! -f "/is_ready/user_management" ]; do
 done
 rm -f /is_ready/user_management
 
+touch /is_ready/game
+
 echo "RUN SERVER"
 touch /is_ready/chat
 watchfiles --target-type command "hypercorn  project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"
