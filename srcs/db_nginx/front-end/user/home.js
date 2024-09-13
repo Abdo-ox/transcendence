@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         //     },
         // });
 
+        // fetch the suggestions freind from django  
+
         fetch('https://localhost:8000/api/suggest/friend/', {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
@@ -51,10 +53,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${user.profile_image}">
                         <h3>${user.username}</h3>
                     </div>
-                    <button>send</button>
+                    <button class="friend-request-btn" username="${user.username}">send</button>
             </div>`
             });
+            document.querySelectorAll('.friend-request-btn').forEach( button => {
+                button.addEventListener('click', () => {
+                    console.log("the user you want to create a friendship with is: ", button.getAttribute('username'));
+                });
+            });
         });
+
+        // add event listner for chnaging the page to a new page
+
         document.getElementById("chat-btn").addEventListener('click', () => {
             NewPage("/chat", true);
         });
@@ -64,6 +74,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("name").addEventListener('click', () => {
             NewPage("/profile", true);
         });
+
+        // add event listener for sending friend request
+
+
+
     } catch(error){
         console.log(error);
     }

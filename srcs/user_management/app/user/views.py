@@ -136,7 +136,7 @@ def accountSettings(request):
     return JsonResponse({'current':currentUser.data}, safe=False)
     
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']

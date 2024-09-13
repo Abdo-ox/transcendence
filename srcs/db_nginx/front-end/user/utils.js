@@ -21,7 +21,7 @@ export const getJWT = async () => {
     
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
-            console.log("enter here");
+            console.log("token still valid");
             const resp = fetch("https://localhost:8000/token/valid",{
                 'Autorizaion': `Bearer ${access}`
             });
@@ -34,8 +34,11 @@ export const getJWT = async () => {
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
-        if (refresh == null ||  refresh == undefined)
+        if (refresh == null ||  refresh == undefined){
+            console.log("go to login");
             NewPage("/login", true);
+        }
+        console.log("refresh the token");
         let token = null;
         const response = await fetch("https://localhost:8000/api/token/refresh/",{
             method: 'POST',
@@ -46,11 +49,13 @@ export const getJWT = async () => {
                 refresh: refresh
             })
         });
+        console.log("status code of refresh token is :", response.status);
         if (response.status == 401)
             NewPage("/login", true);
         else {
             const data = await response.json();
             token = data.access;
+            console.log("the new token:", data.access);
             localStorage.setItem('access_token', data.access);
         }
         return token;
