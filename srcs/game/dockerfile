@@ -2,7 +2,8 @@ FROM    python:3.10
 
 COPY    pong_backend .
 COPY    requirements.txt .
+COPY    script/script.sh .
 
 RUN     pip install -r requirements.txt
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["bash","script.sh"]
