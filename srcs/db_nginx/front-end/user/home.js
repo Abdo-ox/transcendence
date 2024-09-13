@@ -77,7 +77,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // add event listener for sending friend request
 
-
+        const response = await fetch("https://localhost:8000/friend/request/?username=user1", {
+            headers: {
+                Authorization: `Bearer ${await getJWT()}`
+            }
+        });
 
     } catch(error){
         console.log(error);

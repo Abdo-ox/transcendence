@@ -124,6 +124,7 @@ def sendUserData(request):
 @permission_classes([IsAuthenticated])
 def sendSuggestionFriend(request):
     users = User.objects.exclude(username=request.user.username)
+    users = users.exclude(id__in=request.user.user.friends.all())
     serializer = UserSerializer(users, many=True)
     currentUser = UserSerializer(request.user)
     return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
