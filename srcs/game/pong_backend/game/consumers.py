@@ -7,6 +7,9 @@ from channels.db import database_sync_to_async
 from . models import Game, MultiGame
 from . game import GameLogic
 
+
+# protect from anonymous user
+
 # TODO: seperate game logic from consumer and allow user to rejoin game, also implement time out
 class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
