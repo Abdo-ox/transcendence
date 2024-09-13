@@ -125,7 +125,9 @@ def sendUserData(request):
 def sendSuggestionFriend(request):
     users = User.objects.exclude(username=request.user.username)
     users = users.exclude(id__in=request.user.user.friends.all())
-    serializer = UserSerializer(users, many=True)
+    context = {'user': request.user}
+    print("Context being passed to serializer:", context)
+    serializer = UserSerializer(users, many=True, context=context)
     currentUser = UserSerializer(request.user)
     return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
 
