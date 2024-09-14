@@ -1,6 +1,7 @@
+import { getJWT } from 'https://localhost/home/utils.js';
+const token = await getJWT();
 const canvas = document.getElementById("canvas");
 const keys = [];
-const token = localStorage.getItem('access_token');
 const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
 
 let c = 3;// countdown
@@ -86,7 +87,7 @@ function draw() {
     ctx.fillRect(gameState.paddle1.x, gameState.paddle1.y, gameState.ball.r, gameState.len);
     ctx.fillRect(gameState.paddle2.x, gameState.paddle2.y, gameState.ball.r, gameState.len);
 
-    font_weight = Math.round(0.06 * canvas.height)
+    let font_weight = Math.round(0.06 * canvas.height)
     ctx.font = font_weight+"px 'Zen Dots'";
     ctx.textAlign = "center";
     ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
