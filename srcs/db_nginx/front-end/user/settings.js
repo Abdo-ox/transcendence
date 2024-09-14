@@ -18,14 +18,13 @@ function showSecurity() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const access = await getJWT();
         const csrf_token = await getCsrfToken();
         document.getElementById("home-btn").addEventListener('click', () => {
             NewPage("/home", true);
         });
         fetch("https://localhost:8000/api/settings/", {
             headers: {
-                Authorization: `Bearer ${access}`
+                Authorization: `Bearer ${await getJWT()}`
             }
         })
         .then((response) => {
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let boxRect;
         let canvas = null;
         const imageWrapper = document.getElementById("image-wrapper");
-        let imageRect = imageWrapper.getBoundingClientRect();
+        let imageRect;
         const imageInput = document.getElementById('upload');
         imageInput.addEventListener("change", (event) => {
             console.log("the event change is triggered");
@@ -73,17 +72,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 imageWrapper.innerHTML = ``;
                 imgElement = new Image();
                 imgElement.src = e.target.result;
-                imgElement.style.width = `100%`;
-                imgElement.style.bottom = '50px'
+                imgElement.classList.add('img-to-corp')
                 imageWrapper.appendChild(imgElement);
                 createCropBox();
+                imageRect = imgElement.getBoundingClientRect();
             };
             reader.readAsDataURL(file);
 
             function createCropBox() {
                 cropBox = document.createElement('div');
                 cropBox.classList.add('cropBox');
-                imageWrapper.appendChild(cropBox);
+                // cropBox.style.left = imgElement.offsetLeft + "px";
+                // cropBox.style.top = imgElement.offsetTop + "px";
+                console.log("img.offsetleft", imgElement.offsetLeft);
+                // imageWrapper.appendChild(cropBox);
                 boxRect = document.querySelector('.cropBox').getBoundingClientRect();
                 makeDraggable(cropBox);
             };
@@ -97,7 +99,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     p3 = event1.clientX;
                     p4 = event1.clientY;
                     document.onmousemove = (even) => {
-                        console.log("the onmousemove triggered", boxRect.width);
                         even.preventDefault();
                         p1 = p3 - even.clientX;
                         p2 = p4 - even.clientY;
@@ -105,18 +106,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         p4 = even.clientY;
                         let left = element.offsetLeft - p1;
                         let top = element.offsetTop - p2;
-                        // left = left < 0 ? 0: left;
-                        // top = top < 0 ? 0: top;
-
-                        // left = (left + boxRect.width > imageRect.width) ? imageRect.width- boxRect.width: left;
-                        // top = (top + boxRect.height > imageRect.height ) ? imageRect.height- boxRect.height: top;
-                        console.log("left:", left);
-                        console.log("top:", top);
+                        left = (left + boxRect.width > imageRect.width ) ? imageRect.width -  boxRect.width: left;
+                        top = (top + boxRect.height > imageRect.height ) ? imageRect.height - boxRect.height: top;
+                        left = (left < 0) ? 0: left;
+                        top = (top < 0) ? 0: top;
                         element.style.top = top + "px";
                         element.style.left = left + "px";
                     }
                     document.onmouseup = () => {
-                        console.log("the onmouseup triggered");
                         document.onmouseup = null;
                         document.onmousemove = null;
                     }

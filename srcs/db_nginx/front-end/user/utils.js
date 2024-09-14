@@ -1,5 +1,5 @@
 export const getCsrfToken = async () => {
-    return fetch("https://localhost:8000/api/csrf_token/")
+    return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response =>response.json())
         .then(data => data.csrf_token)
             .catch(error => {
@@ -86,22 +86,17 @@ export const NewPage = (url, thr) => {
         
         scripts.forEach(script => {
             let element = document.createElement('script');
-            console.log("defer:", script.defer);
-            console.log("sync:", script.sync);
-            console.log("async:", script.async);
             if (script.src) {
-                console.log("src js:=>", script.src);
                 element.src = script.src + '?t=' + new Date().getTime(); 
                 element.type = 'module';
             }
             element.onload = () => {
-                console.log("onlodad called for :", script.src);
                 if (++j == scripts.length) {
                     console.log("dispatch event");
                     document.dispatchEvent(event);
                 }
             };
-            element.onerror = () => console.log("errrror in on error ");
+            element.onerror = () => console.log("error in on error to load js file in NewPage");
             document.body.appendChild(element);
         });
         history.pushState({}, '', url);
@@ -162,4 +157,11 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }); 
     // }
     
+}
+
+
+const t = () => {
+    getJWT().then((token) => {
+        console.log("hello:", token);
+    })
 }

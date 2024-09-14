@@ -13,7 +13,7 @@ from project.settings import C as c
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
-from .serializers import UserSerializer, ChatUserSerializer, AccountSerializer
+from .serializers import UserSerializer, ChatUserSerializer, AccountSerializer, SuggestionSerializer
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 import os
@@ -124,20 +124,20 @@ def sendUserData(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendSuggestionFriend(request):
-    users = User.objects.exclude(username=request.user.username)
+    users = User.objects.exclude(id=request.user.id)
     friend_list, created = FriendList.objects.get_or_create(user=request.user)
     friends = friend_list.friends.all()
-    users = users.exclude(id__in=friends)
-    context = {'user': request.user}
-    print(c.y, "Context being passed to serializer:", context)
-    serializer = UserSerializer(users, many=True, user=request.user)
+    suggestions = friends.exclude(id__in=friends)
     currentUser = UserSerializer(request.user)
-    return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
+    if suggestions.exists():
+        serializer = SuggestionSerializer(suggestions, many=True, user=request.user)
+        return JsonResponse({'currentUser':currentUser.data, 'suggestions':serializer.data}, safe=False)
+    else:
+        return JsonResponse({'currentUser':currentUser.data, 'suggestions': []})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def accountSettings(request):
-    print("hello get current user", flush=True)
     currentUser = AccountSerializer(request.user)
     return JsonResponse({'current':currentUser.data}, safe=False)
     
@@ -146,18 +146,14 @@ def accountSettings(request):
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']
-        print(f"{uploaded_file.name}", flush=True)
-        file_name = get_random_string(6)+ "_" + str(request.user.username) + Path(uploaded_file.name).suffix
+        file_name = get_random_string(6) + "_" + str(request.user.username) + Path(uploaded_file.name).suffix
         file_path = os.path.join(settings.MEDIA_ROOT, file_name)
         file_url = "https://localhost:8000/media/" + file_name
-        print("filePath:", file_path, flush=True)
         with open(file_path, 'wb+') as destination:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
-        print("user profile image", request.user.profile_image, flush=True)
         request.user.profile_image = file_url
         request.user.save()
-        print("user profile image", request.user.profile_image, flush=True)
         return JsonResponse({'File uploaded successfully' : 'status'})
     else:
         return JsonResponse({'No file uploaded': 'status'})

@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import User
 
-def createFreindRelation(request):
+def createFriendRelation(request):
     username1=request.GET.get('user1')
     username2=request.GET.get('user2')
     user1 = authenticate(username=username1)
@@ -25,7 +25,10 @@ def createFreindRelation(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def createFriendRequest(request):
-    user = User.objects.get(username=request.GET.get('username'))
+    try:
+        user = User.objects.get(username=request.GET.get('username'))
+    except User.DoesNotExist:
+        return HttpResponse("ko")
     t, created = FriendRequest.objects.get_or_create(sender=request.user, receiver=user)
     t.is_active = True
     t.save()
