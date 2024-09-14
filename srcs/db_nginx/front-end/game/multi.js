@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const keys = [];
 const token = localStorage.getItem('access_token');
-const socket = new WebSocket(`ws://localhost:8000/ws/multiplayer/?token=${token}`);
+const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
 
 let c = 3;// countdown
 let gameState = {}

@@ -75,6 +75,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/profile", true);
         });
 
+        // game events
+
+        document.getElementById("ai-play").addEventListener('click', () => {
+            NewPage("/game", true);
+        });
+
+        // end of game events
+
         // add event listener for sending friend request
 
 

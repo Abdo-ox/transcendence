@@ -49,8 +49,8 @@ http {
             index index.html;
         }
         location /game {
-            alias /usr/share/nginx/html/game/;
-            index index.html;
+            alias /usr/share/nginx/html/game;
+            index game.html;
         }
     }
     server {
