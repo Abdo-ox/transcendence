@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/game", true);
         });
 
+        document.getElementById("multi-play").addEventListener('click', () => {
+            NewPage("/multi", true);
+        });
+
         // end of game events
 
         // add event listener for sending friend request
