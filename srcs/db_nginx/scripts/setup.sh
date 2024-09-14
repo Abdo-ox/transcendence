@@ -48,6 +48,10 @@ http {
             alias /usr/share/nginx/html/chat/;
             index index.html;
         }
+        location /game {
+            alias /usr/share/nginx/html/game/;
+            index index.html;
+        }
     }
     server {
         listen 80;
