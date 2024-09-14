@@ -26,10 +26,7 @@ def createFreindRelation(request):
 @permission_classes([IsAuthenticated])
 def createFriendRequest(request):
     user = User.objects.get(username=request.GET.get('username'))
-    t = FriendRequest.objects.create(sender=request.user, receiver=user)
-    users = request.user.sender.all()
-    for user1 in users:
-        print(c.g, "user receivers:", user1.receiver, flush=True)
-    print(c.b, "user:", request.user, flush=True)
-    print(c.b, "to become friend:", request.GET.get('username'), flush=True)
+    t, created = FriendRequest.objects.get_or_create(sender=request.user, receiver=user)
+    t.is_active = True
+    t.save()
     return HttpResponse("ok")

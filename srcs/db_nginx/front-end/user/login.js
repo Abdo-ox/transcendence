@@ -1,10 +1,12 @@
 import { getCsrfToken, EventNewPage, NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
-    console.error("set access and refresh to the storage");
-    console.log(`access equal ${data.refresh}`)
+    // console.error("set access and refresh to the storage");
+    // console.error(`access: ${data.refresh}`)
+    // console.error(`refresh: ${data.refresh}`)
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    NewPage('/home');
 }
 
 

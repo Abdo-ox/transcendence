@@ -9,7 +9,10 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
+    console.log('access: in else :',  access===null);
+    console.log('access: in else :',  access == 'undefined');
     if (access == null || access == undefined) {
+        console.log("enter to if condition");
         NewPage("/login", true);
         return null;
     }
@@ -118,7 +121,12 @@ export const EventNewPage = (id, url) => {
 export const submitForm = (url, ids, csrf_token, handle_data) => {
     let fields = {};
     for (const id of ids) {
-        fields[id] = document.getElementById(id).value;
+        try{
+            fields[id] = document.getElementById(id).value;
+        }
+        catch(error){
+            console.error('id: ', id, " error: ",error);
+        }
         if (fields[id].trim().length == 0) {
             alert(id ,' is required');
             return ;
@@ -128,12 +136,12 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return ;
         }
     }
-    for(let i = 0; i < 10;i++)
-    {
-    fields['username'] = 'user' + i;
-    fields['email'] = 'email' + i + '@gmail.com';
-    fields['password2'] = 'hello1998';
-    fields['password1'] = 'hello1998';
+    // for(let i = 0; i < 10;i++)
+    // {
+    // fields['username'] = 'user' + i;
+    // fields['email'] = 'email' + i + '@gmail.com';
+    // fields['password2'] = 'hello1998';
+    // fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers:{
@@ -152,6 +160,6 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     }); 
-    }
+    // }
     
 }

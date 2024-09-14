@@ -25,18 +25,27 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username','profile_image', 'friend_request_status']
     
+    def __init__(self, *args, **kwargs):
+        print(c.y, "kwargs:",kwargs)
+        self.user = kwargs.pop('user', None)
+        super(UserSerializer, self).__init__(*args, **kwargs)
+        
     def get_friend_request_status(self, obj):
         print(c.r, "context:", self.context)
-        user = self.context['user']
-        if FriendRequest.objects.get(sender=user, receiver=obj, is_active=True):
+        user = self.context.get('user')
+        print(c.r, "user:", self.user)
+        try:
+            FriendRequest.objects.get(sender=user, receiver=obj, is_active=True)
             print("sent", flush=True)
             return "sent"
-        elif FriendRequest.objects.get(sender=obj, receiver=user, is_active=True):
-            print("recieved")
-            return "received"
-        else:
-            print("none")
-            return "none"
+        except FriendRequest.DoesNotExist:
+            try:
+                FriendRequest.objects.get(sender=obj, receiver=user, is_active=True)
+                print("received", flush=True)
+                return "received"
+            except FriendRequest.DoesNotExist:
+                print("none")
+                return "none"
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:

@@ -18,6 +18,7 @@ from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 import os
 from pathlib import Path
+from friendship.models import FriendList
 
 @api_view(['POST'])
 def Login(request):
@@ -124,10 +125,12 @@ def sendUserData(request):
 @permission_classes([IsAuthenticated])
 def sendSuggestionFriend(request):
     users = User.objects.exclude(username=request.user.username)
-    users = users.exclude(id__in=request.user.user.friends.all())
+    friend_list, created = FriendList.objects.get_or_create(user=request.user)
+    friends = friend_list.friends.all()
+    users = users.exclude(id__in=friends)
     context = {'user': request.user}
-    print("Context being passed to serializer:", context)
-    serializer = UserSerializer(users, many=True, context=context)
+    print(c.y, "Context being passed to serializer:", context)
+    serializer = UserSerializer(users, many=True, user=request.user)
     currentUser = UserSerializer(request.user)
     return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
 
