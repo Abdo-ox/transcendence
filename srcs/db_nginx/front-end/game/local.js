@@ -98,16 +98,16 @@ try {
         }
 
         updateBall() {
-            if (this.ball.y - this.r <= 0 || this.ball.y + this.r >= canvas.height) {
+            if ((this.ball.y - this.r <= 0 && this.ball.y_d == -1) || (this.ball.y + this.r >= canvas.height && this.ball.y_d == 1)) {
                 this.ball.y_d *= -1;
             }
-            if (this.ball.x - this.r <= 0) {
+            if (this.ball.x - this.r <= 0 && this.ball.x_d == -1) {
                 this.player2.score += 1;
                 this.ball.x_d *= -1;
                 this.ball.x = canvas.width / 4;
                 this.ball.y = Math.random() * canvas.height;
             }
-            else if (this.ball.x + this.r >= canvas.width) {
+            else if (this.ball.x + this.r >= canvas.width && this.ball.x_d == 1) {
                 this.player1.score += 1;
                 this.ball.x_d *= -1;
                 this.ball.x = canvas.width * 0.75;

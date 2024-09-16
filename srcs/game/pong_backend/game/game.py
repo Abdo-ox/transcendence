@@ -141,7 +141,7 @@ class GameLogic:
                 paddle2['score'] += 1
                 self.reset_ball(1)
 
-        if ball['y'] - ball['r'] <= 0 or ball['y'] + ball['r'] >= height:
+        if (ball['y'] - ball['r'] <= 0 and ball['vy'] < 0) or (ball['y'] + ball['r'] >= height and ball['vy'] > 0):
             ball['vy'] *= -1
 
         self.check_game_over()
