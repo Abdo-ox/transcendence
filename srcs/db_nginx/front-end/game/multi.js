@@ -1,5 +1,6 @@
 import { getJWT } from 'https://localhost/home/utils.js';
 const token = await getJWT();
+
 const canvas = document.getElementById("canvas");
 const keys = [];
 const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);

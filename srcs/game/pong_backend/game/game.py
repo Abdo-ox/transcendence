@@ -56,7 +56,7 @@ class GameLogic:
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 5,
+            'maxScore': 7,
             'over': False,
             'started': False,
             'won': False,

@@ -1,75 +1,253 @@
-body {
-    background: rgba(56, 83, 136, 1) !important;
-    color: white !important;
-    height: 100vh;
-    font-family: 'Zen Dots', sans-serif !important;
-    overflow: hidden;
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-.glass-container {
-    height: 95vh;
-    border: 2px;
-    border-color: rgba(56, 83, 136, 0.1) !important;
-    backdrop-filter: blur(10px);
-    background: rgba(56, 83, 136, 0.1);
-    box-shadow: inset -10px 10px 40px 0px rgba(255,255,255,0.5);
+body {
+    color: #fff;
+    background: #050e2d;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 7px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.5s;
+    z-index: 1000;
+    /* background-color: #1b2141; */
+}
+
+header.sticky {
+    width: 100%;
+    background-color: #1b2141;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+
+}
+
+header .logo {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    /* font-size: 2em; */
+    font-weight: 700;
+}
+
+header .logo img {
+    position: relative;
+    width: auto;
+    height: 100%;
+}
+
+header .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header ul li {
+    list-style: none;
+    margin: 10 px;
+}
+
+header ul li a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    padding: 10px 30px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+}
+
+header ul li a:hover {
+    color: #fff;
+    font-weight: 600;
+}
+
+header ul li a:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 3px;
+    background-color: #1aeeef;
+    box-shadow: 0px 2px 5px #1aeeef;
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+header ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background-color: #1aeeef;
+    box-shadow: 0px 2px 5px #1aeeef;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: bottom left;
+}
+
+header .action {
+    display: flex;
+    text-align: end;
+}
+
+.action .bel {
+    color: #fff;
+    margin-left: 10px;
+
+    font-size: 1.7em;
+}
+
+header .action .searchBx {
+    margin-left: 100px;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    align-items: center;
+    border-radius: 5px;
+    height: 30px;
+}
+
+header .action .searchBx i {
+    font-size: 1.4em;
+    margin: 5px;
+    color: #222;
+}
+
+header .action .searchBx input {
+    outline: none;
+    border: none;
+    color: #222;
+    font-size: 1em;
+}
+
+.profile-box {
+
+    padding-left: 10px;
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+    padding-bottom: 15px;
+}
+
+.profile-box a {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-left: 5px;
+    color: #1aeeef;
+    text-decoration: none;
+}
+
+.profile-box .img-bx {
+    width: 40px;
+    height: 40px;
+    margin-left: 15px;
+    position: relative;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
+.img-bx img {
+    position: relative;
+    width: 100%;
+    border-radius: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.action svg {
+    display: none;
+    margin-left: 17px;
+    cursor: pointer;
+}
+
+
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+
+.player-name {
+    font-size: 14px;
 }
 
 canvas {
+    border: 2px solid black;
     border-radius: 10px;
-    width: 60%;
-    max-height: 100%;
-    border: 4px solid rgba(33, 54, 236, 0.66);
-    box-shadow:0px 0px 9px 0px rgb(255 255 255 / 39%),
-     0px 1px 20px 5px rgb(0 102 255), 
-    inset 0px 0px 20px 0px rgb(255 255 255 / 66%);
-    object-fit: contain;
-}
-#logo {
-    width: 15%;
-    min-width: 50px;
+    width: 95%;
+    max-width: 800px;
+    height: 400px;
 }
 
-#vs {
-    width: 150px;
-}
-
-.avatar {
-    width: 20%;
-    max-height: 100%;
-}
-
-.pfp {  
-    width: 60px;
-}
-
-.header {
-    max-height: 15%;
-}
-
-.vs-bar {
-    max-height: 20%;
-}
-
-.canvas-container {
-    max-height: 65%;
-}
-
-.nav {
-    background: #114A80;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-@media (min-width: 768px){
-    #logo {
-        width: 10%;
+@media (max-width: 600px) {
+    canvas {
+        width: 90%;
+        height: 50%;
     }
-    .nav {
-        bottom: 50%;
-        left: 0;
-        transform: translateX(0);
-        transform: translateY(50%);
+
+    .profile img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* New container for centering */
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.players-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 10px;
+}
+
+/* Make sure the layout is responsive */
+@media (max-width: 600px) {
+    /* .players-container {
+        flex-direction: column;
+        align-items: center;
+    } */
+
+    .profile {
+        margin-bottom: 10px;
     }
 }

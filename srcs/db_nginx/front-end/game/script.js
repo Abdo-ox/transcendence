@@ -1,8 +1,13 @@
 import { getJWT } from 'https://localhost/home/utils.js';
+const token = await getJWT();
+
+const currentUser = document.getElementById("name");
+const pNameField = document.getElementById("player")
+pNameField.innerHTML = currentUser.innerHTML;
+console.log('hnaa', pNameField.innerHTML, currentUser.innerHTML);
 
 const canvas = document.getElementById("canvas");
 const keys = [];
-const token = await getJWT();
 const socket = new WebSocket(`ws://localhost:9090/ws/game/?token=${token}`);
 
 let rect = canvas.getBoundingClientRect();

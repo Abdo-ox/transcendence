@@ -56,6 +56,10 @@ http {
             alias /usr/share/nginx/html/game;
             index multi.html;
         }
+        location /local {
+            alias /usr/share/nginx/html/game;
+            index local.html;
+        }
     }
     server {
         listen 80;
