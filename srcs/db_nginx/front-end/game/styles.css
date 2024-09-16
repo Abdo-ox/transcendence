@@ -211,18 +211,6 @@ canvas {
     height: 400px;
 }
 
-@media (max-width: 600px) {
-    canvas {
-        width: 90%;
-        height: 50%;
-    }
-
-    .profile img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
 /* New container for centering */
 .center-container {
     display: flex;
@@ -240,13 +228,55 @@ canvas {
     margin-bottom: 10px;
 }
 
+.hover-element {
+    cursor: pointer; /* Changes cursor to a pointer when hovering */
+}
+
+/* Change the background color of the modal content */
+.modal-content {
+    background-color: #050e2d; /* Change to your desired color */
+}
+
+/* Change the background color of the modal header */
+.modal-header {
+    background-color: #050e2d; /* Change to your desired color */
+}
+
+/* Change the background color of the modal footer */
+.modal-footer {
+    background-color: #050e2d;/* Change to your desired color */
+}
+
+/* to center the modal header */
+.modal-header {
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+    align-items: center;     /* Center text vertically (optional) */
+}
+.modal-title {
+    margin: 0; /* Ensure there's no margin around the title */
+}
+.btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
 /* Make sure the layout is responsive */
 @media (max-width: 600px) {
     /* .players-container {
         flex-direction: column;
         align-items: center;
     } */
+    canvas {
+        width: 90%;
+        height: 50%;
+    }
 
+    .profile img {
+        width: 40px;
+        height: 40px;
+    }
     .profile {
         margin-bottom: 10px;
     }

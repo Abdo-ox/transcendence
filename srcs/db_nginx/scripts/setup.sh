@@ -60,6 +60,10 @@ http {
             alias /usr/share/nginx/html/game;
             index local.html;
         }
+        location /profile {
+            alias /usr/share/nginx/html/user;
+            index profile.html;
+        }
     }
     server {
         listen 80;

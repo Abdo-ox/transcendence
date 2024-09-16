@@ -24,7 +24,13 @@ try {
     document.getElementById("name").addEventListener('click', () => {
         NewPage("/profile", true);
     });
+    document.getElementById("profile-image").addEventListener('click', () => {
+        NewPage("/profile", true);
+    });
     document.getElementById("logo").addEventListener('click', () => {
+        NewPage("/home", true);
+    });
+    document.getElementById("home-btn").addEventListener('click', () => {
         NewPage("/home", true);
     });
 } catch(error){
