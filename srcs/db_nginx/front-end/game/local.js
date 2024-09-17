@@ -138,7 +138,7 @@ try {
             this.ctx.fillText(this.player2.score, canvas.width - 0.06 * canvas.width, 0.06 * canvas.width);
         
             if (this.over) {
-                this.ctx.fillText(this.player1.score > this.player2.score ? "Player1 Wins!" : "Player2 Wins!", canvas.width / 2, canvas.height / 2);
+                this.ctx.fillText(this.player1.score > this.player2.score ? "Player 1 Won!" : "Player 2 Won!", canvas.width / 2, canvas.height / 2);
                 const msg = document.getElementById("myModalLabel");
                 msg.innerHTML = this.player1.score > this.player2.score ? "Player 1 Won!" : "Player 2 Won!";
                 showModal();
