@@ -190,7 +190,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 else:
                     self.role = 'paddle2'
                 self.GameTask.disconnected[self.role] = None
-                self.send_opp_data()
+                await self.send_opp_data()
 
             else:
                 game.isOver = True
@@ -251,7 +251,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user1.GameTask = GameLogic(self.room_name, user1, user2)
         user2.GameTask = user1.GameTask
         
-        self.send_opp_data()
+        await self.send_opp_data()
 
     # sends opponent data and user role
     async def send_opp_data(self):

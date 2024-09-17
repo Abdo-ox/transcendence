@@ -64,7 +64,9 @@ try {
 
     socket.onmessage = function(event) {
         gameState = JSON.parse(event.data);
-        if ('role' in gameState) {
+        console.log(gameState);
+        if (gameState.role) {
+            console.log('here');
             if (gameState.role == 'paddle2')
                 rev = true;
             const player2 = document.getElementById("player2-name");
