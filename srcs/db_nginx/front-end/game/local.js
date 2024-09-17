@@ -143,7 +143,7 @@ try {
             if (this.over) {
                 this.ctx.fillText(this.player1.score > this.player2.score ? "Player1 Wins!" : "Player2 Wins!", canvas.width / 2, canvas.height / 2);
                 const msg = document.getElementById("myModalLabel");
-                msg.innerHTML = this.player1.score > this.player2.score ? "Player1 Wins!" : "Player2 Wins!";
+                msg.innerHTML = this.player1.score > this.player2.score ? "Player 1 Won!" : "Player 2 Won!";
                 showModal();
             } else if (!this.started) {
                 this.ctx.fillText("Press any key to start!", canvas.width / 2, canvas.height / 2);
