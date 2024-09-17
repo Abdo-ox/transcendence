@@ -98,32 +98,18 @@ try {
             gameState.paddle1.x *= canvas.width
             gameState.paddle2.x *= canvas.width
             gameState.ball.x    *= canvas.width
-
-            // scale y
-            gameState.paddle1.y *= canvas.height
-            gameState.paddle2.y *= canvas.height
-            gameState.ball.y    *= canvas.height
-            // gameState.ball.vx   *= canvas.height
-            // gameState.ball.vy   *= canvas.height
-            gameState.ball.r    *= canvas.height
-            // gameState.v         *= canvas.height
-            gameState.len       *= canvas.height
         } else {
             // scale x
             gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
             gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
             gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
-
-            // scale y
-            gameState.paddle1.y = (1 - gameState.paddle1.y) * canvas.height
-            gameState.paddle2.y = (1 - gameState.paddle2.y) * canvas.height
-            gameState.ball.y    = (1 - gameState.ball.y)    * canvas.height
-            // gameState.ball.vy   = (1 - gameState.ball.vy)   * canvas.height
-            // gameState.ball.vx   = (1 - gameState.ball.vx)   * canvas.height
-            gameState.ball.r    = (1 - gameState.ball.r)    * canvas.height
-            // gameState.v         = (1 - gameState.v)         * canvas.height
-            gameState.len       = (1 - gameState.len)       * canvas.height
         }
+        // scale y
+        gameState.paddle1.y = gameState.paddle1.y   * canvas.height
+        gameState.paddle2.y = gameState.paddle2.y   * canvas.height
+        gameState.ball.y    = gameState.ball.y      * canvas.height
+        gameState.len       = gameState.len         * canvas.height
+        gameState.ball.r    = gameState.ball.r      * canvas.height
     }
 
     function sendKey(key) {
@@ -165,8 +151,13 @@ try {
         let font_weight = Math.round(0.06 * canvas.height)
         ctx.font = font_weight+"px Poppins";
         ctx.textAlign = "center";
-        ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
-        ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
+        if (!rev) {
+            ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
+            ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
+        } else {
+            ctx.fillText(gameState.paddle2.score, 0.05 * canvas.width, 0.05 * canvas.width);
+            ctx.fillText(gameState.paddle1.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
+        }
 
         if (gameState.over) {
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);

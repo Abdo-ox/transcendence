@@ -235,15 +235,15 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user2 = user_queue.pop(0)
 
         # Create a unique room name
-        room_name = f"room_{user1.user.id}_{user2.user.id}"
+        self.room_name = f"room_{user1.user.id}_{user2.user.id}"
 
         # Set the room name
-        user1.room_name = room_name
-        user2.room_name = room_name
+        user1.room_name = self.room_name
+        user2.room_name = self.room_name
 
         # Add both users to the room
-        await user1.channel_layer.group_add(room_name, user1.channel_name)
-        await user2.channel_layer.group_add(room_name, user2.channel_name)
+        await user1.channel_layer.group_add(self.room_name, user1.channel_name)
+        await user2.channel_layer.group_add(self.room_name, user2.channel_name)
 
         user1.role = 'paddle1'
         user2.role = 'paddle2'
@@ -251,10 +251,12 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user1.GameTask = GameLogic(self.room_name, user1, user2)
         user2.GameTask = user1.GameTask
         
-        await self.send_opp_data()
+        await self.channel_layer.group_send(self.room_name, {
+            'type': 'send.opp.data',
+        })
 
     # sends opponent data and user role
-    async def send_opp_data(self):
+    async def send_opp_data(self, event=None):
         # Extract fields from the model instance
         data = {
             'role': self.role,
