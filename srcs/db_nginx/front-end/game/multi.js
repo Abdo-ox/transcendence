@@ -64,9 +64,7 @@ try {
 
     socket.onmessage = function(event) {
         gameState = JSON.parse(event.data);
-        console.log(gameState);
         if (gameState.role) {
-            console.log('here');
             if (gameState.role == 'paddle2')
                 rev = true;
             const player2 = document.getElementById("player2-name");
@@ -105,26 +103,26 @@ try {
             gameState.paddle1.y *= canvas.height
             gameState.paddle2.y *= canvas.height
             gameState.ball.y    *= canvas.height
-            gameState.ball.vx   *= canvas.height
-            gameState.ball.vy   *= canvas.height
+            // gameState.ball.vx   *= canvas.height
+            // gameState.ball.vy   *= canvas.height
             gameState.ball.r    *= canvas.height
-            gameState.v         *= canvas.height
+            // gameState.v         *= canvas.height
             gameState.len       *= canvas.height
         } else {
             // scale x
             gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.paddle2.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.ball.x    = (1 - gameState.paddle1.x) * canvas.width
+            gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
+            gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
 
             // scale y
-            gameState.paddle1.y = (1 - gameState.paddle1.x) * canvas.height
-            gameState.paddle2.y = (1 - gameState.paddle1.x) * canvas.height
-            gameState.ball.y    = (1 - gameState.paddle1.x) * canvas.height
-            gameState.ball.vx   = (1 - gameState.paddle1.x) * canvas.height
-            gameState.ball.vy   = (1 - gameState.paddle1.x) * canvas.height
-            gameState.ball.r    = (1 - gameState.paddle1.x) * canvas.height
-            gameState.v         = (1 - gameState.paddle1.x) * canvas.height
-            gameState.len       = (1 - gameState.paddle1.x) * canvas.height
+            gameState.paddle1.y = (1 - gameState.paddle1.y) * canvas.height
+            gameState.paddle2.y = (1 - gameState.paddle2.y) * canvas.height
+            gameState.ball.y    = (1 - gameState.ball.y)    * canvas.height
+            // gameState.ball.vy   = (1 - gameState.ball.vy)   * canvas.height
+            // gameState.ball.vx   = (1 - gameState.ball.vx)   * canvas.height
+            gameState.ball.r    = (1 - gameState.ball.r)    * canvas.height
+            // gameState.v         = (1 - gameState.v)         * canvas.height
+            gameState.len       = (1 - gameState.len)       * canvas.height
         }
     }
 
