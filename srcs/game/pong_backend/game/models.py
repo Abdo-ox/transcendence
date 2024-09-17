@@ -93,7 +93,7 @@ class Game(models.Model):
         db_table='game'
     
 class Tournament(models.Model):
-    name = models.CharField(max_length=100, default='')
+    name = models.CharField(max_length=255, default='')
     players = models.ManyToManyField(User, related_name='tournaments')
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
     
@@ -106,7 +106,7 @@ class MultiGame(models.Model):
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
     # to change to charfield later
-    room_name = models.TextField(default='')
+    room_name = models.CharField(max_length=255, default='')
     tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
