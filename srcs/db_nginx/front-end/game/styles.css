@@ -27,9 +27,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.5s;
     z-index: 1000;
-    /* background-color: #1b2141; */
 }
 
 header.sticky {
@@ -177,14 +175,6 @@ header .action .searchBx input {
     height: 100%;
     object-fit: cover;
 }
-
-.action svg {
-    display: none;
-    margin-left: 17px;
-    cursor: pointer;
-}
-
-
 
 .profile {
     display: flex;

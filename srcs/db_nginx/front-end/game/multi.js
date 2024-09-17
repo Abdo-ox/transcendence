@@ -46,8 +46,9 @@ try {
     const keys = [];
     const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
 
-    let c = 3;// countdown
+    let c = 3; // countdown
     let gameState = {}
+    let rev = false; // to reverse gamestate if player 2
 
     let rect = canvas.getBoundingClientRect();
 
@@ -63,12 +64,21 @@ try {
 
     socket.onmessage = function(event) {
         gameState = JSON.parse(event.data);
-        scaleGameState()
-        if (gameState.countdown && gameState.started) {       
-            countdown()
-        }
-        else {
-            draw();
+        if ('role' in gameState) {
+            if (gameState.role == 'paddle2')
+                rev = true;
+            const player2 = document.getElementById("player2-name");
+            player2.innerHTML = gameState.username;
+            const op_img = document.getElementById("player2-img");
+            op_img.src = gameState.img;
+        } else {
+            scaleGameState()
+            if (gameState.countdown && gameState.started) {       
+                countdown()
+            }
+            else {
+                draw();
+            }
         }
     };
 
@@ -83,20 +93,37 @@ try {
     }
 
     function scaleGameState() {
-        // scale x
-        gameState.paddle1.x *= canvas.width
-        gameState.paddle2.x *= canvas.width
-        gameState.ball.x *= canvas.width
+        if (!rev) {
+            // scale x
+            gameState.paddle1.x *= canvas.width
+            gameState.paddle2.x *= canvas.width
+            gameState.ball.x    *= canvas.width
 
-        // scale y
-        gameState.paddle1.y *= canvas.height
-        gameState.paddle2.y *= canvas.height
-        gameState.ball.y *= canvas.height
-        gameState.ball.vx *= canvas.height
-        gameState.ball.vy *= canvas.height
-        gameState.ball.r *= canvas.height
-        gameState.v *= canvas.height
-        gameState.len *= canvas.height
+            // scale y
+            gameState.paddle1.y *= canvas.height
+            gameState.paddle2.y *= canvas.height
+            gameState.ball.y    *= canvas.height
+            gameState.ball.vx   *= canvas.height
+            gameState.ball.vy   *= canvas.height
+            gameState.ball.r    *= canvas.height
+            gameState.v         *= canvas.height
+            gameState.len       *= canvas.height
+        } else {
+            // scale x
+            gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
+            gameState.paddle2.x = (1 - gameState.paddle1.x) * canvas.width
+            gameState.ball.x    = (1 - gameState.paddle1.x) * canvas.width
+
+            // scale y
+            gameState.paddle1.y = (1 - gameState.paddle1.x) * canvas.height
+            gameState.paddle2.y = (1 - gameState.paddle1.x) * canvas.height
+            gameState.ball.y    = (1 - gameState.paddle1.x) * canvas.height
+            gameState.ball.vx   = (1 - gameState.paddle1.x) * canvas.height
+            gameState.ball.vy   = (1 - gameState.paddle1.x) * canvas.height
+            gameState.ball.r    = (1 - gameState.paddle1.x) * canvas.height
+            gameState.v         = (1 - gameState.paddle1.x) * canvas.height
+            gameState.len       = (1 - gameState.paddle1.x) * canvas.height
+        }
     }
 
     function sendKey(key) {

@@ -190,6 +190,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 else:
                     self.role = 'paddle2'
                 self.GameTask.disconnected[self.role] = None
+                self.send_opp_data()
+
             else:
                 game.isOver = True
                 await game.asave()
@@ -248,7 +250,20 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         
         user1.GameTask = GameLogic(self.room_name, user1, user2)
         user2.GameTask = user1.GameTask
+        
+        self.send_opp_data()
 
+    # sends opponent data and user role
+    async def send_opp_data(self):
+        # Extract fields from the model instance
+        data = {
+            'role': self.role,
+            'username': self.GameTask.user1.username if self.role == 'paddle2' else self.GameTask.user2.username,
+            'img': self.GameTask.user1.profile_image if self.role == 'paddle2' else self.GameTask.user2.profile_image,
+        }
+
+        # Send data as JSON over the WebSocket
+        await self.send(text_data=json.dumps(data))
         
     def handle_key(self, key):
         self.GameTask.keys[self.role][key] = not self.GameTask.keys[self.role].get(key, False)
