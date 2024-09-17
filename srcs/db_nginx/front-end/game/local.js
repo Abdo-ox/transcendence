@@ -8,7 +8,6 @@ try {
             'Authorization': `Bearer ${token}`,
         }
     }).then(response => response.json()).then(data => {
-        console.log("data", data);
         const currentUser = document.getElementById("name");
         const currentprof = document.getElementById("profile-image");
         currentUser.innerHTML = data.currentUser.username;
@@ -125,8 +124,6 @@ try {
 
         draw() {
             this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // this.ctx.fillStyle = "black";
-            // this.ctx.fillRect(0, 0, canvas.width, canvas.height);
         
             this.ctx.fillStyle = "white";
             this.ctx.beginPath();
@@ -134,8 +131,8 @@ try {
             this.ctx.fill();
             this.ctx.fillRect(this.player1.x, this.player1.y, this.r, this.len);
             this.ctx.fillRect(this.player2.x, this.player2.y, this.r, this.len);
-            this.font_weight = Math.round(0.08 * canvas.height);
-            this.ctx.font = this.font_weight+"px Arial";
+            this.font_weight = Math.round(0.06 * canvas.height);
+            this.ctx.font = this.font_weight+"px Poppins";
             this.ctx.textAlign = "center";
             this.ctx.fillText(this.player1.score, 0.06 * canvas.width, 0.06 * canvas.width);
             this.ctx.fillText(this.player2.score, canvas.width - 0.06 * canvas.width, 0.06 * canvas.width);

@@ -8,7 +8,6 @@ try {
             'Authorization': `Bearer ${token}`,
         }
     }).then(response => response.json()).then(data => {
-        console.log("data", data);
         const currentUser = document.getElementById("name");
         const player1 = document.getElementById("player1-name");
         const currentprof = document.getElementById("profile-image");
@@ -137,7 +136,7 @@ try {
         ctx.fillRect(gameState.paddle2.x, gameState.paddle2.y, gameState.ball.r, gameState.len);
 
         let font_weight = Math.round(0.06 * canvas.height)
-        ctx.font = font_weight+"px 'Zen Dots'";
+        ctx.font = font_weight+"px Poppins";
         ctx.textAlign = "center";
         ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
         ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
