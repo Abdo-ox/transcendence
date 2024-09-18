@@ -9,9 +9,7 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    console.log('access: in else :',  access===null);
-    console.log('access: in else :',  access == 'undefined');
-    if (access == null || access == 'undefined') {
+    if (access == 'null' || access == 'undefined') {
         console.log("enter to if condition");
         NewPage("/login", true);
         return null;
@@ -24,24 +22,20 @@ export const getJWT = async () => {
     
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
-            console.log("token still valid");
-            const resp = fetch("https://localhost:8000/token/valid",{
-                'Autorizaion': `Bearer ${access}`
+            const resp = fetch("https://localhost:8000/is_authenticated/",{
+                'Autorization': `Bearer ${access}`
             });
             if (resp.status == 401) {
                 console.error("remove the atems form the local storage");
-                // moveItem('access_token');
-                // localStorage.removeItem('refresh_token');
-                NewPage("/login", true);
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                NewPage("/login", true, false);
             }
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
-        if (refresh == null ||  refresh == undefined){
-            console.log("go to login");
+        if (refresh == 'null' ||  refresh == 'undefined')
             NewPage("/login", true);
-        }
-        console.log("refresh the token");
         let token = null;
         const response = await fetch("https://localhost:8000/api/token/refresh/",{
             method: 'POST',
@@ -52,7 +46,6 @@ export const getJWT = async () => {
                 refresh: refresh
             })
         });
-        console.log("status code of refresh token is :", response.status);
         if (response.status == 401)
             NewPage("/login", true);
         else {

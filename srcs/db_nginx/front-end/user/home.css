@@ -130,6 +130,9 @@ header ul li a::after {
 
 header .action {
     display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
     text-align: end;
 }
 
@@ -166,12 +169,10 @@ header .action .searchBx input {
 }
 
 .profile-box {
-
-    padding-left: 10px;
     display: flex;
-    margin-left: 10px;
     align-items: center;
-    padding-bottom: 15px;
+    justify-content: center;
+    gap: 5px;
 }
 
 .profile-box a {
@@ -185,7 +186,6 @@ header .action .searchBx input {
 .profile-box .img-bx {
     width: 40px;
     height: 40px;
-    margin-left: 15px;
     position: relative;
     border-radius: 50%;
     border: 1px solid #fff;
@@ -200,15 +200,18 @@ header .action .searchBx input {
 }
 
 .action svg {
-    display: none;
+    /* display: none; */
     cursor: pointer;
 }
 
 /* khadija */
 
 .users-list {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     padding: 5px;
+    gap: 15px;
     border-radius: inherit;
     max-height: 1210px;
 }
@@ -216,10 +219,9 @@ header .action .searchBx input {
 .user {
     background-color: #1f3d4738;
     backdrop-filter: blur(5px);
-    box-shadow: #c0b6b6 0px 3px 8px;
+    box-shadow: #524747 0px 0px 8px;
     /* width: 95%; */
     height: 80px;
-    margin: 10px 5px 0 5px;
     flex: 1;
     gap: auto;
     display: flex;
@@ -228,7 +230,6 @@ header .action .searchBx input {
     align-items: center;
     border: 1px solid rgba(156, 148, 148, 0.1);
     padding: 5px 0 0 5px;
-    /* background-color: #150d33; */
     border-radius: 8px;
 }
 
@@ -298,68 +299,6 @@ header .action .searchBx input {
     overflow-y: auto;
 }
 
-/* abdo */
-/* 
-.users-list {
-    padding: 5px;
-    border-radius: inherit;
-    max-height: 1210px;
-    overflow-y: hidden;
-    justify-content: center;
-}
-
-.users-list:hover {
-    overflow-y: auto;
-}
-
-.user {
-    height: 70px;
-    margin: 10px 5px 0 5px;
-    flex: 1;
-    gap: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #0a55a5;
-    padding: 5px 0 0 5px;
-    background-color: #150d33;
-    border-radius: 8px;
-}
-
-.user img {
-    flex: 1;
-    width: 60px;
-    height: 52px;
-    border-radius: 50%;
-}
-
-.user button {
-
-    font-family: 'Courier New', Courier, 'monospace';
-    font-size: 1em;
-    font-weight: 600;
-    width: 60px;
-    margin-right: 5px;
-    border: none;
-    background-color: black;
-    padding: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px #ff3cac;
-    border: 1px solid black;
-
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #ff3cac;
-}
-
-.info-user {
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    font-size: 12px;
-    overflow: hidden;
-} */
-
 .content {
     display: flex;
     flex-direction: row;
@@ -381,6 +320,7 @@ header .action .searchBx input {
 
 /* Specific flex settings */
 .flex1 {
+    position: relative;
     padding: 10px 5px 0 5px;
     margin: 10px 0 0 10;
     flex: 1;
@@ -688,34 +628,25 @@ section {
     align-items: center;
 }
 
-.first-three {
-    /* flex: 1; */
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 90%;
-    align-items: center;
-    /* justify-content: center; */
-}
 
 .crown-img {
     height: 70px;
 
 }
 
-.first-three .sort {
+.sort {
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
     width: 100%;
+    background-color: #068200;
     min-height: 165px;
     /* height: auto; */
 }
 
-.first-three .profile-img {
+.profile-img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -1341,7 +1272,7 @@ span::before {
     box-shadow: 5px 0px 10px rgba(37, 57, 125, 0.96);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
-    background-color:  #050e2d;
+    background-color: #050e2d;
 }
 
 .nav-side li a {
@@ -1352,8 +1283,31 @@ span::before {
     display: none;
 }
 
-.menu-icon-container{
+.menu-icon-container {
     position: relative;
+}
+
+.logout-icon .notification-icon {
+    display: block;
+}
+
+.logout-container {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    justify-self: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.logout-container h4 {
+    font-weight: bold;
+    color: #BD1414BE;
+}
+
+.logout-icon {
+    transform: rotate(180deg);
 }
 
 @keyframes animate {
@@ -1382,7 +1336,7 @@ span::before {
     .show-in-small-size {
         display: flex;
         flex-direction: row;
-        gap:20px;
+        gap: 20px;
     }
 
     .t-content {
