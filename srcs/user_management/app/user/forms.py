@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.conf import settings
 import requests
+from project.settings import C  as c
 
 def IsIntranetUser(username):
     conf = settings.OAUTH_CONFIG['42']
@@ -41,7 +42,6 @@ class RegisterationForm(UserCreationForm):
             account = User.objects.get(username=username)
         except User.DoesNotExist:
             if not IsIntranetUser('/' + username):
-                print("is not intranet user--------------------------------------->")
                 return username
         raise forms.ValidationError(f'Username "{username}" is already in use.')
 
@@ -74,9 +74,22 @@ class LoginForm(forms.ModelForm):
         fields = ('username', 'password')
         
     def clean(self):
-        print("\33[32;1mclean function called\33[0m")
         if self.is_valid():
             username = self.cleaned_data['username']
             password = self.cleaned_data['password']
             if not authenticate(username=username, password=password):
                 raise forms.ValidationError("Invalid login")
+            
+            
+class EditUserForm(RegisterationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'last_name', 'first_name', 'email')
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].required = False
+        self.fields['password2'].required = False
+    
+    def clean_password1(self):
+        pass

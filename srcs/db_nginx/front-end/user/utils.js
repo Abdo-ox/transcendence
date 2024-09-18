@@ -1,5 +1,5 @@
 export const getCsrfToken = async () => {
-    return fetch("https://localhost:8000/api/csrf_token/")
+    return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response =>response.json())
         .then(data => data.csrf_token)
             .catch(error => {
@@ -9,7 +9,10 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access == null || access == undefined) {
+    console.log('access: in else :',  access===null);
+    console.log('access: in else :',  access == 'undefined');
+    if (access == null || access == 'undefined') {
+        console.log("enter to if condition");
         NewPage("/login", true);
         return null;
     }
@@ -62,7 +65,7 @@ export const getJWT = async () => {
     }
 }
 
-export const NewPage = (url, thr) => {
+export const NewPage = (url, thr, addhistory=true) => {
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -83,25 +86,21 @@ export const NewPage = (url, thr) => {
         
         scripts.forEach(script => {
             let element = document.createElement('script');
-            console.log("defer:", script.defer);
-            console.log("sync:", script.sync);
-            console.log("async:", script.async);
             if (script.src) {
-                console.log("src js:=>", script.src);
                 element.src = script.src + '?t=' + new Date().getTime(); 
                 element.type = 'module';
             }
             element.onload = () => {
-                console.log("onlodad called for :", script.src);
                 if (++j == scripts.length) {
                     console.log("dispatch event");
                     document.dispatchEvent(event);
                 }
             };
-            element.onerror = () => console.log("errrror in on error ");
+            element.onerror = () => console.log("error in on error to load js file in NewPage");
             document.body.appendChild(element);
         });
-        history.pushState({}, '', url);
+        if (addhistory)
+            history.pushState({}, '', url);
     }).catch(error => {
         console.log("can't load page :", error);
     });
@@ -118,7 +117,12 @@ export const EventNewPage = (id, url) => {
 export const submitForm = (url, ids, csrf_token, handle_data) => {
     let fields = {};
     for (const id of ids) {
-        fields[id] = document.getElementById(id).value;
+        try{
+            fields[id] = document.getElementById(id).value;
+        }
+        catch(error){
+            console.error('id: ', id, " error: ",error);
+        }
         if (fields[id].trim().length == 0) {
             alert(id ,' is required');
             return ;
@@ -128,19 +132,19 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return ;
         }
     }
-    for(let i = 0; i < 10;i++)
-    {
-    fields['username'] = 'user' + i;
-    fields['email'] = 'email' + i + '@gmail.com';
-    fields['password2'] = 'hello1998';
-    fields['password1'] = 'hello1998';
+    // for(let i = 0; i < 10;i++)
+    // {
+    // fields['username'] = 'user' + i;
+    // fields['email'] = 'email' + i + '@gmail.com';
+    // fields['password2'] = 'hello1998';
+    // fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers:{
             'Content-Type': 'application/json',
             'X-CSRFToken': csrf_token
         },
-        body:JSON.stringify(fields),
+        body:JSON.stringify("fields"),
     }).then(response => {
         if (response.redirected) {
             NewPage(response.url);
@@ -152,6 +156,18 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     }); 
-    }
+    // }
     
+}
+
+
+const t = () => {
+    getJWT().then((token) => {
+        console.log("hello:", token);
+    })
+}
+
+export const routing = (event) => {
+    console.error("hello word=>", window.location.pathname);
+    NewPage(window.location.pathname, true, false);
 }

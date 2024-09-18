@@ -1,16 +1,21 @@
 import { getCsrfToken, EventNewPage, NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
-    console.error("set access and refresh to the storage");
-    console.log(`access equal ${data.refresh}`)
+    console.log(data.access);
+    if (data.access == 'undefined')
+        console.error("access from backend is undefined");
+    if (data.refresh == 'undefined')
+        console.error("refresh from backend is undefined");
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    NewPage('/home');
 }
 
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const csrf_token = await getCsrfToken();
+        const csrf_token =  getCsrfToken();
+        console.error('csrf_token', csrf_token);
         const ids = ['username', 'password'];
 
         EventNewPage('register-btn', '/register');
