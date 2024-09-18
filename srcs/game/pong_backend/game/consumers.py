@@ -62,7 +62,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 5,
+            'maxScore': 7,
             'over': False,
             'started': False,
             'width': width,
@@ -131,7 +131,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 paddle2['score'] += 1
                 self.reset_ball(1)
 
-        if ball['y'] - ball['r'] <= 0 or ball['y'] + ball['r'] >= height:
+        if (ball['y'] - ball['r'] <= 0 and ball['vy'] < 0) or (ball['y'] + ball['r'] >= height and ball['vy'] > 0):
             ball['vy'] *= -1
 
         self.check_game_over()
@@ -190,6 +190,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 else:
                     self.role = 'paddle2'
                 self.GameTask.disconnected[self.role] = None
+                await self.send_opp_data()
+
             else:
                 game.isOver = True
                 await game.asave()
@@ -233,22 +235,37 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user2 = user_queue.pop(0)
 
         # Create a unique room name
-        room_name = f"room_{user1.user.id}_{user2.user.id}"
+        self.room_name = f"room_{user1.user.id}_{user2.user.id}"
 
         # Set the room name
-        user1.room_name = room_name
-        user2.room_name = room_name
+        user1.room_name = self.room_name
+        user2.room_name = self.room_name
 
         # Add both users to the room
-        await user1.channel_layer.group_add(room_name, user1.channel_name)
-        await user2.channel_layer.group_add(room_name, user2.channel_name)
+        await user1.channel_layer.group_add(self.room_name, user1.channel_name)
+        await user2.channel_layer.group_add(self.room_name, user2.channel_name)
 
         user1.role = 'paddle1'
         user2.role = 'paddle2'
         
         user1.GameTask = GameLogic(self.room_name, user1, user2)
         user2.GameTask = user1.GameTask
+        
+        await self.channel_layer.group_send(self.room_name, {
+            'type': 'send.opp.data',
+        })
 
+    # sends opponent data and user role
+    async def send_opp_data(self, event=None):
+        # Extract fields from the model instance
+        data = {
+            'role': self.role,
+            'username': self.GameTask.user1.username if self.role == 'paddle2' else self.GameTask.user2.username,
+            'img': self.GameTask.user1.profile_image if self.role == 'paddle2' else self.GameTask.user2.profile_image,
+        }
+
+        # Send data as JSON over the WebSocket
+        await self.send(text_data=json.dumps(data))
         
     def handle_key(self, key):
         self.GameTask.keys[self.role][key] = not self.GameTask.keys[self.role].get(key, False)

@@ -37,50 +37,24 @@ try {
         NewPage("/home", true);
     });
     document.getElementById("play-btn").addEventListener('click', () => {
-        NewPage("/multi", true);
+        NewPage("/game", true);
     });
 
 
     /* ---->  game logic  <---- */
     const canvas = document.getElementById("canvas");
     const keys = [];
-    const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
-
-    let c = 3; // countdown
-    let gameState = {}
-    let rev = false; // to reverse gamestate if player 2
+    const socket = new WebSocket(`ws://localhost:9090/ws/game/?token=${token}`);
 
     let rect = canvas.getBoundingClientRect();
 
     canvas.width = rect.width * devicePixelRatio;
     canvas.height = rect.height * devicePixelRatio;
 
-    socket.onopen = function(event) {
-        socket.send(JSON.stringify({
-            'start': true,
-        }));
-    };
-
-
-    socket.onmessage = function(event) {
-        gameState = JSON.parse(event.data);
-        if (gameState.role) {
-            if (gameState.role == 'paddle2')
-                rev = true;
-            const player2 = document.getElementById("player2-name");
-            player2.innerHTML = gameState.username;
-            const op_img = document.getElementById("player2-img");
-            op_img.src = gameState.img;
-        } else {
-            scaleGameState()
-            if (gameState.countdown && gameState.started) {       
-                countdown()
-            }
-            else {
-                draw();
-            }
-        }
-    };
+    let gameStarted = false;
+    let gameState = NaN;
+    let count_down = false;
+    let c = 3;
 
     function countdown() {
         const interval = setInterval(() => {
@@ -92,40 +66,39 @@ try {
         }, 1000)
     }
 
-    function scaleGameState() {
-        if (!rev) {
-            // scale x
-            gameState.paddle1.x *= canvas.width
-            gameState.paddle2.x *= canvas.width
-            gameState.ball.x    *= canvas.width
-        } else {
-            // scale x
-            gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
-            gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
-        }
-        // scale y
-        gameState.paddle1.y = gameState.paddle1.y   * canvas.height
-        gameState.paddle2.y = gameState.paddle2.y   * canvas.height
-        gameState.ball.y    = gameState.ball.y      * canvas.height
-        gameState.len       = gameState.len         * canvas.height
-        gameState.ball.r    = gameState.ball.r      * canvas.height
-    }
+    socket.onopen = function(event) {
+        socket.send(JSON.stringify({
+            'start': true,
+            'width': canvas.width * devicePixelRatio,
+            'height': canvas.height * devicePixelRatio
+        }));
+    };
+
+    socket.onmessage = function(event) {
+        gameState = JSON.parse(event.data);
+        count_down = false;
+        draw();
+    };
 
     function sendKey(key) {
+        if (!gameStarted) {
+            socket.send(JSON.stringify({'start_game': true}));
+            gameStarted = true;
+            count_down = true;
+            console.log(gameState);
+            countdown();
+        }
         socket.send(JSON.stringify({'key': key}));
     }
 
     document.addEventListener("keydown", function(event){
-        if (keys[event.key] || !gameState.started)
+        if (keys[event.key])
             return
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function(event){
-        if (!gameState.started)
-            return
         keys[event.key] = false
         sendKey(event.key)
     });
@@ -151,22 +124,17 @@ try {
         let font_weight = Math.round(0.06 * canvas.height)
         ctx.font = font_weight+"px Poppins";
         ctx.textAlign = "center";
-        if (!rev) {
-            ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
-            ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
-        } else {
-            ctx.fillText(gameState.paddle2.score, 0.05 * canvas.width, 0.05 * canvas.width);
-            ctx.fillText(gameState.paddle1.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
-        }
+        ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
+        ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
 
         if (gameState.over) {
-            ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
+            ctx.fillText(gameState.paddle1.score >= gameState.paddle2.score ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("myModalLabel");
-            msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
+            msg.innerHTML = gameState.paddle1.score >= gameState.paddle2.score ? "Winner!" : "Loser!";
             showModal();
-        } else if (!gameState.started) {
-            ctx.fillText("Waiting...", canvas.width / 2, canvas.height / 2);
-        } else if (gameState.countdown) {
+        } else if (!gameStarted) {
+            ctx.fillText("Press any key to start!", canvas.width / 2, canvas.height / 2);
+        } else if (count_down) {
             ctx.fillText(c, canvas.width / 2, canvas.height / 2);
         }
     }

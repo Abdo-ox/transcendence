@@ -103,6 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/multi", true);
         });
 
+        document.getElementById("local-play").addEventListener('click', () => {
+            NewPage("/local", true);
+        });
+
         // end of game events
 
         // add event listener for sending friend request
