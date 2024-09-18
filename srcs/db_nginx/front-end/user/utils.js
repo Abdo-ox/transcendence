@@ -144,7 +144,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrf_token
         },
-        body:JSON.stringify("fields"),
+        body:JSON.stringify(fields),
     }).then(response => {
         if (response.redirected) {
             NewPage(response.url);
