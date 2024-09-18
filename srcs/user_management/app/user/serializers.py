@@ -31,22 +31,19 @@ class SuggestionSerializer(serializers.ModelSerializer):
         fields = ['username','profile_image', 'friend_request_status']
     
     def __init__(self, *args, **kwargs):
-        print(c.y, "kwargs:",kwargs)
         self.user = kwargs.pop('user', None)
-        super(UserSerializer, self).__init__(*args, **kwargs)
+        super(SuggestionSerializer, self).__init__(*args, **kwargs)
         
     def get_friend_request_status(self, obj):
+        user = self.user
         try:
             FriendRequest.objects.get(sender=user, receiver=obj, is_active=True)
-            print(c.r, "sent", flush=True)
             return "sent"
         except FriendRequest.DoesNotExist:
             try:
                 FriendRequest.objects.get(sender=obj, receiver=user, is_active=True)
-                print(c.r, "received", flush=True)
                 return "received"
             except FriendRequest.DoesNotExist:
-                print(c.r, "none", flush=True)
                 return "none"
 
 class AccountSerializer(serializers.ModelSerializer):

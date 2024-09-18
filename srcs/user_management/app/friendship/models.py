@@ -26,11 +26,6 @@ class FriendList(models.Model):
         self.removeFriend(removee)
         friend = frinedship.objects.get(user=removee)
         friend.removeFriend(self.user)
-    
-    def is_mutual_friend(self, friend):
-        if friend in self.friends.all():
-            return True
-        return False
 
 class FriendRequest(models.Model):
     sender              = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender")
@@ -45,7 +40,7 @@ class FriendRequest(models.Model):
         return self.sender.username
 
     def accept(self):
-        recieverList = friendlist.objects.get(user=self.receiver)
+        recieverList = friendlist.objects.get_or_create(user=self.receiver)
         if recieverList:
             recieverList.addFreind(self.sender)
             senderList = friendlist.objects.get(user=self.sender)

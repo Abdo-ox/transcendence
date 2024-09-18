@@ -11,7 +11,7 @@ export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
     console.log('access: in else :',  access===null);
     console.log('access: in else :',  access == 'undefined');
-    if (access == null || access == undefined) {
+    if (access == null || access == 'undefined') {
         console.log("enter to if condition");
         NewPage("/login", true);
         return null;
@@ -65,7 +65,7 @@ export const getJWT = async () => {
     }
 }
 
-export const NewPage = (url, thr) => {
+export const NewPage = (url, thr, addhistory=true) => {
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -99,7 +99,8 @@ export const NewPage = (url, thr) => {
             element.onerror = () => console.log("error in on error to load js file in NewPage");
             document.body.appendChild(element);
         });
-        history.pushState({}, '', url);
+        if (addhistory)
+            history.pushState({}, '', url);
     }).catch(error => {
         console.log("can't load page :", error);
     });
@@ -143,7 +144,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrf_token
         },
-        body:JSON.stringify(fields),
+        body:JSON.stringify("fields"),
     }).then(response => {
         if (response.redirected) {
             NewPage(response.url);
@@ -164,4 +165,9 @@ const t = () => {
     getJWT().then((token) => {
         console.log("hello:", token);
     })
+}
+
+export const routing = (event) => {
+    console.error("hello word=>", window.location.pathname);
+    NewPage(window.location.pathname, true, false);
 }

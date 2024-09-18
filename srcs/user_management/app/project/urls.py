@@ -8,17 +8,15 @@ from rest_framework_simplejwt.views import (
 from django.http import HttpResponse
 from django.conf.urls.static import static
 from django.conf import settings
-from friendship.views import createFriendRelation
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/csrf_token/', getCsrfToken),
-    path('api/', include('user.urls')),
-    path('api/42/data/', sendOauthData),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('friend/', include('friendship.urls')),
-    path('friend/', createFriendRelation),
+    path('api/', include('user.urls')),
+    path('api/csrf_token/', getCsrfToken),
+    path('api/42/data/', sendOauthData),
     path('upload/', uploadProfileImage),
 ]
 

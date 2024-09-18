@@ -20,7 +20,8 @@ http {
     include       /etc/nginx/mime.types;
     server {
         listen 443 ssl;
-        server_name localhost;
+        server_name localhost; 
+        root /usr/share/nginx/html/;
 
         ssl_certificate $PATH_CRT/my.crt;
         ssl_certificate_key $PATH_CRT/my.key;
