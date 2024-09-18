@@ -53,6 +53,7 @@ class User(AbstractBaseUser):
     intraNet      = models.BooleanField(default=False)
     class Meta:
         db_table = 'user'
+        managed = False
 
     USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
@@ -68,6 +69,16 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+
+class Contact(models.Model):
+
+    class Meta:
+        db_table = 'contact'
+        managed = False
+    user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
+    # friends = models.ManyToManyField('self', blank=True)
+    def __str__(self):
+        return self.user.username
 
 # Create your models here.
 class Game(models.Model):

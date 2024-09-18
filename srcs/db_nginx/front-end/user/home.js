@@ -93,6 +93,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/profile", true);
         });
 
+        // game events
+
+        document.getElementById("ai-play").addEventListener('click', () => {
+            NewPage("/game", true);
+        });
+
+        document.getElementById("multi-play").addEventListener('click', () => {
+            NewPage("/multi", true);
+        });
+
+        // end of game events
+
         // add event listener for sending friend request
 
         const response = await fetch("https://localhost:8000/friend/request/?username=user1", {

@@ -49,6 +49,14 @@ http {
             alias /usr/share/nginx/html/chat/;
             index index.html;
         }
+        location /game {
+            alias /usr/share/nginx/html/game;
+            index game.html;
+        }
+        location /multi {
+            alias /usr/share/nginx/html/game;
+            index multi.html;
+        }
     }
     server {
         listen 80;
