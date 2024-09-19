@@ -14,9 +14,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('password2').value = pass;                                       //to autofill
     
     const handle_data = (data) => {
-        if (data.state === 'registred')
-            NewPage('/login', true);
+        console.log(" *****handle data excuting *****");
         console.log(data);
+        if (data.state === 'registered')
+            NewPage("/login", true);
+        else
+            alert(data.errors); 
     }
 
     document.getElementById('submit-btn').addEventListener('click', ()=>{

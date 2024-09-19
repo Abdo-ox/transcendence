@@ -40,6 +40,10 @@ http {
             alias  /usr/share/nginx/html/user;
             index register.html;
         }
+         location /2faa {
+            alias  /usr/share/nginx/html/user;
+            index 2faa.html;
+        }
         location /settings {
             alias  /usr/share/nginx/html/user;
             index settings.html;

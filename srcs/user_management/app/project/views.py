@@ -8,6 +8,36 @@ from django.conf import settings
 from .settings import C as c
 import os 
 from django.utils.crypto import get_random_string
+import random
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.conf import settings
+import json
+from django.contrib.auth import authenticate 
+from rest_framework.permissions import IsAuthenticated
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def verify_2fa_code(request):
+    if request.method == 'POST':
+        body_data = json.loads(request.body)  # No decoding here
+        submitted_code = body_data.get('code') 
+        print("Submitted_code : ", submitted_code, flush=True)
+        user_email = request.user.email
+        print("email: ", user_email, flush=True)
+        if not submitted_code:
+            return JsonResponse({"status":"error","error": " Code not provided"}, status=400)
+        print("two factor code : ",request.user.Twofa_Code,flush=True)
+        if submitted_code == str(request.user.Twofa_Code):
+            request.user.is_2fa_passed = True
+            request.user.save()
+            return JsonResponse({"status": "success", "message": "2FA verification successful"}, status=200)
+        else:
+            return JsonResponse({"status": "error", "error": "Invalid 2FA code"}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @api_view(['GET'])
 def getCsrfToken(request):

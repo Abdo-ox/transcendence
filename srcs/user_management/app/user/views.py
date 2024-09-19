@@ -18,6 +18,7 @@ from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 import os
 from pathlib import Path
+from project.decorators import TwoFctor_Decorator
 
 @api_view(['POST'])
 def Login(request):
@@ -36,7 +37,9 @@ def Login(request):
 @api_view(['POST'])
 def Register(request):
     form = RegisterationForm(request.data)
+    print("*****************************************",flush=True)
     print(f"{request.data}", flush=True)
+    print("*****************************************",flush=True)
     if form.is_valid():
         User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
                 'email':form.cleaned_data['email'],
@@ -122,6 +125,7 @@ def sendUserData(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def sendSuggestionFriend(request):
     users = User.objects.exclude(username=request.user.username)
     serializer = UserSerializer(users, many=True)
@@ -130,6 +134,7 @@ def sendSuggestionFriend(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def accountSettings(request):
     print("hello get current user", flush=True)
     currentUser = AccountSerializer(request.user)
@@ -137,6 +142,7 @@ def accountSettings(request):
     
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']

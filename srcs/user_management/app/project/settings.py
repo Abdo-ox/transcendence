@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', 
     'corsheaders',
+    'django_otp',
+    'django_otp.plugins.otp_totp',  
+    'two_factor', 
+    'qrcode',  
 ]
 
 REST_FRAMEWORK = {
@@ -64,7 +68,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    # 'project.debug.CsrfDebugMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    # 'project.debug.CsrfDebugMiddlewar e',
 ]
 
 
@@ -171,3 +176,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'trencenteam@gmail.com' 
+EMAIL_HOST_PASSWORD = 'jprx jsfw vamr vdys'  # your email password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

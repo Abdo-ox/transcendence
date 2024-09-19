@@ -111,6 +111,8 @@ class User(AbstractBaseUser):
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField()
     
     class Meta:
         db_table = 'user'

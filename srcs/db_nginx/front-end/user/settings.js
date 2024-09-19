@@ -1,17 +1,17 @@
 import { getJWT, NewPage, getCsrfToken } from "https://localhost/home/utils.js"
 
-function showProfile() {
+export function showProfile() {
     document.getElementById('profile-section').style.display = 'block';
     document.getElementById('security-section').style.display = 'none';
-
-    document.querySelector('.profi').classListshowProfile.add('active');
+    
+    document.querySelector('.profi').classList.add('active');
     document.querySelector('.secure').classList.remove('active');
 }
 
-function showSecurity() {
+export function showSecurity() {
     document.getElementById('profile-section').style.display = 'none';
     document.getElementById('security-section').style.display = 'block';
-
+    
     document.querySelector('.secure').classList.add('active');
     document.querySelector('.profi').classList.remove('active');
 }
@@ -190,3 +190,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 }, { once: true });
+// EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+// EMAIL_HOST = 'api.reducte.tech'  
+// EMAIL_PORT = 587 
+// EMAIL_USE_TLS = True
+// EMAIL_HOST_USER = 'mail@api.reducte.tech' 
+// EMAIL_HOST_PASSWORD = 'IUGIULJ43'  # your email password
+// DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

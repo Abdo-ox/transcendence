@@ -1,26 +1,39 @@
 import { getCsrfToken, EventNewPage, NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
+    // console.log(data);
+    // if(data.status === 'success')
+    //     {
+    //         localStorage.setItem('email', data.email);
+    //         NewPage("/2faa", true);
+    //     }
+    // else if (data.status === 'error')
+    //     alert("invalid username or password");
+
     console.error("set access and refresh to the storage");
     console.log(`access equal ${data.refresh}`)
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    NewPage("/home", true);
+    console.log("***********END HERE**********");
+  
 }
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const csrf_token = await getCsrfToken();
         const ids = ['username', 'password'];
-
+             console.log(" pass by  login newpage");
         EventNewPage('register-btn', '/register');
 
         document.getElementById('login-btn').addEventListener('click', () => {
+        console.log("*********************111****",ids);
             submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
         });
 
         document.addEventListener('keydown', (event) => {
             if (event.key == 'Enter')
+
                 submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
         });
 
