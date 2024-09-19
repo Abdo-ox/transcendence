@@ -113,7 +113,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const response = await fetch("https://localhost:8000/friend/request/?username=user1", {
             headers: {
-                Authorization: `Bearer ${await getJWT()}`
+                
+                
             }
         });
 
