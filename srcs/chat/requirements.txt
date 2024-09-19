@@ -33,6 +33,7 @@ Django==5.0.7
 django-cors-headers==4.4.0
 django-redis==5.4.0
 djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 docopt==0.6.2
 dropbox==12.0.2
 duplicity==3.0.0

@@ -1,21 +1,22 @@
 export function createWebSocket(ChatID, username)
 {
-    const chatSocket = new WebSocket('ws://127.0.0.1:9000/ws/chat/' + ChatID + '/');
-  
-    chatSocket.onopen = () => {
-      console.log('WebSocket is open now.');
-      
-      var chatLog = document.querySelector('#chat-log');
-      if (chatLog) {
-        while (chatLog.firstChild) {
-          chatLog.removeChild(chatLog.firstChild);
-        }
-        console.log(`fetch data method called`)
-        fetchMessages();
-      } else {
-        console.error('Chat log element not found!');
+  const token = localStorage.getItem('access_token');
+  const chatSocket = new WebSocket('ws://127.0.0.1:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
+
+  chatSocket.onopen = () => {
+    console.log('WebSocket is open now.');
+    
+    var chatLog = document.querySelector('#chat-log');
+    if (chatLog) {
+      while (chatLog.firstChild) {
+        chatLog.removeChild(chatLog.firstChild);
       }
-    };
+      console.log(`fetch data method called`)
+      fetchMessages();
+    } else {
+      console.error('Chat log element not found!');
+    }
+  };
   
     chatSocket.onmessage = (e) => {
       var data = JSON.parse(e.data);

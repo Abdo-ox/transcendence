@@ -20,7 +20,8 @@ http {
     include       /etc/nginx/mime.types;
     server {
         listen 443 ssl;
-        server_name localhost;
+        server_name localhost; 
+        root /usr/share/nginx/html/;
 
         ssl_certificate $PATH_CRT/my.crt;
         ssl_certificate_key $PATH_CRT/my.key;
@@ -51,6 +52,22 @@ http {
         location /chat {
             alias /usr/share/nginx/html/chat/;
             index index.html;
+        }
+        location /game {
+            alias /usr/share/nginx/html/game;
+            index game.html;
+        }
+        location /multi {
+            alias /usr/share/nginx/html/game;
+            index multi.html;
+        }
+        location /local {
+            alias /usr/share/nginx/html/game;
+            index local.html;
+        }
+        location /profile {
+            alias /usr/share/nginx/html/user;
+            index profile.html;
         }
     }
     server {

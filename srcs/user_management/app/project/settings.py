@@ -68,8 +68,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+<<<<<<< HEAD
     'django_otp.middleware.OTPMiddleware',
     # 'project.debug.CsrfDebugMiddlewar e',
+=======
+>>>>>>> 314acd93c5ac9768a29521a102ab9a4655c24244
 ]
 
 
