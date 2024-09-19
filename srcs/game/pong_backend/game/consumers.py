@@ -232,6 +232,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
 
         if self.user.username in user_queue and self in user_queue[self.user.username]:
             user_queue[self.user.username].remove(self)
+            if not len(user_queue[self.user.username]):
+                user_queue.pop(self.user.username)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
