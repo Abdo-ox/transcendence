@@ -84,7 +84,7 @@ export const NewPage = (url, thr=true, addhistory=true) => {
         scripts.forEach(script => {
             let element = document.createElement('script');
             if (script.src) {
-                element.src = script.src /*+ '?t=' + new Date().getTime()*/; 
+                element.src = script.src + '?t=' + new Date().getTime(); 
                 element.type = 'module';
             }
             element.onload = () => {
