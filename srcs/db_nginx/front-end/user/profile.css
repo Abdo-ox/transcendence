@@ -238,7 +238,6 @@ header .action {
     min-width: 130px;
     height: 200px;
     overflow: hidden;
-
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 

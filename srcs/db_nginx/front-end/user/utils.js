@@ -1,17 +1,22 @@
 export const getCsrfToken = async () => {
-<<<<<<< HEAD
-    return fetch("https://localhost:8000/api/csrf_token/")
-        .then(response => response.json())
-=======
     return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response =>response.json())
->>>>>>> 314acd93c5ac9768a29521a102ab9a4655c24244
         .then(data => data.csrf_token)
         .catch(error => {
             console.log("can't get the csrf token :", error);
         });
 }
-
+export const redirectTwoFactor = (data, status) => {
+    console.log("pass by redirect 2fa");
+    if (data.status) {
+        if (data.status == "redirect") {
+            if (status == 200)
+                NewPage("/2faa", true);
+            if (status == 500)
+                alert("cant send mail");
+        }
+    }
+}
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
     console.log('access: in else :',  access===null);
@@ -29,13 +34,8 @@ export const getJWT = async () => {
 
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
-<<<<<<< HEAD
-            console.log("enter here");
-            const resp = fetch("https://localhost:8000/token/valid", {
-=======
             console.log("token still valid");
             const resp = fetch("https://localhost:8000/token/valid",{
->>>>>>> 314acd93c5ac9768a29521a102ab9a4655c24244
                 'Autorizaion': `Bearer ${access}`
             });
             if (resp.status == 401) {
@@ -115,6 +115,7 @@ export const NewPage = (url, thr, addhistory=true) => {
         console.log("can't load page :", error);
     });
     if (thr)
+        
         throw "change page to:=>" + url;
 }
 

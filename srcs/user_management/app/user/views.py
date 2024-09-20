@@ -31,12 +31,6 @@ SuggestionSerializer
 
 @api_view(['POST'])
 def Register(request):
-<<<<<<< HEAD
-    form = RegisterationForm(request.data)
-    print("*****************************************",flush=True)
-    print(f"{request.data}", flush=True)
-    print("*****************************************",flush=True)
-=======
     if request.headers.get('Content-Type') != "application/json":
         return JsonResponse({'error': ['Content-Type must be application/json']}, status=415)
     try:
@@ -46,7 +40,6 @@ def Register(request):
     except json.JSONDecodeError:
         return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
     form = RegisterationForm(data)
->>>>>>> 314acd93c5ac9768a29521a102ab9a4655c24244
     if form.is_valid():
         User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
                 'email':form.cleaned_data['email'],
@@ -152,12 +145,8 @@ def accountSettings(request):
     return JsonResponse({'current':currentUser.data}, safe=False)
     
 @api_view(['POST'])
-<<<<<<< HEAD
-# @permission_classes([IsAuthenticated])
-@TwoFctor_Decorator
-=======
 @permission_classes([IsAuthenticated])
->>>>>>> 314acd93c5ac9768a29521a102ab9a4655c24244
+@TwoFctor_Decorator
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']

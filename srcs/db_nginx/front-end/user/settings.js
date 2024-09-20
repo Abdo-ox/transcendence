@@ -3,26 +3,34 @@ import { getJWT, NewPage, getCsrfToken, routing } from "https://localhost/home/u
 let userdata = null;
 const fields = ['username', 'first_name', 'last_name', 'email'];
 
-export function showProfile() {
-    document.getElementById('profile-section').style.display = 'block';
-    document.getElementById('security-section').style.display = 'none';
-    
-    document.querySelector('.profi').classList.add('active');
-    document.querySelector('.secure').classList.remove('active');
-}
-
-export function showSecurity() {
-    document.getElementById('profile-section').style.display = 'none';
-    document.getElementById('security-section').style.display = 'block';
-    
-    document.querySelector('.secure').classList.add('active');
-    document.querySelector('.profi').classList.remove('active');
-}
-
 window.removeEventListener('popstate', routing);
 window.addEventListener('popstate', routing);
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => 
+{
+   
+    console.log("test11 ");
+    const profileBtn = document.getElementById("profile-btn");
+    const securityBtn = document.getElementById("security-btn");
+    const profileInfo = document.getElementById("profile-info");
+    const securityInfo = document.getElementById("security-info");
+    const firsShow = document.getElementById("firstShow");
+    profileBtn.addEventListener("click", function() {
+    console.log("test21 ");
+        profileInfo.style.display = "block";
+        securityInfo.style.display = "none";
+        firsShow.style.display = "none";
+        profileBtn.classList.add("active-class");
+        securityBtn.classList.remove("active-class");
+    });
+
+    securityBtn.addEventListener("click", function() {
+        securityInfo.style.display = "block";
+        profileInfo.style.display = "none";
+        firsShow.style.display = "none";
+        securityBtn.classList.add("active-class");
+        profileBtn.classList.remove("active-class");
+    });
     try {
         const csrf_token = await getCsrfToken();
         document.getElementById("home-btn").addEventListener('click', () => {
@@ -64,7 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/profile", true);
         });
         document.getElementById("pen").addEventListener("click", () => {
-            document.getElementById("crop-image-container").style.display = "flex";
+            console.log("pass by pen");
+            document.getElementById("crop-image-container").style.display = "block";
         });
         let imgElement;
         let cropBox;
