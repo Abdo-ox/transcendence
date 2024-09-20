@@ -23,8 +23,8 @@ http {
         server_name localhost; 
         root /usr/share/nginx/html/;
 
-        ssl_certificate $PATH_CRT/my.crt;
-        ssl_certificate_key $PATH_CRT/my.key;
+        ssl_certificate $PATH_CRT/crt.crt;
+        ssl_certificate_key $PATH_CRT/crt.key;
         location / {
             alias  /usr/share/nginx/html/user;
             index home.html;

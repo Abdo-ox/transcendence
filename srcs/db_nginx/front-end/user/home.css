@@ -10,8 +10,8 @@
 
 body {
     
-    --c1:#008000;
-    --c2: #C71585;
+    --c1:#3CB371;
+    --c2: #d84790;
     --c3: #FFD700;
     --c4: #4682B4;
     --comodore-degr: 55deg;
@@ -210,18 +210,19 @@ header .action .searchBx input {
 .users-list {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
     padding: 5px;
     gap: 15px;
     border-radius: inherit;
-    max-height: 1210px;
+    max-height: calc(100% - 110px);
+    overflow-y: auto;
 }
 
 .user {
     background-color: #1f3d4738;
     backdrop-filter: blur(5px);
     box-shadow: #524747 0px 0px 8px;
-    /* width: 95%; */
     height: 80px;
     flex: 1;
     gap: auto;
@@ -308,38 +309,31 @@ header .action .searchBx input {
     margin-right: auto;
     width: 100%;
     padding: 10px 10px 10px 5px;
-}
-
-
-.flex-item {
-    /*double class for flex3*/
-    min-width: 230px;
-    flex: 1;
-    margin: 10px;
-    text-align: center;
+    gap: 10px;
 }
 
 /* Specific flex settings */
 .flex1 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* justify-content: flex-start; */
+    align-items: center;
     position: relative;
     padding: 10px 5px 0 5px;
-    margin: 10px 0 0 10;
     flex: 1;
     background-color: #1b2141;
-    justify-content: center;
-    align-items: center;
-    max-width: 200px;
+    /* max-width: 200px; */
     min-width: 170px;
     border-radius: 20px;
 }
 
 .flex1 h2 {
-    position: relative;
     color: #1aeeef;
     font-size: 1.7em;
     font-family: 'Courier New', Courier, monospace;
 }
-
+/* 
 .flex1 .nav {
 
     display: flex;
@@ -349,19 +343,19 @@ header .action .searchBx input {
     justify-content: center;
     align-items: center;
     text-align: center;
-}
+} */
 
-.flex1 ul {
+/* .flex1 ul {
     justify-content: center;
     align-items: center;
     list-style: none;
     padding: 0;
     margin: 0;
     width: 80%;
-}
-
+} */
+/* 
 .flex1 li {
-    /* margin-top: 25px; */
+    margin-top: 25px;
     width: 90%;
 }
 
@@ -377,9 +371,9 @@ header .action .searchBx input {
     box-shadow: 0 0 5px #0c3e73;
     margin-top: 25px;
     box-sizing: border-box;
-}
+} */
 
-.flex1 li a:hover {
+/* .flex1 li a:hover {
     background: #1aeeef;
     color: #050e2d;
     box-shadow: 0 0 10px #1aeeef;
@@ -390,7 +384,7 @@ header .action .searchBx input {
     font-weight: bold;
     border-bottom: 2px solid #1aeeef;
     box-shadow: 0 0 5px #1aeeef;
-}
+} */
 
 .nav li a.active:hover {
     color: #050e2d;
@@ -408,9 +402,9 @@ header .action .searchBx input {
 
 /****flex2****/
 .flex2 {
-    gap: 20px;
+    gap: 10px;
     overflow: unset;
-    flex: 2;
+    flex: 5;
     display: flex;
     min-width: 400px;
     flex-direction: column;
@@ -592,17 +586,17 @@ section {
     background-color: #1b2141;
     padding: 15px;
     border-radius: 20px;
+    gap: 10px;
 }
 
 .game-bx .card {
-    margin: 15px;
     position: relative;
     border-radius: 20px;
     display: flex;
     align-items: center;
     min-width: 135px;
     max-width: 50%;
-    min-height: 300px;
+    min-height: 270px;
     flex-grow: 1;
 }
 
@@ -610,7 +604,7 @@ section {
     border-radius: 20px;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
     position: absolute;
     top: 0;
     left: 0;
@@ -685,6 +679,8 @@ section {
     position: relative;
     display: flex;
     flex-direction: column;
+    /* justify-content: center; */
+    align-items:center ;
     position: relative;
     max-width: 150px;
     min-width: 100px;
@@ -702,9 +698,11 @@ section {
 
 .rank {
     position: relative;
-    left: 50%;
+    display: flex;
+    justify-content: center;
+    /* left: 50%; */
     top: 30px;
-    transform: translate(-50%, -18px) rotate(45deg);
+    transform: translate(0, -18px) rotate(45deg);
     width: 25px;
     height: 25px;
     border-radius: 25%;
@@ -797,10 +795,11 @@ section {
     position: absolute;
     left: 50%;
     bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     z-index: 2;
-    margin-top: 200px;
-    margin-left: auto;
-    margin-right: auto;
     transform: translateX(-50%);
     width: 90%;
     background: rgba(0, 0, 0, 0.3);
@@ -815,14 +814,14 @@ section {
     font-family: 'Courier New', Courier, 'monospace';
     font-size: 1em;
     font-weight: 600;
-    color: #ff3cac;
-    width: 50%;
+    width: 65px;
+    margin-right: 5px;
     border: none;
-    background-color: black;
+    background-color: #fff;
     padding: 5px;
     border-radius: 10px;
-    box-shadow: 0 0 5px #ff3cac;
-    border: 1px solid black;
+    box-shadow: #c0b6b6 0px 3px 8px;
+    color: #a04698;
 }
 
 .card-content .btm:hover {
@@ -837,12 +836,12 @@ section {
 /****side3*/
 .flex3 {
     display: flex;
+    flex:1;
     flex-direction: column;
-    gap: 30px;
-    margin: 10px;
     text-align: center;
-    max-width: 250px;
-    flex: 1;
+    justify-content: space-between;
+    /* max-width: 250px; */
+    gap: 10px;
 }
 
 .coalition h3 {
@@ -942,8 +941,10 @@ section {
 .Coalition-chart,
 .Chart,
 .coalition {
+    flex:1;
     position: relative;
-    height: 450px;
+    min-height: 450px;
+    max-height: 480px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1018,14 +1019,28 @@ section {
     /* border: solid 4px burlywood; */
 }
 
-.pie-chart-1::after {
+.pie-chart-1::before {
     content: '';
     position: absolute;
+    top: 50%;
     left: 50%;
-    right: 50%;
-    width: 5%;
-    height: 5%;
-    background-color: #FFFFFF;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    background-color:var(--c2);
+    border: 1px groove var(--c2);
+    font-weight: bold;
+}
+
+.greatest-percentage{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
 }
 /**chart doughnut */
 
@@ -1083,6 +1098,7 @@ section {
 span {
     position: relative;
     padding-inline-start: 1.24rem;
+    /* width: 105px; */
 }
 
 span::before {
@@ -1092,12 +1108,14 @@ span::before {
     align-items: center;
     justify-content: center;
     top: -5px;
-    left: -15px;
+    left: -13px;
     content: '100%';
     font-size: 13px;
+    font-weight: bold;
     width: 2rem;
     aspect-ratio: 1;
     border-radius: 50%;
+    border: outset;
 }
 
 .legend .friend::before {
@@ -1311,13 +1329,16 @@ span::before {
 }
 
 .logout-container {
-    position: absolute;
-    bottom: 0;
-    left: 10px;
+    position: relative;
+    bottom: 4px;
     justify-self: center;
     align-items: center;
     display: flex;
     flex-direction: row;
+    gap: 20px;
+    border-radius: 25px;
+    background-color :#11152efa;
+    padding: 5px 14px 5px 8px;
 }
 
 .logout-container h4 {
@@ -1385,20 +1406,26 @@ span::before {
         margin: 10px auto 40px;
     }
 
-    .card-content {
+    /* .card-content {
         margin: 0;
         font-size: 14px;
         margin-top: 100px;
         overflow: hidden;
         max-height: 110px;
-    }
+    } */
 
     .card-content .btm {
-        color: #ff3cac;
-        background-color: black;
-        width: 70px;
-        box-shadow: 0 0 5px #ff3cac;
-        border: 1px solid black;
+        font-family: 'Courier New', Courier, 'monospace';
+        font-size: 1em;
+        font-weight: 600;
+        width: 65px;
+        margin-right: 5px;
+        border: none;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: #c0b6b6 0px 3px 8px;
+        color: #a04698;
     }
 
     .game-bx {
@@ -1466,18 +1493,13 @@ span::before {
     }
 
     .users-list {
-        display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        max-height: 280px;
-        overflow-y: hidden;
-        overflow-x: hidden;
-        width: 100%;
     }
 
     .user {
-        flex: 1 1 auto;
-        max-width: 350px;
-        min-width: 200px;
+        /* flex: 1 1 auto; */
+        flex: unset;
+        width: 250px;
     }
 }

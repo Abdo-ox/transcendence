@@ -9,9 +9,10 @@ export const getCsrfToken = async () => {
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access == 'null' || access == 'undefined') {
+    console.log("access at n getjwt:", access);
+    if (access == null || access == 'undefined') {
         console.log("enter to if condition");
-        NewPage("/login", true);
+        NewPage("/login");
         return null;
     }
     else {
@@ -46,8 +47,11 @@ export const getJWT = async () => {
                 refresh: refresh
             })
         });
-        if (response.status == 401)
+        if (response.status == 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
             NewPage("/login", true);
+        }
         else {
             const data = await response.json();
             token = data.access;
@@ -58,7 +62,7 @@ export const getJWT = async () => {
     }
 }
 
-export const NewPage = (url, thr, addhistory=true) => {
+export const NewPage = (url, thr=true, addhistory=true) => {
     fetch(url)
     .then(response => response.text())
     .then(data => {
@@ -80,7 +84,7 @@ export const NewPage = (url, thr, addhistory=true) => {
         scripts.forEach(script => {
             let element = document.createElement('script');
             if (script.src) {
-                element.src = script.src + '?t=' + new Date().getTime(); 
+                element.src = script.src /*+ '?t=' + new Date().getTime()*/; 
                 element.type = 'module';
             }
             element.onload = () => {
@@ -99,12 +103,6 @@ export const NewPage = (url, thr, addhistory=true) => {
     });
     if (thr)
         throw "change page to:=>" + url;
-}
-
-export const EventNewPage = (id, url) => {
-    document.getElementById(id).addEventListener('click', () => {
-        NewPage(url);
-    });
 }
 
 export const submitForm = (url, ids, csrf_token, handle_data) => {
