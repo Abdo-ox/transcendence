@@ -26,8 +26,8 @@ http {
         ssl_certificate $PATH_CRT/crt.crt;
         ssl_certificate_key $PATH_CRT/crt.key;
         location / {
-            alias  /usr/share/nginx/html/user;
-            index home.html;
+            alias  /usr/share/nginx/html/;
+            # index home.html;
         }
         location /home {
             alias  /usr/share/nginx/html/user;
