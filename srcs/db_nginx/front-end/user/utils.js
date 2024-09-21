@@ -1,17 +1,18 @@
 export const getCsrfToken = async () => {
     return await fetch("https://localhost:8000/api/csrf_token/")
-        .then(response =>response.json())
+        .then(response => response.json())
         .then(data => data.csrf_token)
-            .catch(error => {
+        .catch(error => {
             console.log("can't get the csrf token :", error);
         });
 }
 
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
-    if (access == 'null' || access == 'undefined') {
+    console.log("access at n getjwt:", access);
+    if (access == null || access == 'undefined') {
         console.log("enter to if condition");
-        NewPage("/login", true);
+        NewPage("/login");
         return null;
     }
     else {
@@ -19,10 +20,10 @@ export const getJWT = async () => {
         payload = payload.replace(/-/g, '+').replace(/_/g, '/');
         payload = atob(payload);
         const exp = JSON.parse(payload)['exp'];
-    
+
         const currentTime = Math.floor(Date.now() / 1000);
         if (currentTime + 60 <= exp) {
-            const resp = fetch("https://localhost:8000/is_authenticated/",{
+            const resp = fetch("https://localhost:8000/is_authenticated/", {
                 'Autorization': `Bearer ${access}`
             });
             if (resp.status == 401) {
@@ -34,10 +35,10 @@ export const getJWT = async () => {
             return access;
         }
         const refresh = localStorage.getItem('refresh_token');
-        if (refresh == 'null' ||  refresh == 'undefined')
+        if (refresh == 'null' || refresh == 'undefined')
             NewPage("/login", true);
         let token = null;
-        const response = await fetch("https://localhost:8000/api/token/refresh/",{
+        const response = await fetch("https://localhost:8000/api/token/refresh/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -46,8 +47,11 @@ export const getJWT = async () => {
                 refresh: refresh
             })
         });
-        if (response.status == 401)
+        if (response.status == 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
             NewPage("/login", true);
+        }
         else {
             const data = await response.json();
             token = data.access;
@@ -58,71 +62,74 @@ export const getJWT = async () => {
     }
 }
 
-export const NewPage = (url, thr, addhistory=true) => {
+export const NewPage = (url, thr = true, addhistory = true) => {
     fetch(url)
-    .then(response => response.text())
-    .then(data => {
-        let domparser = new DOMParser();
-        const doc = domparser.parseFromString(data,'text/html');
+        .then(response => response.text())
+        .then(data => {
+            let domparser = new DOMParser();
+            const doc = domparser.parseFromString(data, 'text/html');
 
-        const event = new Event('DOMContentLoaded', {
-            cancelable: true,
-            bubbles: true,
-        });
+            const event = new Event('DOMContentLoaded', {
+                cancelable: true,
+                bubbles: true,
+            });
+            let oldHeader = document.getElementsByTagName("header");
+            if(oldHeader.length)
+                oldHeader = oldHeader[0].cloneNode(true);
+            else
+                oldHeader = null
+            // console.log("oldHeader:", oldHeader[0]);
+            document.head.innerHTML = doc.head.innerHTML;
+            document.body.innerHTML = doc.body.innerHTML;
+            const newHeader = document.getElementsByTagName("header");
+            if (newHeader.length && oldHeader) 
+                document.body.replaceChild(oldHeader, newHeader[0]);
+            let scripts = doc.querySelectorAll('script');
+            document.querySelectorAll('script').forEach(script => {
+                // if (script.src != '')
+                script.remove();
+            });
+            let j = 0;
 
-        document.head.innerHTML = doc.head.innerHTML;
-        document.body.innerHTML = doc.body.innerHTML;
-
-        let scripts = doc.querySelectorAll('script');
-        document.querySelectorAll('script').forEach(script => script.remove());
-        let j = 0;
-        
-        scripts.forEach(script => {
-            let element = document.createElement('script');
-            if (script.src) {
-                element.src = script.src + '?t=' + new Date().getTime(); 
-                element.type = 'module';
-            }
-            element.onload = () => {
-                if (++j == scripts.length) {
-                    console.log("dispatch event");
-                    document.dispatchEvent(event);
+            scripts.forEach(script => {
+                let element = document.createElement('script');
+                if (script.src && script.src != '/home/header.js') {
+                    element.src = script.src + '?t=' + new Date().getTime();
+                    element.type = 'module';
                 }
-            };
-            element.onerror = () => console.log("error in on error to load js file in NewPage");
-            document.body.appendChild(element);
+                element.onload = () => {
+                    if (++j == scripts.length) {
+                        document.dispatchEvent(event);
+                    }
+                };
+                element.onerror = () => console.log("error in on error to load js file in NewPage");
+                document.body.appendChild(element);
+            });
+            if (addhistory)
+                history.pushState({}, '', url);
+        }).catch(error => {
+            console.log("can't load page :", error);
         });
-        if (addhistory)
-            history.pushState({}, '', url);
-    }).catch(error => {
-        console.log("can't load page :", error);
-    });
     if (thr)
         throw "change page to:=>" + url;
-}
-
-export const EventNewPage = (id, url) => {
-    document.getElementById(id).addEventListener('click', () => {
-        NewPage(url);
-    });
 }
 
 export const submitForm = (url, ids, csrf_token, handle_data) => {
     let fields = {};
     for (const id of ids) {
-        try{
+        try {
             fields[id] = document.getElementById(id).value;
         }
-        catch(error){
-            console.error('id: ', id, " error: ",error);
+        catch (error) {
+            console.error('id: ', id, " error: ", error);
         }
         if (fields[id].trim().length == 0) {
-            alert(id ,' is required');
-            return ;
+            alert(id, ' is required');
+            return;
         }
         if (id == 'password2' && fields[id] != fields['password1']) {
             alert('passwords not equal');
-            return ;
+            return;
         }
     }
     // for(let i = 0; i < 10;i++)
@@ -133,24 +140,24 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     // fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
-        headers:{
+        headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrf_token
         },
-        body:JSON.stringify(fields),
+        body: JSON.stringify(fields),
     }).then(response => {
         if (response.redirected) {
             NewPage(response.url);
-            return ;
+            return;
         }
         return response.json();
     }).then(data => {
         handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
-    }); 
+    });
     // }
-    
+
 }
 
 
