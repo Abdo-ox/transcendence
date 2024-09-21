@@ -105,7 +105,7 @@
                     </div>
                     <button class="btn" style="margin-top:17px;">Update</button>
                 </div>
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="two-factor">Two-Factor Authentication:</label>
                     <input type="text" id="two-factor" name="two-factor" placeholder="Enter your 2FA code">
                 </div>
@@ -146,8 +146,7 @@
                 </div>
                 <a href="profile.html" id="name" class="name">username</a>
             </div>
-            <!-- icon shows in small screen -->
-            <!-- <div class="show-in-small-size">
+            <div class="show-in-small-size">
                 <a class="bel" id="notification-icon" href="#"><i class="fa-regular fa-bell"></i></a>
                 <div class="menu-icon-container">
                     <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960"
@@ -155,10 +154,10 @@
                         <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                     </svg>
                 </div>
-            </div> -->
+            </div>
         </div>
-        <!-- nemu bar showed in small screen with click in three line icon  -->
-        <!-- <ul class="nav-side" id="side-bar">
+        <!--nemu bar showed in small screen with click in three line icon  -->
+        <ul class="nav-side" id="side-bar">
             <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
                 fill="#FFFFFF">
                 <path
@@ -168,12 +167,12 @@
             <li><a>Chat</a></li>
             <li><a>About</a></li>
             <li><a>Profile</a></li>
-        </ul> -->
+        </ul>
     </header>
 
     <main class="content">
         <!-- <img  class="backgroundImg" src="fourtnite4k/image.jpg" alt=""> -->
-        <div class="flex-item flex1"> 
+        <div class="flex-item flex1">
             <h2>Hi <span>Username</span></h2>
         </div>
         <div class="flex-item flex2">
@@ -183,12 +182,12 @@
                     <i id="pen" class='fas fa-edit'></i>
                 </div>
                 <div class="buttons">
-                    <button id="profile-btn"  class="profile-btn">Profile</button>
-                    <button  id="security-btn"  class="security-btn">Security</button>
+                    <button id="profile-btn" class="profile-btn">Profile</button>
+                    <button id="security-btn" class="security-btn">Security</button>
                 </div>
-               
+
             </div>
-            <div  id="second" class="second">
+            <div id="second" class="second">
                 <div id="firstShow">
                     nothing found
                 </div>
@@ -197,36 +196,38 @@
                     <input type="file" id="upload" class="form-control" accept="image/*">
                     <div id="image-wrapper" class="image-wrapper">
                     </div>
-                    <button id="crop-btn" class=" btn-primary mt-3">Crop Image</button>
+                    <button id="crop-btn"  class=" btn-primary mt-3">Crop Image</button>
                 </div>
                 <div id="profile-info" style="display: none; ">
-                    <div class="input-group" >
-                        <div class="input-group__form-group">
-                          <label class="input-group__label" for="username">Username:</label>
-                          <input type="text" id="username" name="username">
-                        </div>
-                        <div class="input-group__form-group">
-                          <label class="input-group__label" for="first_name">First Name:</label>
-                          <input type="text" id="first_name" name="first_name">
-                        </div>
-                        <div class="input-group__form-group">
-                          <label class="input-group__label" for="last_name">Last Name:</label>
-                          <input type="text" id="last_name" name="last_name">
-                        </div>
-                        <div class="input-group__form-group">
-                          <label class="input-group__label" for="email">Your Email:</label>
-                          <input type="email" id="email" name="email">
-                        </div>
-                      </div>
-                </div>
-                
-                <div id="security-info"  style="display: none;" class="SecuritySettings">
-                    <div   class="security-item">
-                        <img  class="lock" src="/home/fourtnite4k/Pochette.png" alt="">
-                        <a href="">Change Password</a>
-                    </div>
                     <div class="input-group">
                         <div class="input-group__form-group">
+                            <label class="input-group__label" for="username">Username:</label>
+                            <input type="text" id="username" name="username">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="first_name">First Name:</label>
+                            <input type="text" id="first_name" name="first_name">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="last_name">Last Name:</label>
+                            <input type="text" id="last_name" name="last_name">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="email">Your Email:</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <button class="btn" id="save-btn">Save </button>
+                        <p class="para" id="para">You have log in with an intranet account, you can't modify this</p>
+                    </div>
+                </div>
+
+                <div id="security-info" style="display: none;" class="SecuritySettings">
+                    <div class="security-item">
+                        <img class="lock" src="/home/fourtnite4k/Pochette.png" alt="">
+                        <a href="">Change Password</a>
+                    </div>
+                    <div id="changePassword" class="input-group">
+                        <div  class="input-group__form-group">
                             <label class="input-group__label" for="Password">Actual Password</label>
                             <input type="password" id="password1" name="Actual password">
                         </div>
@@ -235,9 +236,10 @@
                             <input type="password" id="password2" name="new password">
                         </div>
                     </div>
-                    <div class="security-item" >
+                    <p class="para" id="passText">Change password is disabled because you use an intraNet Acount.</p>
+                    <div class="security-item">
                         <img class="twofa" src="/home/fourtnite4k/2fa.png" alt="">
-                        <a  href="">Two factor Authentication</a>
+                        <a href="">Two factor Authentication</a>
                     </div>
                     <label class="switch">
                         <input type="checkbox">
@@ -247,6 +249,7 @@
             </div>
         </div>
     </main>
+    <script src="/home/header.js" type="module"></script>
     <script src="/home/settings.js" type="module"></script>
 </body>
 

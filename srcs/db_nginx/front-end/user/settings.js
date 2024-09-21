@@ -6,19 +6,17 @@ const fields = ['username', 'first_name', 'last_name', 'email'];
 window.removeEventListener('popstate', routing);
 window.addEventListener('popstate', routing);
 
-document.addEventListener('DOMContentLoaded', async () => 
-{
+document.addEventListener('DOMContentLoaded', async () => {
     try {
         const csrf_token = await getCsrfToken();
-        document.getElementById("home-btn").addEventListener('click', () => {
-            NewPage("/home", true);
-        });
+        // document.getElementById("home-btn").addEventListener('click', () => {
+        //     NewPage("/home", true);
+        // });
         fetch("https://localhost:8000/api/settings/", {
             headers: {
                 Authorization: `Bearer ${await getJWT()}`
             }
         })
-
             .then((response) => {
                 return response.json();
             })
@@ -31,43 +29,49 @@ document.addEventListener('DOMContentLoaded', async () =>
                 document.getElementById("first_name").value = data.current.first_name;
                 document.getElementById("last_name").value = data.current.last_name;
                 document.getElementById("email").value = data.current.email;
-                document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
+                if (data.current.intraNet) {
+                    document.getElementById("username").readOnly = true;
+                    document.getElementById("username").style.hove
+                    document.getElementById("first_name").readOnly = true;
+                    document.getElementById("last_name").readOnly = true;
+                    document.getElementById("email").readOnly = true;
+                    document.getElementById("save-btn").style.display = "none";
+                    document.getElementById("para").style.display = "block";
+                    document.getElementById("passText").style.display = "block";
+                    document.getElementById("changePassword").style.display = "none";
+                }
             })
             .catch(errror => console.log("catch_settings", errror));
 
-        document.getElementById("chat-btn").addEventListener("click", () => {
-            NewPage("/chat", true);
-        });
-        document.getElementById("home-btn").addEventListener("click", () => {
-            NewPage("/home", true);
-        });
-        document.getElementById("name").addEventListener("click", () => {
-            NewPage("/profile", true);
-        });
-        document.getElementById("Game-btn").addEventListener("click", () => {
-            NewPage("/profile", true);
-        });
-    
-   
+        // document.getElementById("chat-btn").addEventListener("click", () => {
+        //     NewPage("/chat", true);
+        // });
+        // document.getElementById("home-btn").addEventListener("click", () => {
+        //     NewPage("/home", true);
+        // });
+        // document.getElementById("name").addEventListener("click", () => {
+        //     NewPage("/profile", true);
+        // });
+
         console.log("test11 ");
-   
+
         console.log("test1222222222221 ");
-        
+
         const profileBtn = document.getElementById("profile-btn");
         const securityBtn = document.getElementById("security-btn");
         const profileInfo = document.getElementById("profile-info");
         const securityInfo = document.getElementById("security-info");
         const firsShow = document.getElementById("firstShow");
-        profileBtn.addEventListener("click", function() {
-        console.log("test21 ");
+        profileBtn.addEventListener("click", function () {
+            console.log("test21 ");
             profileInfo.style.display = "block";
             securityInfo.style.display = "none";
             firsShow.style.display = "none";
             profileBtn.classList.add("active-class");
             securityBtn.classList.remove("active-class");
         });
-    
-        securityBtn.addEventListener("click", function() {
+
+        securityBtn.addEventListener("click", function () {
             securityInfo.style.display = "block";
             profileInfo.style.display = "none";
             firsShow.style.display = "none";
@@ -181,52 +185,85 @@ document.addEventListener('DOMContentLoaded', async () =>
         document.getElementById("save-btn").addEventListener("click", async () => {
             const formData = new FormData();
             let edited = false;
-
             let editedData = {};
             try {
-                if (canvas) {
-                    const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
-                    formData.append('image', blobimage, 'cropped-image.webp');
-                }
                 fields.forEach(field => {
                     const element = document.getElementById(field);
                     if (element.value.trim() == '') {
-                        alert("field " + field + " should not be empy");
+                        alert("field" + field + " should not be empty");
                         throw "empty field";
                     }
                     if (element.value != userdata[field])
                         edited = true;
                     editedData[field] = element.value;
                 });
-                if (edited)
-                    formData.append('data', JSON.stringify(editedData));
-                if (!formData.entries().next().done) {
-                    fetch('https://localhost:8000/api/upload-profile/', {
+                if (edited) {
+                    const response = await fetch('https://localhost:8000/api/update/', {
                         method: 'POST',
                         headers: {
                             Authorization: `Bearer ${await getJWT()}`,
-                            'X-CSRFToken': await getCsrfToken(),
+                            // 'X-CRFToken': await getCsrfToken(),
+                            'Content-type': 'application/json'
                         },
-                        body: formData,
+                        body: JSON.stringify(editedData)
                     })
-                        .then(response => {
-                            console.log("status_code", response.status);
-                            if (response.status == 200){
-                                document.getElementById("name").innerHTML = editedData['username'];
-                                document.getElementById("profile-image").src = canvas.toDataURL();
-                                document.getElementById("profile-image1").src =canvas.toDataURL();
-                                document.getElementById("profile-image2").src =canvas.toDataURL();
-                                document.getElementById("username").value = editedData['username'];
-                                document.getElementById("first_name").value = editedData['first_name'];
-                                document.getElementById("last_name").value = editedData['last_name'];
-                                document.getElementById("email").value = editedData['email'];
-                            }
-                        }).catch(error => console.error('Error:', error));
+                    if (response.ok) {
+                        document.getElementById("name").innerHTML = editedData['username'];
+                        document.getElementById("username").value = editedData['username'];
+                        document.getElementById("first_name").value = editedData['first_name'];
+                        document.getElementById("last_name").value = editedData['last_name'];
+                        document.getElementById("email").value = editedData['email'];
+                    }
+                    else
+                        console.log("Failed to update ", response.statusText);
+                }}
+                catch (error) {
+                    console.log("failed to update data in catch : ", error);
                 }
-            } catch (error) {
-                console.error(error);
-            }
-        });
+                // try {
+                //     if (canvas) {
+                //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
+                //         formData.append('image', blobimage, 'cropped-image.webp');
+                //     }
+                //     fields.forEach(field => {
+                //         const element = document.getElementById(field);
+                //         if (element.value.trim() == '') {
+                //             alert("field " + field + " should not be empy");
+                //             throw "empty field";
+                //         }
+                //         if (element.value != userdata[field])
+                //             edited = true;
+                //         editedData[field] = element.value;
+                //     });
+                //     if (edited)
+                //         formData.append('data', JSON.stringify(editedData));
+                //     if (!formData.entries().next().done) {
+                //         fetch('https://localhost:8000/api/upload-profile/', {
+                //             method: 'POST',
+                //             headers: {
+                //                 Authorization: `Bearer ${await getJWT()}`,
+                //                 'X-CSRFToken': await getCsrfToken(),
+                //             },
+                //             body: formData,
+                //         })
+                //             .then(response => {
+                //                 console.log("status_code", response.status);
+                //                 if (response.status == 200){
+                //                     document.getElementById("name").innerHTML = editedData['username'];
+                //                     document.getElementById("profile-image").src = canvas.toDataURL();
+                //                     document.getElementById("profile-image1").src =canvas.toDataURL();
+                //                     document.getElementById("profile-image2").src =canvas.toDataURL();
+                //                     document.getElementById("username").value = editedData['username'];
+                //                     document.getElementById("first_name").value = editedData['first_name'];
+                //                     document.getElementById("last_name").value = editedData['last_name'];
+                //                     document.getElementById("email").value = editedData['email'];
+                //                 }
+                //             }).catch(error => console.error('Error:', error));
+                //     }
+                // } catch (error) {
+                //     console.error(error);
+                // }
+            });
     }
     catch (error) {
         console.log("trtrtrtrtrtr", error);

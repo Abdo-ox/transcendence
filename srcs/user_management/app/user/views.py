@@ -168,4 +168,5 @@ def UploadProfile(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def updateData(request):
-    pass
+
+    return JsonResponse({"data":"received"})

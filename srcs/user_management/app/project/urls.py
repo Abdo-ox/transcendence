@@ -1,10 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-<<<<<<< HEAD
-from .views import  getCsrfToken, sendOauthData, verify_2fa_code, uploadProfileImage
-=======
-from .views import  getCsrfToken, sendOauthData, isAuthenticated
->>>>>>> main
+from .views import  getCsrfToken, sendOauthData, verify_2fa_code , isAuthenticated
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,13 +16,9 @@ urlpatterns = [
     path('is_authenticated/', isAuthenticated),
     path('api/csrf_token/', getCsrfToken),
     path('api/42/data/', sendOauthData),
-<<<<<<< HEAD
-    path('upload/', uploadProfileImage),
     path('verify_2fa_code/',verify_2fa_code, name='verify_2fa_code'),
-=======
     path('friend/', include('friendship.urls')),
     path('api/', include('user.urls')),
->>>>>>> main
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

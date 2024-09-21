@@ -478,19 +478,7 @@ header .action {
     box-shadow: 0 0 5px #1aeeef;
 }
 
-.btn {
-    padding: 10px 40px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 5px;
-    outline: none;
-    text-decoration: none;
-    color: #784ba0;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
-    border: 1 px solid rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-}
+
 
 .btn:hover,
 .btn:focus,
@@ -922,14 +910,24 @@ span
 
 
 .first button:hover
-{
-    
+{ 
     color: #1aeeef;
     border-bottom:4px solid #1aeeef;
-    border-right: 4px solid #1aeeef;
-
 }
- 
+
+.btn{
+    padding: 10px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 5px;
+    outline: none;
+    text-decoration: none;
+    color: #784ba0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    border: 1 px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
 
 .security-btn,.profile-btn
 {
@@ -1120,12 +1118,18 @@ input:checked + .slider::before
 }
 #pen
 {
-    /* cursor: pointer; */
+    cursor: pointer;
     position:fixed;
     bottom: 0%;
     right: 15%;
     font-size: 1.5em;
     color: rgb(0, 17, 255);
+}
+
+.para{
+    display: none;
+    color: rgba(255, 220, 255, 0.6);
+    font-weight: 500;
 }
 @media screen and (max-width: 670px) {
     .flex2

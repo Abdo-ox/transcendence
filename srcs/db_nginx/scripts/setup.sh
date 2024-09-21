@@ -69,6 +69,10 @@ http {
             alias /usr/share/nginx/html/user;
             index profile.html;
         }
+        location /landingpage {
+            alias /usr/share/nginx/html/landingpage;
+            index landingpage.html;
+        }
     }
     server {
         listen 80;
