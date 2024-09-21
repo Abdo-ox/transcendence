@@ -833,38 +833,38 @@ span
 }
 
 
-
-
 .crop-image-container
 {
     display: none;
     flex-direction: column;
-    position: absolute;
     border-radius: 10px;
-    background-color: #784ba0;
-    width: 600px;
-    height: 400px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -30%);
     align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.crop-image-container input
+{
+    margin-top: 20px;
+    max-width: 300px;
+    justify-content: center;
+    padding: 10px;
 }
 
 .image-wrapper{
     position: relative;
     width: 100%;
-    background-color: #006809;
     max-height: 100%;
     overflow: hidden;
 }
 
 .btn-primary
 {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(100%);
+ 
+  position: fixed;
     height: 50px;
     width: 80px;
+    bottom: 0;
 
 }
 
@@ -882,18 +882,6 @@ span
     width: 100%;
     height: auto;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .first {
@@ -1132,6 +1120,7 @@ input:checked + .slider::before
 }
 #pen
 {
+    /* cursor: pointer; */
     position:fixed;
     bottom: 0%;
     right: 15%;

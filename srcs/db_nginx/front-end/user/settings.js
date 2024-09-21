@@ -8,29 +8,6 @@ window.addEventListener('popstate', routing);
 
 document.addEventListener('DOMContentLoaded', async () => 
 {
-   
-    console.log("test11 ");
-    const profileBtn = document.getElementById("profile-btn");
-    const securityBtn = document.getElementById("security-btn");
-    const profileInfo = document.getElementById("profile-info");
-    const securityInfo = document.getElementById("security-info");
-    const firsShow = document.getElementById("firstShow");
-    profileBtn.addEventListener("click", function() {
-    console.log("test21 ");
-        profileInfo.style.display = "block";
-        securityInfo.style.display = "none";
-        firsShow.style.display = "none";
-        profileBtn.classList.add("active-class");
-        securityBtn.classList.remove("active-class");
-    });
-
-    securityBtn.addEventListener("click", function() {
-        securityInfo.style.display = "block";
-        profileInfo.style.display = "none";
-        firsShow.style.display = "none";
-        securityBtn.classList.add("active-class");
-        profileBtn.classList.remove("active-class");
-    });
     try {
         const csrf_token = await getCsrfToken();
         document.getElementById("home-btn").addEventListener('click', () => {
@@ -41,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () =>
                 Authorization: `Bearer ${await getJWT()}`
             }
         })
+
             .then((response) => {
                 console.error("status code response:", response.status);
                 return response.json();
@@ -50,14 +28,14 @@ document.addEventListener('DOMContentLoaded', async () =>
                 document.getElementById("name").innerHTML = data.current.username;
                 document.getElementById("profile-image").src = data.current.profile_image;
                 document.getElementById("profile-image1").src = data.current.profile_image;
-                document.getElementById("profile-image2").src = data.current.profile_image;
                 document.getElementById("username").value = data.current.username;
                 document.getElementById("first_name").value = data.current.first_name;
                 document.getElementById("last_name").value = data.current.last_name;
                 document.getElementById("email").value = data.current.email;
                 console.log("first-name:", data.current.first_name);
                 document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
-            }).catch(errror => console.log("catch_settings", errror));
+            })
+            .catch(errror => console.log("catch_settings", errror));
 
         document.getElementById("chat-btn").addEventListener("click", () => {
             NewPage("/chat", true);
@@ -71,9 +49,38 @@ document.addEventListener('DOMContentLoaded', async () =>
         document.getElementById("Game-btn").addEventListener("click", () => {
             NewPage("/profile", true);
         });
+    
+   
+        console.log("test11 ");
+   
+        console.log("test1222222222221 ");
+        
+        const profileBtn = document.getElementById("profile-btn");
+        const securityBtn = document.getElementById("security-btn");
+        const profileInfo = document.getElementById("profile-info");
+        const securityInfo = document.getElementById("security-info");
+        const firsShow = document.getElementById("firstShow");
+        profileBtn.addEventListener("click", function() {
+        console.log("test21 ");
+            profileInfo.style.display = "block";
+            securityInfo.style.display = "none";
+            firsShow.style.display = "none";
+            profileBtn.classList.add("active-class");
+            securityBtn.classList.remove("active-class");
+        });
+    
+        securityBtn.addEventListener("click", function() {
+            securityInfo.style.display = "block";
+            profileInfo.style.display = "none";
+            firsShow.style.display = "none";
+            securityBtn.classList.add("active-class");
+            profileBtn.classList.remove("active-class");
+        });
         document.getElementById("pen").addEventListener("click", () => {
             console.log("pass by pen");
-            document.getElementById("crop-image-container").style.display = "block";
+            document.getElementById("firstShow").style.display = "none";
+            document.getElementById("second").style.height = "600px";
+            document.getElementById("crop-image-container").style.display = "flex";
         });
         let imgElement;
         let cropBox;
@@ -81,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () =>
         let canvas = null;
         const imageWrapper = document.getElementById("image-wrapper");
         const imageInput = document.getElementById('upload');
+        console.log("find upload id");
         imageInput.addEventListener("change", (event) => {
             console.log("the event change is triggered");
             const file = event.target.files[0];
