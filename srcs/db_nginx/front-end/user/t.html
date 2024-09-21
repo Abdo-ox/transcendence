@@ -1,60 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPA History Example</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="t.css">
 </head>
-<body>
-    <nav>
-        <button onclick="navigateTo('/home')">Home</button>
-        <button onclick="navigateTo('/about')">About</button>
-        <button onclick="navigateTo('/contact')">Contact</button>
-    </nav>
 
-    <div id="content">
-        <h1>Welcome to the Homepage</h1>
+<body>
+    <div class="pie-slice-border">
     </div>
 
-    <script>
-        // Function to dynamically load page content based on the path
-        function loadPage(path) {
-            const content = document.getElementById('content');
-            
-            switch (path) {
-                case '/home':
-                    content.innerHTML = '<h1>Home Page</h1><p>Welcome to the Home Page!</p>';
-                    break;
-                case '/about':
-                    content.innerHTML = '<h1>About Page</h1><p>This is the About Page.</p>';
-                    break;
-                case '/contact':
-                    content.innerHTML = '<h1>Contact Page</h1><p>This is the Contact Page.</p>';
-                    break;
-                default:
-                    content.innerHTML = '<h1>404 - Page Not Found</h1><p>Sorry, the page you are looking for does not exist.</p>';
-            }
-        }
-
-        // Function to navigate between pages without reloading
-        function navigateTo(path) {
-            // Use history.pushState to update the URL without refreshing
-            history.pushState({}, '', path);
-
-            // Dynamically load content based on the new path
-            loadPage(path);
-        }
-
-        // Event listener to handle back/forward button navigation (popstate event)
-        window.addEventListener('popstate', function(event) {
-            // Load the page based on the current URL when the back/forward button is pressed
-            loadPage(window.location.pathname);
-        });
-
-        // Load the initial content based on the current URL when the page is loaded
-        window.addEventListener('DOMContentLoaded', function() {
-            loadPage(window.location.pathname);
-        });
-    </script>
 </body>
+
 </html>

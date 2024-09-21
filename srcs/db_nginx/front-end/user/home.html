@@ -7,6 +7,7 @@
     <title>Home</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost/home/header.css">
     <link rel="stylesheet" href="https://localhost/home/home.css">
     </style>
 </head>
@@ -14,22 +15,26 @@
 <body>
     <header>
         <a href="#" class="logo"><img id="logo" src="/home/fourtnite4k/neoon.png" alt="Logo"></a>
-        <ul class="nav hide-in-small-size" id="nav">
-            <li id="settings-btn"><a>settings</a></li>
+        <ul class="nav hide-in-small-size">
+            <li id="home-btn"><a>Home</a></li>
             <li id="chat-btn"><a>Chat</a></li>
-            <li><a>About</a></li>
+            <li id="settings-btn"><a>settings</a></li>
         </ul>
         <div class="action">
-            <a class="bel hide-in-small-size" id="notification-icon" href="#"><i class="fa-regular fa-bell"></i></a>
+            <svg class="notification-icon bel hide-in-small-size" id="notification-icon"
+                xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path
+                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
+            </svg>
             <div id="profile-box" class="profile-box hide-in-small-size">
                 <div class="img-bx">
-                    <img id="profile-image" src="/home/src/profile.jpg" alt="">
+                    <img id="profile-image" src="" alt="">
                 </div>
-                <a href="profile.html" id="name" class="name">username</a>
+                <a href="profile.html" id="name" class="name"></a>
             </div>
             <!-- icon shows in small screen -->
             <div class="show-in-small-size">
-                <a class="bel" id="notification-icon" href="#"><i class="fa-regular fa-bell"></i></a>
                 <div class="menu-icon-container">
                     <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960"
                         width="40px" fill="#FFFFFF">
@@ -45,16 +50,29 @@
                 <path
                     d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
             </svg>
-            <li><a>Home</a></li>
-            <li><a>Chat</a></li>
-            <li><a>About</a></li>
-            <li><a>Profile</a></li>
+            <li id="home-btn"><a>Home</a></li>
+            <li id="chat-btn"><a>Chat</a></li>
+            <li id="settings-btn"><a>settings</a></li>
+            <li id="profile-btn"><a>Profile</a></li>
         </ul>
     </header>
     <main class="content">
         <div class="flex-item flex1">
             <h2>Suggestions </h2>
             <div id="suggestions-container" class="users-list"></div>
+            <div class="logout-container">
+                <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                    height="42px" viewBox="0 0 24 24" width="35px" fill="#BD1414BE">
+                    <g>
+                        <path d="M0,0h24v24H0V0z" fill="none" />
+                    </g>
+                    <g>
+                        <path
+                            d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
+                    </g>
+                </svg>
+                <h4>Logout</h4>
+            </div>
         </div>
         <div class="flex-item flex2">
             <section>
@@ -132,33 +150,30 @@
             </div>
             <div class="statistic">
                 <h2>Victory statistics</h2>
-                <div class="first-three">
-                    <img class="crown-img" src="/home/src/crown.png">
-                    <div class="sort">
-                        <div class="second">
-                            <img class="profile-img" src="/home/src/profile.jpg">
-                            <div class="rank">
-                                <p class="text">2</p>
-                            </div>
-                            <h4>username</h4>
-                            <h5>491</h5>
+                <div class="sort">
+                    <div class="second">
+                        <img class="profile-img" src="/home/src/profile.jpg">
+                        <div class="rank">
+                            <p class="text">2</p>
                         </div>
-                        <div class="first">
-                            <img class="profile-img" class="img-first" src="/home/src/profile.jpg">
-                            <div class="rank">
-                                <p class="text">1</p>
-                            </div>
-                            <h4>username</h4>
-                            <h5>500</h5>
+                        <h4>username</h4>
+                        <h5>491</h5>
+                    </div>
+                    <div class="first">
+                        <img class="profile-img" class="img-first" src="/home/src/profile.jpg">
+                        <div class="rank">
+                            <p class="text">1</p>
                         </div>
-                        <div class="third">
-                            <img class="profile-img" src="/home/src/profile.jpg">
-                            <div class="rank">
-                                <p class="text">3</p>
-                            </div>
-                            <h4>username</h4>
-                            <h5>458</h5>
+                        <h4>username</h4>
+                        <h5>500</h5>
+                    </div>
+                    <div class="third">
+                        <img class="profile-img" src="/home/src/profile.jpg">
+                        <div class="rank">
+                            <p class="text">3</p>
                         </div>
+                        <h4>username</h4>
+                        <h5>458</h5>
                     </div>
                 </div>
                 <div class="list">
@@ -229,6 +244,7 @@
                     </div>
                 </div>
                 <div class="pie-chart-1">
+                    <p class="greatest-percentage" id="greatest-percentage">70<sub>﹪</sub></p>
                 </div>
             </div>
             <div class="Chart">
@@ -247,6 +263,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" type="module"></script>
     <script src="/home/home.js" type="module"></script>
+    <script src="/home/header.js" type="module"></script>
 </body>
 
 </html>
