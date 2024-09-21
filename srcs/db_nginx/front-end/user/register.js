@@ -1,5 +1,10 @@
 import { getCsrfToken, NewPage, submitForm } from "https://localhost/home/utils.js";
 
+const handle_data = (data) => {
+    if (data.state === 'registered')
+        NewPage('/login', true);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const csrf_token = await getCsrfToken();
     const ids = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2'];
@@ -13,15 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('password1').value = pass;                                       //to autofill
     document.getElementById('password2').value = pass;                                       //to autofill
     
-    const handle_data = (data) => {
-        console.log(" *****handle data excuting *****");
-        console.log(data);
-        if (data.state === 'registered')
-            NewPage("/login", true);
-        else
-            alert(data.errors); 
-    }
-
     document.getElementById('submit-btn').addEventListener('click', ()=>{
         submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
     });

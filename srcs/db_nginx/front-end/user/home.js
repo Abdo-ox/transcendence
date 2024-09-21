@@ -22,12 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         let t3 = document.getElementById("coalThird");
         /**** add event listener for the nemu bar side ****/
 
-        document.getElementById("menu-icon").addEventListener('click', () => {
-            document.getElementById("side-bar").style.display = 'flex';
-        });
-        document.getElementById("close-icon").addEventListener('click', () => {
-            document.getElementById("side-bar").style.display = 'none';
-        });
         fetch('https://localhost:8000/api/suggest/friend/', {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
@@ -92,12 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // add event listner for chnaging the page to a new page
 
-        document.getElementById("chat-btn").addEventListener('click', () => {
-            NewPage("/chat", true);
-        });
-        document.getElementById("settings-btn").addEventListener('click', () => {
-            NewPage("/settings", true);
-        });
         document.getElementById("name").addEventListener('click', () => {
             NewPage("/profile", true);
         });
@@ -120,11 +108,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // add event listener for sending friend request
 
-        const response = await fetch("https://localhost:8000/friend/request/?username=user1", {
-            headers: {
-                Authorization: `Bearer ${await getJWT()}`
-            }
-        });
+        // const response = await fetch("https://localhost:8000/friend/request/?username=user1", {
+        //     headers: {
+                
+                
+        //     }
+        // });
 
     } catch (error) {
         console.log(error);

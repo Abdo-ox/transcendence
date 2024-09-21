@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () =>
         })
 
             .then((response) => {
-                console.error("status code response:", response.status);
                 return response.json();
             })
             .then((data) => {
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', async () =>
                 document.getElementById("first_name").value = data.current.first_name;
                 document.getElementById("last_name").value = data.current.last_name;
                 document.getElementById("email").value = data.current.email;
-                console.log("first-name:", data.current.first_name);
                 document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
             })
             .catch(errror => console.log("catch_settings", errror));

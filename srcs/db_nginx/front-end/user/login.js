@@ -1,4 +1,4 @@
-import { getCsrfToken, EventNewPage, NewPage, submitForm } from "https://localhost/home/utils.js";
+import { getCsrfToken , NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
     console.log(data.access);
@@ -11,13 +11,22 @@ const handle_data = (data) => {
     NewPage('/home');
 }
 
+const is_authenticated = async () => {
+    const access = localStorage.getItem('access_token');
+    console.log("check_is_authenticated: access=", access);
+    if (access != 'undefined' && access != null) {
+        NewPage("/home");
+    }
+}
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const csrf_token =  getCsrfToken();
-        console.error('csrf_token', csrf_token);
+        await is_authenticated();
+        const csrf_token = await getCsrfToken();
         const ids = ['username', 'password'];
-             console.log(" pass by  login newpage");
-        EventNewPage('register-btn', '/register');
+
+        document.getElementById('register-btn').addEventListener('click', () => {
+            NewPage("/register", false, true);
+        });
 
         document.getElementById('login-btn').addEventListener('click', () => {
         console.log("*********************111****",ids);
@@ -57,10 +66,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             });
                             if (response.ok) {
                                 const data = await response.json();
-                                handle_data(data);
                                 popup.close();
                                 clearInterval(pollPopup);
-                                NewPage("/home", false);
+                                handle_data(data);
                             } else {
                                 console.error("response not ok in log with intra");
                                 popup.close();

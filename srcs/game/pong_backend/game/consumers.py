@@ -6,7 +6,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from . models import Game, MultiGame
 from . game import GameLogic
-
+import csv
 
 # protect from anonymous user
 
@@ -72,7 +72,16 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def game_loop(self):
         fps = 60
         await asyncio.sleep(3) # sleep for 3s to allow for 3s countdown
+        s = time.time()
+        r = 0
         while self.game_active:
+            with open('/is_ready/file.csv', 'a') as f:
+                if self.game_state['ball']['vx'] < 0 and self.game_state['ball']['x'] - self.game_state['ball']['r'] <= self.game_state['paddle1']['x'] and r:
+                    f.write(self.game_state['ball']['y'])
+                    f.write('\n')
+                if time.time() - s >= 60 and self.game_state['ball']['vx'] < 0 and not r:
+                    f.wriet(f'{self.game_state["ball"]["x"]},{self.game_state["ball"]["y"]},{self.game_state["ball"]["vy"]},')
+                    r = 1
             if self.game_state['started'] and not self.game_state['over']:
                 self.update_game_state()
             await self.send_game_state()
@@ -167,7 +176,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 # Multiplayer consumer
 
-user_queue = []
+user_queue = {}
 
 class MultiGameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -198,9 +207,13 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
             
         if not self.room_name:
             # Add the user to the queue
-            user_queue.append(self)
+            if self.user.username not in user_queue:
+                user_queue[self.user.username] = {self}
+            else:
+                user_queue[self.user.username].add(self)
 
-            # Check if there are enough users to create a room
+            # Check if there are enough users to create a roomç
+            print(user_queue)
             if len(user_queue) >= 2:
                 await self.create_room()
             else:
@@ -217,8 +230,10 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
             self.GameTask.disconnected[self.role] = time.time()
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
 
-        if self in user_queue:
-            user_queue.remove(self)
+        if self.user.username in user_queue and self in user_queue[self.user.username]:
+            user_queue[self.user.username].remove(self)
+            if not len(user_queue[self.user.username]):
+                user_queue.pop(self.user.username)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -231,8 +246,20 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
 
     async def create_room(self):
         # Pop two users from the queue
-        user1 = user_queue.pop(0)
-        user2 = user_queue.pop(0)
+        # user1
+        user_queue[self.user.username].remove(self)
+        if not len(user_queue[self.user.username]):
+            user_queue.pop(self.user.username)
+        user1 = self
+        
+        # TODO: protect if user2 is none
+        user2 = None
+        for e in user_queue:
+            if e != self.user.username:
+                user2 = user_queue[e].pop()
+                if not len(user_queue[e]):
+                    user_queue.pop(e)
+                break
 
         # Create a unique room name
         self.room_name = f"room_{user1.user.id}_{user2.user.id}"

@@ -108,10 +108,6 @@ def Oauth_42_callback(request):
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON in request body'}, status=400)
 
-def Logout(request):
-    logout(request)
-    return redirect('login')
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendUserData(request):
