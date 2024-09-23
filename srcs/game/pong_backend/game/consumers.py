@@ -16,12 +16,13 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_state = {}
         self.keys = {}
         self.game = Game(player=self.user)
-
+        self.del_cache = False
         await self.accept()
 
     async def disconnect(self, close_code):   
         self.game_active = False
-        cache.delete(self.user.username)
+        if self.del_cache:
+            cache.delete(self.user.username)
         if self.game_state['started']:
             self.game.playerScore = self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
@@ -40,6 +41,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 await self.close()
                 return
             cache.set(self.user.username, True)
+            self.del_cache = True
         if 'start_game' in data:
             self.game_active = True
             self.game_state['started'] = True
@@ -199,20 +201,13 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         self.role = None
         self.room_name = None
         self.GameTask = None
-        
+        self.del_cache = False
         await self.accept()
-        
-        if not self.room_name:
-            # Add the user to the queue
-            user_queue.add(self)
-
-            # Check if there are enough users to create a roomç
-            if len(user_queue) >= 2:
-                await self.create_room()
 
 
     async def disconnect(self, close_code):
-        cache.delete(self.user.username)
+        if self.del_cache:
+            cache.delete(self.user.username)
         if self.room_name:
             self.GameTask.disconnected = True
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
@@ -224,12 +219,22 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         if 'start' in data:
             await self.send(text_data=json.dumps(GameLogic.initialize_game()))
+            
             in_game = cache.get(self.user.username)
             if in_game:
                 await self.send(json.dumps({'uaig':True})) # abbreviation for 'user already in game'
                 await self.close()
                 return
             cache.set(self.user.username, True)
+            self.del_cache = True
+            
+            if not self.room_name:
+                # Add the user to the queue
+                user_queue.add(self)
+    
+                # Check if there are enough users to create a roomç
+                if len(user_queue) >= 2:
+                    await self.create_room()
 
         if 'key' in data:
             self.handle_key(data['key'])

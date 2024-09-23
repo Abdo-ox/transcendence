@@ -52,6 +52,7 @@ try {
     canvas.height = rect.height * devicePixelRatio;
 
     let gameStarted = false;
+    let uaig = false;
     let gameState = NaN;
     let count_down = false;
     let c = 3;
@@ -76,23 +77,27 @@ try {
 
     socket.onmessage = function(event) {
         gameState = JSON.parse(event.data);
-        console.log(gameState)
-        if (gameState.uaig)
-            console.log('nghh')
-        else {
+        if (gameState.uaig) {
+            uaig = true;
+            const msg = document.getElementById("myModalLabel");
+            msg.innerHTML = "Already in game!";
+            showModal();
+        } else {
             count_down = false;
             draw();
         }
     };
 
     function sendKey(key) {
-        if (!gameStarted) {
-            socket.send(JSON.stringify({'start_game': true}));
-            gameStarted = true;
-            count_down = true;
-            countdown();
+        if (!uaig) {
+            if (!gameStarted) {
+                socket.send(JSON.stringify({'start_game': true}));
+                gameStarted = true;
+                count_down = true;
+                countdown();
+            }
+            socket.send(JSON.stringify({'key': key}));
         }
-        socket.send(JSON.stringify({'key': key}));
     }
 
     document.addEventListener("keydown", function(event){
