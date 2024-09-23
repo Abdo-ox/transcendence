@@ -6,14 +6,12 @@ from . models import MultiGame
 from channels.db import database_sync_to_async
 
 class GameLogic:
-    games_tasks = {}
-    
+        
     def __init__(self, room_name, user1, user2):
         self.room_name = room_name
-        GameLogic.games_tasks[room_name] = self
         self.game_active = True
         self.game = None
-        self.disconnected = {'paddle1': None, 'paddle2': None}
+        self.disconnected = False
         self.keys = {'paddle1': {}, 'paddle2': {}}
         self.game_state = GameLogic.initialize_game()
         self.game_state['started'] = True
@@ -92,13 +90,9 @@ class GameLogic:
         
     # set time out for user after disconnection
     def time_out(self):
-        to = 10
-        for v in self.disconnected.values():
-            if v:
-                if time.time() - v > to:
-                    self.game_active = False
-                    self.game_state['over'] = True
-                    GameLogic.games_tasks.pop(self.room_name)
+        if self.disconnected:
+            self.game_active = False
+            self.game_state['over'] = True
 
     def update_paddle(self, paddle_key):
         if self.keys[paddle_key].get('ArrowUp', False) or self.keys[paddle_key].get('w', False):

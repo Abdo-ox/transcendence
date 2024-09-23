@@ -76,8 +76,13 @@ try {
 
     socket.onmessage = function(event) {
         gameState = JSON.parse(event.data);
-        count_down = false;
-        draw();
+        console.log(gameState)
+        if (gameState.uaig)
+            console.log('nghh')
+        else {
+            count_down = false;
+            draw();
+        }
     };
 
     function sendKey(key) {
@@ -85,7 +90,6 @@ try {
             socket.send(JSON.stringify({'start_game': true}));
             gameStarted = true;
             count_down = true;
-            console.log(gameState);
             countdown();
         }
         socket.send(JSON.stringify({'key': key}));
