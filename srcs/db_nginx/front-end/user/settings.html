@@ -198,6 +198,10 @@
                     </div>
                     <button id="crop-btn"  class=" btn-primary mt-3">Crop Image</button>
                 </div>
+                <div id="SaveImg" style="display: none;">
+                    <h3>Submit the profile change </h3>
+                    <button id="saveid"  class="profile-btn">Save</button>
+                </div>
                 <div id="profile-info" style="display: none; ">
                     <div class="input-group">
                         <div class="input-group__form-group">
@@ -235,6 +239,7 @@
                             <label class="input-group__label" for="Password">New Password</label>
                             <input type="password" id="password2" name="new password">
                         </div>
+                        <button id="savapassword" class="btn">Save</button>
                     </div>
                     <p class="para" id="passText">Change password is disabled because you use an intraNet Acount.</p>
                     <div class="security-item">
@@ -242,7 +247,7 @@
                         <a href="">Two factor Authentication</a>
                     </div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input id="enable2fa" type="checkbox">
                         <span class="slider"></span>
                     </label>
                 </div>

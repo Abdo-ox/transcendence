@@ -51,6 +51,8 @@ class User(AbstractBaseUser):
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/home/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField(default=0)
+    enable2fa     = models.BooleanField(default=False)
     class Meta:
         db_table = 'user'
         managed = False

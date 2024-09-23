@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         document.getElementById('login-btn').addEventListener('click', () => {
-        console.log("*********************111****",ids);
             submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
         });
 

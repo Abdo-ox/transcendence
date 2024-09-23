@@ -50,3 +50,8 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email','profile_image','intraNet', 'first_name', 'last_name','intraNet']
+
+class CurrentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'profile_image']

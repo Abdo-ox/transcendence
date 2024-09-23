@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log("test21 ");
             profileInfo.style.display = "block";
             securityInfo.style.display = "none";
+           document.getElementById("crop-image-container").style.display = "none";
             firsShow.style.display = "none";
             profileBtn.classList.add("active-class");
             securityBtn.classList.remove("active-class");
@@ -74,12 +75,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         securityBtn.addEventListener("click", function () {
             securityInfo.style.display = "block";
             profileInfo.style.display = "none";
+            document.getElementById("crop-image-container").style.display = "none";
             firsShow.style.display = "none";
             securityBtn.classList.add("active-class");
             profileBtn.classList.remove("active-class");
         });
         document.getElementById("pen").addEventListener("click", () => {
             console.log("pass by pen");
+            profileInfo.style.display = "none";
+            securityInfo.style.display = "none";
             document.getElementById("firstShow").style.display = "none";
             document.getElementById("second").style.height = "600px";
             document.getElementById("crop-image-container").style.display = "flex";
@@ -167,8 +171,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             canvas.height = height;
 
             ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
-            document.getElementById("profile-image").src = canvas.toDataURL();
+            document.getElementById("profile-image1").src = canvas.toDataURL();
             document.getElementById("crop-image-container").style.display = "none";
+            document.getElementById("SaveImg").style.display = "flex";
+            document.getElementById("SaveImg").style.flexDirection = "column";
         });
 
         function dataURLToBlob(dataURL) {
@@ -182,7 +188,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return new Blob([arrayBuffer], { type: mimeString });
         }
 
-        document.getElementById("save-btn").addEventListener("click", async () => {
+        document.getElementById("save-btn").addEventListener("click", async () => 
+        {
             const formData = new FormData();
             let edited = false;
             let editedData = {};
@@ -208,6 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         body: JSON.stringify(editedData)
                     })
                     if (response.ok) {
+                        console.log(response);
                         document.getElementById("name").innerHTML = editedData['username'];
                         document.getElementById("username").value = editedData['username'];
                         document.getElementById("first_name").value = editedData['first_name'];
@@ -216,60 +224,133 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     else
                         console.log("Failed to update ", response.statusText);
-                }}
-                catch (error) {
-                    console.log("failed to update data in catch : ", error);
                 }
-                // try {
-                //     if (canvas) {
-                //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
-                //         formData.append('image', blobimage, 'cropped-image.webp');
-                //     }
-                //     fields.forEach(field => {
-                //         const element = document.getElementById(field);
-                //         if (element.value.trim() == '') {
-                //             alert("field " + field + " should not be empy");
-                //             throw "empty field";
-                //         }
-                //         if (element.value != userdata[field])
-                //             edited = true;
-                //         editedData[field] = element.value;
-                //     });
-                //     if (edited)
-                //         formData.append('data', JSON.stringify(editedData));
-                //     if (!formData.entries().next().done) {
-                //         fetch('https://localhost:8000/api/upload-profile/', {
-                //             method: 'POST',
-                //             headers: {
-                //                 Authorization: `Bearer ${await getJWT()}`,
-                //                 'X-CSRFToken': await getCsrfToken(),
-                //             },
-                //             body: formData,
-                //         })
-                //             .then(response => {
-                //                 console.log("status_code", response.status);
-                //                 if (response.status == 200){
-                //                     document.getElementById("name").innerHTML = editedData['username'];
-                //                     document.getElementById("profile-image").src = canvas.toDataURL();
-                //                     document.getElementById("profile-image1").src =canvas.toDataURL();
-                //                     document.getElementById("profile-image2").src =canvas.toDataURL();
-                //                     document.getElementById("username").value = editedData['username'];
-                //                     document.getElementById("first_name").value = editedData['first_name'];
-                //                     document.getElementById("last_name").value = editedData['last_name'];
-                //                     document.getElementById("email").value = editedData['email'];
-                //                 }
-                //             }).catch(error => console.error('Error:', error));
-                //     }
-                // } catch (error) {
-                //     console.error(error);
-                // }
-            });
+            }
+            catch (error) {
+                console.log("failed to update data in catch : ", error);
+            }
+        });
+
+            // try {
+            //     if (canvas) {
+            //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
+            //         formData.append('image', blobimage, 'cropped-image.webp');
+            //     }
+            //     fields.forEach(field => {
+            //         const element = document.getElementById(field);
+            //         if (element.value.trim() == '') {
+            //             alert("field " + field + " should not be empy");
+            //             throw "empty field";
+            //         }
+            //         if (element.value != userdata[field])
+            //             edited = true;
+            //         editedData[field] = element.value;
+            //     });
+            //     if (edited)
+            //         formData.append('data', JSON.stringify(editedData));
+            //     if (!formData.entries().next().done) {
+            //         fetch('https://localhost:8000/api/upload-profile/', {
+            //             method: 'POST',
+            //             headers: {
+            //                 Authorization: `Bearer ${await getJWT()}`,
+            //                 'X-CSRFToken': await getCsrfToken(),
+            //             },
+            //             body: formData,
+            //         })
+            //             .then(response => {
+            //                 console.log("status_code", response.status);
+            //                 if (response.status == 200){
+            //                     document.getElementById("name").innerHTML = editedData['username'];
+            //                     document.getElementById("profile-image").src = canvas.toDataURL();
+            //                     document.getElementById("profile-image1").src =canvas.toDataURL();
+            //                     document.getElementById("profile-image2").src =canvas.toDataURL();
+            //                     document.getElementById("username").value = editedData['username'];
+            //                     document.getElementById("first_name").value = editedData['first_name'];
+            //                     document.getElementById("last_name").value = editedData['last_name'];
+            //                     document.getElementById("email").value = editedData['email'];
+            //                 }
+            //             }).catch(error => console.error('Error:', error));
+            //     }
+            // } catch (error) {
+            //     console.error(error);
+            // }
+        
+        document.getElementById("saveid").addEventListener("click", async () => {
+
+            const formData = new FormData();
+            try {
+                if (canvas) {
+                    const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
+                    formData.append('image', blobimage, 'cropped-image.webp');
+                }
+                if(!formData.entries().next().done) {
+                    fetch('https://localhost:8000/api/upload-profile/', {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${await getJWT()}`,
+                            'X-CSRFToken': await getCsrfToken(),
+                            'Content-type': 'application/json',
+                        },
+                        body: formData,
+                    })
+                        .then(response => {
+                            console.log("status_code", response.status);
+                            console.log("response ",response);
+                        }).catch(error => console.error('Error:', error));
+                }
+            }
+            catch {
+                console.log("error uplod pic");
+            }
+
+        });
+
+        document.getElementById("enable2fa").addEventListener("change",async() =>{
+            let is_2Fa_enabled = this.checked;
+            const  checkbox = this;
+            checkbox.disabled = true;
+            try{
+                fetch('https:://localhost:8000/api/Enable2Fa/',{
+                    method :'Post',
+                    headers:{
+                        Authorization: `Bearer ${await getJWT()}`,
+                        'X-CSRFToken': await getCsrfToken(),
+                        'Content-type': 'application/json' ,
+                    },
+                    body : JSON.stringify({'is_2Fa_enabled' : is_2Fa_enabled})
+                })
+                .then(response => response.json())
+                .then(data =>{
+                    if(data['status'] == 'success')
+                    {
+                        if(checkbox.checked)
+                            alert(" Two Factor Authentication is enabled ");
+                        else
+                            alert(" Two Factor Authentication is disabled ");
+                        checkbox.disabled = false;
+                    }
+                    else
+                    {
+                        checkbox.checked = !is_2Fa_enabled;
+                        alert(" Failed to update Two Factor state");
+                        checkbox.disabled = false;
+                    }
+            })
+                .catch(error => console.error('Error in enabled 2fa:', error));
+            }
+            catch(error)
+            {
+                console.log("enable 2fa error");
+            }
+
+
+        });
+
+
     }
     catch (error) {
         console.log("trtrtrtrtrtr", error);
     }
-
-
 }, { once: true });
 // EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 // EMAIL_HOST = 'api.reducte.tech'  

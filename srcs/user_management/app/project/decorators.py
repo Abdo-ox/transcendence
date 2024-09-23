@@ -11,10 +11,8 @@ from django.conf import settings
 def TwoFctor_Decorator(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args,  **kwargs):
-        print("value :",request.user.is_2fa_passed,flush=True) 
-        if request.user.is_2fa_passed:
-            return view_func(request, *args, **kwargs)
-        else:
+        print("value :",request.user.is_2fa_passed,flush=True)    
+        if request.user.is_2Fa_enabled and not request.user.is_2fa_passed :
             user_email = request.user.email
             if not user_email:
                 return JsonResponse({"status":"error","error": "Email not provided"}, status=400)
@@ -32,4 +30,6 @@ def TwoFctor_Decorator(view_func):
                 return JsonResponse({"status": "redirect", "message" : "code  2fa send"},status=200)
             except Exception as e:
                 return JsonResponse({"status" : "redirect","message": f"Failed to send email: {str(e)}"}, status=500)
+        else :    
+            return view_func(request, *args, **kwargs)
     return _wrapped_view

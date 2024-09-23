@@ -26,6 +26,7 @@ EditUserForm
 from .serializers import(UserSerializer,
 ChatUserSerializer,
 AccountSerializer,
+CurrentSerializer
 SuggestionSerializer
 )  
 
@@ -139,6 +140,13 @@ def sendSuggestionFriend(request):
 def accountSettings(request):
     currentUser = AccountSerializer(request.user)
     return JsonResponse({'current':currentUser.data}, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def currentUserData(request):
+    curentuser = CurrentSerializer(request.user)
+    return JsonResponse({'currentUser' : curentuser.data},safe=False)
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -154,19 +162,26 @@ def UploadProfile(request):
                 destination.write(chunk)
         request.user.profile_image = file_url
         request.user.save()
-    if 'data' in request.POST:
-        data = json.loads(request.POST.get('data'))
-        print(c.y, (data))
-        if type(data) != dict:
-            return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
-        form = EditUserForm(data, instance=request.user)
-        if form.is_valid():
-            form.save()
-        print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
     return JsonResponse({"clear":"ok"})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def updateData(request):
+    editedData = request.data
+    form = EditUserForm(editedData,instance=request.user)
+    if(form.is_valid()):
+        form.save()
+    print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
+    return JsonResponse({"data":"edited"})
 
-    return JsonResponse({"data":"received"})
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def EnableTwoFactor(request)
+    body_data = json.loads(request.body)  # No decoding here
+    enable = body_data.get('is_2Fa_enabled')
+    request.user.enable2fa = enable
+    user.save()
+    return JsonResponse({"status" : "success"},status=200)
+
