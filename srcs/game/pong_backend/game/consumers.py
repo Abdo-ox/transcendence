@@ -249,8 +249,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user2 = user_queue.pop()
 
         # Create a unique room name
-        # TODO: reconsider room naming
-        self.room_name = f"room_{user1.user.id}_{user2.user.id}"
+        self.room_name = f"room_{user1.user.id}{user1.channel_name.split('!')[-1]}_{user2.channel_name.split('!')[-1]}{user2.user.id}"
 
         # Set the room name
         user1.room_name = self.room_name
