@@ -12,7 +12,7 @@ def TwoFctor_Decorator(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args,  **kwargs):
         print("value :",request.user.is_2fa_passed,flush=True)    
-        if request.user.is_2Fa_enabled and not request.user.is_2fa_passed :
+        if request.user.enable2fa and not request.user.is_2fa_passed :
             user_email = request.user.email
             if not user_email:
                 return JsonResponse({"status":"error","error": "Email not provided"}, status=400)

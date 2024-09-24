@@ -53,6 +53,7 @@ class User(AbstractBaseUser):
     intraNet      = models.BooleanField(default=False)
     Twofa_Code    = models.BigIntegerField(default=0)
     enable2fa     = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
     class Meta:
         db_table = 'user'
         managed = False

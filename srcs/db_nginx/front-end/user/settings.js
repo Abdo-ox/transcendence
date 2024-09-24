@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log("test21 ");
             profileInfo.style.display = "block";
             securityInfo.style.display = "none";
-           document.getElementById("crop-image-container").style.display = "none";
+            document.getElementById("crop-image-container").style.display = "none";
             firsShow.style.display = "none";
             profileBtn.classList.add("active-class");
             securityBtn.classList.remove("active-class");
@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
             document.getElementById("profile-image1").src = canvas.toDataURL();
+            document.getElementById("profile-image").src = canvas.toDataURL();
             document.getElementById("crop-image-container").style.display = "none";
             document.getElementById("SaveImg").style.display = "flex";
             document.getElementById("SaveImg").style.flexDirection = "column";
@@ -188,8 +189,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return new Blob([arrayBuffer], { type: mimeString });
         }
 
-        document.getElementById("save-btn").addEventListener("click", async () => 
-        {
+        document.getElementById("save-btn").addEventListener("click", async () => {
             const formData = new FormData();
             let edited = false;
             let editedData = {};
@@ -230,51 +230,87 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log("failed to update data in catch : ", error);
             }
         });
+        document.getElementById("savapassword").addEventListener("click", async () => {
+            let actuallpass = document.getElementById("password1").value;
+            let newpass = document.getElementById("password2").value;
+            if (actuallpass.trim() == '' || newpass.trim() == '') {
+                alert("Password should be a number and letter ");
+                throw "empty field";
+            }
+            if (actuallpass == newpass) {
+                alert("type a new password this is the same actual password");
+                throw "password not change";
+            }
 
-            // try {
-            //     if (canvas) {
-            //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
-            //         formData.append('image', blobimage, 'cropped-image.webp');
-            //     }
-            //     fields.forEach(field => {
-            //         const element = document.getElementById(field);
-            //         if (element.value.trim() == '') {
-            //             alert("field " + field + " should not be empy");
-            //             throw "empty field";
-            //         }
-            //         if (element.value != userdata[field])
-            //             edited = true;
-            //         editedData[field] = element.value;
-            //     });
-            //     if (edited)
-            //         formData.append('data', JSON.stringify(editedData));
-            //     if (!formData.entries().next().done) {
-            //         fetch('https://localhost:8000/api/upload-profile/', {
-            //             method: 'POST',
-            //             headers: {
-            //                 Authorization: `Bearer ${await getJWT()}`,
-            //                 'X-CSRFToken': await getCsrfToken(),
-            //             },
-            //             body: formData,
-            //         })
-            //             .then(response => {
-            //                 console.log("status_code", response.status);
-            //                 if (response.status == 200){
-            //                     document.getElementById("name").innerHTML = editedData['username'];
-            //                     document.getElementById("profile-image").src = canvas.toDataURL();
-            //                     document.getElementById("profile-image1").src =canvas.toDataURL();
-            //                     document.getElementById("profile-image2").src =canvas.toDataURL();
-            //                     document.getElementById("username").value = editedData['username'];
-            //                     document.getElementById("first_name").value = editedData['first_name'];
-            //                     document.getElementById("last_name").value = editedData['last_name'];
-            //                     document.getElementById("email").value = editedData['email'];
-            //                 }
-            //             }).catch(error => console.error('Error:', error));
-            //     }
-            // } catch (error) {
-            //     console.error(error);
+            // if (newpass.length() < 8) {
+            //     alert("the password should be on minimum 8 characters");
+            //     throw "password too short";
             // }
-        
+            fetch('https://localhost:8000/api/ChangePassword/', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${await getJWT()}`,
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({ 'actualPassword': actuallpass, 'newPassword': newpass })
+
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data['status'] == 'success')
+                        alert("password updated successfuly");
+                    else
+                        alert("Actuall password was not correct ");
+                })
+                .catch((error) => {
+                    console.log("error on change password is ", error);
+                })
+        });
+
+        // try {
+        //     if (canvas) {
+        //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
+        //         formData.append('image', blobimage, 'cropped-image.webp');
+        //     }
+        //     fields.forEach(field => {
+        //         const element = document.getElementById(field);
+        //         if (element.value.trim() == '') {
+        //             alert("field " + field + " should not be empy");
+        //             throw "empty field";
+        //         }
+        //         if (element.value != userdata[field])
+        //             edited = true;
+        //         editedData[field] = element.value;
+        //     });
+        //     if (edited)
+        //         formData.append('data', JSON.stringify(editedData));
+        //     if (!formData.entries().next().done) {
+        //         fetch('https://localhost:8000/api/upload-profile/', {
+        //             method: 'POST',
+        //             headers: {
+        //                 Authorization: `Bearer ${await getJWT()}`,
+        //                 'X-CSRFToken': await getCsrfToken(),
+        //             },
+        //             body: formData,
+        //         })
+        //             .then(response => {
+        //                 console.log("status_code", response.status);
+        //                 if (response.status == 200){
+        //                     document.getElementById("name").innerHTML = editedData['username'];
+        //                     document.getElementById("profile-image").src = canvas.toDataURL();
+        //                     document.getElementById("profile-image1").src =canvas.toDataURL();
+        //                     document.getElementById("profile-image2").src =canvas.toDataURL();
+        //                     document.getElementById("username").value = editedData['username'];
+        //                     document.getElementById("first_name").value = editedData['first_name'];
+        //                     document.getElementById("last_name").value = editedData['last_name'];
+        //                     document.getElementById("email").value = editedData['email'];
+        //                 }
+        //             }).catch(error => console.error('Error:', error));
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        // }
+
         document.getElementById("saveid").addEventListener("click", async () => {
 
             const formData = new FormData();
@@ -283,19 +319,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
                     formData.append('image', blobimage, 'cropped-image.webp');
                 }
-                if(!formData.entries().next().done) {
+                if (!formData.entries().next().done) {
                     fetch('https://localhost:8000/api/upload-profile/', {
                         method: 'POST',
                         headers: {
                             Authorization: `Bearer ${await getJWT()}`,
                             'X-CSRFToken': await getCsrfToken(),
-                            'Content-type': 'application/json',
                         },
                         body: formData,
                     })
                         .then(response => {
-                            console.log("status_code", response.status);
-                            console.log("response ",response);
+                            if (response.ok) {
+                                document.getElementById("profile-image").src = canvas.toDataURL();
+                                console.log("change bam bam");
+                                document.getElementById("SaveImg").style.display = "none";
+                            }
+
                         }).catch(error => console.error('Error:', error));
                 }
             }
@@ -305,45 +344,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         });
 
-        document.getElementById("enable2fa").addEventListener("change",async() =>{
-            let is_2Fa_enabled = this.checked;
-            const  checkbox = this;
+        function initializeCheckbox() {
+            const is2faEnabled = localStorage.getItem('is2faEnabled') === 'true';
+            const checkbox = document.getElementById("enable2fa");
+            checkbox.checked = is2faEnabled;
+        }
+        initializeCheckbox()
+        document.getElementById("enable2fa").addEventListener("change", async (event) => {
+            const checkbox = event.target;
+            let is_2Fa_enabled = checkbox.checked;
             checkbox.disabled = true;
-            try{
-                fetch('https:://localhost:8000/api/Enable2Fa/',{
-                    method :'Post',
-                    headers:{
+
+            try {
+                const response = await fetch('https://localhost:8000/api/Enable2Fa/', {
+                    method: 'POST',
+                    headers: {
                         Authorization: `Bearer ${await getJWT()}`,
                         'X-CSRFToken': await getCsrfToken(),
-                        'Content-type': 'application/json' ,
+                        'Content-Type': 'application/json',
                     },
-                    body : JSON.stringify({'is_2Fa_enabled' : is_2Fa_enabled})
-                })
-                .then(response => response.json())
-                .then(data =>{
-                    if(data['status'] == 'success')
-                    {
-                        if(checkbox.checked)
-                            alert(" Two Factor Authentication is enabled ");
-                        else
-                            alert(" Two Factor Authentication is disabled ");
-                        checkbox.disabled = false;
-                    }
-                    else
-                    {
-                        checkbox.checked = !is_2Fa_enabled;
-                        alert(" Failed to update Two Factor state");
-                        checkbox.disabled = false;
-                    }
-            })
-                .catch(error => console.error('Error in enabled 2fa:', error));
-            }
-            catch(error)
-            {
-                console.log("enable 2fa error");
-            }
+                    body: JSON.stringify({ 'is_2Fa_enabled': is_2Fa_enabled })
+                });
 
+                const data = await response.json();
 
+                if (data['status'] === 'success') {
+                    localStorage.setItem('is2faEnabled', is_2Fa_enabled);
+                    alert(`Two Factor Authentication is ${is_2Fa_enabled ? 'enabled' : 'disabled'}`);
+                } else {
+                    checkbox.checked = !is_2Fa_enabled;
+                    alert("Failed to update Two Factor state");
+                }
+            } catch (error) {
+                console.error("Enable 2FA error:", error);
+                checkbox.checked = !is_2Fa_enabled;
+            } finally {
+                checkbox.disabled = false;
+            }
         });
 
 

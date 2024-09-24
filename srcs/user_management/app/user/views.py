@@ -26,7 +26,7 @@ EditUserForm
 from .serializers import(UserSerializer,
 ChatUserSerializer,
 AccountSerializer,
-CurrentSerializer
+CurrentSerializer,
 SuggestionSerializer
 )  
 
@@ -162,7 +162,7 @@ def UploadProfile(request):
                 destination.write(chunk)
         request.user.profile_image = file_url
         request.user.save()
-    return JsonResponse({"clear":"ok"})
+    return JsonResponse({"clear":"ok"},status=200)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -177,11 +177,24 @@ def updateData(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@TwoFctor_Decorator
-def EnableTwoFactor(request)
+def EnableTwoFactor(request):
+    print("hello world",flush= True)
     body_data = json.loads(request.body)  # No decoding here
     enable = body_data.get('is_2Fa_enabled')
+    print(" enable value " ,enable,flush=True)
     request.user.enable2fa = enable
-    user.save()
+    request.user.save()
     return JsonResponse({"status" : "success"},status=200)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def UpdatePassword(request):
+    body_data = json.loads(request.body)
+    actualpass = body_data.get('actualPassword')
+    newpassword = body_data.get('newPassword')
+    if(request.user.check_password(actualpass)):
+        request.user.set_password(newpassword)
+        request.user.save()
+        return JsonResponse({"status":"success"},status=200)
+    return JsonResponse({"status": "failed"})
