@@ -160,7 +160,7 @@ header .action {
     object-fit: cover;
 }
 
-.main-container {
+.content {
     display: flex;
     flex-direction: row;
     margin-top: 100px;
