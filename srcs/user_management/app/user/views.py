@@ -62,6 +62,7 @@ def printJsonData(data):
             print(f"{c.b}{key}: {value}")
 
 def create_jwt_for_Oauth(user):
+    print(c.y, "create jwt token", flush=True)
     refreshToken = RefreshToken.for_user(user)
     accessToken = refreshToken.access_token
     return {'access': str(accessToken),

@@ -1,7 +1,6 @@
 import { NewPage } from "/home/utils.js";
 
 document.querySelectorAll('#settings-btn').forEach(button => {
-    console.log(button);
     button.addEventListener('click', () => {
         NewPage("/settings", true);
     })

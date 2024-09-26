@@ -2,10 +2,10 @@ import { getCsrfToken , NewPage, submitForm, getJWT } from "https://localhost/ho
 
 const handle_data = (data) => {
     console.log(data.access);
-    if (data.access == 'undefined')
-        console.error("access from backend is undefined");
-    if (data.refresh == 'undefined')
-        console.error("refresh from backend is undefined");
+    // if (data.access == 'undefined')
+    //     console.error("access from backend is undefined");
+    // if (data.refresh == 'undefined')
+    //     console.error("refresh from backend is undefined");
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
     NewPage('/home');
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     try {
                         if (popup.location && 'href' in popup.location && popup.location.href.includes("code=")) {
+                            console.log("enter to here ");
                             const url = new URL(popup.location.href);
                             const code = url.searchParams.get('code');
                             clearInterval(pollPopup);
@@ -64,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             });
                             if (response.ok) {
                                 const data = await response.json();
+                                console.log(data);
                                 popup.close();
                                 clearInterval(pollPopup);
                                 handle_data(data);
@@ -73,8 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 clearInterval(pollPopup);
                             }
                         }
-                    }
-                    catch (error) {
+                    } catch (error) {
                         console.log("the catch catch errors", error);
                     }
                 }, 1000);
