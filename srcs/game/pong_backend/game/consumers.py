@@ -141,9 +141,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         paddle2 = self.game_state['paddle2']
         len_ = self.game_state['len']
         height = self.game_state['height']
-        if paddle2['y'] + len_ / 2 > self.prediction and paddle2['y'] + len_ > height:
+        if paddle2['y'] + len_ / 2 - self.prediction > self.game_state['v'] and paddle2['y'] > 0:
                 paddle2['y'] -= self.game_state['v']
-        elif paddle2['y'] + self.game_state['len'] < self.prediction and paddle2['y'] > 0:
+        elif paddle2['y'] + len_ / 2 - self.prediction < -self.game_state['v'] and paddle2['y'] + len_ < height:
             paddle2['y'] += self.game_state['v']
 
     def update_ball(self):
@@ -162,7 +162,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         if ball['x'] > width * 0.9 and ball['vx'] > 0:
             if ball['x'] + ball['r'] >= paddle2['x'] and ball['x'] + ball['r'] <= paddle2['x'] + ball['r']\
                     and paddle2['y'] <= ball['y'] <= paddle2['y'] + self.game_state['len']:
-                print(ball['y'],flush=True)
                 ball['vx'] *= -1
             elif ball['x'] >= width:
                 paddle1['score'] += 1
