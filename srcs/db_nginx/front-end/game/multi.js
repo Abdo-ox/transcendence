@@ -47,7 +47,8 @@ try {
     const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
 
     let c = 3; // countdown
-    let gameState = {}
+    let gameState = {};
+    let uaig = false;
     let rev = false; // to reverse gamestate if player 2
 
     let rect = canvas.getBoundingClientRect();
@@ -71,6 +72,11 @@ try {
             player2.innerHTML = gameState.username;
             const op_img = document.getElementById("player2-img");
             op_img.src = gameState.img;
+        } else if (gameState.uaig) {
+            uaig = true;
+                const msg = document.getElementById("myModalLabel");
+                msg.innerHTML = "Already in game!";
+                showModal();
         } else {
             scaleGameState()
             if (gameState.countdown && gameState.started) {       
@@ -117,14 +123,14 @@ try {
     }
 
     document.addEventListener("keydown", function(event){
-        if (keys[event.key] || !gameState.started)
+        if (keys[event.key] || !gameState.started || uaig)
             return
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function(event){
-        if (!gameState.started)
+        if (!gameState.started || uaig)
             return
         keys[event.key] = false
         sendKey(event.key)
@@ -160,6 +166,7 @@ try {
         }
 
         if (gameState.over) {
+            console.log('here')
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("myModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
