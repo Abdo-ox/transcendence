@@ -1,26 +1,28 @@
 import { NewPage } from "/home/utils.js";
 
+
+
 document.querySelectorAll('#settings-btn').forEach(button => {
     button.addEventListener('click', () => {
-        NewPage("/settings", true);
+        NewPage("/settings", false);
     })
 });
 
 document.querySelectorAll('#chat-btn').forEach(button => {
     button.addEventListener('click', () => {
-        NewPage("/chat", true);
+        NewPage("/chat", false);
     })
 });
 
 document.querySelectorAll('#home-btn').forEach(button => {
     button.addEventListener('click', () => {
-        NewPage("/home", true);
+        NewPage("/home", false);
     })
 });
 
 document.querySelectorAll('profile-btn').forEach(button => {
     button.addEventListener('click', () => {
-        NewPage("/profile", true);
+        NewPage("/profile", false);
     })
 });
 

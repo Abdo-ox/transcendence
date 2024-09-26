@@ -1,14 +1,9 @@
 import { getCsrfToken , NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
 
-const handle_data = (data) => {
-    console.log(data.access);
-    // if (data.access == 'undefined')
-    //     console.error("access from backend is undefined");
-    // if (data.refresh == 'undefined')
-    //     console.error("refresh from backend is undefined");
+const handle_data = (data, thr=true) => {
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
-    NewPage('/home');
+    NewPage('/home', thr);
 }
 
 const is_authenticated = async () => {
@@ -25,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ids = ['username', 'password'];
 
         document.getElementById('register-btn').addEventListener('click', () => {
-            NewPage("/register", false, true);
+            NewPage("/register");
         });
 
         document.getElementById('login-btn').addEventListener('click', () => {
@@ -68,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 console.log(data);
                                 popup.close();
                                 clearInterval(pollPopup);
-                                handle_data(data);
+                                handle_data(data, false);
                             } else {
                                 console.error("response not ok in log with intra");
                                 popup.close();

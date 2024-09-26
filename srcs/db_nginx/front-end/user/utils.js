@@ -67,7 +67,8 @@ const loadNewScriptDispatchDOMevent = (scripts, event) => {
 
     scripts.forEach(script => {
         let element = document.createElement('script');
-        if (script.src && script.src != '/home/header.js') {
+        if (script.src && !script.src.includes('header.js')) {
+            console.log("src:", script.src);
             element.src = script.src + '?t=' + new Date().getTime();
             element.type = 'module';
         }
@@ -90,8 +91,12 @@ export const NewPage = async (url, thr = true, addhistory = true) => {
             cancelable: true,
             bubbles: true,
         });
+        const oldHeader = document.getElementById('header') || null;
         document.head.innerHTML = doc.head.innerHTML;
-        document.body.innerHTML = doc.body.innerHTML;
+        document.body.replaceWith(doc.body);
+        const newHeader = document.getElementById('header');
+        if (oldHeader && newHeader)
+            newHeader.replaceWith(oldHeader);
         document.querySelectorAll('script').forEach(script => script.remove());
         let scripts = doc.querySelectorAll('script');
         loadNewScriptDispatchDOMevent(scripts, event);

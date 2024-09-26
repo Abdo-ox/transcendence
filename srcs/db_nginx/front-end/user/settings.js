@@ -25,9 +25,7 @@ window.addEventListener('popstate', routing);
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const csrf_token = await getCsrfToken();
-        document.getElementById("home-btn").addEventListener('click', () => {
-            NewPage("/home", true);
-        });
+
         fetch("https://localhost:8000/api/settings/", {
             headers: {
                 Authorization: `Bearer ${await getJWT()}`
@@ -48,19 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById("email").value = data.current.email;
                 document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
             }).catch(errror => console.log("catch_settings", errror));
-
-        document.getElementById("chat-btn").addEventListener("click", () => {
-            NewPage("/chat", true);
-        });
-        document.getElementById("home-btn").addEventListener("click", () => {
-            NewPage("/home", true);
-        });
-        document.getElementById("name").addEventListener("click", () => {
-            NewPage("/profile", true);
-        });
-        document.getElementById("Game-btn").addEventListener("click", () => {
-            NewPage("/profile", true);
-        });
+            
         document.getElementById("pen").addEventListener("click", () => {
             document.getElementById("crop-image-container").style.display = "flex";
         });
