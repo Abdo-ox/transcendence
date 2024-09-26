@@ -35,10 +35,9 @@ body
     background: url('fourtnite4k/back-Photoroom.png')no-repeat;
     background-size: cover;
     background-position: center;
-    overflow: hidden;
 }
 
-header
+.header
 {
     width: 100%;
     height: 10vh;

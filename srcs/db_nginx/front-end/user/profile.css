@@ -861,7 +861,7 @@ right: 0;
 }
 
 .users-list:hover {
-    /* overflow-y: auto; */
+    overflow-y: auto;
 }
 
 .user {
