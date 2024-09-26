@@ -1,10 +1,11 @@
 import json
 import asyncio
 import random
+import time
 from django.core.cache import cache
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from . models import Game, User
+from . models import Game
 from . game import GameLogic
 
 # protect from anonymous user
@@ -17,6 +18,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.keys = {}
         self.game = Game(player=self.user)
         self.del_cache = False
+        self.prediction = 0
         await self.accept()
 
     async def disconnect(self, close_code):   
@@ -50,6 +52,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.handle_key(data['key'])
         
     def initialize_game(self, width, height):
+        self.prediction = height / 2
         self.game_state = {
             'ball': {
                 'x': width / 4,
@@ -80,30 +83,44 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def game_loop(self):
         fps = 60
         await asyncio.sleep(3) # sleep for 3s to allow for 3s countdown
-        # s = time.time()
-        # r = 0
-        # row = ''
+        s = time.time()
         while self.game_active:
-            # with open('/is_ready/file.csv', 'a') as f:
-            #     if self.game_state['ball']['vx'] < 0 and self.game_state['ball']['x'] - self.game_state['ball']['r'] <= self.game_state['paddle1']['x'] + self.game_state['ball']['r'] and r:
-            #         f.write(row)
-            #         f.write(f"{self.game_state['ball']['y']}")
-            #         f.write('\n')
-            #         row = ''
-            #         r = 0
-            #     if time.time() - s >= 1 and self.game_state['ball']['vx'] < 0 and not r:
-            #         row = f'{self.game_state["ball"]["x"]},{self.game_state["ball"]["y"]},{self.game_state["ball"]["vy"]},'
-            #         r = 1
-            #     if r and self.game_state['ball']['vx'] > 0:
-            #         r = 0
-            #     if time.time() - s >= 1:
-            #         s = time.time()
-                    
+            if time.time() - s >= 1:
+                s = time.time()
+                await self.predict()
             if self.game_state['started'] and not self.game_state['over']:
                 self.update_game_state()
             await self.send_game_state()
             await asyncio.sleep(1 / fps)
 
+    async def predict(self):
+        v = self.game_state['ball']['vy']
+        vx = self.game_state['ball']['vx']
+        y = self.game_state['ball']['y']
+        x = self.game_state['ball']['x']
+        r = -1
+        while r < 0:
+            pre_x = x
+            pre_y = y
+            if v < 0:
+                x = x + vx * abs(y / v)
+                y = 0
+            else:
+                x = x + vx * abs((self.game_state['height'] - y) / v)
+                y = self.game_state['height']
+                
+            if vx > 0 and x + self.game_state['ball']['r'] >= self.game_state['paddle2']['x']:
+                y = pre_y + v * abs((self.game_state['paddle2']['x'] - pre_x) / vx)
+                r = y
+            if vx < 0 and x <= self.game_state['paddle1']['x'] + self.game_state['ball']['r']:
+                y = pre_y + v * abs((pre_x - (self.game_state['paddle1']['x'] + self.game_state['ball']['r'])) / vx)
+                x = self.game_state['paddle1']['x'] + self.game_state['ball']['r']
+                vx *= -1
+                v *= -1
+            v *= -1
+            
+        self.prediction = r
+            
     def handle_key(self, key):
         self.keys[key] = not self.keys.get(key, False)
         
@@ -122,12 +139,12 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     def update_paddle2(self):
         paddle2 = self.game_state['paddle2']
-        ball = self.game_state['ball']
-        if ball['x'] > self.game_state['width'] / 2 and ball['vx'] > 0:
-            if paddle2['y'] > ball['y']:
+        len_ = self.game_state['len']
+        height = self.game_state['height']
+        if paddle2['y'] + len_ / 2 > self.prediction and paddle2['y'] + len_ > height:
                 paddle2['y'] -= self.game_state['v']
-            elif paddle2['y'] + self.game_state['len'] < ball['y']:
-                paddle2['y'] += self.game_state['v']
+        elif paddle2['y'] + self.game_state['len'] < self.prediction and paddle2['y'] > 0:
+            paddle2['y'] += self.game_state['v']
 
     def update_ball(self):
         ball = self.game_state['ball']
@@ -145,6 +162,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         if ball['x'] > width * 0.9 and ball['vx'] > 0:
             if ball['x'] + ball['r'] >= paddle2['x'] and ball['x'] + ball['r'] <= paddle2['x'] + ball['r']\
                     and paddle2['y'] <= ball['y'] <= paddle2['y'] + self.game_state['len']:
+                print(ball['y'],flush=True)
                 ball['vx'] *= -1
             elif ball['x'] >= width:
                 paddle1['score'] += 1
