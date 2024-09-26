@@ -62,54 +62,44 @@ export const getJWT = async () => {
     }
 }
 
-export const NewPage = (url, thr = true, addhistory = true) => {
-    fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            let domparser = new DOMParser();
-            const doc = domparser.parseFromString(data, 'text/html');
+const loadNewScriptDispatchDOMevent = (scripts, event) => {
+    let j = 0;
 
-            const event = new Event('DOMContentLoaded', {
-                cancelable: true,
-                bubbles: true,
-            });
-            let oldHeader = document.getElementsByTagName("header");
-            if(oldHeader.length)
-                oldHeader = oldHeader[0].cloneNode(true);
-            else
-                oldHeader = null
-            // console.log("oldHeader:", oldHeader[0]);
-            document.head.innerHTML = doc.head.innerHTML;
-            document.body.innerHTML = doc.body.innerHTML;
-            const newHeader = document.getElementsByTagName("header");
-            if (newHeader.length && oldHeader) 
-                document.body.replaceChild(oldHeader, newHeader[0]);
-            let scripts = doc.querySelectorAll('script');
-            document.querySelectorAll('script').forEach(script => {
-                // if (script.src != '')
-                script.remove();
-            });
-            let j = 0;
+    scripts.forEach(script => {
+        let element = document.createElement('script');
+        if (script.src && script.src != '/home/header.js') {
+            element.src = script.src + '?t=' + new Date().getTime();
+            element.type = 'module';
+        }
+        element.onload = () => {
+            if (++j == scripts.length) {
+                document.dispatchEvent(event);
+            }
+        };
+        element.onerror = () => console.log("error in on error to load js file in NewPage");
+        document.body.appendChild(element);
+    });
+}
 
-            scripts.forEach(script => {
-                let element = document.createElement('script');
-                if (script.src && script.src != '/home/header.js') {
-                    element.src = script.src + '?t=' + new Date().getTime();
-                    element.type = 'module';
-                }
-                element.onload = () => {
-                    if (++j == scripts.length) {
-                        document.dispatchEvent(event);
-                    }
-                };
-                element.onerror = () => console.log("error in on error to load js file in NewPage");
-                document.body.appendChild(element);
-            });
-            if (addhistory)
-                history.pushState({}, '', url);
-        }).catch(error => {
-            console.log("can't load page :", error);
+export const NewPage = async (url, thr = true, addhistory = true) => {
+    const response = await fetch(url);
+    if (response.ok){
+        const data =  await response.text();
+        const doc = (new DOMParser()).parseFromString(data, 'text/html');
+        const event = new Event('DOMContentLoaded', {
+            cancelable: true,
+            bubbles: true,
         });
+        document.head.innerHTML = doc.head.innerHTML;
+        document.body.innerHTML = doc.body.innerHTML;
+        document.querySelectorAll('script').forEach(script => script.remove());
+        let scripts = doc.querySelectorAll('script');
+        loadNewScriptDispatchDOMevent(scripts, event);
+        if (addhistory)
+            history.pushState({}, '', url);
+    } else {
+        console.log("error in fetch the new page '", url, "'.");
+    }
     if (thr)
         throw "change page to:=>" + url;
 }
