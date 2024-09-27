@@ -14,6 +14,7 @@ from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 import os
 from pathlib import Path
+from project.decorators import TwoFctor_Decorator
 
 from friendship.models import FriendList
 from user.models import User
@@ -25,6 +26,7 @@ EditUserForm
 from .serializers import(UserSerializer,
 ChatUserSerializer,
 AccountSerializer,
+CurrentSerializer,
 SuggestionSerializer
 )  
 
@@ -116,6 +118,7 @@ def sendUserData(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def sendSuggestionFriend(request):
     users = User.objects.exclude(id=request.user.id)
     friend_list, created = FriendList.objects.get_or_create(user=request.user)
@@ -134,12 +137,21 @@ def sendSuggestionFriend(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def accountSettings(request):
     currentUser = AccountSerializer(request.user)
     return JsonResponse({'current':currentUser.data}, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def currentUserData(request):
+    curentuser = CurrentSerializer(request.user)
+    return JsonResponse({'currentUser' : curentuser.data},safe=False)
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']
@@ -151,18 +163,40 @@ def UploadProfile(request):
                 destination.write(chunk)
         request.user.profile_image = file_url
         request.user.save()
-    if 'data' in request.POST:
-        data = json.loads(request.POST.get('data'))
-        print(c.y, (data))
-        if type(data) != dict:
-            return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
-        form = EditUserForm(data, instance=request.user)
-        if form.is_valid():
-            form.save()
-        print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
-    return JsonResponse({"clear":"ok"})
+    return JsonResponse({"clear":"ok"},status=200)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def updateData(request):
-    pass
+    editedData = request.data
+    form = EditUserForm(editedData,instance=request.user)
+    if(form.is_valid()):
+        form.save()
+    print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
+    return JsonResponse({"data":"edited"})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def EnableTwoFactor(request):
+    print("hello world",flush= True)
+    body_data = json.loads(request.body)  # No decoding here
+    enable = body_data.get('is_2Fa_enabled')
+    print(" enable value " ,enable,flush=True)
+    request.user.enable2fa = enable
+    request.user.save()
+    return JsonResponse({"status" : "success"},status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def UpdatePassword(request):
+    body_data = json.loads(request.body)
+    actualpass = body_data.get('actualPassword')
+    newpassword = body_data.get('newPassword')
+    print("newpassword : ", newpassword, flush=True)
+    if(request.user.check_password(actualpass)):
+        request.user.set_password(newpassword)
+        request.user.save()
+        return JsonResponse({"status":"success"},status=200)
+    return JsonResponse({"status": "failed"})

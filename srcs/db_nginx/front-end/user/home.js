@@ -1,4 +1,4 @@
-import { NewPage, getJWT, routing } from "https://localhost/home/utils.js";
+import { NewPage, getJWT ,redirectTwoFactor, routing} from "https://localhost/home/utils.js";
 console.log("home.js called");
 
 
@@ -26,8 +26,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
             }
-        }).then(response => response.json()).then(data => {
-            console.log("data", data);
+            })
+            .then(response => {
+                console.log("Response status code:", response.status);
+                // if (!response.ok) {
+                // throw new Error('Network response was not ok');
+                // }
+                return response.json().then(data => ({ data, status: response.status }));
+            })
+            .then(({ data, status }) => {
+            redirectTwoFactor(data, status);
+            console.log("data : ****", data);
             const suggestionscontainer = document.getElementById("suggestions-container");
             const currentUser = document.getElementById("name");
             const currentprof = document.getElementById("profile-image");

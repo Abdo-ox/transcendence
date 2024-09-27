@@ -8,7 +8,10 @@ sendUserData,
 sendSuggestionFriend,
 accountSettings,
 UploadProfile,
-updateData )
+currentUserData,
+updateData,
+EnableTwoFactor,
+UpdatePassword,)
 
 urlpatterns = [
     path('register/', Register, name='register'),
@@ -18,4 +21,7 @@ urlpatterns = [
     path('settings/', accountSettings),
     path('upload-profile/', UploadProfile),
     path('update/', updateData),
+    path('currentUser/',currentUserData),
+    path('Enable2Fa/',EnableTwoFactor),
+    path('ChangePassword/',UpdatePassword),
 ]
