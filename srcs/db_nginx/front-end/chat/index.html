@@ -15,14 +15,55 @@
     href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
   <style class="cp-pen-styles">
     body {
-
-      color: #fff;
-      background: #050e2d;
       display: flex;
-      width: 100%;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      /* background: #152a3a; */
+      background-color: #03092b;
+      font-family: "proxima-nova", "Source Sans Pro", sans-serif;
+      font-size: 1em;
+      letter-spacing: 0.1px;
+      /* color: #5889b9; */
+      text-rendering: optimizeLegibility;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* .side-nav {
+  position: fixed;
+  left: 50px;
+  width: 5vw;
+  height: 70vh;
+  background: rgba(89, 127, 225, 0.2);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.side-nav ul {
+  list-style: none;
+  padding: 0 15px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  justify-content:center;
+}
+
+.side-nav ul li {
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+i.fas, i.fa-regular, i.fa-solid {
+  color: #b5c2fd;
+  font-size: 30px; 
+} */
 
     #frame {
       width: 80vw;
@@ -622,21 +663,6 @@
       outline: none;
     }
 
-/* .notif-div {
-  display: none;
-  position: fixed;
-  top: 50px;
-  right: 80px;
-  width: 250px;
-  height: 40%;
-  background-color: #b5c2fd;
-  z-index: 1000;
-}
-
-.notif-div.active {
-  display: block;
-} */
-
 /* start */
 /* 
 .notiItem {
@@ -721,46 +747,47 @@ border-radius: 50%;
 
 <body>
   <header id="header">
-    <a href="#" class="logo"><img id="logo" src="/home/fourtnite4k/neoon.png" alt="Logo"></a>
-    <ul class="nav hide-in-small-size">
-      <li id="home-btn"><a>Home</a></li>
-      <li id="chat-btn"><a>Chat</a></li>
-      <li id="settings-btn"><a>settings</a></li>
-    </ul>
-    <div class="action">
-      <svg class="notification-icon bel hide-in-small-size" id="notification-icon" xmlns="http://www.w3.org/2000/svg"
-        height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
-        <path d="M0 0h24v24H0V0z" fill="none" />
-        <path
-          d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
-      </svg>
-      <div id="profile-box" class="profile-box hide-in-small-size">
-        <div class="img-bx">
-          <img id="profile-image" src="" alt="">
-        </div>
-        <a href="profile.html" id="name" class="name"></a>
-      </div>
-      <!-- icon shows in small screen -->
-      <div class="show-in-small-size">
-        <div class="menu-icon-container">
-          <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
-            fill="#FFFFFF">
-            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+      <a href="#" class="logo"><img id="logo" src="/home/fourtnite4k/neoon.png" alt="Logo"></a>
+      <ul class="nav hide-in-small-size">
+          <li id="home-btn"><a>Home</a></li>
+          <li id="chat-btn"><a>Chat</a></li>
+          <li id="settings-btn"><a>settings</a></li>
+      </ul>
+      <div class="action">
+          <svg class="notification-icon bel hide-in-small-size" id="notification-icon"
+              xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                  d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
           </svg>
-        </div>
+          <div id="profile-box" class="profile-box hide-in-small-size">
+              <div class="img-bx">
+                  <img id="profile-image" src="" alt="">
+              </div>
+              <a href="profile.html" id="name" class="name"></a>
+          </div>
+          <!-- icon shows in small screen -->
+          <div class="show-in-small-size">
+              <div class="menu-icon-container">
+                  <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960"
+                      width="40px" fill="#FFFFFF">
+                      <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                  </svg>
+              </div>
+          </div>
       </div>
-    </div>
-    <!-- nemu bar showed in small screen with click in three line icon  -->
-    <ul class="nav-side" id="side-bar">
-      <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
-        fill="#FFFFFF">
-        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-      </svg>
-      <li id="home-btn"><a>Home</a></li>
-      <li id="chat-btn"><a>Chat</a></li>
-      <li id="settings-btn"><a>settings</a></li>
-      <li id="profile-btn"><a>Profile</a></li>
-    </ul>
+      <!-- nemu bar showed in small screen with click in three line icon  -->
+      <ul class="nav-side" id="side-bar">
+          <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
+              fill="#FFFFFF">
+              <path
+                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+          </svg>
+          <li id="home-btn"><a>Home</a></li>
+          <li id="chat-btn"><a>Chat</a></li>
+          <li id="settings-btn"><a>settings</a></li>
+          <li id="profile-btn"><a>Profile</a></li>
+      </ul>
   </header>
   <!-- <div class="side-nav">
   <ul>
