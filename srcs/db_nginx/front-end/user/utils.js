@@ -68,10 +68,11 @@ const loadNewScriptDispatchDOMevent = (scripts, event) => {
     scripts.forEach(script => {
         let element = document.createElement('script');
         if (script.src && !script.src.includes('header.js')) {
-            console.log("src:", script.src);
             element.src = script.src + '?t=' + new Date().getTime();
             element.type = 'module';
         }
+        if (script.src.includes('header.js'))
+            j++;
         element.onload = () => {
             if (++j == scripts.length) {
                 document.dispatchEvent(event);
@@ -93,12 +94,12 @@ export const NewPage = async (url, thr = true, addhistory = true) => {
         });
         const oldHeader = document.getElementById('header') || null;
         document.head.innerHTML = doc.head.innerHTML;
+        document.querySelectorAll('script').forEach(script => script.remove());
         document.body.replaceWith(doc.body);
         const newHeader = document.getElementById('header');
         if (oldHeader && newHeader)
             newHeader.replaceWith(oldHeader);
-        document.querySelectorAll('script').forEach(script => script.remove());
-        let scripts = doc.querySelectorAll('script');
+        let scripts = document.querySelectorAll('script');
         loadNewScriptDispatchDOMevent(scripts, event);
         if (addhistory)
             history.pushState({}, '', url);
@@ -127,12 +128,12 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return;
         }
     }
-    // for(let i = 0; i < 10;i++)
-    // {
-    // fields['username'] = 'user' + i;
-    // fields['email'] = 'email' + i + '@gmail.com';
-    // fields['password2'] = 'hello1998';
-    // fields['password1'] = 'hello1998';
+    for(let i = 0; i < 10;i++)
+    {
+    fields['username'] = 'user' + i;
+    fields['email'] = 'email' + i + '@gmail.com';
+    fields['password2'] = 'hello1998';
+    fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers: {
@@ -147,11 +148,11 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
         }
         return response.json();
     }).then(data => {
-        handle_data(data);
+        // handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });
-    // }
+    }
 
 }
 

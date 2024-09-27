@@ -77,22 +77,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // add event listner for chnaging the page to a new page
 
-        document.getElementById("name").addEventListener('click', () => {
-            NewPage("/profile", true);
+        document.getElementById("name").addEventListener('click', async () => {
+            await NewPage("/profile", false);
         });
 
         // game events
 
-        document.getElementById("ai-play").addEventListener('click', () => {
-            NewPage("/game", true);
+        document.getElementById("ai-play").addEventListener('click', async() => {
+            await NewPage("/game", false);
         });
 
-        document.getElementById("multi-play").addEventListener('click', () => {
-            NewPage("/multi", true);
+        document.getElementById("multi-play").addEventListener('click', async() => {
+            await NewPage("/multi", false);
         });
 
-        document.getElementById("local-play").addEventListener('click', () => {
-            NewPage("/local", true);
+        document.getElementById("local-play").addEventListener('click', async() => {
+            await NewPage("/local", false);
         });
 
         // end of game events
@@ -105,8 +105,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
         //     }
         // });
+        document.getElementById("logout-container").addEventListener('click', () => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            NewPage("/login");
+        });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }, { once: true });

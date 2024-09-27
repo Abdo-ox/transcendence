@@ -1,18 +1,19 @@
-import { getCsrfToken , NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
+import { getCsrfToken, NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
+console.log("the login.js called");
 
-const handle_data = (data, thr=true) => {
+const handle_data = (data) => {
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
-    NewPage('/home', thr);
+    NewPage('/home', false);
 }
 
 const is_authenticated = async () => {
     const access = localStorage.getItem('access_token');
     console.log("check_is_authenticated: access=", access);
-    if (access != 'undefined' && access != null) {
+    if (access != 'undefined' && access != null)
         NewPage("/home");
-    }
 }
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await is_authenticated();
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ids = ['username', 'password'];
 
         document.getElementById('register-btn').addEventListener('click', () => {
-            NewPage("/register");
+            NewPage("/register", false);
         });
 
         document.getElementById('login-btn').addEventListener('click', () => {
@@ -37,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch("https://localhost:8000/api/42/data/");
             if (response.ok) {
                 const data = await response.json();
-                console.log("data", data);
                 const url = new URLSearchParams(data.app);
                 const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', 'width=600,height=600');
                 const pollPopup = setInterval(async () => {
@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     try {
                         if (popup.location && 'href' in popup.location && popup.location.href.includes("code=")) {
-                            console.log("enter to here ");
                             const url = new URL(popup.location.href);
                             const code = url.searchParams.get('code');
                             clearInterval(pollPopup);
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 console.log(data);
                                 popup.close();
                                 clearInterval(pollPopup);
-                                handle_data(data, false);
+                                handle_data(data);
                             } else {
                                 console.error("response not ok in log with intra");
                                 popup.close();
