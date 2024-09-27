@@ -9,6 +9,22 @@ from django.http import HttpResponse
 from django.conf.urls.static import static
 from django.conf import settings
 
+
+# temp 
+from friendship.models import FriendList
+from user.models import User
+def friend(request):
+    user1 = request.GET.get("user1")
+    user2 = request.GET.get("user2")
+    user1 = User.objects.get(username=user1)
+    user2 = User.objects.get(username=user2)
+    friendlist1, yes = FriendList.objects.get_or_create(user=user1)
+    friendlist2, yes = FriendList.objects.get_or_create(user=user2)
+    print("yes:", yes, "list:", friendlist1, flush=True)
+    friendlist1.addFriend(user2)
+    friendlist2.addFriend(user1)
+    return HttpResponse("ok")
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -17,6 +33,7 @@ urlpatterns = [
     path('api/csrf_token/', getCsrfToken),
     path('api/42/data/', sendOauthData),
     path('friend/', include('friendship.urls')),
+    path('friend/', friend), # temp 
     path('api/', include('user.urls')),
 ]
 
