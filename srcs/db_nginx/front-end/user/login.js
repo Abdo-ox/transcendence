@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }, 1000);
             }
         });
+        document.getElementById("forgotpassword").addEventListener("click", async() => {
+            NewPage("/resetpassword", false, true);
+
+        });
     } catch (error) {
         console.log(error);
     }

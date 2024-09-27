@@ -27,7 +27,7 @@ http {
         ssl_certificate_key $PATH_CRT/crt.key;
         location / {
             alias  /usr/share/nginx/html/;
-            # index home.html;
+            index home.html;
         }
         location /home {
             alias  /usr/share/nginx/html/user;
@@ -73,6 +73,11 @@ http {
             alias /usr/share/nginx/html/landingpage;
             index landingpage.html;
         }
+        location /resetpassword {
+            alias /usr/share/nginx/html/resetpassword;
+            index resetpassword.html;
+        }
+      
     }
     server {
         listen 80;

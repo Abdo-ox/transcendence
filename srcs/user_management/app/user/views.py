@@ -193,6 +193,7 @@ def UpdatePassword(request):
     body_data = json.loads(request.body)
     actualpass = body_data.get('actualPassword')
     newpassword = body_data.get('newPassword')
+    print("newpassword : ", newpassword, flush=True)
     if(request.user.check_password(actualpass)):
         request.user.set_password(newpassword)
         request.user.save()

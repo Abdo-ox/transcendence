@@ -214,7 +214,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         },
                         body: JSON.stringify(editedData)
                     })
-                    if (response.ok) {
+                    if (response.ok) 
+                    {
                         console.log(response);
                         document.getElementById("name").innerHTML = editedData['username'];
                         document.getElementById("username").value = editedData['username'];
