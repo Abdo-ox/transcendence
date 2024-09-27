@@ -78,6 +78,7 @@ body {
 }
 
 .user button {
+    cursor: pointer;
     font-family: 'Courier New', Courier, 'monospace';
     font-size: 1em;
     font-weight: 600;
@@ -1102,7 +1103,8 @@ span::before {
 } */
 
 .logout-container {
-    position: relative;
+    cursor: pointer;
+    position: absolute;
     bottom: 4px;
     justify-self: center;
     align-items: center;
