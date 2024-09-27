@@ -8,34 +8,12 @@ try {
             'Authorization': `Bearer ${token}`,
         }
     }).then(response => response.json()).then(data => {
-        const currentUser = document.getElementById("name");
         const player1 = document.getElementById("player1-name");
-        const currentprof = document.getElementById("profile-image");
         const player1_img = document.getElementById("player1-img");
-        currentUser.innerHTML = data.currentUser.username;
         player1.innerHTML = data.currentUser.username;
-        currentprof.src = data.currentUser.profile_image;
         player1_img.src = data.currentUser.profile_image;
     });
     // add event listner for chnaging the page to a new page
-    document.getElementById("chat-btn").addEventListener('click', () => {
-        NewPage("/chat", true);
-    });
-    document.getElementById("settings-btn").addEventListener('click', () => {
-        NewPage("/settings", true);
-    });
-    document.getElementById("name").addEventListener('click', () => {
-        NewPage("/profile", true);
-    });
-    document.getElementById("profile-image").addEventListener('click', () => {
-        NewPage("/profile", true);
-    });
-    document.getElementById("logo").addEventListener('click', () => {
-        NewPage("/home", true);
-    });
-    document.getElementById("home-btn").addEventListener('click', () => {
-        NewPage("/home", true);
-    });
     document.getElementById("play-btn").addEventListener('click', () => {
         NewPage("/multi", true);
     });
