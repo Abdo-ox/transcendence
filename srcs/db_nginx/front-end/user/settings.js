@@ -19,8 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             })
             .then((data) => {
                 userdata = data.current;
-                document.getElementById("name").innerHTML = data.current.username;
-                document.getElementById("profile-image").src = data.current.profile_image;
                 document.getElementById("profile-image1").src = data.current.profile_image;
                 document.getElementById("username").value = data.current.username;
                 document.getElementById("first_name").value = data.current.first_name;

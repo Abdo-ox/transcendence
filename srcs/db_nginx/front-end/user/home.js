@@ -1,9 +1,9 @@
-import { NewPage, getJWT ,redirectTwoFactor, routing} from "https://localhost/home/utils.js";
+import { NewPage, getJWT, redirectTwoFactor, routing } from "https://localhost/home/utils.js";
 console.log("home.js called");
 
 
-window.removeEventListener('popstate',routing);
-window.addEventListener('popstate',routing);
+window.removeEventListener('popstate', routing);
+window.addEventListener('popstate', routing);
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
             }
-            })
+        })
             .then(response => {
                 console.log("Response status code:", response.status);
                 // if (!response.ok) {
@@ -35,16 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return response.json().then(data => ({ data, status: response.status }));
             })
             .then(({ data, status }) => {
-            redirectTwoFactor(data, status);
-            console.log("data : ****", data);
-            const suggestionscontainer = document.getElementById("suggestions-container");
-            const currentUser = document.getElementById("name");
-            const currentprof = document.getElementById("profile-image");
-            currentUser.innerHTML = data.currentUser.username;
-            currentprof.src = data.currentUser.profile_image;
-            suggestionscontainer.innerHTML = '';
-            data.suggestions.forEach(user => {
-                suggestionscontainer.innerHTML += `
+                redirectTwoFactor(data, status);
+                console.log("data : ****", data);
+                const suggestionscontainer = document.getElementById("suggestions-container");
+                suggestionscontainer.innerHTML = '';
+                data.suggestions.forEach(user => {
+                    suggestionscontainer.innerHTML += `
                     <div class="user">
                             <div class="info-user">
                                 <img src="${user.profile_image}">
@@ -53,55 +49,51 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <button class="request-btn" username="${user.username}">send</button>
                             <button class="cancel-btn" username="${user.username}">cancel</button>
                     </div>`;
-            });
-            document.querySelectorAll('.request-btn').forEach(button => {
-                button.addEventListener('click', async () => {
-                    console.log("the user you want to create a friendship with is: ", button.getAttribute('username'));
-                    const responce = await fetch(`https://localhost:8000/friend/request/?username=${button.getAttribute('username')}`,{
-                        headers: {
-                            Authorization: `Bearer ${await getJWT()}`
+                });
+                document.querySelectorAll('.request-btn').forEach(button => {
+                    button.addEventListener('click', async () => {
+                        console.log("the user you want to create a friendship with is: ", button.getAttribute('username'));
+                        const responce = await fetch(`https://localhost:8000/friend/request/?username=${button.getAttribute('username')}`, {
+                            headers: {
+                                Authorization: `Bearer ${await getJWT()}`
+                            }
+                        });
+                        if (responce.status == 200) {
+                            button.style.display = 'none';
+                            button.parentElement.querySelector('.cancel-btn').style.display = 'block';
                         }
                     });
-                    if (responce.status == 200){
-                        button.style.display = 'none';
-                        button.parentElement.querySelector('.cancel-btn').style.display = 'block';
-                    }
                 });
-            });
 
-            document.querySelectorAll('.cancel-btn').forEach(button => {
-                button.addEventListener('click', async () => {
-                    const responce = await fetch(`https://localhost:8000/friend/cancel/?username=${button.getAttribute('username')}`,{
-                        headers: {
-                            Authorization: `Bearer ${await getJWT()}`
+                document.querySelectorAll('.cancel-btn').forEach(button => {
+                    button.addEventListener('click', async () => {
+                        const responce = await fetch(`https://localhost:8000/friend/cancel/?username=${button.getAttribute('username')}`, {
+                            headers: {
+                                Authorization: `Bearer ${await getJWT()}`
+                            }
+                        });
+                        if (responce.status == 200) {
+                            button.style.display = 'none';
+                            button.parentElement.querySelector('.request-btn').style.display = 'block';
                         }
                     });
-                    if (responce.status == 200){
-                        button.style.display = 'none';
-                        button.parentElement.querySelector('.request-btn').style.display = 'block';
-                    }
                 });
+            }).catch(error => {
+                console.log("hello catch is called");
             });
-        });
-
-        // add event listner for chnaging the page to a new page
-
-        document.getElementById("name").addEventListener('click', async () => {
-            await NewPage("/profile", false);
-        });
 
         // game events
-
-        document.getElementById("ai-play").addEventListener('click', async() => {
-            await NewPage("/game", false);
+        document.getElementById("ai-play").addEventListener('click', () => {
+            NewPage("/game", false);
         });
 
-        document.getElementById("multi-play").addEventListener('click', async() => {
-            await NewPage("/multi", false);
+        document.getElementById("multi-play").addEventListener('click', () => {
+            NewPage("/multi", false);
         });
 
-        document.getElementById("local-play").addEventListener('click', async() => {
-            await NewPage("/local", false);
+        document.getElementById("local-play").addEventListener('click', () => {
+            console.log("hello");
+            NewPage("/local", false);
         });
 
         // end of game events
@@ -110,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // const response = await fetch("https://localhost:8000/friend/request/?username=user1", {
         //     headers: {
-                
-                
+
+
         //     }
         // });
         document.getElementById("logout-container").addEventListener('click', () => {
