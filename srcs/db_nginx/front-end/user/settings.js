@@ -9,6 +9,9 @@ window.addEventListener('popstate', routing);
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const csrf_token = await getCsrfToken();
+        // document.getElementById("home-btn").addEventListener('click', () => {
+        //     NewPage("/home", true);
+        // });
         fetch("https://localhost:8000/api/settings/", {
             headers: {
                 Authorization: `Bearer ${await getJWT()}`
@@ -26,9 +29,57 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById("first_name").value = data.current.first_name;
                 document.getElementById("last_name").value = data.current.last_name;
                 document.getElementById("email").value = data.current.email;
-                document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
-            }).catch(errror => console.log("catch_settings", errror));
-            
+                if (data.current.intraNet) {
+                    document.getElementById("username").readOnly = true;
+                    document.getElementById("username").style.hove
+                    document.getElementById("first_name").readOnly = true;
+                    document.getElementById("last_name").readOnly = true;
+                    document.getElementById("email").readOnly = true;
+                    document.getElementById("save-btn").style.display = "none";
+                    document.getElementById("para").style.display = "block";
+                    document.getElementById("passText").style.display = "block";
+                    document.getElementById("changePassword").style.display = "none";
+                }
+            })
+            .catch(errror => console.log("catch_settings", errror));
+
+        // document.getElementById("chat-btn").addEventListener("click", () => {
+        //     NewPage("/chat", true);
+        // });
+        // document.getElementById("home-btn").addEventListener("click", () => {
+        //     NewPage("/home", true);
+        // });
+        // document.getElementById("name").addEventListener("click", () => {
+        //     NewPage("/profile", true);
+        // });
+
+        console.log("test11 ");
+
+        console.log("test1222222222221 ");
+
+        const profileBtn = document.getElementById("profile-btn");
+        const securityBtn = document.getElementById("security-btn");
+        const profileInfo = document.getElementById("profile-info");
+        const securityInfo = document.getElementById("security-info");
+        const firsShow = document.getElementById("firstShow");
+        profileBtn.addEventListener("click", function () {
+            console.log("test21 ");
+            profileInfo.style.display = "block";
+            securityInfo.style.display = "none";
+            document.getElementById("crop-image-container").style.display = "none";
+            firsShow.style.display = "none";
+            profileBtn.classList.add("active-class");
+            securityBtn.classList.remove("active-class");
+        });
+
+        securityBtn.addEventListener("click", function () {
+            securityInfo.style.display = "block";
+            profileInfo.style.display = "none";
+            document.getElementById("crop-image-container").style.display = "none";
+            firsShow.style.display = "none";
+            securityBtn.classList.add("active-class");
+            profileBtn.classList.remove("active-class");
+        });
         document.getElementById("pen").addEventListener("click", () => {
             console.log("pass by pen");
             profileInfo.style.display = "none";

@@ -42,8 +42,6 @@ typing_extensions==4.12.2
 urllib3==2.2.2
 watchfiles==0.23.0
 wsproto==1.2.0
-<<<<<<< HEAD
-=======
 zope.interface==7.0.1
 asgiref==3.8.1
 django-formtools==2.5.1
@@ -54,4 +52,3 @@ pypng==0.20220715.0
 qrcode==7.4.2
 sqlparse==0.5.1
 typing_extensions==4.12.2
->>>>>>> khadija

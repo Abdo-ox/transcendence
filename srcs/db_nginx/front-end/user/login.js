@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
         document.getElementById("forgotpassword").addEventListener("click", async() => {
-            NewPage("/resetpassword", false, true);
+            NewPage("/resetpassword");
 
         });
     } catch (error) {

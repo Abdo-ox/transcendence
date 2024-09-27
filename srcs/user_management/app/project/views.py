@@ -18,6 +18,10 @@ import json
 from django.contrib.auth import authenticate 
 from rest_framework.permissions import IsAuthenticated
 
+@api_view(['POST'])
+def resetpassword(request):
+    body_data = json.loads(request.body)  # No decoding here
+    user_email = body_data.get('email') 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

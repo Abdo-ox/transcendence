@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import  getCsrfToken, sendOauthData, verify_2fa_code , isAuthenticated
+from .views import  getCsrfToken, sendOauthData, verify_2fa_code , resetpassword, isAuthenticated
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -36,6 +36,7 @@ urlpatterns = [
     path('friend/', include('friendship.urls')),
     path('friend/', friend), # temp 
     path('api/', include('user.urls')),
+    path('resetpassword/ ', resetpassword),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

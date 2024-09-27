@@ -74,7 +74,7 @@ http {
             index landingpage.html;
         }
         location /resetpassword {
-            alias /usr/share/nginx/html/resetpassword;
+            alias /usr/share/nginx/html/user;
             index resetpassword.html;
         }
       
