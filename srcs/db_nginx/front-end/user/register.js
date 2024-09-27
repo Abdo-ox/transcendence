@@ -2,10 +2,12 @@ import { getCsrfToken, NewPage, submitForm } from "https://localhost/home/utils.
 
 const handle_data = (data) => {
     if (data.state === 'registered')
-        NewPage('/login', true);
+        NewPage('/login', false);
 }
 
+
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("register.js called");
     const csrf_token = await getCsrfToken();
     const ids = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2'];
     let first = faker.name.firstName();
