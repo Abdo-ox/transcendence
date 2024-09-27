@@ -6,7 +6,17 @@ export const getCsrfToken = async () => {
             console.log("can't get the csrf token :", error);
         });
 }
-
+export const redirectTwoFactor = (data, status) => {
+    console.log("pass by redirect 2fa");
+    if (data.status) {
+        if (data.status == "redirect") {
+            if (status == 200)
+                NewPage("/2faa", true);
+            if (status == 500)
+                alert("cant send mail");
+        }
+    }
+}
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
     console.log("access at n getjwt:", access);
@@ -107,6 +117,7 @@ export const NewPage = async (url, thr = true, addhistory = true) => {
         console.log("error in fetch the new page '", url, "'.");
     }
     if (thr)
+        
         throw "change page to:=>" + url;
 }
 
@@ -149,7 +160,9 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
         }
         return response.json();
     }).then(data => {
-        // handle_data(data);
+        console.log("*********************handledata called*************************");
+
+        handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });

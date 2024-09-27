@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <meta charset='UTF-8'>
   <meta name="robots" content="noindex">
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'> -->
 
   <script src="https://use.typekit.net/hoy3lrg.js"></script>
@@ -24,40 +23,6 @@
       flex-direction: column;
     }
 
-    /* .side-nav {
-  position: fixed;
-  left: 50px;
-  width: 5vw;
-  height: 70vh;
-  background: rgba(89, 127, 225, 0.2);
-  backdrop-filter: blur(5px);
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-}
-.side-nav ul {
-  list-style: none;
-  padding: 0 15px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-grow: 1;
-  justify-content:center;
-}
-
-.side-nav ul li {
-  margin: 30px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-i.fas, i.fa-regular, i.fa-solid {
-  color: #b5c2fd;
-  font-size: 30px; 
-} */
 
     #frame {
       width: 80vw;
@@ -437,22 +402,54 @@ i.fas, i.fa-regular, i.fa-solid {
       color: #f5f5f5;
 
     }
-
-    #frame .content .contact-profile .join-game {
-      width: 70px;
-      border-radius: 10px;
-      height: 50%;
+    #frame .content .contact-profile .VerticalDots {
       float: right;
-      color: #1b2141;
-      background-color: whitesmoke;
-      margin: 17px 17px 17px 17px;
-      line-height: 50%;
-      text-align: center;
-      border: none;
+      height: 40px;
+
+    }
+    .menu {
+      display: none;
+      position: fixed;
+      top: 50px;
+      /* right: 80px; */
+      right: 10px;
+      width: 100px;
+      height: 120px;
+      border-radius: 20px;
+      background-color: #b5c2fd;
+      z-index: 1000;
     }
 
-    #frame .content .contact-profile .join-game:hover {
-      background-color: #b5c2fd;
+    .menu.active {
+      display: block;
+    }
+  .menu .join-game {
+    width: 70%;
+    border-radius: 10px;
+    height: 40px;
+    color: #1b2141;
+    background-color: whitesmoke;
+    margin: 15px 15px 5px 15px;
+    line-height: 50%;
+    text-align: center;
+    border: none;
+    }
+  .menu .join-game:hover {
+      background-color: #838383;
+    }
+  .menu .BlockUser {
+    width: 70%;
+    border-radius: 10px;
+    height: 40px;
+    color: #1b2141;
+    background-color: whitesmoke;
+    margin: 5px 15px 5px 15px;
+    line-height: 50%;
+    text-align: center;
+    border: none;
+  }
+  .menu .BlockUser:hover {
+      background-color: #838383;
     }
 
     #frame .content .contact-profile img {
@@ -625,83 +622,22 @@ i.fas, i.fa-regular, i.fa-solid {
       outline: none;
     }
 
-    .notif-div {
-      display: none;
-      position: fixed;
-      top: 50px;
-      /* Adjust as needed */
-      right: 80px;
-      /* Adjust as needed */
-      width: 250px;
-      height: 40%;
-      /* border: 1px solid #ccc; */
-      background-color: #b5c2fd;
-      /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-      /* padding: 20px; */
-      z-index: 1000;
-    }
+/* .notif-div {
+  display: none;
+  position: fixed;
+  top: 50px;
+  right: 80px;
+  width: 250px;
+  height: 40%;
+  background-color: #b5c2fd;
+  z-index: 1000;
+}
 
-    .notif-div.active {
-      display: block;
-    }
-
-    /* start */
-
-    .notiItem {
-      position: relative;
-      display: flex;
-      /* border-bottom: 1px solid #eee; */
-      padding: 15px 5px;
-      /* margin-bottom: 15px; */
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      cursor: pointer;
-      background-color: #b5c2fd;
-    }
-
-    .notiItem:hover {
-      background-color: #a2aee3;
-      /* background-color: #b5c2fd; */
-    }
-
-    .notiItem .accept .button {
-      cursor: pointer;
-      position: absolute;
-      width: 55px;
-      height: 50%;
-      right: 10px;
-      line-height: 50%;
-      text-align: center;
-      border-radius: 10px;
-      border: none;
-      color: white;
-      background-color: #a2aee3;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-
-    .notiItem img {
-      display: block;
-      width: 30px;
-      margin-right: 10px;
-      border-radius: 50%;
-    }
-
-    /* .notiItem .text
-{
-  display: table; 
+.notif-div.active {
+  display: block;
 } */
-    .notiItem .text p {
-      color: white;
-      width: calc(100% - 20px);
-      /* align-items: center; */
-      /* overflow-wrap: break-word; */
-      /* text-align:center; 
-  vertical-align: middle; */
-      /* display: table-cell; */
-      /* font-size: 120px; */
-    }
 
+<<<<<<< HEAD
     /* end  */
 
     /* header {
@@ -741,12 +677,25 @@ i.fas, i.fa-regular, i.fa-solid {
       display: flex;
       text-align: end;
     }
+=======
+/* start */
+/* 
+.notiItem {
+  position: relative;
+  display: flex;
+  padding: 15px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  cursor: pointer;
+  background-color: #b5c2fd;
+} */
+>>>>>>> 58b07fe1068c5fa9ac33c38ebb6aff82f898f7d1
 
-    .action .bel {
-      cursor: pointer;
-      color: #fff;
-      margin-left: 10px;
+/* .notiItem:hover {
+  background-color: #a2aee3;
+} */
 
+<<<<<<< HEAD
       font-size: 1.7em;
     } */
 
@@ -759,63 +708,70 @@ i.fas, i.fa-regular, i.fa-solid {
   background-color: red;
   color: rgb(0, 180, 30);
 } 
+=======
+/* .notiItem .accept .button {
+  cursor: pointer;
+  position: absolute;
+  width: 55px;
+  height: 50%;
+  right: 10px;
+  line-height: 50%;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: #a2aee3;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+} */
+>>>>>>> 58b07fe1068c5fa9ac33c38ebb6aff82f898f7d1
 
-    header .action .searchBx {
-      margin-left: 100px;
-      padding: 5px;
-      margin: 5px;
-      display: flex;
-      justify-content: center;
-      background: #fff;
-      align-items: center;
-      border-radius: 5px;
-      height: 30px;
-    }
+/* .notiItem img {
+  display: block;
+  width: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+} */
 
-    header .action .searchBx i {
-      font-size: 1.4em;
-      margin: 5px;
-      color: #222;
-    }
+/* .notiItem .text p {
+  color: white;
+  width: calc(100% - 20px);
+} */
 
-    header .action .searchBx input {
-      outline: none;
-      border: none;
-      color: #222;
-      font-size: 1em;
-    }
+/* end  */
 
-    .profile-box {
-      padding-left: 10px;
-      display: flex;
-      margin-left: 10px;
-      align-items: center;
-      padding-bottom: 15px;
-    }
 
-    .profile-box a {
-      font-size: 1.2em;
-      font-weight: 600;
-      margin-left: 5px;
-      color: #1aeeef
-    }
+/* .profile-box {
+  padding-left: 10px;
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+  padding-bottom: 15px;
+}
 
-    .profile-box .img-bx {
-      width: 40px;
-      height: 40px;
-      margin-left: 15px;
-      position: relative;
-      border-radius: 50%;
-      border: 1px solid #fff;
-    }
+.profile-box a {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-left: 5px;
+  color: #1aeeef
+}
 
-    .img-bx img {
-      position: relative;
-      width: 100%;
-      border-radius: 50%;
-      height: 100%;
-      object-fit: cover;
-    } */
+.profile-box .img-bx {
+width: 40px;
+height: 40px;
+margin-left: 15px;
+position: relative;
+border-radius: 50%;
+  border: 1px solid #fff;
+}
+
+.img-bx img {
+  position: relative;
+  width: 100%;
+  border-radius: 50%;
+  height: 100%;
+  object-fit: cover;
+} */
   </style>
   <link rel="stylesheet" href="/home/header.css">
 </head>
