@@ -6,48 +6,33 @@ from django.http import Http404
 
 User = get_user_model()
 
+from chat.models import  FriendList
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email'] 
+
+class ChatUserSerializer(serializers.ModelSerializer):
+    friends = UserDetailSerializer(many=True, read_only=True, source='user.friends') 
+
+    class Meta:
+        model = User
+        fields = ['username','profile_image', 'friends']
+
+
+
 class ContactSerializer(serializers.StringRelatedField):
     def to_internal_value(self, value):
         return value
 
-
 class ChatSerializer(serializers.ModelSerializer):
     participants = ContactSerializer(many=True)
-
+    
     class Meta:
         model = Chat
         fields = ('id', 'messages', 'participants')
-        read_only = ('id')
-
-    def create(self, validated_data):
-        print('inside create method ----------------------------------------------------------')
-        participants = validated_data.pop('participants')
-        print(f"par 0: {participants[0]}, par 1:: {participants[1]}")
-        all_chats = Chat.objects.all()
-        flag = 0
-        for chat in all_chats:
-            # print(f"Chat {chat.pk} participants:")
-            usernames = [participant.user.username for participant in chat.participants.all()]
-            for username in usernames:
-                if username == participants[0] or username == participants[1]:
-                    flag += 1
-            if flag == 2:
-                print('A chat with these participants already exists.')
-                return chat
-            flag = 0
-        chat = Chat()
-        chat.save()
-        # print(participant, flush=True)
-        for username in participants:
-            try:
-                print(f"username is ->>>>>>>>>>>>>>>>>>>>>>>> {username}", flush=True)
-                contact = get_user_contact(username)
-            except Http404:
-                print("the contact does not exist", flush=True)
-                return Response({'message': "{username}'s contact username not found"}, status=status.HTTP_404_NOT_FOUND)
-            chat.participants.add(contact)
-        chat.save()
-        return chat
+        read_only_fields = ('id',)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

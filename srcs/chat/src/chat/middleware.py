@@ -12,8 +12,8 @@ class JWTAuthMiddleware(BaseMiddleware):
         # Parse token from the query string
         query_string = parse_qs(scope['query_string'].decode())
         token = query_string.get('token', [None])[0]
-        print('-------------------------------------------------')
-        print(token, flush=True)
+        # print('-------------------------------------------------')
+        # print(token, flush=True)
 
         if token:
             try:
