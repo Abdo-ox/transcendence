@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
     });
 
-    document.addEventListener('keydown', (event) => {
+    document.body.addEventListener('keydown', (event) => {
         if (event.key == 'Enter')
             submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
     });

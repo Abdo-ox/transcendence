@@ -114,6 +114,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     let fields = {};
     for (const id of ids) {
         try {
+            console.log("id:", id, "|");
             fields[id] = document.getElementById(id).value;
         }
         catch (error) {
