@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpg'),
+            profile_image = data.get('profile_image', 'https://localhost/home/profile_images/unkown.jpg'),
             intraNet = intra
         )
         if password:
@@ -51,6 +51,10 @@ class User(AbstractBaseUser):
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/home/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField(default=0)
+    enable2fa     = models.BooleanField(default=False)
+
     class Meta:
         db_table = 'user'
 
@@ -61,9 +65,6 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.username
-
-    def get_profile_image_filename(self):
-        return str(self.profile_image)[str(self.profile_image).index('profile_images/' + str(self.pk) + "/"):]
 
     def has_perm(self, perm, obj=None):
         return self.is_admin

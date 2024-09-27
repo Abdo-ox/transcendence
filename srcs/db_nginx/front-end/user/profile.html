@@ -7,8 +7,9 @@
     <title>Background Color Slider</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="test2.css">
+    <link rel="stylesheet" href="/profile/profile.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <link rel="stylesheet" href="https://localhost/home/header.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
@@ -33,37 +34,39 @@
     <div class="content">
         <div class="flex-1">
             <div class="profile-items">
-                <div class="coalition-box">
-                    <img class="background" src="coalition/yyy.png" alt="">
-                    <img class="coalition" src="coalition/comodor.png" alt="">
-                </div>
-                <div class="clip">
-                    <div class="flip">
-                        <img src="fourtnite4k/images.jpeg" alt="">
+                <div class="half">
+                    <div class="coalition-box">
+                        <img class="background" src="coalition/yyy.png" alt="">
+                        <img class="coalition" src="coalition/comodor.png" alt="">
                     </div>
-                    <div class="title-box">
-                        <div class="sub-title">
-                            <h4>username</h4>
-                            <div class="setting-box">
-                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <div class="clip">
+                        <div class="flip">
+                            <img src="fourtnite4k/images.jpeg" alt="">
+                        </div>
+                        <div class="title-box">
+                            <div class="sub-title">
+                                <h4>username</h4>
+                                <div class="setting-box">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </div>
+                            </div>
+                            <div class="rank-box">
+                                <h4>Rank</h4>
+                                <h4 id="rank">89</h4>
                             </div>
                         </div>
-                        <div class="rank-box">
-                            <h4>Rank</h4>
-                            <h4 id="rank">89</h4>
+                    </div>
+                    <div class="level-bx">
+                        <div class="level-name">
+                            <h4>level <span>5</span></h4>
+                            <h4><span>30</span> Points</h4>
+                        </div>
+                        <div class="level-line">
+                            <div class="level-progress"></div>
                         </div>
                     </div>
                 </div>
-                <div class="level-bx">
-                    <div class="level-name">
-                        <h4>level <span>5</span></h4>
-                        <h4><span>30</span> Points</h4>
-                    </div>
-                    <div class="level-line">
-                        <div class="level-progress"></div>
-                    </div>
-                </div>
-                <div class="dashbord">
+                 <div class="dashbord">
                     <div class="box">
                         <h4>winrate</h4>
                         <div class="skill">
@@ -115,7 +118,7 @@
                     <div class="match">
                         <h4>Tournaments Played</h4>
                         <h3 id="tournamentsScore">5</h3>
-                    </div>
+                    </div> 
 
                 </div>
             </div>
@@ -166,6 +169,21 @@
                     <div class="matchhISTORY">
                         <div class="game-entry">
                             <div class="player">
+                                <img id="player1" src="src/profile.jpg" alt="Player 1 Profile Picture">
+                                <span class="player-name">Player1</span>
+                            </div>
+                            <div class="points">
+                                <span class="player-points">5</span>
+                                <span>:</span>
+                                <span class="opponent-points">1</span>
+                            </div>
+                            <div class="player">
+                                <span   class="player-name">Player2 </span>
+                                <img  id="player2" src="src/profile.jpg" alt="Player 2 Profile Picture">
+                            </div>
+                        </div>
+                        <!-- <div class="game-entry">
+                            <div class="player">
                                 <img src="src/profile.jpg" alt="Player 1 Profile Picture">
                                 <span class="player-name">Player1</span>
                             </div>
@@ -193,22 +211,7 @@
                                 <span   class="player-name">Player2 </span>
                                 <img  id="player2" src="src/profile.jpg" alt="Player 2 Profile Picture">
                             </div>
-                        </div>
-                        <div class="game-entry">
-                            <div class="player">
-                                <img src="src/profile.jpg" alt="Player 1 Profile Picture">
-                                <span class="player-name">Player1</span>
-                            </div>
-                            <div class="points">
-                                <span class="player-points">5</span>
-                                <span>:</span>
-                                <span class="opponent-points">1</span>
-                            </div>
-                            <div class="player">
-                                <span   class="player-name">Player2 </span>
-                                <img  id="player2" src="src/profile.jpg" alt="Player 2 Profile Picture">
-                            </div>
-                        </div>
+                        </div> -->
                     </div>
                     
                 </div>

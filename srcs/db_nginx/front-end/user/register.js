@@ -1,6 +1,13 @@
 import { getCsrfToken, NewPage, submitForm } from "https://localhost/home/utils.js";
 
+const handle_data = (data) => {
+    if (data.state === 'registered')
+        NewPage('/login', false);
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("register.js called");
     const csrf_token = await getCsrfToken();
     const ids = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2'];
     let first = faker.name.firstName();
@@ -13,17 +20,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('password1').value = pass;                                       //to autofill
     document.getElementById('password2').value = pass;                                       //to autofill
     
-    const handle_data = (data) => {
-        if (data.state === 'registred')
-            NewPage('/login', true);
-        console.log(data);
-    }
-
     document.getElementById('submit-btn').addEventListener('click', ()=>{
         submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
     });
 
-    document.addEventListener('keydown', (event) => {
+    document.body.addEventListener('keydown', (event) => {
         if (event.key == 'Enter')
             submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
     });

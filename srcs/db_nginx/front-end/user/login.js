@@ -1,19 +1,28 @@
-import { getCsrfToken, EventNewPage, NewPage, submitForm } from "https://localhost/home/utils.js";
+import { getCsrfToken, NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
+console.log("the login.js called");
 
 const handle_data = (data) => {
-    console.error("set access and refresh to the storage");
-    console.log(`access equal ${data.refresh}`)
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    NewPage('/home', false);
 }
 
+const is_authenticated = async () => {
+    const access = localStorage.getItem('access_token');
+    console.log("check_is_authenticated: access=", access);
+    if (access != 'undefined' && access != null)
+        NewPage("/home");
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        await is_authenticated();
         const csrf_token = await getCsrfToken();
         const ids = ['username', 'password'];
 
-        EventNewPage('register-btn', '/register');
+        document.getElementById('register-btn').addEventListener('click', () => {
+            NewPage("/register", false);
+        });
 
         document.getElementById('login-btn').addEventListener('click', () => {
             submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
@@ -21,7 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.addEventListener('keydown', (event) => {
             if (event.key == 'Enter')
+
                 submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
+            
         });
 
         document.getElementById('intra-btn').addEventListener('click', async () => {
@@ -29,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch("https://localhost:8000/api/42/data/");
             if (response.ok) {
                 const data = await response.json();
-                console.log("data", data);
                 const url = new URLSearchParams(data.app);
                 const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', 'width=600,height=600');
                 const pollPopup = setInterval(async () => {
@@ -51,22 +61,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                             });
                             if (response.ok) {
                                 const data = await response.json();
-                                handle_data(data);
+                                console.log(data);
                                 popup.close();
                                 clearInterval(pollPopup);
-                                NewPage("/home", false);
+                                handle_data(data);
                             } else {
                                 console.error("response not ok in log with intra");
                                 popup.close();
                                 clearInterval(pollPopup);
                             }
                         }
-                    }
-                    catch (error) {
+                    } catch (error) {
                         console.log("the catch catch errors", error);
                     }
                 }, 1000);
             }
+        });
+        document.getElementById("forgotpassword").addEventListener("click", async() => {
+            NewPage("/resetpassword", false, true);
+
         });
     } catch (error) {
         console.log(error);

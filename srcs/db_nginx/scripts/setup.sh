@@ -20,12 +20,13 @@ http {
     include       /etc/nginx/mime.types;
     server {
         listen 443 ssl;
-        server_name localhost;
+        server_name localhost; 
+        root /usr/share/nginx/html/;
 
-        ssl_certificate $PATH_CRT/my.crt;
-        ssl_certificate_key $PATH_CRT/my.key;
+        ssl_certificate $PATH_CRT/crt.crt;
+        ssl_certificate_key $PATH_CRT/crt.key;
         location / {
-            alias  /usr/share/nginx/html/user;
+            alias  /usr/share/nginx/html/;
             index home.html;
         }
         location /home {
@@ -40,6 +41,10 @@ http {
             alias  /usr/share/nginx/html/user;
             index register.html;
         }
+         location /2faa {
+            alias  /usr/share/nginx/html/user;
+            index 2faa.html;
+        }
         location /settings {
             alias  /usr/share/nginx/html/user;
             index settings.html;
@@ -48,6 +53,31 @@ http {
             alias /usr/share/nginx/html/chat/;
             index index.html;
         }
+        location /game {
+            alias /usr/share/nginx/html/game;
+            index game.html;
+        }
+        location /multi {
+            alias /usr/share/nginx/html/game;
+            index multi.html;
+        }
+        location /local {
+            alias /usr/share/nginx/html/game;
+            index local.html;
+        }
+        location /profile {
+            alias /usr/share/nginx/html/user;
+            index profile.html;
+        }
+        location /landingpage {
+            alias /usr/share/nginx/html/landingpage;
+            index landingpage.html;
+        }
+        location /resetpassword {
+            alias /usr/share/nginx/html/resetpassword;
+            index resetpassword.html;
+        }
+      
     }
     server {
         listen 80;

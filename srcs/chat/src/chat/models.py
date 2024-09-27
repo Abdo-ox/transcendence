@@ -39,6 +39,9 @@ class FriendRequest(models.Model):
     receiver            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
     is_active           = models.BooleanField(blank=True, null=False,default=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'friendrequest'
 
     def __str__(self):
         return self.sender.username
@@ -111,6 +114,10 @@ class User(AbstractBaseUser):
     profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField(default=0)
+    enable2fa     = models.BooleanField(default=False)
+
     
     class Meta:
         db_table = 'user'
@@ -162,3 +169,39 @@ class Chat(models.Model):
 
     def __str__(self): 
         return "{}".format(self.pk)
+    
+# Create your models here.
+class Game(models.Model):
+    player = models.ForeignKey(User, related_name='games', on_delete=models.CASCADE)
+    aiScore = models.IntegerField(default=0)
+    playerScore = models.IntegerField(default=0)
+    won = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table='game'
+    
+class Tournament(models.Model):
+    name = models.CharField(max_length=255, default='')
+    players = models.ManyToManyField(User, related_name='tournaments')
+    winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
+    
+    class Meta:
+        db_table='tournament'
+
+class MultiGame(models.Model):
+    # fix related name
+    players = models.ManyToManyField(User, related_name='multiPlayerGames')
+    player2Score = models.IntegerField(default=0)
+    player1Score = models.IntegerField(default=0)
+    # to change to charfield later
+    room_name = models.CharField(max_length=255, default='')
+    tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
+    winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
+    isOver = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+        
+    class Meta:
+        db_table='multigame'

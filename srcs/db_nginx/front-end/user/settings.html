@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,26 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile Settings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://localhost/home/setting.css">
+    <link rel="stylesheet" href="https://localhost/home/settings.css">
+    <link rel="stylesheet" href="https://localhost/home/header.css">
 </head>
 
 <body>
-    <header>
+    <header id="header">
         <a href="#" class="logo"><img id="logo" src="/home/fourtnite4k/neoon.png" alt="Logo"></a>
-        <ul class="nav">
+        <ul class="nav hide-in-small-size">
             <li id="home-btn"><a>Home</a></li>
-            <li id="chat-btn"><a href="#">Chat</a></li>
-            <li id="Game-btn"><a href="#">Game</a></li>
+            <li id="chat-btn"><a>Chat</a></li>
+            <li id="settings-btn"><a>settings</a></li>
         </ul>
         <div class="action">
-            <a class="bel" href="#"><i class="fa-regular fa-bell"></i></a></li>
-            <div class="profile-box">
+            <svg class="notification-icon bel hide-in-small-size" id="notification-icon"
+                xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path
+                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
+            </svg>
+            <div id="profile-box" class="profile-box hide-in-small-size">
                 <div class="img-bx">
-                    <img id="profile-image" src="/home/src/profile.jpg" alt="">
+                    <img id="profile-image" src="" alt="">
                 </div>
-                <a id="name" class="name">username</a>
+                <a href="profile.html" id="name" class="name"></a>
+            </div>
+            <!-- icon shows in small screen -->
+            <div class="show-in-small-size">
+                <div class="menu-icon-container">
+                    <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960"
+                        width="40px" fill="#FFFFFF">
+                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                    </svg>
+                </div>
             </div>
         </div>
+        <!-- nemu bar showed in small screen with click in three line icon  -->
+        <ul class="nav-side" id="side-bar">
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
+                fill="#FFFFFF">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+            <li id="home-btn"><a>Home</a></li>
+            <li id="chat-btn"><a>Chat</a></li>
+            <li id="settings-btn"><a>settings</a></li>
+            <li id="profile-btn"><a>Profile</a></li>
+        </ul>
     </header>
     <main class="content">
         <div class="flex-item flex1">
@@ -33,7 +60,7 @@
             <div class="compte">
                 <img id="profile-image1" src="/home/fourtnite4k/images.jpeg" alt="">
                 <div class="title">
-                    <h3>Elmoutouakil khadija</h3>
+                    <h3 id="full-name">Elmoutouakil khadija</h3>
                     <h4>Acount Settings</h4>
                 </div>
             </div>
@@ -46,17 +73,16 @@
                     <h4>language,themes and more</h4>
                 </div>
             </div>
-            <!-- <img class="logout" src="acheivements/logOut.png" alt=""> -->
+            <img class="logout" src="acheivements/logOut.png" alt=""> 
         </div>
         <div class="flex-item flex2">
             <div class="profile-cadre">
-                <img class="background" src="/home/acheivements/back2 (2).jpeg" alt="">
+                <img class="background" src="/home/fourtnite4k/ciel.jpeg" alt="">
                 <div class="prof-container">
-                    <img id="profile-image2" class="prof" src="/home/fourtnite4k/images.jpeg" alt="">
+                    <img id="profile-image" class="prof" src="/home/fourtnite4k/images.jpeg" alt="">
                     <i id="pen" class="fas fa-pen"></i>
-                    </label>
-                </div>
-                <!-- the wrapper containere -->
+                </div
+                <!-- the wrapper containere 
                 <div id="crop-image-container" class="crop-image-container">
                     <h3 class="text-center">Upload and Crop Image</h3>
                     <input type="file" id="upload" class="form-control" accept="image/*">
@@ -78,13 +104,13 @@
                     </div>
                     <div class="form-group">
                         <label for="first-name">First Name:</label>
-                        <input type="text" id="first-name" name="first-name">
+                        <input type="text" id="first_name" name="first-name">
                     </div>
                 </div>
                 <div class="group">
                     <div class="form-group">
-                        <label for="second-name">Second Name:</label>
-                        <input type="text" id="second-name" name="second-name">
+                        <label for="last-name">Last Name:</label>
+                        <input type="text" id="last_name" name="last-name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
@@ -105,14 +131,157 @@
                     </div>
                     <button class="btn" style="margin-top:17px;">Update</button>
                 </div>
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="two-factor">Two-Factor Authentication:</label>
                     <input type="text" id="two-factor" name="two-factor" placeholder="Enter your 2FA code">
-                </div> -->
+                </div>
             </div>
         </div>
         </div>
-        <script src="/home/settings.js" type="module"></script>
+    <script src="/home/header.js" type="module"></script>
+    <script src="/home/settings.js" type="module"></script>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile settings</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost/home/setting.css">
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo"><img id="logo" src="fourtnite4k/neoon.png" alt="Logo"></a>
+        <ul class="nav hide-in-small-size" id="nav">
+            <li id="settings-btn"><a>settings</a></li>
+            <li id="chat-btn"><a>Chat</a></li>
+            <li><a>About</a></li>
+        </ul>
+        <div class="action">
+            <a class="bel hide-in-small-size" id="notification-icon" href="#"><i class="fa-regular fa-bell"></i></a>
+            <div id="profile-box" class="profile-box hide-in-small-size">
+                <div class="img-bx">
+                    <img id="profile-image" src="src/profile.jpg" alt="">
+                </div>
+                <a href="profile.html" id="name" class="name">username</a>
+            </div>
+            <div class="show-in-small-size">
+                <a class="bel" id="notification-icon" href="#"><i class="fa-regular fa-bell"></i></a>
+                <div class="menu-icon-container">
+                    <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960"
+                        width="40px" fill="#FFFFFF">
+                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <!--nemu bar showed in small screen with click in three line icon  -->
+        <ul class="nav-side" id="side-bar">
+            <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
+                fill="#FFFFFF">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+            <li><a>Home</a></li>
+            <li><a>Chat</a></li>
+            <li><a>About</a></li>
+            <li><a>Profile</a></li>
+        </ul>
+    </header>
+
+    <main class="content">
+        <!-- <img  class="backgroundImg" src="fourtnite4k/image.jpg" alt=""> -->
+        <div class="flex-item flex1">
+            <h2>Hi <span>Username</span></h2>
+        </div>
+        <div class="flex-item flex2">
+            <div class="first">
+                <div class="flip">
+                    <img id="profile-image1" src="src/profile.jpg" alt="">
+                    <i id="pen" class='fas fa-edit'></i>
+                </div>
+                <div class="buttons">
+                    <button id="profile-btn" class="profile-btn">Profile</button>
+                    <button id="security-btn" class="security-btn">Security</button>
+                </div>
+
+            </div>
+            <div id="second" class="second">
+                <div id="firstShow">
+                    nothing found
+                </div>
+                <div id="crop-image-container" class="crop-image-container">
+                    <h3 class="text-center">Upload Image</h3>
+                    <input type="file" id="upload" class="form-control" accept="image/*">
+                    <div id="image-wrapper" class="image-wrapper">
+                    </div>
+                    <button id="crop-btn"  class=" btn-primary mt-3">Crop Image</button>
+                </div>
+                <div id="SaveImg" style="display: none;">
+                    <h3>Submit the profile change </h3>
+                    <button id="saveid"  class="profile-btn">Save</button>
+                </div>
+                <div id="profile-info" style="display: none; ">
+                    <div class="input-group">
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="username">Username:</label>
+                            <input type="text" id="username" name="username">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="first_name">First Name:</label>
+                            <input type="text" id="first_name" name="first_name">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="last_name">Last Name:</label>
+                            <input type="text" id="last_name" name="last_name">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="email">Your Email:</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <button class="btn" id="save-btn">Save </button>
+                        <p class="para" id="para">You have log in with an intranet account, you can't modify this</p>
+                    </div>
+                </div>
+
+                <div id="security-info" style="display: none;" class="SecuritySettings">
+                    <div class="security-item">
+                        <img class="lock" src="/home/fourtnite4k/Pochette.png" alt="">
+                        <a href="">Change Password</a>
+                    </div>
+                    <div id="changePassword" class="input-group">
+                        <div  class="input-group__form-group">
+                            <label class="input-group__label" for="Password">Actual Password</label>
+                            <input type="password" id="password1" name="Actual password">
+                        </div>
+                        <div class="input-group__form-group">
+                            <label class="input-group__label" for="Password">New Password</label>
+                            <input type="password" id="password2" name="new password">
+                        </div>
+                        <button id="savapassword" class="btn">Save</button>
+                    </div>
+                    <p class="para" id="passText">Change password is disabled because you use an intraNet Acount.</p>
+                    <div class="security-item">
+                        <img class="twofa" src="/home/fourtnite4k/2fa.png" alt="">
+                        <a href="">Two factor Authentication</a>
+                    </div>
+                    <label class="switch">
+                        <input id="enable2fa" type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/home/header.js" type="module"></script>
+    <script src="/home/settings.js" type="module"></script>
 </body>
 
 </html>

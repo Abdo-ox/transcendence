@@ -1,42 +1,46 @@
 from django.shortcuts import render, redirect
-from user.forms import RegisterationForm, LoginForm
-from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 import urllib.parse
 import requests
 import json
-from user.models import User
 from django.http import JsonResponse
 from project.settings import C as c
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.views.decorators.csrf import csrf_exempt
 from requests.auth import HTTPBasicAuth
-from .serializers import UserSerializer, ChatUserSerializer, AccountSerializer
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 import os
 from pathlib import Path
+from project.decorators import TwoFctor_Decorator
 
-@api_view(['POST'])
-def Login(request):
-    data = json.loads(request.body)
-    form = LoginForm(data)
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('/home.html')
-    errors = form.errors.as_json()
-    return JsonResponse(json.loads(errors))
+from friendship.models import FriendList
+from user.models import User
+
+from user.forms import (RegisterationForm,
+LoginForm,
+EditUserForm
+)
+from .serializers import(UserSerializer,
+ChatUserSerializer,
+AccountSerializer,
+CurrentSerializer,
+SuggestionSerializer
+)  
 
 @api_view(['POST'])
 def Register(request):
-    form = RegisterationForm(request.data)
-    print(f"{request.data}", flush=True)
+    if request.headers.get('Content-Type') != "application/json":
+        return JsonResponse({'error': ['Content-Type must be application/json']}, status=415)
+    try:
+        data = json.loads(request.body)
+        if type(data) != dict:
+            return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
+    except json.JSONDecodeError:
+        return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
+    form = RegisterationForm(data)
     if form.is_valid():
         User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
                 'email':form.cleaned_data['email'],
@@ -49,7 +53,6 @@ def Register(request):
     for fieldErrors in errors.values():
         for error in fieldErrors:
             all_errors.append(error.get('message'))
-    print(c.r, all_errors, c.d)
     return JsonResponse({'errors': all_errors})
 
 def printJsonData(data):
@@ -61,6 +64,7 @@ def printJsonData(data):
             print(f"{c.b}{key}: {value}")
 
 def create_jwt_for_Oauth(user):
+    print(c.y, "create jwt token", flush=True)
     refreshToken = RefreshToken.for_user(user)
     accessToken = refreshToken.access_token
     return {'access': str(accessToken),
@@ -90,29 +94,21 @@ def Oauth_42_callback(request):
             access_token = response.json()['access_token']
             response = requests.get(conf['info_url'], params={'access_token': access_token})
             data = response.json()
-            print(data['login'], flush=True)
-            print(data['first_name'], flush=True)
-            print(data['last_name'], flush=True)
-            print(data['email'], flush=True)
-            user = authenticate(username=data['login'])
-            if user:
+            try:
+                user = User.objects.get(username=data['login'])
                 return(JsonResponse(create_jwt_for_Oauth(user)))
-            info_usr = {
-                'email': data['email'],
-                'first_name': data['first_name'],
-                'last_name': data['last_name'],
-                'profile_image': data['image']['versions']['small'],
-            }
-            print("DATA debug is here *************", flush=True)
-            user = User.objects.create_user(data['login'], True, None, **info_usr)
-            return JsonResponse(create_jwt_for_Oauth(user))
+            except User.DoesNotExist:
+                info_usr = {
+                    'email': data['email'],
+                    'first_name': data['first_name'],
+                    'last_name': data['last_name'],
+                    'profile_image': data['image']['versions']['small'],
+                }
+                user = User.objects.create_user(data['login'], True, None, **info_usr)
+                return JsonResponse(create_jwt_for_Oauth(user))
         return JsonResponse({'error': 'cannot log with 42 intranet please try again'})
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON in request body'}, status=400)
-
-def Logout(request):
-    logout(request)
-    return redirect('login')
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -122,37 +118,85 @@ def sendUserData(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def sendSuggestionFriend(request):
-    users = User.objects.exclude(username=request.user.username)
-    serializer = UserSerializer(users, many=True)
+    users = User.objects.exclude(id=request.user.id)
+    friend_list, created = FriendList.objects.get_or_create(user=request.user)
+    friends = friend_list.friends.all()
+    suggestions = users.exclude(id__in=friends)
+    if request.user.receiver.exists():
+        suggestions = suggestions.exclude(id__in=request.user.receiver.filter(is_active=True).values_list('sender_id', flat=True))
+    if request.user.sender.exists():
+        suggestions = suggestions.exclude(id__in=request.user.sender.filter(is_active=True).values_list('receiver_id', flat=True))
     currentUser = UserSerializer(request.user)
-    return JsonResponse({'currentUser':currentUser.data,'suggestions':serializer.data}, safe=False)
+    if suggestions.exists():
+        serializer = SuggestionSerializer(suggestions, many=True, user=request.user)
+        return JsonResponse({'currentUser':currentUser.data, 'suggestions':serializer.data}, safe=False)
+    else:
+        return JsonResponse({'currentUser':currentUser.data, 'suggestions': []})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def accountSettings(request):
-    print("hello get current user", flush=True)
     currentUser = AccountSerializer(request.user)
     return JsonResponse({'current':currentUser.data}, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def currentUserData(request):
+    curentuser = CurrentSerializer(request.user)
+    return JsonResponse({'currentUser' : curentuser.data},safe=False)
     
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
 def UploadProfile(request):
     if 'image' in request.FILES:
         uploaded_file = request.FILES['image']
-        print(f"{uploaded_file.name}", flush=True)
-        file_name = get_random_string(6)+ "_" + str(request.user.username) + Path(uploaded_file.name).suffix
+        file_name = get_random_string(6) + "_" + str(request.user.username) + Path(uploaded_file.name).suffix
         file_path = os.path.join(settings.MEDIA_ROOT, file_name)
         file_url = "https://localhost:8000/media/" + file_name
-        print("filePath:", file_path, flush=True)
         with open(file_path, 'wb+') as destination:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
-        print("user profile image", request.user.profile_image, flush=True)
         request.user.profile_image = file_url
         request.user.save()
-        print("user profile image", request.user.profile_image, flush=True)
-        return JsonResponse({'File uploaded successfully' : 'status'})
-    else:
-        return JsonResponse({'No file uploaded': 'status'})
+    return JsonResponse({"clear":"ok"},status=200)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def updateData(request):
+    editedData = request.data
+    form = EditUserForm(editedData,instance=request.user)
+    if(form.is_valid()):
+        form.save()
+    print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
+    return JsonResponse({"data":"edited"})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def EnableTwoFactor(request):
+    print("hello world",flush= True)
+    body_data = json.loads(request.body)  # No decoding here
+    enable = body_data.get('is_2Fa_enabled')
+    print(" enable value " ,enable,flush=True)
+    request.user.enable2fa = enable
+    request.user.save()
+    return JsonResponse({"status" : "success"},status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def UpdatePassword(request):
+    body_data = json.loads(request.body)
+    actualpass = body_data.get('actualPassword')
+    newpassword = body_data.get('newPassword')
+    print("newpassword : ", newpassword, flush=True)
+    if(request.user.check_password(actualpass)):
+        request.user.set_password(newpassword)
+        request.user.save()
+        return JsonResponse({"status":"success"},status=200)
+    return JsonResponse({"status": "failed"})

@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', 
     'corsheaders',
+    'django_otp',
+    'django_otp.plugins.otp_totp',  
+    'two_factor', 
+    'qrcode',  
 ]
 
 REST_FRAMEWORK = {
@@ -64,7 +68,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    # 'project.debug.CsrfDebugMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    # 'project.debug.CsrfDebugMiddlewar e',
 ]
 
 
@@ -140,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 OAUTH_CONFIG = {
     '42': {
         'client_id': 'u-s4t2ud-589237e6394550420d14a9a59740b48214effbb5b50d9943c952f85a1e639e46',
-        'client_secret': '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',
+        'client_secret': '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',
         'redirect_uri': 'https://localhost/login/loading.html',
         'base_url': 'https://api.intra.42.fr/oauth/authorize',
         'token_url': 'https://api.intra.42.fr/oauth/token',
@@ -171,3 +176,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'trencenteam@gmail.com' 
+EMAIL_HOST_PASSWORD = 'jprx jsfw vamr vdys'  # your email password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

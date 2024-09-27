@@ -189,7 +189,7 @@ header .action {
     display: flex;
     gap: 20px;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     border-radius: 20px;
 }
 
@@ -213,6 +213,15 @@ header .action {
     margin-top: 20px;
 }
 
+.half {
+    flex: 1;
+    display: flex;
+    width: 50%;
+    gap: 10px;
+    align-items: center;
+    /* background-color: #0f70b1; */
+}
+
 .coalition-box .coalition {
     position: relative;
     width: 100%;
@@ -226,6 +235,7 @@ header .action {
     display: flex;
     flex-direction: column;
     width: 250px;
+    min-width: 130px;
     height: 200px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -330,9 +340,9 @@ header .action {
     position: relative;
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    min-width: 150px;
     width: 300px;
-    max-width: 500px;
+    /* max-width: 500px; */
     height: 120px;
     border-radius: 5px;
     justify-content: space-around;
@@ -365,10 +375,12 @@ header .action {
 }
 
 .dashbord {
-
-    align-items: center;
+    flex: 1;
+    width: 50%;
+    /* align-items:flex-end; */
     display: flex;
     position: relative;
+    justify-content: end;
 }
 
 .box {
@@ -381,8 +393,11 @@ header .action {
     align-items: center;
     justify-content: center;
     height: 130px;
-    width: 130px;
+    min-width: 110px;
+    max-width: 130px;
+    width: 20%;
     border-radius: 10px;
+
 }
 
 .box h4 {
@@ -445,7 +460,9 @@ svg {
 
 .match {
     margin-right: 15px;
-    width: 130px;
+    min-width: 110px;
+    max-width: 130px;
+    width: 20%;
     height: 130px;
     border-radius: 10px;
     display: flex;
@@ -609,27 +626,31 @@ svg {
 }
 
 .game-entry:last-child {
-    border-bottom: none;
+    /* border-bottom: none; */
 }
 
 .player {
-    gap: 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    max-width: 45%;
+    position: relative;
+    /* justify-content: space-between; */
 }
 
 .player img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
 }
 
 .player-name {
     font-weight: 600;
     color: #1aeeef;
     font-size: 1.3em;
+}
+
+#player1 {
+    margin-right: 10px;
 }
 
 #player2 {
@@ -642,6 +663,7 @@ svg {
     display: flex;
     align-items: center;
     gap: 5px;
+
 }
 
 
@@ -661,8 +683,8 @@ svg {
     background-color: #1b2141;
     border-radius: 20px;
 }
-.trophy-bx
-{
+
+.trophy-bx {
     gap: 10px;
     display: flex;
     position: relative;
@@ -672,7 +694,7 @@ svg {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    ; 
+    ;
 }
 
 .trophy-placeholder {
@@ -697,22 +719,24 @@ svg {
     display: flex;
     flex-direction: column;
 }
-.trophy-icon i{
-       font-size: 60px; 
-       color: #8e9ca5;
+
+.trophy-icon i {
+    font-size: 60px;
+    color: #8e9ca5;
 }
-.trophy-icon .tour-name
-{
+
+.trophy-icon .tour-name {
     color: rgb(243, 236, 199);
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.2em;
 }
-.trophy-placeholder .trophy-icon img
-{
+
+.trophy-placeholder .trophy-icon img {
     position: relative;
     width: 100%;
     height: 100%;
 }
+
 .trophy-placeholder .no-acheiv {
     /* margin-top: 15px; */
     font-size: 1.2em;
@@ -724,18 +748,19 @@ svg {
         transform: scale(1);
         opacity: 0.8;
     }
+
     50% {
         transform: scale(1.05);
         opacity: 1;
     }
+
     100% {
         transform: scale(1);
         opacity: 0.8;
     }
 }
 
-.tournamentHistory
-{
+.tournamentHistory {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -763,19 +788,17 @@ svg {
     overflow: hidden;
     border: 6px solid #fff;
     position: relative;
-   
+
 }
 
-.tournament-item img
-{
+.tournament-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.card-body
-{
+.card-body {
     width: 100%;
     height: 100%;
     top: 0;
@@ -790,30 +813,29 @@ svg {
     transition: 2s;
     right: -100%;
 }
-.tournament-item:hover .card-body
-{
-right: 0;
+
+.tournament-item:hover .card-body {
+    right: 0;
 }
-.para
-{
+
+.para {
     margin-top: 10px;
 }
-.card-title
-{
+
+.card-title {
     font-family: 'Courier New', Courier, monospace;
     text-transform: uppercase;
     font-size: 1.3em;
     font-weight: 600;
 }
-.card-info
-{
-    text-transform:capitalize;
+
+.card-info {
+    text-transform: capitalize;
     font-size: 16px;
-    font-weight:600;
+    font-weight: 600;
 }
 
-.flex-2
-{
+.flex-2 {
     position: relative;
     flex-direction: column;
     display: flex;
@@ -822,6 +844,7 @@ right: 0;
     border-radius: 20px;
     margin-right: 20px;
 }
+
 .searchBx {
 
     padding: 5px;
@@ -836,19 +859,19 @@ right: 0;
     position: relative;
 }
 
- .searchBx i {
+.searchBx i {
     font-size: 1.4em;
     margin: 5px;
     color: #fff;
 }
 
- .searchBx input {
+.searchBx input {
     position: relative;
     outline: none;
     border: none;
     color: #fff;
     font-size: 1em;
-    background-color:transparent;
+    background-color: transparent;
     width: 100%;
 }
 
@@ -861,7 +884,7 @@ right: 0;
 }
 
 .users-list:hover {
-    /* overflow-y: auto; */
+    overflow-y: auto;
 }
 
 .user {
@@ -932,6 +955,7 @@ right: 0;
         transform: scale(0.95, 1.05);
     }
 }
+
 .info-user {
     justify-content: center;
     width: 80%;
@@ -941,9 +965,107 @@ right: 0;
     overflow: hidden;
 }
 
-.flex-2 .logout
-{
+.flex-2 .logout {
     position: absolute;
     bottom: 0;
     width: 90%;
+}
+
+@media screen and (max-width: 1270px) {
+    .dashbord {
+        max-width: 30%;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .profile-items {
+        height: 460px;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+
+    .half {
+        width: 100%;
+    }
+
+    .dashbord {
+        /* background-color: #a04698; */
+        min-width: 100%;
+        flex-wrap: nowrap;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-around;
+    }
+
+    .level-bx {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .game-entry {
+        min-width: 100%;
+        gap: 5px;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    .flex-2 {
+        display: none;
+    }
+
+    .content {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .flex-1 {
+        min-width: 97%;
+
+    }
+
+}
+@media screen and (max-width: 525px) {
+    .half
+    {
+        flex-wrap: wrap;
+    }
+    .level-bx{
+        min-width: 80%;
+    }
+    .profile-items
+    {
+        height: auto;
+    }
+    .dashbord
+    {
+        flex-wrap: wrap
+    }
+}
+@media screen and (max-width: 710px) {
+
+    .activity {
+        flex-direction: column;
+    }
+
+    .acheivements {
+        width: 100%;
+    }
+
+    .history {
+        width: 100%;
+    }
+
+    .tournament-bx {
+        flex-direction: column;
+    }
+    .tournament
+    {
+        width: 100%;
+    }
+    .tournamentHistory
+    {
+        width: 100%;
+    }
 }
