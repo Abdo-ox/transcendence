@@ -218,16 +218,16 @@ function createNotificationPanel() {
   }
 
 // Hide the notification panel if clicking outside
-document.addEventListener('click', event => {
-    const notificationPanel = document.getElementById('notif-div');
-    const notifIcon = document.getElementById('notif');
+// document.addEventListener('click', event => {
+//     const notificationPanel = document.getElementById('notif-div');
+//     const notifIcon = document.getElementById('notif');
     
-    if (notificationPanel && notificationPanel.classList.contains('active') && 
-        !notificationPanel.contains(event.target) && 
-        !notifIcon.contains(event.target)) {
-        notificationPanel.classList.remove('active');
-    }
-});
+//     if (notificationPanel && notificationPanel.classList.contains('active') && 
+//         !notificationPanel.contains(event.target) && 
+//         !notifIcon.contains(event.target)) {
+//         notificationPanel.classList.remove('active');
+//     }
+// });
 
 // Hide the menu panel if clicking outside
 document.addEventListener('click', event => {
@@ -242,10 +242,10 @@ document.addEventListener('click', event => {
 });
 
   // Add click event listener to the notification icon
-  document.getElementById('notif').addEventListener('click', event => {
-      event.stopPropagation(); // Prevent the event from bubbling up
-      createNotificationPanel();
-  });
+  // document.getElementById('notif').addEventListener('click', event => {
+  //     event.stopPropagation(); // Prevent the event from bubbling up
+  //     createNotificationPanel();
+  // });
 
   function fetchData() {
     UserData.friends.forEach(friend => {
