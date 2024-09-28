@@ -57,3 +57,62 @@ fetch('https://localhost:8000/api/suggest/friend/', {
 document.getElementById("profile-box").addEventListener('click', () => {
     NewPage("/profile", false);
 });
+
+// Add click event listener to the notification icon
+document.getElementById('notification-icon').addEventListener('click', event => {
+    event.stopPropagation(); // Prevent the event from bubbling up
+    createNotificationPanel();
+});
+
+// Hide the notification panel if clicking outside
+document.addEventListener('click', event => {
+    const notificationPanel = document.getElementById('notif-div');
+    const notifIcon = document.getElementById('notification-icon');
+    
+    if (notificationPanel && notificationPanel.classList.contains('active') && 
+        !notificationPanel.contains(event.target) && 
+        !notifIcon.contains(event.target)) {
+        notificationPanel.classList.remove('active');
+    }
+});
+
+
+export function displayNotification(message) {
+    createNotificationPanel();
+    var notifDiv = document.getElementById('notif-div');
+    var notiItem = document.createElement('div');
+    notiItem.id = 'notiItem'
+    notiItem.className = 'notiItem'
+    var text = document.createElement('div');
+    text.className = 'text'
+    var accept = document.createElement('div');
+    accept.className = 'accept'
+    var button = document.createElement('button');
+    button.className  = 'button'
+    button.textContent = 'accept'
+    var Notif = document.createElement('p');
+    Notif.textContent = message;
+    // Notif.textContent = 'play request';
+    const img = document.createElement('img')
+    img.src =  "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
+    text.appendChild(Notif)
+    accept.appendChild(button)
+    notiItem.appendChild(img)
+    notiItem.appendChild(text)
+    notiItem.appendChild(accept)
+    notifDiv.appendChild(notiItem)
+}
+
+export function createNotificationPanel() {
+    let notificationPanel = document.getElementById('notif-div');
+    
+    if (!notificationPanel) {
+        console.log(`----------------------- notif-div doesn't exist------------`)
+        notificationPanel = document.createElement('div');
+        notificationPanel.id = 'notif-div';
+        notificationPanel.className = 'notif-div';
+        // notificationPanel.innerHTML = '<p>This is your notification panel.</p>';
+        document.getElementById('header').insertBefore(notificationPanel, document.getElementById('header').firstChild);
+    }
+    notificationPanel.classList.toggle('active');
+}

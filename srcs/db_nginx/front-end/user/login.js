@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/register", false);
         });
 
-        document.getElementById('login-btn').addEventListener('click', () => {
+        document.getElementById('login-btn').addEventListener('click', (event) => {
+            event.preventDefault();
             submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
         });
 
