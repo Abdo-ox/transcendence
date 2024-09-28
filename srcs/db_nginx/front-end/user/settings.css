@@ -595,7 +595,7 @@ body {
     background-color: #1aeeef;
     border-radius: 6px;
 }
-
+/* 
 header {
     position: fixed;
     top: 0;
@@ -607,7 +607,7 @@ header {
     align-items: center;
     transition: 0.5s;
     z-index: 1000;
-    /* background-color: #1b2141; */
+    /* background-color: #1b2141; 
 }
 
 header.sticky {
@@ -621,7 +621,7 @@ header .logo {
     position: relative;
     color: #fff;
     text-decoration: none;
-    /* font-size: 2em; */
+    /* font-size: 2em; 
     font-weight: 700;
 }
 
@@ -759,7 +759,7 @@ header .action .searchBx input {
 .action svg {
     display: none;
     cursor: pointer;
-}
+} */
 
 .content {
     display: flex;

@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         let access_token = await getJWT();
         /***window scrool */
-        window.addEventListener('scroll', function () {
-            var header = document.querySelector('header');
-            header.classList.toggle('sticky', window.scrollY > 0);
-        });
+        // window.addEventListener('scroll', function () {
+        //     var header = document.querySelector('header');
+        //     header.classList.toggle('sticky', window.scrollY > 0);
+        // });
 
 
         /**** coalition rank** */
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("logout-container").addEventListener('click', () => {
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
-            NewPage("/login");
+            NewPage("/login", false, false);
         });
 
     } catch (error) {

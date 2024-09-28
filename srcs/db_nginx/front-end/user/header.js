@@ -1,6 +1,6 @@
-import { NewPage, getJWT } from "/home/utils.js";
+import { NewPage, getJWT , setRunedHeader} from "/home/utils.js";
 
-
+setRunedHeader();
 
 document.querySelectorAll('#settings-btn').forEach(button => {
     button.addEventListener('click', () => {
