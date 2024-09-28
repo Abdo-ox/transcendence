@@ -1,16 +1,15 @@
 import { createWebSocket } from './socketsManager.js';
 import { getJWT } from 'https://localhost/home/utils.js';
+import { displayNotification } from 'https://localhost/home/header.js';
+// import { createNotificationPanel } from 'https://localhost/home/header.js';
+
 
 const url = new URL(window.location.href);
 let TargetUser = null;
 // Check if the pathname is '/chat'
 if (url.pathname === '/chat/') {
-  // Get the query parameters
   const params = new URLSearchParams(url.search);
-
-  // Extract a specific parameter (e.g., 'user')
   TargetUser = params.get('user');
-  console.log(`user is ============== ${TargetUser}`)
 }
 else{
   console.log(`usl path name ${url.pathname}`)
@@ -32,9 +31,10 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
   console.error('Error:', error); // Handle errors
 });
 
-function bodychat(UserData) {
+async function bodychat(UserData) {
   const username = UserData.username;
-  let token = localStorage.getItem('access_token');;
+  // let token = localStorage.getItem('access_token');
+  const token = await getJWT();
   const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${token}`);
   GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
@@ -77,7 +77,7 @@ function bodychat(UserData) {
         createHtmlPrf();
         updateProfile(TargetUser);
         chatListview(TargetUser, 'createWebSocket');
-        GamePlay();
+        // GamePlay();
         // Create the new URL
         const newUrl = `https://localhost/chat/?user=${TargetUser}`
         console.log(`new query --------------- ${newUrl}`)
@@ -85,16 +85,31 @@ function bodychat(UserData) {
       }
     });}
 
-    document.getElementById('contacts-list').addEventListener('click', event => {
+    document.getElementById('contacts-list').addEventListener('click', async event => {
         const contact = event.target.closest('.contact');
+        if (!contact) {
+          console.error('No .contact element found');
+          return;
+        }
+        console.log(`target user iss ${contact.id}`)
         console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
-        const combinUsers = [username, contact.id]
-        axios.post('http://127.0.0.1:9000/chat/create/', {
-          messages: [],
-          participants: combinUsers
+        let access_token = await getJWT();
+        console.log(`contacts-list event called and the access token is ${access_token}`)
+
+        const data = await fetch(`http://127.0.0.1:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(contact.id)}`, {
+          method: "GET",
+          headers: {
+              'Authorization': `Bearer ${access_token}`,
+              'Content-Type': 'application/json'  // Optional, but a good practice
+          }
         })
-        .then(response => {
-          console.log('heree iam ', response.data);      
+        .then(response => response.json()) // Call json() to parse the response
+        .then(data => {
+          console.log(data)
+          // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
+        })
+        .catch(error => {
+          console.error('Error:', error); // Handle errors
         });
         if (contact) {
           console.log('contact exests')
@@ -105,15 +120,17 @@ function bodychat(UserData) {
         else{
           console.log(`conctact doesn't exests`)
         }
-        GamePlay();
+        // GamePlay();
       });
   }
 
   /// handel play event
   function GamePlay(){
     document.getElementById('game-play').addEventListener('click', event => {
-      const contact_profile = event.target.closest('.contact-profile')
+      const profile_container = document.getElementById('profile-container');
+      const contact_profile = profile_container.querySelector('.contact-profile');
       const nameElement = contact_profile.querySelector('p');
+      console.log(`game play nameElement is ${nameElement}`)
       if (nameElement != "")
         console.log(`play event happened and nameEl is ${nameElement.textContent}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
@@ -138,63 +155,99 @@ function bodychat(UserData) {
     GamePlaySocket.onclose = () => {
       console.error('GamePlaySocket closed');
     };
-    function displayNotification(message) {
-      createNotificationPanel();
-      var notifDiv = document.getElementById('notif-div');
-      var notiItem = document.createElement('div');
-      notiItem.id = 'notiItem'
-      notiItem.className = 'notiItem'
-      var text = document.createElement('div');
-      text.className = 'text'
-      var accept = document.createElement('div');
-      accept.className = 'accept'
-      var button = document.createElement('button');
-      button.className  = 'button'
-      button.textContent = 'accept'
-      // accept.id = 'accept'
-      var Notif = document.createElement('p');
-      Notif.textContent = message;
-      // Notif.textContent = 'play request';
-      const img = document.createElement('img')
-      img.src =  "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
-      text.appendChild(Notif)
-      accept.appendChild(button)
-      notiItem.appendChild(img)
-      notiItem.appendChild(text)
-      notiItem.appendChild(accept)
-      notifDiv.appendChild(notiItem)
-    }
+// function displayNotification(message) {
+//   createNotificationPanel();
+//   var notifDiv = document.getElementById('notif-div');
+//   var notiItem = document.createElement('div');
+//   notiItem.id = 'notiItem'
+//   notiItem.className = 'notiItem'
+//   var text = document.createElement('div');
+//   text.className = 'text'
+//   var accept = document.createElement('div');
+//   accept.className = 'accept'
+//   var button = document.createElement('button');
+//   button.className  = 'button'
+//   button.textContent = 'accept'
+//   var Notif = document.createElement('p');
+//   Notif.textContent = message;
+//   // Notif.textContent = 'play request';
+//   const img = document.createElement('img')
+//   img.src =  "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
+//   text.appendChild(Notif)
+//   accept.appendChild(button)
+//   notiItem.appendChild(img)
+//   notiItem.appendChild(text)
+//   notiItem.appendChild(accept)
+//   notifDiv.appendChild(notiItem)
+// }
 // Function to create or toggle the notification panel
-  function createNotificationPanel() {
-      let notificationPanel = document.getElementById('notif-div');
-      
-      if (!notificationPanel) {
-          notificationPanel = document.createElement('div');
-          notificationPanel.id = 'notif-div';
-          notificationPanel.className = 'notif-div';
-          // notificationPanel.innerHTML = '<p>This is your notification panel.</p>';
-          document.body.insertBefore(notificationPanel, document.body.firstChild);
-      }
-      notificationPanel.classList.toggle('active');
+// function createNotificationPanel() {
+//     let notificationPanel = document.getElementById('notif-div');
+    
+//     if (!notificationPanel) {
+//         notificationPanel = document.createElement('div');
+//         notificationPanel.id = 'notif-div';
+//         notificationPanel.className = 'notif-div';
+//         // notificationPanel.innerHTML = '<p>This is your notification panel.</p>';
+//         document.body.insertBefore(notificationPanel, document.body.firstChild);
+//     }
+//     notificationPanel.classList.toggle('active');
+// }
+// Function to create or toggle the menu panel
+
+  function createmenuPanel() {
+    let menu = document.getElementById('menu');
+    const joingame = document.createElement('button');
+    const BlockUser = document.createElement('button');
+    joingame.textContent = 'play'
+    joingame.className = 'join-game';
+    joingame.id = 'game-play';
+    BlockUser.textContent = 'Block'
+    BlockUser.className = 'BlockUser';
+    BlockUser.id = 'BlockUser';
+    
+    if (!menu) {
+      menu = document.createElement('div')
+      menu.className = 'menu'
+      menu.id = 'menu'
+      menu.appendChild(joingame)
+      menu.appendChild(BlockUser)
+      let profile_container = document.getElementById('profile-container')
+      profile_container.insertBefore(menu, profile_container.firstChild);
+    }
+    menu.classList.toggle('active');
+    GamePlay();
   }
 
 // Hide the notification panel if clicking outside
-document.addEventListener('click', event => {
-    const notificationPanel = document.getElementById('notif-div');
-    const notifIcon = document.getElementById('notif');
+// document.addEventListener('click', event => {
+//     const notificationPanel = document.getElementById('notif-div');
+//     const notifIcon = document.getElementById('notification-icon');
     
-    if (notificationPanel && notificationPanel.classList.contains('active') && 
-        !notificationPanel.contains(event.target) && 
-        !notifIcon.contains(event.target)) {
-        notificationPanel.classList.remove('active');
-    }
+//     if (notificationPanel && notificationPanel.classList.contains('active') && 
+//         !notificationPanel.contains(event.target) && 
+//         !notifIcon.contains(event.target)) {
+//         notificationPanel.classList.remove('active');
+//     }
+// });
+
+// Hide the menu panel if clicking outside
+document.addEventListener('click', event => {
+  const menu = document.getElementById('menu');
+  const VerticalDots = document.getElementById('VerticalDots');
+  
+  if (menu && menu.classList.contains('active') && 
+      !menu.contains(event.target) && 
+      !VerticalDots.contains(event.target)) {
+      menu.classList.remove('active');
+  }
 });
 
-// Add click event listener to the notification icon
-document.getElementById('notif').addEventListener('click', event => {
-    event.stopPropagation(); // Prevent the event from bubbling up
-    createNotificationPanel();
-});
+  // Add click event listener to the notification icon
+  // document.getElementById('notification-icon').addEventListener('click', event => {
+  //     event.stopPropagation(); // Prevent the event from bubbling up
+  //     createNotificationPanel();
+  // });
 
   function fetchData() {
     UserData.friends.forEach(friend => {
@@ -257,21 +310,25 @@ document.getElementById('notif').addEventListener('click', event => {
       document.getElementById('contacts-list').appendChild(li);
   }
 
-  function chatListview(user, FunctionTarget) {
-    console.log(`chatlistview called user is ${user}`)
-    axios.get('http://127.0.0.1:9000/chat/GetChatID/', {
-      params: {
-        username1: user,
-        username2: username
-  }})
-    .then(response => {
-      console.log('request send ....', response.data.ChatID)
-      if (FunctionTarget === 'createWebSocket'){
-        createWebSocket(response.data.ChatID, user);
-        // GamePlaySocketEngine(response.data.ChatID, username, user);
+async function chatListview(user, FunctionTarget) {
+  let access_token = await getJWT();
+  console.log(`chatlistview called user is ${user}`)
+  const data = await fetch(`http://127.0.0.1:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
+    method: "GET",
+    headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json'  // Optional, but a good practice
+    }
+  })
+  .then(response => response.json()) // Call json() to parse the response
+  .then(data => {
+    console.log('request send ....', data.ChatID)
+    if (FunctionTarget === 'createWebSocket'){
+      createWebSocket(data.ChatID, user);
+      // GamePlaySocketEngine(response.data.ChatID, username, user);
       }
-    })
-    .catch(handleError);
+  })
+  .catch(handleError);
   }
 
   function handleError(error) {
@@ -292,11 +349,10 @@ document.getElementById('notif').addEventListener('click', event => {
 
       const contactProfile = document.createElement('div');
       contactProfile.className = 'contact-profile';
-      const joingame = document.createElement('button');
-      joingame.textContent = 'play'
-      joingame.className = 'join-game';
-      joingame.id = 'game-play';
-
+      const VerticalDots = document.createElement('img');
+      VerticalDots.src = "https://localhost/chat/images/dots.svg"
+      VerticalDots.className = "VerticalDots"
+      VerticalDots.id = "VerticalDots"
       const img = document.createElement('img');
       img.src = "https://cdn.intra.42.fr/users/7f374d7bb3c60ce254cc0d66f25f1957/werrahma.JPG";
       img.alt = '';
@@ -306,12 +362,17 @@ document.getElementById('notif').addEventListener('click', event => {
 
       contactProfile.appendChild(img);
       contactProfile.appendChild(name);
-      contactProfile.appendChild(joingame);
+      contactProfile.appendChild(VerticalDots);
       profileContainer.appendChild(contactProfile);
   
       const newUrl = `https://localhost/chat/?user=${user}`
-      console.log(`new query --------------- ${newUrl}`)
       history.pushState(null, '', newUrl);
+      // Add click event listener to the VerticalDots icon
+      document.getElementById('VerticalDots').addEventListener('click', event => {
+        event.stopPropagation();
+        createmenuPanel();
+      });
+
     }
 }
 

@@ -1,4 +1,7 @@
 # from django.contrib.auth import get_user_model
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 from rest_framework import permissions, status
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
@@ -11,14 +14,14 @@ from rest_framework.generics import (
 from chat.models import Chat, Contact, User
 # from chat.views import get_user_contact
 from .serializers import ChatSerializer
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ChatUserSerializer
 from rest_framework.response import Response
 
 
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from .serializers import LoginSerializer
-
+import requests
 
 class AdminLoginView(APIView):
     def post(self, request, *args, **kwargs):
@@ -44,40 +47,52 @@ def get_user_contact(username):
     contact  = get_object_or_404(Contact, user=user)
     return contact
 
-class UserListView(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserListView(ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
 class GetChatID(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
+
         user1 = request.query_params.get('username1')
         user2 = request.query_params.get('username2')
-        print(f"i am {user1} user1 and me {user2} user2", flush=True)
+        # authorization = request.headers.get('Authorization')
+    
+        # if authorization:
+        #     token = authorization.split(' ')[1]  # 'Bearer <token>'
+        #     print('Authorization Token:', token, flush=True)
+        try:
+            user1_contact = Contact.objects.get(user__username=user1)
+            user2_contact = Contact.objects.get(user__username=user2)
+            is_friend = user1_contact.user.friends.filter(user=user2_contact.user).exists()
+            print('is_friend ------------', is_friend, flush=True)
+        except Contact.DoesNotExist:
+            return Response({'error': 'One or both users do not exist'}, status=status.HTTP_404_NOT_FOUND)
+        # i can u get_or_create method in this case to optimise it
+        chat = Chat.objects.filter(participants=user1_contact).filter(participants=user2_contact).first()
+        if chat:
+            serializer = ChatSerializer(chat)
+            print("Chat already exists", flush=True)
+            return Response({'ChatID': chat.id}, status=status.HTTP_200_OK)
+        else:
+            new_chat = Chat.objects.create()
+            new_chat.participants.add(user1_contact, user2_contact)
+            serializer = ChatSerializer(new_chat)
+            return Response({'chat_id': new_chat.id}, status=status.HTTP_201_CREATED)
 
-        # Print the parameters in the terminal
-        print(f"user1: {user1}, user2: {user2}")
-        all_chats = Chat.objects.all()
-        for chat in all_chats:
-            usernames = [participant.user.username for participant in chat.participants.all()]
-            if len(usernames) < 2:
-                print(f"Skipping chat {chat.id} due to insufficient participants")
-                continue
-            if (user1 == usernames[0] or user1 == usernames[1]) and (user2 == usernames[0] or user2 == usernames[1]):
-                print(f'chat id:  {chat.id}')
-                return Response({'ChatID': chat.id}, status=status.HTTP_200_OK)
-        print("the participant doesn't exist")
-        return Response({'message': 'participant not found'}, status=status.HTTP_404_NOT_FOUND)
+# class ChatListView(ListAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = ChatSerializer
+#     permission_classes = (permissions.AllowAny, )
 
-class ChatListView(ListAPIView):
-    serializer_class = ChatSerializer
-    permission_classes = (permissions.AllowAny, )
-
-    def get_queryset(self):
-        queryset = Chat.objects.all()
-        username = self.request.query_params.get('username', None)
-        if username is not None:
-            contact = get_user_contact(username)
-            queryset = contact.chats.all()
-        return queryset
+#     def get_queryset(self):
+#         queryset = Chat.objects.all()
+#         username = self.request.query_params.get('username', None)
+#         if username is not None:
+#             contact = get_user_contact(username)
+#             queryset = contact.chats.all()
+#         return queryset
 
 
 class ChatDetailView(RetrieveAPIView):
@@ -86,9 +101,9 @@ class ChatDetailView(RetrieveAPIView):
     permission_classes = (permissions.AllowAny, )
 
 
-class ChatCreateView(CreateAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
+# class ChatCreateView(CreateAPIView):
+#     queryset = Chat.objects.all()
+#     serializer_class = ChatSerializer
     # permission_classes = (permissions.IsAuthenticated, )
 
 
@@ -102,16 +117,3 @@ class ChatDeleteView(DestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
     permission_classes = (permissions.IsAuthenticated, )
-
-from django.http import HttpResponse
-from django.contrib.auth import get_user_model
-
-def test(request):
-    User = get_user_model()
-    users = User.objects.all()
-    response_content = "hello tests view\n"
-    
-    for user in users:
-        response_content += f"username: {user.username}\n"
-    
-    return HttpResponse(response_content)

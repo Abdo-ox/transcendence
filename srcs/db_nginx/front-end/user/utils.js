@@ -1,3 +1,9 @@
+export let runHeader = 0;
+
+export const setRunedHeader = () => {
+    runHeader = 1;
+}
+
 export const getCsrfToken = async () => {
     return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response => response.json())
@@ -5,6 +11,18 @@ export const getCsrfToken = async () => {
         .catch(error => {
             console.log("can't get the csrf token :", error);
         });
+}
+
+export const redirectTwoFactor = (data, status) => {
+    console.log("pass by redirect 2fa");
+    if (data.status) {
+        if (data.status == "redirect") {
+            if (status == 200)
+                NewPage("/2faa", true);
+            if (status == 500)
+                alert("cant send mail");
+        }
+    }
 }
 
 export const getJWT = async () => {
@@ -67,7 +85,7 @@ const loadNewScriptDispatchDOMevent = (scripts, event) => {
 
     scripts.forEach(script => {
         let element = document.createElement('script');
-        if (script.src && !script.src.includes('header.js')) {
+        if (script.src && (!script.src.includes('header.js') || !runHeader)) {
             element.src = script.src + '?t=' + new Date().getTime();
             element.type = 'module';
         }
@@ -107,6 +125,7 @@ export const NewPage = async (url, thr = true, addhistory = true) => {
         console.log("error in fetch the new page '", url, "'.");
     }
     if (thr)
+        
         throw "change page to:=>" + url;
 }
 
@@ -114,6 +133,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     let fields = {};
     for (const id of ids) {
         try {
+            console.log("id:", id, "|");
             fields[id] = document.getElementById(id).value;
         }
         catch (error) {
@@ -128,12 +148,14 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return;
         }
     }
-    for(let i = 0; i < 10;i++)
-    {
-    fields['username'] = 'user' + i;
-    fields['email'] = 'email' + i + '@gmail.com';
-    fields['password2'] = 'hello1998';
-    fields['password1'] = 'hello1998';
+    console.log(`hereerere=================`);
+    console.log(`fields --- ${fields}`);
+    // for(let i = 0; i < 10;i++)
+    // {
+    // fields['username'] = 'user' + i;
+    // fields['email'] = 'email' + i + '@gmail.com';
+    // fields['password2'] = 'hello1998';
+    // fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers: {
@@ -148,13 +170,15 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
         }
         return response.json();
     }).then(data => {
+        console.log("*********************handledata called*************************");
+
         // handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });
     }
 
-}
+// }
 
 
 const t = () => {

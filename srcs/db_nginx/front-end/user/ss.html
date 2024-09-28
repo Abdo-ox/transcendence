@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+<style>
+    .image-cadre {
+    width: 300px;  /* Set the width of the cadre */
+    height: 300px; /* Set the height of the cadre */
+    border: 2px solid #000; /* Add a border to create a frame effect */
+    display: none;  /* Initially hide the cadre until image is uploaded */
+    justify-content: center; /* Center the image horizontally */
+    align-items: center;     /* Center the image vertically */
+    overflow: hidden;        /* Hide any overflow if the image is larger */
+    background-color: #f0f0f0; /* Optional: Add background color if image doesn't fill the frame */
+}
+
+.image-cadre img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the cadre without distortion */
+}
+
+</style>
+<body>
+    
+<!-- Upload Button and Hidden Input -->
+<button id="uploadBtn">Upload Image</button>
+<input type="file" id="imageUpload" accept="image/*" style="display: none;" />
+
+<!-- Cadre to Display the Image -->
+<div class="image-cadre" id="imageCadre">
+    <img id="imagePreview" src="" alt="Uploaded Image" />
+</div>
+
+<script>
+    const uploadBtn = document.getElementById('uploadBtn');
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageCadre = document.getElementById('imageCadre');
+
+    // Trigger file input when upload button is clicked
+    uploadBtn.addEventListener('click', function() {
+        imageUpload.click();
+    });
+
+    // Show the uploaded image in the cadre
+    imageUpload.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imageCadre.style.display = 'block'; // Show the cadre after image upload
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+</body>
+</html>

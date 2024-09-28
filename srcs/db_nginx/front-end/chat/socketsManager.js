@@ -1,6 +1,9 @@
-export function createWebSocket(ChatID, username)
+import { getJWT } from 'https://localhost/home/utils.js';
+
+export async function createWebSocket(ChatID, username)
 {
-  const token = localStorage.getItem('access_token');
+  // const token = localStorage.getItem('access_token');
+  let token = await getJWT();
   const chatSocket = new WebSocket('ws://127.0.0.1:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
 
   chatSocket.onopen = () => {
