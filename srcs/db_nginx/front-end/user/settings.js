@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById("first_name").value = data.current.first_name;
                 document.getElementById("last_name").value = data.current.last_name;
                 document.getElementById("email").value = data.current.email;
-                document.getElementById("full-name").innerHTML = data.current.first_name + " " + data.current.last_name;
             }).catch(errror => console.log("catch_settings", errror));
             
         document.getElementById("pen").addEventListener("click", () => {

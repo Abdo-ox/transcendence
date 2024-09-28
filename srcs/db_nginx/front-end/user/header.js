@@ -1,4 +1,4 @@
-import { NewPage, getJWT , setRunedHeader} from "/home/utils.js";
+import { NewPage, getJWT, setRunedHeader } from "/home/utils.js";
 
 setRunedHeader();
 
@@ -27,16 +27,19 @@ document.querySelectorAll('profile-btn').forEach(button => {
 });
 
 const menuicon = document.getElementById("menu-icon");
-if (menuicon)
+if (menuicon) {
+    console.log("menuicon :", menuicon);
     menuicon.addEventListener('click', () => {
-        document.getElementById("side-bar").style.display = 'flex';
+        document.getElementById("side-bar").style.setProperty('display', 'flex', 'important');
     });
+}
 
 const closeicon = document.getElementById("close-icon");
-if (closeicon)
+if (closeicon) {
     closeicon.addEventListener('click', () => {
         document.getElementById("side-bar").style.display = 'none';
     });
+}
 
 fetch('https://localhost:8000/api/suggest/friend/', {
     headers: {
