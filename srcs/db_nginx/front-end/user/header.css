@@ -263,3 +263,65 @@ header .action .searchBx input {
     }
 
 }
+
+
+.notif-div {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 65px;
+    right: 80px;
+    width: 250px;
+    height: 40%;
+    border-radius: 20px;
+    background-color: #b5c2fd;
+    z-index: 1000;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.notif-div.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notiItem {
+    position: relative;
+    display: flex;
+    padding: 15px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    cursor: pointer;
+    background-color: #b5c2fd;
+}
+
+.notiItem:hover {
+    background-color: #a2aee3;
+}
+
+.notiItem .accept .button {
+    cursor: pointer;
+    position: absolute;
+    width: 55px;
+    height: 50%;
+    right: 10px;
+    line-height: 50%;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: #a2aee3;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.notiItem img {
+    display: block;
+    width: 30px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.notiItem .text p {
+    color: white;
+    width: calc(100% - 20px);
+}

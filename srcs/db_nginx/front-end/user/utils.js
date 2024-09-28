@@ -148,12 +148,14 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return;
         }
     }
-    for(let i = 0; i < 100;i++)
-    {
-    fields['username'] = 'user' + i;
-    fields['email'] = 'email' + i + '@gmail.com';
-    fields['password2'] = 'hello1998';
-    fields['password1'] = 'hello1998';
+    console.log(`hereerere=================`);
+    console.log(`fields --- ${fields}`);
+    // for(let i = 0; i < 10;i++)
+    // {
+    // fields['username'] = 'user' + i;
+    // fields['email'] = 'email' + i + '@gmail.com';
+    // fields['password2'] = 'hello1998';
+    // fields['password1'] = 'hello1998';
     fetch(url, {
         method: 'POST',
         headers: {
@@ -176,7 +178,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     });
     }
 
-}
+// }
 
 
 const t = () => {
