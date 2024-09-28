@@ -1,3 +1,9 @@
+export let runHeader = 0;
+
+export const setRunedHeader = () => {
+    runHeader = 1;
+}
+
 export const getCsrfToken = async () => {
     return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response => response.json())
@@ -6,6 +12,7 @@ export const getCsrfToken = async () => {
             console.log("can't get the csrf token :", error);
         });
 }
+
 export const redirectTwoFactor = (data, status) => {
     console.log("pass by redirect 2fa");
     if (data.status) {
@@ -17,6 +24,7 @@ export const redirectTwoFactor = (data, status) => {
         }
     }
 }
+
 export const getJWT = async () => {
     const access = localStorage.getItem('access_token');
     console.log("access at n getjwt:", access);
@@ -77,7 +85,7 @@ const loadNewScriptDispatchDOMevent = (scripts, event) => {
 
     scripts.forEach(script => {
         let element = document.createElement('script');
-        if (script.src && !script.src.includes('header.js')) {
+        if (script.src && (!script.src.includes('header.js') || !runHeader)) {
             element.src = script.src + '?t=' + new Date().getTime();
             element.type = 'module';
         }
