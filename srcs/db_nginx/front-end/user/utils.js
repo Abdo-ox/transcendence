@@ -148,7 +148,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return;
         }
     }
-    for(let i = 0; i < 10;i++)
+    for(let i = 0; i < 100;i++)
     {
     fields['username'] = 'user' + i;
     fields['email'] = 'email' + i + '@gmail.com';
@@ -170,7 +170,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).then(data => {
         console.log("*********************handledata called*************************");
 
-        handle_data(data);
+        // handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });
