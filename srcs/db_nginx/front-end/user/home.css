@@ -171,53 +171,6 @@ body {
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
 }
-/* 
-.flex1 .nav {
-
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    margin-top: 25px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-} */
-
-/* .flex1 ul {
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 80%;
-} */
-/* 
-.flex1 li {
-    margin-top: 25px;
-    width: 90%;
-}
-
-.flex1 li a {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 1em;
-    font-weight: 600;
-    border: 1px solid #0c3e73;
-    box-shadow: 0 0 5px #0c3e73;
-    margin-top: 25px;
-    box-sizing: border-box;
-} */
-
-/* .flex1 li a:hover {
-    background: #1aeeef;
-    color: #050e2d;
-    box-shadow: 0 0 10px #1aeeef;
-}
-*/
-
 
 /****flex2****/
 .flex2 {
@@ -1129,6 +1082,7 @@ span::before {
     border-radius: 25px;
     background-color :#11152efa;
     padding: 5px 14px 5px 8px;
+    box-shadow: 0 0 16px rgba(224, 81, 81, 0.418);
 }
 
 .logout-container h4 {
@@ -1234,6 +1188,7 @@ span::before {
 
     .flex1 {
         order: 3;
+        height: 800px;
         position: relative;
         width: 100%;
         max-width: unset;
@@ -1260,6 +1215,9 @@ span::before {
     }
 
     .users-list {
+        position: relative;
+        height: 550px;
+        margin-bottom: 65px;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;

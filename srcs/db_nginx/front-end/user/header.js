@@ -41,7 +41,7 @@ if (closeicon) {
     });
 }
 
-fetch('https://localhost:8000/api/suggest/friend/', {
+fetch('https://localhost:8000/api/currentUser/', {
     headers: {
         'Authorization': `Bearer ${await getJWT()}`,
     }
@@ -51,6 +51,7 @@ fetch('https://localhost:8000/api/suggest/friend/', {
     }
     throw "error in loading data of the current user";
 }).then(data => {
+    console.log("data", data);
     document.getElementById("profile-image-header").src = data.currentUser.profile_image;
     document.getElementById("username-header").innerHTML = data.currentUser.username;
 }).catch(error => {
@@ -119,3 +120,22 @@ export function createNotificationPanel() {
     }
     notificationPanel.classList.toggle('active');
 }
+
+fetch("https://localhost:8000/friend/friendRequests/", {
+    headers: {
+        'Authorization': `Bearer ${await getJWT()}`,
+    }
+}).then(response => {
+    if (response.ok)
+        return response.json();
+    console.log("error in fetch friend requests");
+}).then(data => {
+    console.log("data", data);
+    data.forEach(sender => {
+        senderContainer = document.createElement('div');
+        senderContainer.innerHTML = `<h5>${data.username}</h5>`
+        senderContainer.innerHTML = `<img>${data.profile_image}</img>`
+    });
+}).catch(error => {
+    console.log("can't fetch friend requests error accured ");
+});

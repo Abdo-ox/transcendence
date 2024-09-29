@@ -172,7 +172,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).then(data => {
         console.log("*********************handledata called*************************");
 
-        // handle_data(data);
+        handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });
