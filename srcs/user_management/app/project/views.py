@@ -21,28 +21,47 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['POST'])
 def resetpassword(request):
     body_data = json.loads(request.body)  # No decoding here
-    user_email = body_data.get('email')  
+    user_email = body_data.get('email')
     try:
         user = User.objects.get(email=user_email)
-        confirmation_code = str(random.randint(100000,999999))
-        print("verfication code",confirmation_code,flush=True)
-        subject = 'Your confirmation Code '
-        message = f'Yourconfirmation code is :{confirmation_code}'
-        from_email = settings.DEFAULT_FROM_EMAIL
-        recipient_list = [user_email]
-        try:
-            send_mail(subject,message,from_email,recipient_list)
-            request.user.reset_Code = confirmation_code
-            request.user.save()
-            print("Two Factor  code is set",request.user.reset_Code,flush=True)
-            return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
-        except Exception as e:
-            return JsonResponse({"status" : "failed","message": f"Failed to send email: {str(e)}"}, status=500)
     except User.DoesNotExist:
         print("User not found.")
-        return JsonResponse({"status": "no", "message" : "code  2fa send"},status=200)
+        return JsonResponse({"status": "no"},status=404)
+    confirmation_code = str(random.randint(100000,999999))
+    user.reset_Code = confirmation_code 
+    user.save()
+    # request.session['reset_code'] = confirmation_code
+    # request.session['reset_user_email'] = user_email
+    print("verfication code",confirmation_code,flush=True)
+    subject = 'Your confirmation Code '
+    message = f'Yourconfirmation code is :{confirmation_code}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user_email]
+    try:
+        print(" email recipion is : ",recipient_list," email from email is : ",from_email)
+        send_mail(subject,message,from_email,recipient_list)
+        return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
+    except Exception as e:
+        return JsonResponse({"status" : "failed","message": f"Failed to send email: {str(e)}"}, status=500)
         
-        
+@api_view(['POST'])
+def reset(request):
+    body_data = json.loads(request.body) 
+    code = body_data.get('code')
+    psw  = body_data.get('password')
+    user_email = body_data.get('email')
+    try:
+        user = User.objects.get(email=user_email)
+    except User.DoesNotExist:
+        return JsonResponse({"status": "failed", "message": "User not found"}, status=404)
+    print("user resetcode  : ",user.reset_Code ,flush=True)
+    print("user name : ",user.username ,flush=True)
+    if str(user.reset_Code) == code:
+        user.set_password(psw)
+        user.save()
+        return JsonResponse({"status": "success", "message": "Password reset successful"}, status=200)    
+    else:
+        return JsonResponse({"status": "failed", "message": "Incorrect confirmation code"})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

@@ -1,4 +1,4 @@
-import { getCsrfToken, NewPage, submitForm, getJWT } from "https://localhost/home/utils.js";
+import { NewPage } from "https://localhost/home/utils.js";
 
 document.getElementById("submit").addEventListener("click", async () => {
 
@@ -13,8 +13,11 @@ document.getElementById("submit").addEventListener("click", async () => {
     })
         .then(response => response.json())
         .then((data) => {
+            console.log("*******data response **** is : ", data);
             if (data.status == 'redirect')
-                NewPage('/reset', true)
+                {
+                    NewPage('/reset' + '?email='+ email, true)
+                }
             if (data.status == 'failed')
             {
                 document.getElementById("error message").innerHTML = "failed to send code";
