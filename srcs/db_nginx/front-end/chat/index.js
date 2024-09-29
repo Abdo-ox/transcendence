@@ -1,6 +1,7 @@
 import { createWebSocket } from './socketsManager.js';
 import { getJWT } from 'https://localhost/home/utils.js';
-import { displayNotification } from 'https://localhost/home/header.js';
+import { GamePlaySocket } from 'https://localhost/home/header.js';
+// import { displayNotification } from 'https://localhost/home/header.js';
 // import { createNotificationPanel } from 'https://localhost/home/header.js';
 
 
@@ -25,7 +26,6 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
 .then(data => {
   console.log(data)
   bodychat(data)
-  // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
 })
 .catch(error => {
   console.error('Error:', error); // Handle errors
@@ -34,11 +34,11 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
 async function bodychat(UserData) {
   const username = UserData.username;
   // let token = localStorage.getItem('access_token');
-  const token = await getJWT();
-  const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${token}`);
-  GamePlaySocket.onopen = () => {
-    console.log('Notif WebSocket connection opened');
-  };
+  // const token = await getJWT();
+  // const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${token}`);
+  // GamePlaySocket.onopen = () => {
+  //   console.log('Notif WebSocket connection opened');
+  // };
   let htmlContent = 0;
   if (!htmlContent){
   htmlContent = `
@@ -138,61 +138,25 @@ async function bodychat(UserData) {
           console.log('WebSocket connection opened');
           GamePlaySocket.send(JSON.stringify({
             'from': username,
-            'to': nameElement.textContent
+            'to': nameElement.textContent,
+            'message': `${username} invites u to play.`
           }));
         // };
       }
     });
   }
 
-  GamePlaySocket.onmessage = (e) => {
-      var data = JSON.parse(e.data);
-      console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
-      if (data['to'] === username)
-        displayNotification(data['message'])
-    };
+  // GamePlaySocket.onmessage = (e) => {
+  //     var data = JSON.parse(e.data);
+  //     console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
+  //     if (data['to'] === username)
+  //       displayNotification(data['message'])
+  //   };
 
-    GamePlaySocket.onclose = () => {
-      console.error('GamePlaySocket closed');
-    };
-// function displayNotification(message) {
-//   createNotificationPanel();
-//   var notifDiv = document.getElementById('notif-div');
-//   var notiItem = document.createElement('div');
-//   notiItem.id = 'notiItem'
-//   notiItem.className = 'notiItem'
-//   var text = document.createElement('div');
-//   text.className = 'text'
-//   var accept = document.createElement('div');
-//   accept.className = 'accept'
-//   var button = document.createElement('button');
-//   button.className  = 'button'
-//   button.textContent = 'accept'
-//   var Notif = document.createElement('p');
-//   Notif.textContent = message;
-//   // Notif.textContent = 'play request';
-//   const img = document.createElement('img')
-//   img.src =  "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
-//   text.appendChild(Notif)
-//   accept.appendChild(button)
-//   notiItem.appendChild(img)
-//   notiItem.appendChild(text)
-//   notiItem.appendChild(accept)
-//   notifDiv.appendChild(notiItem)
-// }
-// Function to create or toggle the notification panel
-// function createNotificationPanel() {
-//     let notificationPanel = document.getElementById('notif-div');
-    
-//     if (!notificationPanel) {
-//         notificationPanel = document.createElement('div');
-//         notificationPanel.id = 'notif-div';
-//         notificationPanel.className = 'notif-div';
-//         // notificationPanel.innerHTML = '<p>This is your notification panel.</p>';
-//         document.body.insertBefore(notificationPanel, document.body.firstChild);
-//     }
-//     notificationPanel.classList.toggle('active');
-// }
+  //   GamePlaySocket.onclose = () => {
+  //     console.error('GamePlaySocket closed');
+  //   };
+
 // Function to create or toggle the menu panel
 
   function createmenuPanel() {
@@ -219,17 +183,6 @@ async function bodychat(UserData) {
     GamePlay();
   }
 
-// Hide the notification panel if clicking outside
-// document.addEventListener('click', event => {
-//     const notificationPanel = document.getElementById('notif-div');
-//     const notifIcon = document.getElementById('notification-icon');
-    
-//     if (notificationPanel && notificationPanel.classList.contains('active') && 
-//         !notificationPanel.contains(event.target) && 
-//         !notifIcon.contains(event.target)) {
-//         notificationPanel.classList.remove('active');
-//     }
-// });
 
 // Hide the menu panel if clicking outside
 document.addEventListener('click', event => {
@@ -242,12 +195,6 @@ document.addEventListener('click', event => {
       menu.classList.remove('active');
   }
 });
-
-  // Add click event listener to the notification icon
-  // document.getElementById('notification-icon').addEventListener('click', event => {
-  //     event.stopPropagation(); // Prevent the event from bubbling up
-  //     createNotificationPanel();
-  // });
 
   function fetchData() {
     UserData.friends.forEach(friend => {

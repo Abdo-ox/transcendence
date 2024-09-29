@@ -273,7 +273,7 @@ header .action .searchBx input {
     right: 80px;
     width: 250px;
     height: 40%;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     background-color: #b5c2fd;
     z-index: 1000;
     transition: opacity 0.3s ease, visibility 0.3s ease;
