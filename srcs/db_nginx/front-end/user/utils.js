@@ -94,6 +94,7 @@ const loadNewScriptDispatchDOMevent = (scripts, event) => {
 }
 
 export const NewPage = async (url, thr = true, addhistory = true) => {
+    console.log(" new page called for the url ",url);
     const response = await fetch(url);
     if (response.ok){
         const data =  await response.text();
@@ -140,12 +141,14 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
             return;
         }
     }
-    for(let i = 0; i < 10;i++)
-    {
-    fields['username'] = 'user' + i;
-    fields['email'] = 'email' + i + '@gmail.com';
-    fields['password2'] = 'hello1998';
-    fields['password1'] = 'hello1998';
+    // for(let i = 0; i < 10;i++)
+    // {
+    // fields['username'] = 'user' + i;
+    // fields['email'] = 'email' + i + '@gmail.com';
+    // console.log("emaill is ",email);
+    // fields['password2'] = 'hello1998';
+    // fields['password1'] = 'hello1998';
+    console.log("feild is :",fields);
     fetch(url, {
         method: 'POST',
         headers: {
@@ -166,7 +169,7 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");
     });
-    }
+    // }
 
 }
 

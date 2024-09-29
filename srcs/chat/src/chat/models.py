@@ -117,6 +117,7 @@ class User(AbstractBaseUser):
     is_2fa_passed = models.BooleanField(default=False)
     Twofa_Code    = models.BigIntegerField(default=0)
     enable2fa     = models.BooleanField(default=False)
+    reset_Code    = models.BigIntegerField(default=0)
 
     
     class Meta:

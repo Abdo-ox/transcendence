@@ -36,7 +36,7 @@ urlpatterns = [
     path('friend/', include('friendship.urls')),
     path('friend/', friend), # temp 
     path('api/', include('user.urls')),
-    path('resetpassword/ ', resetpassword),
+    path('resetpassword/', resetpassword),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

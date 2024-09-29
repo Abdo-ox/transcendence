@@ -21,7 +21,28 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['POST'])
 def resetpassword(request):
     body_data = json.loads(request.body)  # No decoding here
-    user_email = body_data.get('email') 
+    user_email = body_data.get('email')  
+    try:
+        user = User.objects.get(email=user_email)
+        confirmation_code = str(random.randint(100000,999999))
+        print("verfication code",confirmation_code,flush=True)
+        subject = 'Your confirmation Code '
+        message = f'Yourconfirmation code is :{confirmation_code}'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [user_email]
+        try:
+            send_mail(subject,message,from_email,recipient_list)
+            request.user.reset_Code = confirmation_code
+            request.user.save()
+            print("Two Factor  code is set",request.user.reset_Code,flush=True)
+            return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
+        except Exception as e:
+            return JsonResponse({"status" : "failed","message": f"Failed to send email: {str(e)}"}, status=500)
+    except User.DoesNotExist:
+        print("User not found.")
+        return JsonResponse({"status": "no", "message" : "code  2fa send"},status=200)
+        
+        
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

@@ -1,6 +1,7 @@
 import { getCsrfToken, NewPage, submitForm } from "https://localhost/home/utils.js";
 
 const handle_data = (data) => {
+    console.log("daata registred is ",data);
     if (data.state === 'registered')
         NewPage('/login', false);
 }

@@ -4,6 +4,7 @@ console.log("the login.js called");
 const handle_data = (data) => {
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    console.log("ended here ==============");
     NewPage('/home', false);
 }
 
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/register", false);
         });
 
-        document.getElementById('login-btn').addEventListener('click', () => {
+        document.getElementById('login-btn').addEventListener('click', (event) => {
             submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
         });
 

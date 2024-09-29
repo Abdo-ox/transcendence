@@ -77,6 +77,10 @@ http {
             alias /usr/share/nginx/html/user;
             index resetpassword.html;
         }
+        location /reset{
+            alias /usr/share/nginx/html/user;
+            index reset.html;
+        }
       
     }
     server {
