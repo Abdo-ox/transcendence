@@ -47,10 +47,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', 
     'corsheaders',
-    'django_otp',
-    'django_otp.plugins.otp_totp',  
-    'two_factor', 
-    'qrcode',  
+    # 'django_otp',
+    # 'django_otp.plugins.otp_totp',  
+    # 'two_factor', 
+    # 'qrcode',  
 ]
 
 REST_FRAMEWORK = {

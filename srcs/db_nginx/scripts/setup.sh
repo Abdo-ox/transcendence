@@ -65,6 +65,10 @@ http {
             alias /usr/share/nginx/html/game;
             index local.html;
         }
+        location /tournament {
+            alias /usr/share/nginx/html/game;
+            index tournament.html;        
+        }
         location /profile {
             alias /usr/share/nginx/html/user;
             index profile.html;

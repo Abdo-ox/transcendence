@@ -96,6 +96,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             NewPage("/local", false);
         });
 
+        document.getElementById("add").addEventListener('click', async() => {
+            await NewPage("/tournament", false);
+        });
+
         // end of game events
 
         // add event listener for sending friend request
