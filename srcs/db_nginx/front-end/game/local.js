@@ -84,9 +84,9 @@ try {
                 this.ball.x = canvas.width * 0.75;
                 this.ball.y = Math.random() * canvas.height;
             }
-            else if (this.ball.x < 30 && this.ball.x_d == -1 && this.ball.x - this.r <= this.player1.x + this.r && this.ball.x - this.r >= this.player1.x && this.ball.y - this.r >= this.player1.y && this.ball.y + this.r <= this.player1.y + this.len)
+            else if (this.ball.x < canvas.width * 0.1 && this.ball.x_d == -1 && this.ball.x - this.r <= this.player1.x + this.r && this.ball.x - this.r >= this.player1.x && this.ball.y - this.r >= this.player1.y && this.ball.y + this.r <= this.player1.y + this.len)
                 this.ball.x_d *= -1;
-            else if (this.ball.x > canvas.width - 30 && this.ball.x_d == 1 && this.ball.x + this.r >= this.player2.x && this.ball.x + this.r <= this.player2.x + this.r && this.ball.y - this.r >= this.player2.y && this.ball.y + this.r <= this.player2.y + this.len)
+            else if (this.ball.x > canvas.width * 0.9 && this.ball.x_d == 1 && this.ball.x + this.r >= this.player2.x && this.ball.x + this.r <= this.player2.x + this.r && this.ball.y - this.r >= this.player2.y && this.ball.y + this.r <= this.player2.y + this.len)
                 this.ball.x_d *= -1;
             this.ball.x += this.v * this.ball.x_d;
             this.ball.y += this.v * this.ball.y_d;
