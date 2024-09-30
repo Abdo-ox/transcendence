@@ -28,7 +28,7 @@ try {
             this.ctx = canvas.getContext("2d");
             this.over = false;
             this.started = false;
-            this.v = 0.01 * canvas.height;
+            this.v = 0.015 * canvas.height;
             this.len = 0.25 * canvas.height; // paddles len
             this.r = 0.015 * canvas.height; // radius of ball and width of paddles
             this.ball = {

@@ -52,7 +52,7 @@ class GameLogic:
                 'y': (height / 2) - (0.125 * height),
                 'score': 0,
             },
-            'v': 0.01 * height,
+            'v': 0.015 * height,
             'len': 0.25 * height,
             'maxScore': 7,
             'over': False,
