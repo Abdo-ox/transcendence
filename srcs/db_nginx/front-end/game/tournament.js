@@ -4,9 +4,22 @@ let game = 0;
 
 document.getElementById('add-nickname').addEventListener('click', function() {
     const nicknameInput = document.getElementById('nickname');
+    const nicknameError = document.getElementById('nickname-error');
     const nickname = nicknameInput.value.trim();
+    
+    // Reset error message
+    nicknameError.style.display = 'none';
+    nicknameError.textContent = '';
 
-    if (nickname) {
+    // Validation checks
+    if (!nickname) {
+        nicknameError.textContent = 'Nickname cannot be empty.';
+    } else if (nickname.length > 15) {
+        nicknameError.textContent = "Nickname can't be longer than 15 characters.";
+    } else if (nicknames.includes(nickname)) {
+        nicknameError.textContent = 'Nickname already exists.';
+    } else {
+        // Valid nickname
         nicknames.push(nickname);
         nicknameInput.value = '';
         nicknameInput.placeholder = `Enter nickname ${++nicknameIndex}`;
@@ -15,10 +28,15 @@ document.getElementById('add-nickname').addEventListener('click', function() {
             document.getElementById('nickname-input').style.display = 'none';
             displayTournamentBracket();
         }
-    } else {
-        alert('Please enter a valid nickname.');
+        return; // Exit the function after successfully adding a nickname
     }
+
+    // Show the error message
+    nicknameError.style.display = 'block';
 });
+
+// ... (rest of your existing code)
+
 
 function displayTournamentBracket() {
     const bracket = document.getElementById('tournament-bracket');

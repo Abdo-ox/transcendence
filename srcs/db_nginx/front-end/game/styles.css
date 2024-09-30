@@ -118,7 +118,7 @@ canvas {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     margin-top: 0px;
 }
 
@@ -160,7 +160,7 @@ canvas {
 }
 
 .bracket-box {
-    width: 31%;
+    width: 26%;
     height: 60px;
     background-color: #1b2141;
     border: 2px solid #fff;
@@ -182,7 +182,7 @@ canvas {
     align-items: flex-end;
 }
 
-.left-column .bracket-box:nth-child(1),
+/* .left-column .bracket-box:nth-child(1),
 .left-column .bracket-box:nth-child(3) {
     position: relative;
 }
@@ -194,15 +194,14 @@ canvas {
     height: 4px;
     background: #fff;
     left: 100%;
-}
+} */
 
 
 .left-column .bracket-box:nth-child(2) {
     align-self: flex-end;
-    position: relative;
 }
 
-.left-column .bracket-box:nth-child(2)::after {
+/* .left-column .bracket-box:nth-child(2)::after {
     position: absolute;
     content: "";
     width: 56%;
@@ -217,14 +216,13 @@ canvas {
     height: 381%;
     background: #fff;
     left: -56%;
-}
+} */
 
 .right-column .bracket-box:nth-child(2) {
     align-self: flex-start;
-    position: relative;
 }
 
-.right-column .bracket-box:nth-child(2)::after {
+/* .right-column .bracket-box:nth-child(2)::after {
     position: absolute;
     content: "";
     width: 4px;
@@ -239,9 +237,9 @@ canvas {
     height: 4px;
     background: #fff;
     right: -56%;
-}
+} */
 
-.right-column .bracket-box:nth-child(1),
+/* .right-column .bracket-box:nth-child(1),
 .right-column .bracket-box:nth-child(3) {
     position: relative;
 }
@@ -253,7 +251,7 @@ canvas {
     height: 4px;
     background: #fff;
     right: 100%;
-}
+} */
 
 /* Styles for the nickname input */
 #nickname-input .input-group {
