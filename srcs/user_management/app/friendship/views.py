@@ -13,6 +13,7 @@ from user.serializers import CurrentSerializer
 def acceptFriendRequest(request):
     try:
         username = request.GET.get('username')
+        print(c.b, "friend", username, flush=True)
         if not username:
             return HttpResponse('Bad request',status=400)
         user = User.objects.get(username=username)
@@ -65,7 +66,7 @@ def createFriendRequest(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sendFriendRequests(request):
-    ids = FriendRequest.objects.filter(receiver=request.user).values_list('sender', flat=True)
+    ids = FriendRequest.objects.filter(receiver=request.user, is_active=True).values_list('sender', flat=True)
     print(c.r, "ids", ids, flush=True)
     
     senders = User.objects.filter(id__in=ids)

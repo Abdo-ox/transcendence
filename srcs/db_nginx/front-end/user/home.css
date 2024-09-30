@@ -94,6 +94,7 @@ body {
 
 .cancel-btn {
     display: none;
+    color: rgba(190, 7, 7, 0.904) !important;
 }
 
 .user button:hover,
@@ -504,7 +505,7 @@ section {
     height: max-content;
 }
 
-.text {
+.runk-text {
     /* color:#050e2d; */
     font-weight: bold;
     transform: rotate(-45deg);

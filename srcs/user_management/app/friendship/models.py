@@ -40,12 +40,12 @@ class FriendRequest(models.Model):
         return self.sender.username
 
     def accept(self):
-        recieverList = friendlist.objects.get_or_create(user=self.receiver)
+        recieverList, yes = FriendList.objects.get_or_create(user=self.receiver)
         if recieverList:
-            recieverList.addFreind(self.sender)
-            senderList = friendlist.objects.get(user=self.sender)
+            recieverList.addFriend(self.sender)
+            senderList = FriendList.objects.get(user=self.sender)
             if senderList:
-                senderList.addFreind(self.receiver)
+                senderList.addFriend(self.receiver)
                 self.is_active = False
                 self.save()
     

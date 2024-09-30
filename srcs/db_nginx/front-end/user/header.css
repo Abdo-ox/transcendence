@@ -266,8 +266,9 @@ header .action .searchBx input {
 
 
 .notif-div {
-    opacity: 0;
-    visibility: hidden;
+    /* opacity: 0; */
+    /* visibility: hidden; */
+    display: none;
     position: fixed;
     top: 65px;
     right: 80px;
@@ -279,10 +280,10 @@ header .action .searchBx input {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.notif-div.active {
+/* .notif-div.active {
     opacity: 1;
     visibility: visible;
-}
+} */
 
 .notiItem {
     position: relative;
