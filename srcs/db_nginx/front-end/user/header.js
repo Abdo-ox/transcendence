@@ -2,6 +2,34 @@ import { NewPage, getJWT, setRunedHeader } from "/home/utils.js";
 
 setRunedHeader();
 
+
+const access_token = await getJWT();
+let CurrentUser = "";
+const data = await fetch('https://localhost:8000/api/user/data/',{
+    headers:{
+        'Authorization': `Bearer ${access_token}`,
+    }
+  })
+  .then(response => response.json()) // Call json() to parse the response
+  .then(data => {
+    CurrentUser = data.username;
+    // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
+  })
+export const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
+GamePlaySocket.onopen = () => {
+    console.log('Notif WebSocket connection opened');
+};
+
+GamePlaySocket.onmessage = (e) => {
+    var data = JSON.parse(e.data);
+    console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
+    if (data['to'] === CurrentUser)
+        displayNotification(data['message'])
+    };
+    GamePlaySocket.onclose = () => {
+        console.error('GamePlaySocket closed');
+    };
+
 document.querySelectorAll('#settings-btn').forEach(button => {
     button.addEventListener('click', () => {
         NewPage("/settings", false);
