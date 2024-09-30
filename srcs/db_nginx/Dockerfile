@@ -11,7 +11,6 @@ COPY ./db_nginx/scripts/pg_hba.conf /etc/postgresql/15/main
 COPY ./db_nginx/scripts/postgresql.conf /etc/postgresql/15/main
 
 
-RUN apt update && apt install openssl > /dev/null 2>&1 
 RUN mkdir -p $CRT_PATH
 
 COPY ./db_nginx/scripts/setup.sh .

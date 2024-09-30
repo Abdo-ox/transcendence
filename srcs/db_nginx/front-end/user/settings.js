@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         //     if (canvas) {
         //         const blobimage = dataURLToBlob(canvas.toDataURL('image/webp'));
         //         formData.append('image', blobimage, 'cropped-image.webp');
-        //     }
+        //     }game
         //     fields.forEach(field => {
         //         const element = document.getElementById(field);
         //         if (element.value.trim() == '') {

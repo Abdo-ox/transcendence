@@ -1,17 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import FriendList, FriendRequest
 from django.contrib.auth import authenticate
 from project.settings import C as c
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import User
+from user.serializers import CurrentSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def acceptFriendRequest(request):
     try:
         username = request.GET.get('username')
+        print(c.b, "friend", username, flush=True)
         if not username:
             return HttpResponse('Bad request',status=400)
         user = User.objects.get(username=username)
@@ -60,3 +62,16 @@ def createFriendRequest(request):
         return HttpResponse("ok")
     except User.DoesNotExist:
         return HttpResponse("Forbidden", status=403)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def sendFriendRequests(request):
+    ids = FriendRequest.objects.filter(receiver=request.user, is_active=True).values_list('sender', flat=True)
+    print(c.r, "ids", ids, flush=True)
+    
+    senders = User.objects.filter(id__in=ids)
+    print(c.r, "senders", senders, flush=True)
+    if senders.exists():
+        data = CurrentSerializer(senders, many=True)
+        return JsonResponse(data.data, safe=False)
+    return JsonResponse({})
