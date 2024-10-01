@@ -32,9 +32,9 @@
             </svg>
             <div id="profile-box" class="profile-box hide-in-small-size">
                 <div class="img-bx">
-                    <img id="profile-image" src="" alt="">
+                    <img id="profile-image-header" src="" alt="">
                 </div>
-                <a href="profile.html" id="name" class="name"></a>
+                <a id="username-header" class="name"></a>
             </div>
             <!-- icon shows in small screen -->
             <div class="show-in-small-size">
@@ -62,7 +62,7 @@
 
     <!-- start of center container -->
     <div class="center-container">
-        <div id="nickname-input" class="mb-4">
+        <div id="nickname-input" class="mb-4" style="display: none;">
             <div class="input-group">
                 <input type="text" id="nickname" class="form-control" placeholder="Enter nickname 1">
                 <button id="add-nickname" class="btn btn-primary">Add</button>
@@ -73,7 +73,7 @@
             <div class="trophy-container">
                 <i class="fas fa-trophy"></i>
             </div>
-            <div class="winner-box" id="winner"></div>
+            <div class="winner-box" id="winner3">?</div>
             <div class="bracket-columns">
                 <div class="bracket-column left-column">
                     <div class="bracket-box" id="player1"></div>
@@ -88,15 +88,50 @@
             </div>
             <button type="button" class="btn btn-primary" id="play">Play</button>
         </div>
-        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- game -->
+        <div class="game-container" style="display: none;" id="game-container">
+            <div class="players-container">
+                <div class="profile">
+                    <div class="img-bx">
+                        <img src="/home/src/profile.jpg" alt="Player 1">
+                    </div>
+                    <span class="player-name" id="game-player1"></span>
+                </div>
+                <div class="profile">
+                    <div class="img-bx">
+                        <img src="/home/src/profile.jpg" alt="Player 2">
+                    </div>
+                    <span class="player-name" id="game-player2">?</span>
+                </div>
+            </div>
+    
+            <canvas id="canvas"></canvas>
+    
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel"></h5>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary" id="okay-btn">Okay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of modal -->
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="tournamentModal" tabindex="-1" aria-labelledby="tournamentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel"></h5>
+                        <h5 class="modal-title" id="tournamentModalLabel"></h5>
                         <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary" id="play-btn">Play!</button>
+                        <button type="button" class="btn btn-primary" id="tournament-play-btn">Play!</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
