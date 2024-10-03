@@ -171,7 +171,6 @@ export const submitForm = (url, ids, csrf_token, handle_data) => {
         return response.json();
     }).then(data => {
         console.log("*********************handledata called*************************");
-
         handle_data(data);
     }).catch(error => {
         console.log("catch fetch:can't submit data error:", error, "|");

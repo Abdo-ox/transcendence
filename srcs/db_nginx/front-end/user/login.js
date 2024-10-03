@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 const data = await response.json();
                 const url = new URLSearchParams(data.app);
-                const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', 'width=600,height=600');
+                const dimention = `width=${window.width/2},height=${hwindow.height/2},left=${window.width/2 - window.width/4},top=${window.height/2 - window.height/4}`;
+                const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', dimention);
                 const pollPopup = setInterval(async () => {
                     if (popup.closed) {
                         clearInterval(pollPopup);
