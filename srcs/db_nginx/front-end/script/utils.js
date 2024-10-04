@@ -115,13 +115,11 @@ export const NewPage = async (url, func, addhistory = true) => {
         else {
             removeEvent();
             document.body.replaceWith(doc.body);
-            console.log("hello");
             if (document.body.querySelector('header'))
                 if(!await header())
                     return;
-            console.log("hello");
         }
-        if (url == '/home' || url == '/chat' || url == '/settings')
+        if (url == '/home' || url == '/chat' || url == '/settings' || url == '/local' || url == '/tournament' || url == '/multi'|| url == '/game')
             makePageActive(url.substring(1));
         func();
         window.removeEventListener('popstate', routing);

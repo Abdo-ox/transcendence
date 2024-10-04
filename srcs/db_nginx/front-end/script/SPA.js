@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         case "/chat":
             NewPage("/chat", Chat);
+            break;
         case "/2faa":
             NewPage("/2faa", Twofactor);
             break;

@@ -57,18 +57,12 @@ export async function Settings() {
         })
         .catch(errror => console.log("catch_settings", errror));
 
-    console.log("test11 ");
-
-    console.log("test1222222222221 ");
-
     const profileBtn = document.getElementById("settings-profile-btn");
-    console.log("profile: btn", profileBtn);
     const securityBtn = document.getElementById("settings-security-btn");
     const profileInfo = document.getElementById("settings-profile-info");
     const securityInfo = document.getElementById("settings-security-info");
     const firsShow = document.getElementById("settings-firstShow");
     profileBtn.addEventListener("click", function () {
-        console.log("test21 ");
         profileInfo.style.display = "block";
         securityInfo.style.display = "none";
         document.getElementById("settings-crop-image-container").style.display = "none";

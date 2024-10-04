@@ -1,13 +1,12 @@
 import { NewPage, getJWT, redirectTwoFactor, routing } from "/utils.js";
-import {GamePlaySocket} from "/header.js";
-import {Login} from "/login.js";
+import { GamePlaySocket } from "/header.js";
+import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";
 import { Game } from "./game.js";
 import { Local } from "./local.js";
 import { Multi } from "./multi.js";
 
-export async function Home() 
-{
+export async function Home() {
     let access_token = await getJWT();
     /**** coalition rank** */
     // const SettingBtn = document.getElementById('settings-btn');
@@ -20,7 +19,7 @@ export async function Home()
     // chatBtn.classList.remove('header-activ-page2'); 
     // if (!chatBtn.classList.contains('header-li-a-style')) 
     //     chatBtn.classList.add('header-li-a-style'); 
- 
+
 
 
     let t1 = document.getElementById("home-coalFirst");
@@ -38,7 +37,7 @@ export async function Home()
         return;
     }
     const data = await response.json();
-  
+
     console.log("data   home : ****", data);
     const suggestionscontainer = document.getElementById("home-suggestions-container");
     suggestionscontainer.innerHTML = '';
@@ -53,8 +52,7 @@ export async function Home()
                             <button class="home-cancel-btn" username="${user.username}">cancel</button>
                     </div>`;
     });
-    document.querySelectorAll('.home-request-btn').forEach(button => 
-    {
+    document.querySelectorAll('.home-request-btn').forEach(button => {
         button.addEventListener('click', async () => {
             console.log("the user you want to create a friendship with is: ", button.getAttribute('username'));
             const response = await fetch(`https://localhost:8000/friend/request/?username=${button.getAttribute('username')}`, {
@@ -65,22 +63,19 @@ export async function Home()
             console.log("response_status:", response.status)
             if (response.status == 200) {
                 if (GamePlaySocket.readyState === WebSocket.OPEN) {
-                    // GamePlaySocket.onopen = () => {
-                    console.log('WebSocket connection opened inside home page');
                     GamePlaySocket.send(JSON.stringify({
                         'from': data.currentUser.username,
                         'to': button.getAttribute('username'),
                         'message': `${data.currentUser.username} send freind request.`
                     }));
-                    // };
                 }
-                // button.style.display = 'none';
-                // button.parentElement.querySelector('.home-cancel-btn').style.display = 'block';
+                button.style.display = 'none';
+                button.parentElement.querySelector('.home-cancel-btn').style.display = 'block';
             }
         });
     })
     // game events
-        document.getElementById("home-ai-play").addEventListener('click', () => {
+    document.getElementById("home-ai-play").addEventListener('click', () => {
         NewPage("/game", Game);
     });
 
