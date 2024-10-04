@@ -146,7 +146,7 @@ OAUTH_CONFIG = {
     '42': {
         'client_id': 'u-s4t2ud-589237e6394550420d14a9a59740b48214effbb5b50d9943c952f85a1e639e46',
         'client_secret': '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',
-        'redirect_uri': 'https://localhost/login/loading.html',
+        'redirect_uri': 'https://localhost/loading.html',
         'base_url': 'https://api.intra.42.fr/oauth/authorize',
         'token_url': 'https://api.intra.42.fr/oauth/token',
         'info_url': ' https://api.intra.42.fr/v2/me',
