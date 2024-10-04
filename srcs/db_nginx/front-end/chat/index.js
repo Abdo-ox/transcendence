@@ -33,6 +33,12 @@ const data = await fetch('https://localhost:8000/api/user/data/',{
 
 async function bodychat(UserData) {
   const username = UserData.username;
+  // let token = localStorage.getItem('access_token');
+  // const token = await getJWT();
+  // const GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${token}`);
+  // GamePlaySocket.onopen = () => {
+  //   console.log('Notif WebSocket connection opened');
+  // };
   let htmlContent = 0;
   if (!htmlContent){
   htmlContent = `

@@ -69,16 +69,7 @@ canvas {
     margin: 80px 50px 0 50px;
     padding: 20px 0 40px;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
-}
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 10px;
-    height: 100%;
 }
 
 .players-container {
@@ -88,26 +79,29 @@ canvas {
     max-width: 800px;
 }
 
-/* Modal style */
+/* Change the background color of the modal content */
 .modal-content {
-    background-color: #050e2d;
+    background-color: #050e2d; /* Change to your desired color */
 }
 
+/* Change the background color of the modal header */
 .modal-header {
-    background-color: #050e2d;
+    background-color: #050e2d; /* Change to your desired color */
 }
 
+/* Change the background color of the modal footer */
 .modal-footer {
-    background-color: #050e2d;
+    background-color: #050e2d;/* Change to your desired color */
 }
 
+/* to center the modal header */
 .modal-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center text horizontally */
+    align-items: center;     /* Center text vertically (optional) */
 }
 .modal-title {
-    margin: 0;
+    margin: 0; /* Ensure there's no margin around the title */
 }
 .btn-close {
     position: absolute;
@@ -124,7 +118,7 @@ canvas {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin-top: 0px;
 }
 
@@ -135,7 +129,7 @@ canvas {
 
 .winner-box {
     width: 180px;
-    height: 80px;
+    height: 70px;
     background-color: #1b2141;
     border: 2px solid gold;
     border-radius: 10px;
@@ -146,12 +140,12 @@ canvas {
     font-size: 16px;
     padding: 10px;
     text-align: center;
-    /* margin-bottom: 40px; */
+    margin-bottom: 40px;
 }
 
 .bracket-columns {
     display: flex;
-    gap: 40px;
+    gap: 20px;
     width: 100%;
     height: 100%;
 }
@@ -160,13 +154,13 @@ canvas {
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 40%;
     height: 100%;
 }
 
 .bracket-box {
-    width: 150px;
+    width: 31%;
     height: 60px;
     background-color: #1b2141;
     border: 2px solid #fff;
@@ -188,7 +182,7 @@ canvas {
     align-items: flex-end;
 }
 
-/* .left-column .bracket-box:nth-child(1),
+.left-column .bracket-box:nth-child(1),
 .left-column .bracket-box:nth-child(3) {
     position: relative;
 }
@@ -200,14 +194,15 @@ canvas {
     height: 4px;
     background: #fff;
     left: 100%;
-} */
+}
 
 
 .left-column .bracket-box:nth-child(2) {
     align-self: flex-end;
+    position: relative;
 }
 
-/* .left-column .bracket-box:nth-child(2)::after {
+.left-column .bracket-box:nth-child(2)::after {
     position: absolute;
     content: "";
     width: 56%;
@@ -222,13 +217,14 @@ canvas {
     height: 381%;
     background: #fff;
     left: -56%;
-} */
+}
 
 .right-column .bracket-box:nth-child(2) {
     align-self: flex-start;
+    position: relative;
 }
 
-/* .right-column .bracket-box:nth-child(2)::after {
+.right-column .bracket-box:nth-child(2)::after {
     position: absolute;
     content: "";
     width: 4px;
@@ -243,9 +239,9 @@ canvas {
     height: 4px;
     background: #fff;
     right: -56%;
-} */
+}
 
-/* .right-column .bracket-box:nth-child(1),
+.right-column .bracket-box:nth-child(1),
 .right-column .bracket-box:nth-child(3) {
     position: relative;
 }
@@ -257,7 +253,7 @@ canvas {
     height: 4px;
     background: #fff;
     right: 100%;
-} */
+}
 
 /* Styles for the nickname input */
 #nickname-input .input-group {
@@ -293,6 +289,11 @@ canvas {
 
 /* Make sure the layout is responsive */
 @media (max-width: 600px) {
+    canvas {
+        width: 90%;
+        height: 50%;
+    }
+
     .profile img {
         width: 40px;
         height: 40px;

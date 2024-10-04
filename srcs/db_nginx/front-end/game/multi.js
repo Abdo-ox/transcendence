@@ -3,7 +3,7 @@ import { NewPage, getJWT } from "https://localhost/home/utils.js";
 
 try {
     let token = await getJWT();
-    fetch('https://localhost:8000/api/currentUser/', {
+    fetch('https://localhost:8000/api/suggest/friend/', {
         headers: {
             'Authorization': `Bearer ${token}`,
         }

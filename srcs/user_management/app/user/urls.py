@@ -11,7 +11,8 @@ UploadProfile,
 currentUserData,
 updateData,
 EnableTwoFactor,
-UpdatePassword,)
+UpdatePassword,
+UpdateisPassed,)
 
 urlpatterns = [
     path('register/', Register, name='register'),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('currentUser/',currentUserData),
     path('Enable2Fa/',EnableTwoFactor),
     path('ChangePassword/',UpdatePassword),
+    path('twoFaCalled/',UpdateisPassed),
 ]

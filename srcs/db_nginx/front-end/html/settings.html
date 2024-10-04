@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile settings</title>
+    <!-- <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+</head>
+
+<body>
+    <header id="settings-header">
+    </header>
+
+    <main class="settings-content">
+        <div class="settings-flex-item settings-flex1">
+            <h2>Hi <span>Username</span></h2>
+        </div>
+        <div class="settings-flex-item settings-flex2">
+            <div class="settings-first">
+                <div class="settings-flip">
+                    <img id="settings-profile-image1" src="/images/src/profile.jpg" alt="">
+                    <i id="settings-pen" class='fas fa-edit'></i>
+                </div>
+                <div class="settings-buttons">
+                    <button id="settings-profile-btn" class="settings-profile-btn">Profile</button>
+                    <button id="settings-security-btn" class="settings-security-btn">Security</button>
+                </div>
+
+            </div>
+            <div id="settings-second" class="settings-second">
+                <div id="settings-firstShow">
+                    nothing found
+                </div>
+                <div id="settings-crop-image-container" class="settings-crop-image-container">
+                    <h3 class="settings-text-center">Upload Image</h3>
+                    <input type="file" id="settings-upload" class="settings-input settings-inputsettings-form-control" accept="image/*">
+                    <div id="settings-image-wrapper" class="settings-image-wrapper">
+                    </div>
+                    <button id="settings-crop-btn"  class="settings- btn-primary mt-3">Crop Image</button>
+                </div>
+                <div id="settings-SaveImg" style="display: none;">
+                    <h3>Submit the profile change </h3>
+                    <button id="settings-saveid"  class="settings-profile-btn">Save</button>
+                </div>
+                <div id="settings-profile-info" style="display: none; ">
+                    <div class="settings-input-group">
+                        <div class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="username">Username:</label>
+                            <input class="settings-input" type="text" id="settings-username" name="username">
+                        </div>
+                        <div class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="first_name">First Name:</label>
+                            <input class="settings-input" type="text" id="settings-first_name" name="first_name">
+                        </div>
+                        <div class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="last_name">Last Name:</label>
+                            <input class="settings-input" type="text" id="settings-last_name" name="last_name">
+                        </div>
+                        <div class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="email">Your Email:</label>
+                            <input  class="settings-input" type="email" id="settings-email" name="email">
+                        </div>
+                        <button class="settings-btn" id="settings-save-btn">Save </button>
+                        <p class="settings-para" id="settings-para">You have log in with an intranet account, you can't modify this</p>
+                    </div>
+                </div>
+
+                <div id="settings-security-info" style="display: none;" class="settings-SecuritySettings">
+                    <div class="settings-security-item">
+                        <img class="settings-lock" src="/images/fourtnite4k/Pochette.png" alt="">
+                        <a href="">Change Password</a>
+                    </div>
+                    <div id="settings-changePassword" class="settings-input-group">
+                        <div  class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="Password">Actual Password</label>
+                            <input class="settings-input" type="password" id="settings-password1" name="Actual password">
+                        </div>
+                        <div class="settings-input-group__form-group">
+                            <label class="settings-input-group__label" for="Password">New Password</label>
+                            <input  class="settings-input" type="password" id="settings-password2" name="new password">
+                        </div>
+                        <button id="settings-savapassword" class="settings-btn">Save</button>
+                    </div>
+                    <p class="settings-para" id="settings-passText">Change password is disabled because you use an intraNet Acount.</p>
+                    <div class="settings-security-item">
+                        <img class="settings-twofa" src="/images/fourtnite4k/2fa.png" alt="">
+                        <a href="">Two factor Authentication</a>
+                    </div>
+                    <label class="settings-switch">
+                        <input class="settings-input" id="settings-enable2fa" type="checkbox">
+                        <span class="settings-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

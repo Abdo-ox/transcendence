@@ -1,0 +1,36 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Arial','Poppins', sans-serif; */
+    font-family: Arial;
+}
+
+body {
+        
+    --c1:#3CB371;
+    --c2: #d84790;
+    --c3: #FFD700;
+    --c4: #4682B4;
+    --comodore-degr: 55deg;
+    --freax-degr: 75deg;
+    --bios-degr: 100deg;
+    --pandora-degr: 130deg;
+    --unkown-degr: 55;
+    --tournament-degr: 75;
+    --friend-degr: 100;
+    --ai-degr: 130;
+
+    color: #fff;
+    background: #050e2d;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+h4{
+    margin: 0;
+    padding: 0;
+}
