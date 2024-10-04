@@ -6,7 +6,7 @@ import { Settings } from "/settings.js";
 import { Chat } from "/chat.js";
 
 export const routing = (event) => {
-    NewPage(window.location.pathname, true, false);
+    // NewPage(window.location.pathname, true, false);
 }
 
 export const getCsrfToken = async () => {
@@ -123,6 +123,7 @@ export const NewPage = async (url, func, addhistory = true) => {
         }
         if (url == '/home' || url == '/chat' || url == '/settings')
             makePageActive(url.substring(1));
+        console.log(" func is :",func);
         func();
         window.removeEventListener('popstate', routing);
         window.addEventListener('popstate', routing);

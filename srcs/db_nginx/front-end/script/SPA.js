@@ -5,6 +5,7 @@ import { Home } from "/home.js"
 import { Settings } from "/settings.js"
 import { Profile } from "/profile.js"
 import { ResetPassword } from "/resetpassword.js"
+import { Reset} from "/reset.js"
 import { Tournament } from "/tournament.js"
 import { Local } from "/local.js"
 import { Multi } from "/multi.js"
@@ -36,11 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
         case "/resetpassword":
             NewPage("/resetpassword", ResetPassword);
             break;
+        case "/reset":
+            NewPage("/reset", Reset);
+            break;
         case "/profile":
             NewPage("/profile", Profile);
             break;
         case "/chat":
             NewPage("/chat", Chat);
+            break;
         case "/2faa":
             NewPage("/2faa", Twofactor);
             break;

@@ -9,6 +9,7 @@ import { Multi } from "./multi.js";
 export async function Home() 
 {
     let access_token = await getJWT();
+    console.log("access token : ",access_token);
     /**** coalition rank** */
     // const SettingBtn = document.getElementById('settings-btn');
     // SettingBtn.classList.remove('header-activ-page2'); 

@@ -3,34 +3,54 @@ import { Reset } from "/reset.js"
 
 export async function ResetPassword() {
 
-    document.getElementById("submit").addEventListener("click", async () => {
+    document.getElementById("resetpass-submit").addEventListener("click", async () => {
 
-        let email = document.getElementById("inputemail").value;
-        fetch('https://localhost:8000/resetpassword/', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({ 'email': email })
+      
+        try {
+            let email = document.getElementById("resetpass-inputemail").value;
+            const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    
+            if (gmailRegex.test(email)) {
+                document.getElementById("resetpass-errorMessage").textContent = ""; // Clear error message
+                console.log("Valid Gmail address:", email);
+            } else {
+                document.getElementById("resetpass-errorMessage").textContent = "Please enter a valid Gmail address!";
+                return;
+            }
+            const response = await fetch('https://localhost:8000/resetpassword/', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({ 'email': email })
 
-        })
-            .then(response => response.json())
-            .then((data) => {
-                console.log("*******data response **** is : ", data);
-                if (data.status == 'redirect') {
-                    NewPage('/reset' + '?email=' + email, Reset)
+            });
+
+            if (!response.ok) {
+                console.error('Failed to RESET user:', response.status, response.statusText);
+                return;
+            }
+            const data = await response.json();
+            console.log("*******data response **** is : ", data);
+            if (data.status == 'redirect') {
+                {
+                    localStorage.setItem('email', email);
+                    NewPage('/reset', Reset);
                 }
-                if (data.status == 'failed') {
-                    document.getElementById("error message").innerHTML = "failed to send code";
-                    document.getElementById("error message").style.color = 'red';
-                }
-                else {
-                    document.getElementById("error message").innerHTML = "No account with this email";
-                    document.getElementById("error message").style.color = 'red';
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            }
+            if (data.status == 'failed') {
+                document.getElementById("resetpass-error message").innerHTML = "failed to send code";
+                document.getElementById("resetpass-error message").style.color = 'red';
+            }
+            else {
+                document.getElementById("resetpass-error message").innerHTML = "No account with this email";
+                document.getElementById("resetpass-error message").style.color = 'red';
+            }
+        }
+        catch (error) { // Catch block should capture the error
+            console.error('An error occurred:', error); // Log the error
+        }
     });
+
 }
+
