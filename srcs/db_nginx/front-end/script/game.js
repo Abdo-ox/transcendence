@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "/utils.js";
 
 export const Game = async () => {
     let token = await getJWT();
@@ -25,6 +25,7 @@ export const Game = async () => {
     const canvas = document.getElementById("canvas");
     const keys = [];
     const socket = new WebSocket(`ws://localhost:9090/ws/game/?token=${token}`);
+    webSockets.push(socket);
 
     let rect = canvas.getBoundingClientRect();
 
