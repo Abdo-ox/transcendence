@@ -21,7 +21,7 @@ export async function Home()
     // if (!chatBtn.classList.contains('header-li-a-style')) 
     //     chatBtn.classList.add('header-li-a-style'); 
  
-
+    let myModal = undefined;
 
     let t1 = document.getElementById("home-coalFirst");
     let t2 = document.getElementById("home-coalSecond");
@@ -89,12 +89,21 @@ export async function Home()
     });
 
     document.getElementById("home-local-play").addEventListener('click', () => {
-        console.log("hello");
         NewPage("/local", Local);
     });
 
+    document.getElementById("tournament-local-btn").addEventListener('click', () => {
+        myModal.hide();
+        NewPage("/tournament", Tournament);
+    });
+
+    function showModal() {
+        myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal.show();
+    }
+
     document.getElementById("home-add").addEventListener('click', async () => {
-        await NewPage("/tournament", Tournament);
+        showModal();
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
