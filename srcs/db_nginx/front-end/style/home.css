@@ -546,7 +546,7 @@ section {
     height: 100%;
 }
 
-.home-user-class h3, p{
+.home-user-class h3,.home-user-class p{
     font-size: 20px;
     margin: 0;
 }

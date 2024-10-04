@@ -6,6 +6,7 @@ export const Tournament = async () => {
     let nicknames = JSON.parse(localStorage.getItem('nicknames')) || [];
     let nicknameIndex = 1;
     let tournamentModal = undefined;
+    let myModal = undefined;
     let winners = JSON.parse(localStorage.getItem('winners')) || [];
 
     if (nicknames.length > 0) {
@@ -130,6 +131,7 @@ export const Tournament = async () => {
         document.getElementById('game-player2').textContent = player2;
 
         document.getElementById("okay-btn").addEventListener('click', () => {
+            myModal.hide();
             NewPage("/tournament", Tournament);
         });
 
@@ -143,7 +145,7 @@ export const Tournament = async () => {
     
         // Function to trigger modal programmatically
         function showModal() {
-            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
         }
     

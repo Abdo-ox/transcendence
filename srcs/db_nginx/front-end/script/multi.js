@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "/utils.js";
 
 
 export const Multi = async () => {
@@ -13,8 +13,10 @@ export const Multi = async () => {
         player1.innerHTML = data.username;
         player1_img.src = data.profile_image;
     });
+    let myModal = undefined;
     // add event listner for chnaging the page to a new page
     document.getElementById("play-btn").addEventListener('click', () => {
+        myModal.hide();
         NewPage("/multi", Multi);
     });
 
@@ -23,6 +25,7 @@ export const Multi = async () => {
     const canvas = document.getElementById("canvas");
     const keys = [];
     const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
+    webSockets.push(socket);
 
     let c = 3; // countdown
     let gameState = {};
@@ -116,7 +119,7 @@ export const Multi = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal = new bootstrap.Modal(document.getElementById('myModal'));
         myModal.show();
     }
 
