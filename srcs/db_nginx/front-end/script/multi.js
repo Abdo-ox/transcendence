@@ -13,8 +13,10 @@ export const Multi = async () => {
         player1.innerHTML = data.username;
         player1_img.src = data.profile_image;
     });
+    let myModal = undefined;
     // add event listner for chnaging the page to a new page
     document.getElementById("play-btn").addEventListener('click', () => {
+        myModal.hide();
         NewPage("/multi", Multi);
     });
 
@@ -116,7 +118,7 @@ export const Multi = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal = new bootstrap.Modal(document.getElementById('myModal'));
         myModal.show();
     }
 
