@@ -22,7 +22,7 @@ export async function Chat() {
   })
     .then(response => response.json()) // Call json() to parse the response
     .then(data => {
-      console.log(data)
+      console.log(`bodychat is call`, data)
       bodychat(data)
     })
     .catch(error => {
@@ -32,6 +32,7 @@ export async function Chat() {
 
 async function bodychat(UserData) {
   const username = UserData.username;
+  console.log(`username from bodychat is === ${username}`)
   let htmlContent = 0;
   if (!htmlContent) {
     htmlContent = `
