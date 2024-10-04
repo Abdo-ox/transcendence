@@ -17,7 +17,7 @@ const  handle_data = async (data) => {
     .then((data) => {
         console.log("passs   by handle hetre");
        console.log("dara ok",data);
-        NewPage('/home', Home);
+        NewPage(window.location.pathname, Home);
     })
     .catch((error) =>{
         console.log("errrrrrrrrror her login :",error);

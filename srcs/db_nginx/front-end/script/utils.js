@@ -109,7 +109,6 @@ export const NewPage = async (url, func, addhistory = true) => {
     if (response.ok) {
         const data = await response.text();
         const doc = (new DOMParser()).parseFromString(data, 'text/html');
-
         if (doc.querySelector('header') && document.querySelector('header'))
             document.body.children[1].replaceWith(doc.body.children[1]);
         else {
