@@ -1,4 +1,5 @@
 import { NewPage, getJWT,redirectTwoFactor } from "/utils.js";
+import { Profile } from "/profile.js"
 
 export function displayNotification(message) {
     createNotificationPanel();
@@ -154,7 +155,8 @@ export async function header() {
 
 
     document.getElementById("profile-box").addEventListener('click', () => {
-        NewPage("/profile", Profile, false);
+        console.log("profile-box event trigered");
+        NewPage("/profile", Profile);
     });
 
     // Add click event listener to the notification icon

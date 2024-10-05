@@ -21,17 +21,16 @@ export const getCsrfToken = async () => {
 export const redirectTwoFactor = (data, status) => {
     if (data.status) {
         if (data.status == "redirect") {
-            if (status == 200)
-                {
-                    localStorage.setItem('username',data.username);
-                    NewPage("/2faa", Twofactor, true);
-                }
+            if (status == 200) {
+                localStorage.setItem('username', data.username);
+                NewPage("/2faa", Twofactor, true);
+            }
             if (status == 500)
                 alert("failed to send email try  again in few secondes ...");
         }
-        return(0);
+        return (0);
     }
-    return(1);
+    return (1);
 }
 
 const is_valid = async (access, refresh) => {
@@ -114,12 +113,12 @@ export const NewPage = async (url, func, addhistory = true) => {
         else {
             removeEvent();
             document.body.replaceWith(doc.body);
-            if (document.body.querySelector('header'))
-                if(!await header())
+            if (document.body.querySelector('header')) {
+                if (!await header())
                     return;
+                makePageActive(url.substring(1));
+            }
         }
-        if (url == '/home' || url == '/chat' || url == '/settings' || url == '/local' || url == '/tournament' || url == '/multi'|| url == '/game')
-            makePageActive(url.substring(1));
         func();
         window.removeEventListener('popstate', routing);
         window.addEventListener('popstate', routing);
@@ -175,12 +174,12 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
 
 }
 const func = {
-    "home-btn": () => {NewPage('/home', Home)},
-    "chat-btn": () => {NewPage('/chat', Chat)},
-    "settings-btn": () => {NewPage('/settings', Settings)},
-    "small-home-btn": () => {NewPage('/home', Home)},
-    "small-chat-btn": () => {NewPage('/chat', Chat)},
-    "small-settings-btn": () => {NewPage('/settings', Settings)},
+    "home-btn": () => { NewPage('/home', Home) },
+    "chat-btn": () => { NewPage('/chat', Chat) },
+    "settings-btn": () => { NewPage('/settings', Settings) },
+    "small-home-btn": () => { NewPage('/home', Home) },
+    "small-chat-btn": () => { NewPage('/chat', Chat) },
+    "small-settings-btn": () => { NewPage('/settings', Settings) },
 }
 
 export const makePageActive = (page) => {
