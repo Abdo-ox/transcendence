@@ -311,7 +311,7 @@ export async function Settings() {
                 Authorization: `Bearer ${await getJWT()}`,
                 'Content-type': 'application/json',
             },
-            body: JSON.stringify({ 'newemail': newEmail })
+            body: JSON.stringify({ 'newemail': email })
 
         });
 
@@ -322,7 +322,7 @@ export async function Settings() {
         const data = await response.json();
         console.log("*******data mail response **** is : ", data);
         if (data.status == 'redirect') {
-            localStorage.setItem("NewEmail", newEmail)
+            localStorage.setItem("NewEmail", email)
             NewPage("/confirmationMail", ConfirmationMail);
         }
         if (data.status == 'failed')

@@ -26,7 +26,7 @@ const  handle_data = async (data_status) => {
         });
     } else {
         // handle error of login 
-        console.log("error:", data);
+        console.log("error:", data_status);
     } 
 }
 
@@ -95,7 +95,7 @@ export async function Login() {
                             console.log(data);
                             popup.close();
                             clearInterval(pollPopup);
-                            handle_data(data);
+                            handle_data({data, status: response.status});
                         } else {
                             console.error("response not ok in log with intra");
                             popup.close();
