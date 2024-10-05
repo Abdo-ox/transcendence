@@ -1,4 +1,5 @@
-import { NewPage, getJWT,redirectTwoFactor } from "/utils.js";
+import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
+import { Profile } from "/profile.js"
 
 export function displayNotification(message) {
     createNotificationPanel();
@@ -95,114 +96,121 @@ export async function header() {
     const access_token = await getJWT();
     if (!access_token)
         return;
-    
+
     addheader();
     let CurrentUser = "";
-     const response = await fetch('https://localhost:8000/api/currentUser/', {
-        headers: {
-            'Authorization': `Bearer ${access_token}`,
+    try {
+        const response = await fetch('https://localhost:8000/api/currentUser/', {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+            }
+        });
+
+        if (!response.ok) {
+            console.error('Failed to fetch current user:', response.status, response.statusText);
+            return;
         }
-    });
-    if (!response.ok) {
-        console.error('Failed to fetch current user:', response.status, response.statusText);
-        return;
-    }
-    const data = await response.json();
-    if (!redirectTwoFactor(data, response.status))
-        {
+        const data = await response.json();
+        if (!redirectTwoFactor(data, response.status)) {
             console.log("bam bam bam");
-            return(0);
+            return (0);
         }
-    CurrentUser = data.username;
-    document.getElementById("header-profile-image").src = data.profile_image;
-    document.getElementById("header-username").innerHTML = data.username;
-    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
-    GamePlaySocket.onopen = () => {
-        console.log('Notif WebSocket connection opened');
-    };
-
-    GamePlaySocket.onmessage = (e) => {
-        var data = JSON.parse(e.data);
-        console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
-        if (data['to'] === CurrentUser)
-            displayNotification(data['message'])
-    };
-
-    GamePlaySocket.onclose = () => {
-        console.error('GamePlaySocket closed');
-    };
-
-    console.log(" here change div]]]]]]]]]");
-
-    const menuicon = document.getElementById("menu-icon");
-    if (menuicon) {
-        menuicon.addEventListener('click', () => {
-            document.getElementById("side-bar").style.setProperty('display', 'flex', 'important');
-        });
+        CurrentUser = data.username;
+        document.getElementById("header-profile-image").src = data.profile_image;
+        document.getElementById("header-username").innerHTML = data.username;
     }
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 850)
-            document.getElementById("side-bar")?.style.setProperty('display', 'none', 'important');
-    });
-    const closeicon = document.getElementById("close-icon");
-    if (closeicon) {
-        closeicon.addEventListener('click', () => {
-            document.getElementById("side-bar").style.display = 'none';
-        });
+    catch (error) { 
+        console.error('An error occurred:', error); 
     }
 
 
+GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
+GamePlaySocket.onopen = () => {
+    console.log('Notif WebSocket connection opened');
+};
 
-    document.getElementById("profile-box").addEventListener('click', () => {
-        NewPage("/profile", Profile, false);
+GamePlaySocket.onmessage = (e) => {
+    var data = JSON.parse(e.data);
+    console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
+    if (data['to'] === CurrentUser)
+        displayNotification(data['message'])
+};
+
+GamePlaySocket.onclose = () => {
+    console.error('GamePlaySocket closed');
+};
+
+console.log(" here change div]]]]]]]]]");
+
+const menuicon = document.getElementById("menu-icon");
+if (menuicon) {
+    menuicon.addEventListener('click', () => {
+        document.getElementById("side-bar").style.setProperty('display', 'flex', 'important');
     });
-
-    // Add click event listener to the notification icon
-    document.getElementById('notification-icon')?.addEventListener('click', event => {
-        event.stopPropagation(); // Prevent the event from bubbling up
-        l = document.getElementById('notif-div');
-        if (notificationPanel.style.display == 'block')
-            notificationPanel.style.display = 'none';
-        else
-            notificationPanel.style.display = 'block';
+}
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 850)
+        document.getElementById("side-bar")?.style.setProperty('display', 'none', 'important');
+});
+const closeicon = document.getElementById("close-icon");
+if (closeicon) {
+    closeicon.addEventListener('click', () => {
+        document.getElementById("side-bar").style.display = 'none';
     });
-
-    // Hide the notification panel if clicking outside
-    document.addEventListener('click', Handler);
+}
 
 
 
-    fetch("https://localhost:8000/friend/friendRequests/", {
-        headers: {
-            'Authorization': `Bearer ${await getJWT()}`,
-        }
-    }).then(response => {
-        if (response.ok)
-            return response.json();
-        console.log("error in fetch friend requests");
-    }).then(data => {
-        data.forEach(sender => {
-            const notifItem = document.createElement('div');
-            notifItem.className = "notiItem";
-            notifItem.id = "notiItem";
-            notifItem.innerHTML = `
+document.getElementById("profile-box").addEventListener('click', () => {
+    NewPage("/profile", Profile, false);
+});
+
+// Add click event listener to the notification icon
+document.getElementById('notification-icon')?.addEventListener('click', event => {
+    event.stopPropagation(); // Prevent the event from bubbling up
+    l = document.getElementById('notif-div');
+    if (notificationPanel.style.display == 'block')
+        notificationPanel.style.display = 'none';
+    else
+        notificationPanel.style.display = 'block';
+});
+
+// Hide the notification panel if clicking outside
+document.addEventListener('click', Handler);
+
+
+
+fetch("https://localhost:8000/friend/friendRequests/", {
+    headers: {
+        'Authorization': `Bearer ${await getJWT()}`,
+    }
+}).then(response => {
+    if (response.ok)
+        return response.json();
+    console.log("error in fetch friend requests");
+}).then(data => {
+    data.forEach(sender => {
+        const notifItem = document.createElement('div');
+        notifItem.className = "notiItem";
+        notifItem.id = "notiItem";
+        notifItem.innerHTML = `
             <img src="${sender.profile_image}">
                 <div class="text">
                     <p>${sender.username} send u friend request.</p>
                 </div>
             <div class="accept"><button class="button">accept</button></div>`
-            notifItem.querySelector(".button").addEventListener('click', async () => {
-                console.log("hello the button friendrequest is clickec");
-                fetch("https://localhost:8000/friend/accept/?username=" + sender.username, {
-                    headers: {
-                        'Authorization': `Bearer ${await getJWT()}`,
-                    }
-                });
+        notifItem.querySelector(".button").addEventListener('click', async () => {
+            console.log("hello the button friendrequest is clickec");
+            fetch("https://localhost:8000/friend/accept/?username=" + sender.username, {
+                headers: {
+                    'Authorization': `Bearer ${await getJWT()}`,
+                }
             });
-            document.getElementById("notif-div").appendChild(notifItem);
         });
-    }).catch(error => {
-        console.log("can't fetch friend requests error accured ", error);
+        document.getElementById("notif-div").appendChild(notifItem);
     });
-    return 1;
+}).catch(error => {
+    console.log("can't fetch friend requests error accured ", error);
+});
+return 1;
 }

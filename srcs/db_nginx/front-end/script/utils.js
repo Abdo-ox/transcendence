@@ -8,7 +8,7 @@ import { Chat } from "/chat.js";
 export let webSockets = [];
 
 export const routing = (event) => {
-    NewPage(window.location.pathname, true, false);
+    // NewPage(window.location.pathname, true, false);
 }
 
 export const getCsrfToken = async () => {
@@ -23,17 +23,16 @@ export const getCsrfToken = async () => {
 export const redirectTwoFactor = (data, status) => {
     if (data.status) {
         if (data.status == "redirect") {
-            if (status == 200)
-                {
-                    localStorage.setItem('username',data.username);
-                    NewPage("/2faa", Twofactor, true);
-                }
+            if (status == 200) {
+                localStorage.setItem('username', data.username);
+                NewPage("/2faa", Twofactor, true);
+            }
             if (status == 500)
                 alert("failed to send email try  again in few secondes ...");
         }
-        return(0);
+        return (0);
     }
-    return(1);
+    return (1);
 }
 
 const is_valid = async (access, refresh) => {
@@ -125,28 +124,13 @@ export const NewPage = async (url, func, addhistory = true) => {
         } else {
             removeEvent();
             document.body.replaceWith(doc.body);
-            console.log("hello");
-            if (document.body.querySelector('header'))
-                if(!await header())
+            if (document.body.querySelector('header')) {
+                if (!await header())
                     return;
-            console.log("hello");
+                makePageActive(url.substring(1));
+            }
         }
-        if (url == '/home' || url == '/chat' || url == '/settings')
-            makePageActive(url.substring(1));
         func();
-        document.body.style.cssText = `
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #03092b;
-    font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    font-size: 1em;
-    letter-spacing: 0.1px;
-    text-rendering: optimizeLegibility;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-    -webkit-font-smoothing: antialiased;
-`
         window.removeEventListener('popstate', routing);
         window.addEventListener('popstate', routing);
         if (addhistory)
@@ -201,12 +185,12 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
 
 }
 const func = {
-    "home-btn": () => {NewPage('/home', Home)},
-    "chat-btn": () => {NewPage('/chat', Chat)},
-    "settings-btn": () => {NewPage('/settings', Settings)},
-    "small-home-btn": () => {NewPage('/home', Home)},
-    "small-chat-btn": () => {NewPage('/chat', Chat)},
-    "small-settings-btn": () => {NewPage('/settings', Settings)},
+    "home-btn": () => { NewPage('/home', Home) },
+    "chat-btn": () => { NewPage('/chat', Chat) },
+    "settings-btn": () => { NewPage('/settings', Settings) },
+    "small-home-btn": () => { NewPage('/home', Home) },
+    "small-chat-btn": () => { NewPage('/chat', Chat) },
+    "small-settings-btn": () => { NewPage('/settings', Settings) },
 }
 
 export const makePageActive = (page) => {

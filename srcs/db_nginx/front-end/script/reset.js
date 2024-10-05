@@ -1,21 +1,21 @@
 import { NewPage, getCsrfToken } from "/utils.js";
 import { Login } from "/login.js"
 
-export async function Reset(params) {
+export async function Reset() {
     
 
 
-    // let myinput = document.getElementById('new-password');
-    // var letter = document.getElementById("letter");
-    // var capital = document.getElementById("capital");
-    // var number = document.getElementById("number");
-    // var length = document.getElementById("length");
+    // let myinput = document.getElementById('reset-new-password');
+    // var letter = document.getElementById("reset-letter");
+    // var capital = document.getElementById("reset-capital");
+    // var number = document.getElementById("reset-number");
+    // var length = document.getElementById("reset-length");
 
     // myinput.onfocus = function () {
-    //     document.getElementById("message").style.display = 'block';
+    //     document.getElementById("reset-message").style.display = 'block';
     // }
     // myinput.onblur = function () {
-    //     document.getElementById("message").style.display = 'none';
+    //     document.getElementById("reset-message").style.display = 'none';
     // }
     // myinput.onkeyup = function () {
     //     var lowercaseletter = /[a-z]/g;/*select the lower case world*/
@@ -55,25 +55,23 @@ export async function Reset(params) {
     //         length.classList.remove("valid");
     //         length.classList.add("invalid");
     //     }
+  
+    document.getElementById("reset-submit").addEventListener("click", async () => {
+        let code = document.getElementById("reset-code").value;
+        // let myinput = document.getElementById('reset-code');
+        let password = document.getElementById("reset-new-password").value;
+        if (code.trim() == '' || password.trim() == '') {
+            document.getElementById("reset-error").innerHTML = "Feils required ";
+        }
+        if (code.length != 6 || code.isNaN())
+            document.getElementById("reset-error1").innerHTML = "Code format not valid ! should be a 6 digits";
+        const email = localStorage.getItem('email');
 
-    document.getElementById("submit").addEventListener("click", async () => {
-        let code = document.getElementById("code").value;
-        // let myinput = document.getElementById('code');
-        let password = document.getElementById("new-password").value;
-        // var letter = document.getElementById("letter");
-        // var capital = document.getElementById("capital");
-        // var number = document.getElementById("number");
-        // var length = document.getElementById("length");
-        // if (code.trim() == '' || password.trim() == '') {
-        //     document.getElementById("error").innerHTML = "Feils required ";
-        // }
-        // if (code.length != 6 || code.isNaN())
-        //     document.getElementById("error1").innerHTML = "Code format not valid ! should be a 6 digits";
-        const url = window.location.href;
-        const urlParams = new URL(url);
-        const queryString = urlParams.searchParams;
-        const email = queryString.get('email');
-        console.log("email : ",email);
+        if (email) {
+            console.log("Retrieved email from localStorage:", email);
+        } else {
+            console.log("No email found in localStorage.");
+        }
         fetch('https://localhost:8000/reset/', {
             method: 'POST',
             headers: {
@@ -87,7 +85,7 @@ export async function Reset(params) {
                 console.log(" *** data response ", data);
                 if (data.status == 'success')
                     NewPage('/login', Login);
-                if (data.status == 'failled')
+                if (data.status == 'failed')
                     alert(data.message);
             })
             .catch((error) => {

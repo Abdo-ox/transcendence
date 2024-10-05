@@ -11,7 +11,7 @@ from django.conf import settings
 def TwoFctor_Decorator(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args,  **kwargs):
-        print("value :",request.user.is_2fa_passed,flush=True)  
+        print("value : ",request.user.is_2fa_passed,"value 2 : ", request.user.enable2fa, flush=True)  
         print("enter ",flush=True)  
         if request.user.enable2fa and not request.user.is_2fa_passed :
             user_email = request.user.email

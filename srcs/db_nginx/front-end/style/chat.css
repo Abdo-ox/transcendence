@@ -13,9 +13,9 @@
   } */
 
 #frame {
-  /* align-self: center;
-  justify-self: center; */
-  /* margin-top: 90px; */
+  align-self: center;
+  justify-self: center;
+  margin-top: 90px;
   width: 80vw;
   /* 90% of the viewport width */
   height: 80vh;
@@ -498,6 +498,8 @@
 
 
 #frame .content .messages ul li.sent p {
+
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   float: left;
   color: #f5f5f5;
@@ -511,6 +513,7 @@
 }
 
 #frame .content .messages ul li.replies p {
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   color: #f5f5f5;
   background-color: #597fe1;
@@ -617,4 +620,7 @@
 #contacts-list {
   padding-left: 0;
   margin-bottom: 0;
+}
+#chat-log{
+  all: unset;
 }
