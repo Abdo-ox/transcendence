@@ -231,7 +231,11 @@
 }
 
 #frame #sidepanel #contacts ul li.contact {
+<<<<<<< HEAD
   /* all: unset; */
+=======
+  visibility: visible;
+>>>>>>> origin/main
   position: relative;
   padding: 10px;
   font-size: 0.9em;
@@ -498,6 +502,8 @@
 
 
 #frame .content .messages ul li.sent p {
+
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   float: left;
   color: #f5f5f5;
@@ -511,6 +517,7 @@
 }
 
 #frame .content .messages ul li.replies p {
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   color: #f5f5f5;
   background-color: #597fe1;
@@ -559,6 +566,7 @@
 }
 
 #frame .content .message-input .wrap .wrap input {
+  padding-left: 10px;
   color: #d4d4d4;
   background-color: #0d1020;
   position: absolute;
@@ -615,7 +623,9 @@
 }
 
 #contacts-list {
-  /* all: unset; */
   padding-left: 0;
   margin-bottom: 0;
+}
+#chat-log{
+  all: unset;
 }

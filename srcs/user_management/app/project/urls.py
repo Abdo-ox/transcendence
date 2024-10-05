@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import  getCsrfToken, sendOauthData, verify_2fa_code , isAuthenticated
+from .views import  getCsrfToken, sendOauthData, verify_2fa_code , resetpassword, reset, isAuthenticated
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,7 +20,6 @@ def friend(request):
     user2 = User.objects.get(username=user2)
     friendlist1, yes = FriendList.objects.get_or_create(user=user1)
     friendlist2, yes = FriendList.objects.get_or_create(user=user2)
-    print("yes:", yes, "list:", friendlist1, flush=True)
     friendlist1.addFriend(user2)
     friendlist2.addFriend(user1)
     return HttpResponse("ok")
@@ -36,6 +35,8 @@ urlpatterns = [
     path('friend/', include('friendship.urls')),
     path('friend/', friend), # temp 
     path('api/', include('user.urls')),
+    path('resetpassword/', resetpassword),
+    path('reset/', reset),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

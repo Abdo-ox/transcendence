@@ -74,4 +74,4 @@ def sendFriendRequests(request):
     if senders.exists():
         data = CurrentSerializer(senders, many=True)
         return JsonResponse(data.data, safe=False)
-    return JsonResponse({})
+    return JsonResponse([], safe=False)

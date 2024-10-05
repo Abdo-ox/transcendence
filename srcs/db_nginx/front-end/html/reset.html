@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Reset Password</h2>
+        <div>
+            <label for="code">Confirmation Code:</label>
+            <input type="text" id="reset-code" name="code" required>
+            <h2 id="reset-error1"></h2>
+            <label for="new-password">New Password:</label>
+            <input type="password" id="reset-new-password" name="new_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+            <h2 id="reset-error"></h2>
+            <!-- <div id="reset-message">
+                <h3>Password must contain the following:</h3>
+                <p id="reset-letter" class="invalid">A <b>lowercase</b> letter</p>
+                <p id="reset-capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                <p id="reset-number" class="invalid">A <b>number</b></p>
+                <p id="reset-length" class="invalid">Minimum <b>8 characters</b></p>
+              </div> -->
+            <button id="reset-submit" type="submit">Reset Password</button>
+        </div>
+    </div>
+</body>
+
+</html>

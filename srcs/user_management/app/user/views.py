@@ -147,7 +147,7 @@ def accountSettings(request):
 @TwoFctor_Decorator
 def currentUserData(request):
     curentuser = CurrentSerializer(request.user)
-    return JsonResponse({'currentUser' : curentuser.data},safe=False)
+    return JsonResponse(curentuser.data)
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -200,3 +200,15 @@ def UpdatePassword(request):
         request.user.save()
         return JsonResponse({"status":"success"},status=200)
     return JsonResponse({"status": "failed"})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def UpdateisPassed(request):
+    print("is2passed : ",request.user.is_2fa_passed,flush=True )
+    if(request.user.is_2fa_passed):
+        request.user.is_2fa_passed = False
+        request.user.save()
+        return JsonResponse({"status":"ok"},status=200)
+    return JsonResponse({"status":"also ok"},status=200)
+    
+    

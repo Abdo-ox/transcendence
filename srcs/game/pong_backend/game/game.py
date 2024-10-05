@@ -37,7 +37,7 @@ class GameLogic:
         game_state = {
             'ball': {
                 'x': width / 4,
-                'y': height / 4,
+                'y': height / 3,
                 'vx': 0.015 * height,
                 'vy': 0.015 * height,
                 'r': 0.015 * height,
@@ -120,14 +120,14 @@ class GameLogic:
         width = self.game_state['width']
         height = self.game_state['height']
 
-        if ball['x'] > width * 0.9 and ball['vx'] > 0:
+        if ball['vx'] > 0:
             if ball['x'] + ball['r'] >= paddle2['x'] and ball['x'] + ball['r'] <= paddle2['x'] + ball['r']\
                     and paddle2['y'] <= ball['y'] <= paddle2['y'] + self.game_state['len']:
                 ball['vx'] *= -1
             elif ball['x'] >= width:
                 paddle1['score'] += 1
                 self.reset_ball(2)
-        elif ball['x'] < width * 0.1 and ball['vx'] < 0:
+        elif ball['vx'] < 0:
             if ball['x'] - ball['r'] <= paddle1['x'] + ball['r'] and ball['x'] - ball['r'] >= paddle1['x']\
                     and paddle1['y'] <= ball['y'] <= paddle1['y'] + self.game_state['len']:
                 ball['vx'] *= -1
