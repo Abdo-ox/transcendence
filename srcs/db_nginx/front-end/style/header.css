@@ -12,14 +12,14 @@ header {
     /* background-color: #1b2141 !important; */
 }
 
-.sticky {
+.header-sticky {
     width: 100% !important;
     background-color: #1b2141 !important;
     box-shadow: 0 5px 10px rgba(0, 0, 0, .1) !important;
 
 }
 
-header .logo {
+header .header-logo {
     position: relative !important;
     color: #fff !important;
     text-decoration: none !important;
@@ -27,13 +27,13 @@ header .logo {
     font-weight: 700 !important;
 }
 
-header .logo img {
+header .header-logo img {
     position: relative !important;
     width: auto !important;
     height: 100% !important;
 }
 
-header .nav {
+header .header-nav {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -85,11 +85,11 @@ header .nav {
     background-color: #1aeeef !important;
     box-shadow: 0px 2px 5px #1aeeef !important;
     transform: scaleX(var(--scale, 0));
-    transition: transform 0.3s ease !important;
+    transition: transform 0.header-3s ease !important;
     transform-origin: bottom left !important;
 } 
 
-header .action {
+header .header-action {
     display: flex !important;
     gap: 10px !important;
     justify-content: center !important;
@@ -97,14 +97,14 @@ header .action {
     text-align: end !important;
 }
 
-.action .bel {
+.header-action .header-bel {
     color: #fff !important;
     margin-left: 10px !important;
 
     font-size: 1.7em !important;
 }
 
-header .action .searchBx {
+header .header-action .header-searchBx {
     margin-left: 100px !important;
     padding: 5px !important;
     margin: 5px !important;
@@ -116,13 +116,13 @@ header .action .searchBx {
     height: 30px !important;
 }
 
-header .action .searchBx i {
+header .header-action .header-searchBx i {
     font-size: 1.4em !important;
     margin: 5px !important;
     color: #222 !important;
 }
 
-header .action .searchBx input {
+header .header-action .header-searchBx input {
     outline: none !important;
     border: none !important;
     color: #222 !important;
@@ -130,7 +130,7 @@ header .action .searchBx input {
 }
 
 
-.nav-side {
+.header-nav-side {
     display: none !important;
     flex-direction: column !important;
     justify-content: center !important;
@@ -148,7 +148,7 @@ header .action .searchBx input {
     box-shadow: 0px 0px 10px rgba(37, 57, 125, 0.96) !important;
 }
 
-.nav-side svg {
+.header-nav-side svg {
     position: absolute !important;
     width: 40px !important;
     right: 0 !important;
@@ -161,25 +161,25 @@ header .action .searchBx input {
     background-color: #050e2d !important;
 }
 
-.nav-side li{
+.header-nav-side li{
     width: 100% !important;
 }
-.nav-side li a{
+.header-nav-side li a{
     padding: 10px !important;
     width: 100% !important;
     text-align: center;
 }
 
-.menu-icon-container {
+.header-menu-icon-container {
     position: relative !important;
 }
 
-.show-in-small-size {
+.header-show-in-small-size {
     display: none !important;
 }
 
 
-.profile-box {
+.header-profile-box {
     cursor:  pointer !important;
     display: flex !important;
     align-items: center !important;
@@ -187,7 +187,7 @@ header .action .searchBx input {
     gap: 5px !important;
 }
 
-.profile-box a {
+.header-profile-box a {
     font-size: 1.2em !important;
     font-weight: 600 !important;
     margin-left: 5px !important;
@@ -196,7 +196,7 @@ header .action .searchBx input {
     text-decoration: none !important;
 }
 
-.profile-box .img-bx {
+.header-profile-box .header-img-bx {
     width: 40px !important;
     height: 40px !important;
     position: relative !important;
@@ -204,7 +204,7 @@ header .action .searchBx input {
     border: 1px solid #fff !important;
 }
 
-.img-bx img {
+.header-img-bx img {
     position: relative !important;
     width: 100% !important;
     border-radius: 50% !important;
@@ -212,19 +212,19 @@ header .action .searchBx input {
     object-fit: cover !important;
 }
 
-.action svg {
+.header-action svg {
     /* display: none !important; */
     cursor: pointer !important;
 }
 
-/* .nav li a.active {
+/* .header-nav li a.header-active {
     color: #1aeeef !important;
     font-weight: bold !important;
     border-bottom: 2px solid #1aeeef !important;
     box-shadow: 0 0 5px #1aeeef !important;
 } 
 
-.nav li a.active:hover {
+.header-nav li a.header-active:hover {
     color: #050e2d !important;
     box-shadow: unset !important;
     background: #050e2d !important;
@@ -234,40 +234,40 @@ header .action .searchBx input {
     box-shadow: 0 0 5px #1aeeef;
 } */
 
-.nav li a i {
+.header-nav li a i {
     margin-right: 5px !important;
 }
 
 @media (max-width: 850px) {
 
-    .hide-in-small-size {
+    .header-hide-in-small-size {
         display: none !important;
     }
 
 
-    .show-in-small-size {
+    .header-show-in-small-size {
         display: flex !important;
         flex-direction: row !important;
         gap: 20px !important;
     }
 
 
-    .three-line-icon {
+    .header-three-line-icon {
         display: flex !important;
     }
 
-    .action svg {
+    .header-action svg {
         display: flex !important;
     }
 
-    header .nav {
+    header .header-nav {
         display: none !important;
     }
 
 }
 
 
-.notif-div {
+.header-notif-div {
     /* opacity: 0; */
     /* visibility: hidden; */
     display: none;
@@ -282,7 +282,7 @@ header .action .searchBx input {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.notiItem {
+.header-notiItem {
     position: relative;
     display: flex;
     padding: 15px 5px;
@@ -292,11 +292,11 @@ header .action .searchBx input {
     background-color: #b5c2fd;
 }
 
-.notiItem:hover {
+.header-notiItem:hover {
     background-color: #a2aee3;
 }
 
-.notiItem .accept .button {
+.header-notiItem .header-accept .header-button {
     cursor: pointer;
     position: absolute;
     width: 55px;
@@ -312,14 +312,14 @@ header .action .searchBx input {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-.notiItem img {
+.header-notiItem img {
     display: block;
     width: 30px;
     margin-right: 10px;
     border-radius: 50%;
 }
 
-.notiItem .text p {
+.header-notiItem .header-text p {
     color: white;
     width: calc(100% - 20px);
 }

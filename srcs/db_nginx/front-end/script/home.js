@@ -8,7 +8,8 @@ import { Multi } from "./multi.js";
 
 export async function Home() {
     let access_token = await getJWT();
-    console.log("access token : ",access_token);
+    if (!access_token)
+        return ;
     /**** coalition rank** */
     // const SettingBtn = document.getElementById('settings-btn');
     // SettingBtn.classList.remove('header-activ-page2'); 
@@ -39,14 +40,15 @@ export async function Home() {
     }
     const data = await response.json();
 
-    console.log("data   home : ****", data);
     const suggestionscontainer = document.getElementById("home-suggestions-container");
     suggestionscontainer.innerHTML = '';
     data.suggestions.forEach(user => {
         suggestionscontainer.innerHTML += `
                     <div class="home-user">
                             <div class="home-info-user">
-                                <img src="${user.profile_image}">
+                                <div class="home-suggestion-img">
+                                    <img src="${user.profile_image}">
+                                </div>
                                 <h3>${user.username}</h3>
                             </div>
                             <button class="home-request-btn" username="${user.username}">send</button>
@@ -61,7 +63,6 @@ export async function Home() {
                     Authorization: `Bearer ${await getJWT()}`
                 }
             });
-            console.log("response_status:", response.status)
             if (response.status == 200) {
                 if (GamePlaySocket.readyState === WebSocket.OPEN) {
                     GamePlaySocket.send(JSON.stringify({
