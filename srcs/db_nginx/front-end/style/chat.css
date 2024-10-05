@@ -13,9 +13,9 @@
   } */
 
 #frame {
-  align-self: center;
-  justify-self: center;
-  margin-top: 90px;
+  /* align-self: center;
+  justify-self: center; */
+  /* margin-top: 90px; */
   width: 80vw;
   /* 90% of the viewport width */
   height: 80vh;
@@ -615,7 +615,6 @@
 }
 
 #contacts-list {
-  /* all: unset; */
   padding-left: 0;
   margin-bottom: 0;
 }

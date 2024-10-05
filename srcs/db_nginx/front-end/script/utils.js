@@ -134,6 +134,19 @@ export const NewPage = async (url, func, addhistory = true) => {
         if (url == '/home' || url == '/chat' || url == '/settings')
             makePageActive(url.substring(1));
         func();
+        document.body.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #03092b;
+    font-family: "proxima-nova", "Source Sans Pro", sans-serif;
+    font-size: 1em;
+    letter-spacing: 0.1px;
+    text-rendering: optimizeLegibility;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+    -webkit-font-smoothing: antialiased;
+`
         window.removeEventListener('popstate', routing);
         window.addEventListener('popstate', routing);
         if (addhistory)
