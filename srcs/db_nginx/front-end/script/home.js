@@ -20,8 +20,6 @@ export async function Home()
     // chatBtn.classList.remove('header-activ-page2'); 
     // if (!chatBtn.classList.contains('header-li-a-style')) 
     //     chatBtn.classList.add('header-li-a-style'); 
- 
-
 
     let t1 = document.getElementById("home-coalFirst");
     let t2 = document.getElementById("home-coalSecond");
@@ -89,12 +87,11 @@ export async function Home()
     });
 
     document.getElementById("home-local-play").addEventListener('click', () => {
-        console.log("hello");
         NewPage("/local", Local);
     });
 
     document.getElementById("home-add").addEventListener('click', async () => {
-        await NewPage("/tournament", Tournament);
+        NewPage("/tournament", Tournament);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {

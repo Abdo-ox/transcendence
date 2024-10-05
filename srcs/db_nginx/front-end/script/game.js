@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "/utils.js";
 
 export const Game = async () => {
     let token = await getJWT();
@@ -12,8 +12,11 @@ export const Game = async () => {
         player1.innerHTML = data.username;
         player1_img.src = data.profile_image;
     });
+
+    let myModal = undefined;
     // add event listner for chnaging the page to a new page
     document.getElementById("play-btn").addEventListener('click', () => {
+        myModal.hide();
         NewPage("/game", Game);
     });
 
@@ -22,6 +25,7 @@ export const Game = async () => {
     const canvas = document.getElementById("canvas");
     const keys = [];
     const socket = new WebSocket(`ws://localhost:9090/ws/game/?token=${token}`);
+    webSockets.push(socket);
 
     let rect = canvas.getBoundingClientRect();
 
@@ -91,7 +95,7 @@ export const Game = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal = new bootstrap.Modal(document.getElementById('myModal'));
         myModal.show();
     }
 

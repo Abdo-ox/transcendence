@@ -2,8 +2,9 @@ import { NewPage, getJWT } from "/utils.js";
 
 export const Local = async () => {
     let token = await getJWT();
-
+    let myModal = undefined;
     document.getElementById("play-btn").addEventListener('click', () => {
+        myModal.hide();
         NewPage("/local", Local);
     });
 
@@ -18,7 +19,7 @@ export const Local = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal = new bootstrap.Modal(document.getElementById('myModal'));
         myModal.show();
     }
 
