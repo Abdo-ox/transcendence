@@ -273,6 +273,33 @@ async function bodychat(UserData) {
       .catch(handleError);
   }
 
+  document.getElementById('search').addEventListener('input', event => {
+    const contacts = document.querySelectorAll('#frame #sidepanel #contacts ul li.contact');
+    let flag = false;
+    UserData.friends.forEach(friend => {
+      if (friend.username === event.target.value) {
+        flag = true;
+        const targetItem = document.getElementById(event.target.value);
+        const parent = targetItem.parentNode;
+        parent.insertBefore(targetItem, contacts[0]);
+        contacts.forEach(contact => {
+          if (friend.username != contact.id)
+            contact.style.visibility = 'hidden';
+          else
+            contact.style.visibility = 'visible';
+        });
+      }
+    });
+    if (event.target.value == "" || flag === false) {
+      contacts.forEach(contact => {
+        if (flag === false && event.target.value)
+          contact.style.visibility = 'hidden';
+        else
+          contact.style.visibility = 'visible';
+      });
+    }
+  });
+
   function handleError(error) {
     if (error.response) {
       console.log('Error Status Code:', error.response.status);
