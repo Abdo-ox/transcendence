@@ -129,11 +129,6 @@ GamePlaySocket.onopen = () => {
     console.log('Notif WebSocket connection opened');
 };
 
-<<<<<<< HEAD
-    document.getElementById("profile-box").addEventListener('click', () => {
-        console.log("profile-box event trigered");
-        NewPage("/profile", Profile);
-=======
 GamePlaySocket.onmessage = (e) => {
     var data = JSON.parse(e.data);
     console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
@@ -151,7 +146,6 @@ const menuicon = document.getElementById("menu-icon");
 if (menuicon) {
     menuicon.addEventListener('click', () => {
         document.getElementById("side-bar").style.setProperty('display', 'flex', 'important');
->>>>>>> 76f558a8a050205e98dd08c58e8598f670fea082
     });
 }
 window.addEventListener('resize', () => {
