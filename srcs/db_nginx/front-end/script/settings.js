@@ -6,22 +6,6 @@ import { getJWT, getCsrfToken, redirectTwoFactor } from "/utils.js"
 // window.addEventListener('popstate', routing);
 export async function Settings() {
 
-    // const homeBtn = document.getElementById('home-btn');
-    // homeBtn.classList.remove('header-activ-page2'); 
-    // if (!homeBtn.classList.contains('header-li-a-style')) {
-    //     homeBtn.classList.add('header-li-a-style'); 
-    // }
-    
-    // const chatBtn = document.getElementById('chat-btn');
-    // chatBtn.classList.remove('header-activ-page2'); 
-    // if (!chatBtn.classList.contains('header-li-a-style')) 
-    //     chatBtn.classList.add('header-li-a-style'); 
-    
-    // const settingBtn = document.getElementById('settings-btn');
-    // if (settingBtn) {
-    //     settingBtn.classList.remove('header-li-a-style');
-    //     settingBtn.classList.add('header-activ-page2');
-    // }
     let userdata = null;
     const fields = ['username', 'first_name', 'last_name', 'email'];
     const csrf_token = await getCsrfToken();
