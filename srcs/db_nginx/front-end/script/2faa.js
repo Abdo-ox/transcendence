@@ -5,9 +5,9 @@ import { Home } from "/home.js"
 export async function Twofactor() {
     console.log("test");
     
-    const user = localStorage.getItem('username');
-    if(user)
-        document.getElementById('twofa-user').innerHTML = user;
+    // const user = localStorage.getItem('username');
+    // if(user)
+    //     document.getElementById('twofa-user').innerHTML = user;
     document.getElementById("twofa-submit").addEventListener("click", async () => {
 
         const digits = document.querySelectorAll('.twofa-digit');

@@ -5,8 +5,10 @@ import { Home } from "/home.js";
 import { Settings } from "/settings.js";
 import { Chat } from "/chat.js";
 
+export let webSockets = [];
+
 export const routing = (event) => {
-    NewPage(window.location.pathname, true, false);
+    // NewPage(window.location.pathname, true, false);
 }
 
 export const getCsrfToken = async () => {
@@ -108,9 +110,18 @@ export const NewPage = async (url, func, addhistory = true) => {
     if (response.ok) {
         const data = await response.text();
         const doc = (new DOMParser()).parseFromString(data, 'text/html');
-        if (doc.querySelector('header') && document.querySelector('header'))
+
+        if (doc.querySelector('header') && document.querySelector('header')) {
+            // close all sockets
+            webSockets.forEach(ws => {
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.close();
+                }
+            });
+            webSockets = [];
+
             document.body.children[1].replaceWith(doc.body.children[1]);
-        else {
+        } else {
             removeEvent();
             document.body.replaceWith(doc.body);
             if (document.body.querySelector('header')) {

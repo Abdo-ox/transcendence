@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "/utils.js";
 
 
 export const Multi = async () => {
@@ -25,6 +25,7 @@ export const Multi = async () => {
     const canvas = document.getElementById("canvas");
     const keys = [];
     const socket = new WebSocket(`ws://localhost:9090/ws/multiplayer/?token=${token}`);
+    webSockets.push(socket);
 
     let c = 3; // countdown
     let gameState = {};

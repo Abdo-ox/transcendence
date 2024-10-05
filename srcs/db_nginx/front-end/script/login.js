@@ -7,6 +7,7 @@ console.log("the login.js called");
 const  handle_data = async (data) => {
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
+    console.log("data access :",data.access);
     fetch('https://localhost:8000/api/twoFaCalled/',{
         headers:{
             Authorization: `Bearer ${await getJWT()}`
@@ -103,6 +104,7 @@ export async function Login() {
         }
     });
     document.getElementById("login-forgotpassword").addEventListener("click", async () => {
+        console.log("i am here ****************");
         NewPage("/resetpassword", ResetPassword, false);
     });
 

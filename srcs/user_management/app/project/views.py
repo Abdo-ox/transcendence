@@ -50,10 +50,11 @@ def reset(request):
     code = body_data.get('code')
     psw  = body_data.get('password')
     user_email = body_data.get('email')
+    print("user email :",user_email)
     try:
         user = User.objects.get(email=user_email)
     except User.DoesNotExist:
-        return JsonResponse({"status": "failed", "message": "User not found"}, status=404)
+        return JsonResponse({"status": "failed", "message": "User not found"})
     print("user resetcode  : ",user.reset_Code ,flush=True)
     print("user name : ",user.username ,flush=True)
     if str(user.reset_Code) == code:
