@@ -13,6 +13,8 @@ import { Game } from "/game.js"
 import { NewPage } from "/utils.js"
 import { Chat } from "/chat.js"
 import { Twofactor } from "/2faa.js"
+import { ConfirmationMail} from "/confirmationMail.js"
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname;
@@ -25,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
             NewPage("/landingpage", Landing);
             break;
         case "/login":
-            console.log("login");
             NewPage("/login", Login);
             break;
         case "/register":
@@ -60,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         case "/tournament":
             NewPage("/tournament", Tournament);
+            break;
+        case "/confirmationMail":
+            NewPage("/confirmationMail",ConfirmationMail);
             break;
     }
 });

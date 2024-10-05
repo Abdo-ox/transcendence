@@ -20,6 +20,7 @@ export const getCsrfToken = async () => {
         });
 }
 
+
 export const redirectTwoFactor = (data, status) => {
     if (data.status) {
         if (data.status == "redirect") {

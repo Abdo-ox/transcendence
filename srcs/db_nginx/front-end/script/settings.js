@@ -1,13 +1,16 @@
-import { getJWT, getCsrfToken, redirectTwoFactor } from "/utils.js"
+import { getJWT, getCsrfToken, NewPage} from "/utils.js"
+import {ConfirmationMail} from "/confirmationMail.js"
 
 
 
 // window.removeEventListener('popstate', routing);
 // window.addEventListener('popstate', routing);
+
 export async function Settings() {
 
+
     let userdata = null;
-    const fields = ['username', 'first_name', 'last_name', 'email'];
+    const fields = ['username', 'first_name', 'last_name'];
     const csrf_token = await getCsrfToken();
     fetch("https://localhost:8000/api/settings/", {
         headers: {
@@ -173,13 +176,16 @@ export async function Settings() {
     }
 
     document.getElementById("settings-save-btn").addEventListener("click", async () => {
-        const formData = new FormData();
         let edited = false;
+        let emailedited = false;
         let editedData = {};
         try {
             fields.forEach(field => {
-                const element = document.getElementById(fsettings - ield);
-                if (element.value.trim() == '') {
+
+
+                console.log(" feild 2 : ", field);
+                const element = document.getElementById("settings-" + field);
+                if ((element.value).trim() == '') {
                     alert("field" + field + " should not be empty");
                     throw "empty field";
                 }
@@ -188,26 +194,36 @@ export async function Settings() {
                 editedData[field] = element.value;
             });
             if (edited) {
+
+                console.log("edited Data : ", editedData);
                 const response = await fetch('https://localhost:8000/api/update/', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
-                        // 'X-CRFToken': await getCsrfToken(),
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify(editedData)
                 })
+                if (!response.ok) {
+                    console.error('Failed to fetch update data:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                console.log(data);
                 if (response.ok) {
                     console.log(response);
                     document.getElementById("settings-name").innerHTML = editedData['username'];
                     document.getElementById("settings-username").value = editedData['username'];
                     document.getElementById("settings-first_name").value = editedData['first_name'];
                     document.getElementById("settings-last_name").value = editedData['last_name'];
-                    document.getElementById("settings-email").value = editedData['email'];
+
                 }
                 else
                     console.log("Failed to update ", response.statusText);
+
             }
+
+
         }
         catch (error) {
             console.log("failed to update data in catch : ", error);
@@ -278,7 +294,43 @@ export async function Settings() {
         }
 
     });
+    document.getElementById("settings-change-btn").addEventListener("click", async () => {
+        let email = document.getElementById("settings-email").value;
+        const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
+        if (gmailRegex.test(email)) {
+            document.getElementById("resetmail-errorMessage").textContent = ""; // Clear error message
+            console.log("Valid Gmail address:", email);
+        } else {
+            document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
+            return;
+        }
+        const response = await fetch('https://localhost:8000/MailConfirmation/', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${await getJWT()}`,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({ 'newemail': newEmail })
+
+        });
+
+        if (!response.ok) {
+            console.error('Failed to confirm user:', response.status, response.statusText);
+            return;
+        }
+        const data = await response.json();
+        console.log("*******data mail response **** is : ", data);
+        if (data.status == 'redirect') {
+            localStorage.setItem("NewEmail", newEmail)
+            NewPage("/confirmationMail", ConfirmationMail);
+        }
+        if (data.status == 'failed')
+            document.getElementById("resetmail-errorMessage").textContent = "Failed to send email code check again!";
+        if (data.status == 'dublicated')
+            document.getElementById("resetmail-errorMessage").textContent = "Email is already in use!";
+
+    });
     document.getElementById("settings-enable2fa").addEventListener("change", async (event) => {
         const checkbox = event.target;
         let is_2Fa_enabled = checkbox.checked;

@@ -23,8 +23,7 @@ const  handle_data = async (data) => {
     .catch((error) =>{
         console.log("errrrrrrrrror her login :",error);
     })
-    // console.log("ended here ==============");
-    // NewPage('/home', Home);
+  
 }
 
 const is_authenticated = async () => {
