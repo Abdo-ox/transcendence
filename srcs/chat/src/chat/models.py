@@ -118,6 +118,7 @@ class User(AbstractBaseUser):
     Twofa_Code    = models.BigIntegerField(default=0)
     enable2fa     = models.BooleanField(default=False)
     reset_Code    = models.BigIntegerField(default=0)
+    MailConfirmation = models.BigIntegerField(default=0)
 
     
     class Meta:

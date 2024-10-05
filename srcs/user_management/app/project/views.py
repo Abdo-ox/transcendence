@@ -17,7 +17,7 @@ from django.conf import settings
 import json
 from django.contrib.auth import authenticate 
 from rest_framework.permissions import IsAuthenticated
-
+from .decorators import TwoFctor_Decorator
 @api_view(['POST'])
 def resetpassword(request):
     body_data = json.loads(request.body)  # No decoding here
@@ -109,3 +109,46 @@ def sendOauthData(request):
 def isAuthenticated(request):
     return JsonResponse({"status":"ok"})
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator
+def MailConfirmationfunc(request):
+    body_data = json.loads(request.body)
+    user_newemail = body_data.get('newemail')
+    try:
+         user = User.objects.get(email=user_newemail)
+    except User.DoesNotExist:
+        print("User not found.",flush=True) 
+        confirmation_code = str(random.randint(100000,999999))
+        request.user.MailConfirmation = confirmation_code
+        request.user.save()
+        print("mailconfirmation code",confirmation_code,flush=True)
+        subject = 'Your email  confirmation Code '
+        message = f'''Hi,To confirm your new email address, please use the following verification code:
+        {confirmation_code}If you didn’t request this change, please ignore this email.
+        Thank you!'''
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [user_newemail]
+        try:
+            print(" email recipion is : ",recipient_list," email from email is : ",from_email)
+            send_mail(subject,message,from_email,recipient_list)
+            return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
+        except Exception as e:
+            return JsonResponse({"status" : "failed","message": f"Failed to send email: {str(e)}"}, status=500)
+    return JsonResponse({"status": "dublicated"})
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@TwoFctor_Decorator 
+def EmailValidation(request):
+    body_data = json.loads(request.body) 
+    code = body_data.get('code')
+    newemail = body_data.get('newemail')
+    print("user code email :",code)
+    if str(request.user.MailConfirmation) == code:
+        request.user.email = newemail
+        request.user.save()
+        return JsonResponse({"status": "redirect"}, status=200)    
+    else:
+        return JsonResponse({"status": "failed", "message": "Incorrect confirmation code"})
+    

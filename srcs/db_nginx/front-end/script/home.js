@@ -1,4 +1,4 @@
-import { NewPage, getJWT, redirectTwoFactor, routing } from "/utils.js";
+import { NewPage, getJWT } from "/utils.js";
 import { GamePlaySocket } from "/header.js";
 import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";

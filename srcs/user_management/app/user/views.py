@@ -171,6 +171,7 @@ def UploadProfile(request):
 @TwoFctor_Decorator
 def updateData(request):
     editedData = request.data
+    print(" data : " ,editedData, flush=True)
     form = EditUserForm(editedData,instance=request.user)
     if(form.is_valid()):
         form.save()

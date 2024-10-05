@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import  getCsrfToken, sendOauthData, verify_2fa_code , resetpassword, reset, isAuthenticated
+from .views import  getCsrfToken, sendOauthData, verify_2fa_code , MailConfirmationfunc, EmailValidation, resetpassword, reset, isAuthenticated
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -37,6 +37,8 @@ urlpatterns = [
     path('api/', include('user.urls')),
     path('resetpassword/', resetpassword),
     path('reset/', reset),
+    path('MailConfirmation/',MailConfirmationfunc),
+    path('MailValidation/',EmailValidation)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
