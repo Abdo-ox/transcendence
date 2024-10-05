@@ -231,7 +231,7 @@
 }
 
 #frame #sidepanel #contacts ul li.contact {
-  /* all: unset; */
+  visibility: visible;
   position: relative;
   padding: 10px;
   font-size: 0.9em;
