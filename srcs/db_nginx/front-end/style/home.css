@@ -1102,7 +1102,9 @@ section {
 }
 
 .home-logout-container h4 {
-    font-weight: bold;
+    all: unset;
+    font-weight: 700;
+    font-size: 20px;
     color: #BD1414BE;
 }
 

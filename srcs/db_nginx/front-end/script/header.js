@@ -84,11 +84,11 @@ const addheader = () => {
             </svg>
             <li id="header-small-home-btn"><a class="header-li-a-style">Home</a></li>
             <li id="header-small-chat-btn"><a class="header-li-a-style">Chat</a></li>
-            <li id="header-small-settings-btn"><a class="header-li-a-style">settings</a></li>
             <li id="header-small-profile-btn"><a class="header-li-a-style">Profile</a></li>
+            <li id="header-small-settings-btn"><a class="header-li-a-style">settings</a></li>
         </ul>`;
     window.addEventListener('scroll', () => {
-        header.classList.toggle('sticky', window.scrollY > 0);
+        header.classList.toggle('header-sticky', window.scrollY > 0);
     });
 }
 
@@ -164,11 +164,11 @@ export async function header() {
     // Add click event listener to the notification icon
     document.getElementById('header-notification-icon')?.addEventListener('click', event => {
         event.stopPropagation(); // Prevent the event from bubbling up
-        l = document.getElementById('header-notif-div');
-        if (notificationPanel.style.display == 'block')
-            notificationPanel.style.display = 'none';
+        const notif  = document.getElementById('header-notif-div');
+        if (notif.style.display == 'block')
+            notif.style.display = 'none';
         else
-            notificationPanel.style.display = 'block';
+            notif.style.display = 'block';
     });
 
     // Hide the notification panel if clicking outside

@@ -4,6 +4,7 @@ import { Login } from "/login.js";
 import { Home } from "/home.js";
 import { Settings } from "/settings.js";
 import { Chat } from "/chat.js";
+import { Profile } from "/profile.js";
 
 export let webSockets = [];
 
@@ -190,6 +191,7 @@ const func = {
     "header-small-home-btn": () => { NewPage('/home', Home) },
     "header-small-chat-btn": () => { NewPage('/chat', Chat) },
     "header-small-settings-btn": () => { NewPage('/settings', Settings) },
+    "header-small-profile-btn": () => { NewPage('/profile', Profile) },
 }
 
 export const makePageActive = (page) => {

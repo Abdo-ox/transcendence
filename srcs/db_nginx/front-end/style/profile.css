@@ -232,7 +232,11 @@
     position: relative;
     justify-content: end;
 }
-
+.profile-dashbord h4{
+    all:unset;
+    font-weight: 650 ;
+    font-family: 'Poppins', sans-serif;
+}
 .profile-box {
     margin-right: 15px;
     box-shadow: #c0b6b6 0px 3px 8px;
