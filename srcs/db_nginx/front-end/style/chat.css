@@ -149,7 +149,7 @@
     border: 2px solid #95a5a6;
   } */
 #frame #sidepanel #profile .wrap p {
-  all: unset;
+  /* all: unset; */
   float: left;
   margin-left: 15px;
 }
@@ -231,7 +231,7 @@
 }
 
 #frame #sidepanel #contacts ul li.contact {
-  /* all: unset; */
+  visibility: visible;
   position: relative;
   padding: 10px;
   font-size: 0.9em;
@@ -316,7 +316,7 @@
 }
 
 #frame #sidepanel #contacts ul li.contact .wrap .meta .name {
-  all: unset;
+  /* all: unset; */
   font-weight: 600;
   line-height: 40px;
 }
@@ -457,12 +457,11 @@
 }
 
 #frame .content .contact-profile p {
-  all: unset;
+  /* all: unset; */
   float: left;
 }
 
 #frame .content .messages {
-  all: unset;
   height: calc(100% - 130px);
   min-height: calc(100% - 130px);
   max-height: calc(100% - 130px);
@@ -487,6 +486,7 @@
 }
 
 #frame .content .messages ul li {
+  left: 4px;
   display: inline-block;
   clear: both;
   float: left;
@@ -498,6 +498,8 @@
 
 
 #frame .content .messages ul li.sent p {
+
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   float: left;
   color: #f5f5f5;
@@ -511,6 +513,7 @@
 }
 
 #frame .content .messages ul li.replies p {
+  margin-bottom: 0;
   font-family: 'Helvetica', 'Arial', sans-serif;
   color: #f5f5f5;
   background-color: #597fe1;
@@ -525,7 +528,7 @@
 
 
 #frame .content .messages ul li p {
-  all: unset;
+  /* all: unset; */
   display: inline-block;
   padding: 10px 15px;
   border-radius: 20px;
@@ -559,6 +562,7 @@
 }
 
 #frame .content .message-input .wrap .wrap input {
+  padding-left: 10px;
   color: #d4d4d4;
   background-color: #0d1020;
   position: absolute;
@@ -615,5 +619,9 @@
 }
 
 #contacts-list {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+#chat-log{
   all: unset;
 }
