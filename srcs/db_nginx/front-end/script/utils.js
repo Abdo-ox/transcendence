@@ -49,37 +49,49 @@ const isReallyTokenValid = async (access) => {
     return true;
 }
 
+const is_expired = (access) => {
+    let payload = access.split('.')[1];
+    payload = payload.replace(/-/g, '+').replace(/_/g, '/');
+    payload = atob(payload);
+    const exp = JSON.parse(payload)['exp'];
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    return (currentTime + 60 > exp);
+}
+
+const clear_localStorage = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    NewPage("/login", Login);
+    return null;
+}
+
 const is_valid = async (access, refresh) => {
-    const response = await fetch("https://localhost:8000/is_authenticated/", {
-        headers: {'Authorization': `Bearer ${access}`}
-    });
-    if (response.status != 200) {
-        const response1 = await fetch("https://localhost:8000/api/token/refresh/", { method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ refresh: refresh})
+    if (!is_expired(access)) {
+        const response = await fetch("https://localhost:8000/is_authenticated/", {
+            headers: { 'Authorization': `Bearer ${access}` }
         });
-        if (response1.status != 200) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            NewPage("/login", Login);
-            return null;
-        }
-        const data = await response1.json();
-        const response2 = await fetch("https://localhost:8000/is_authenticated/", {
-            headers: {'Authorization': `Bearer ${data.access}`}
-        });
-        if (response2.status != 200) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            NewPage("/login", Login);
-            return null;
-        }
-        localStorage.setItem('access_token', data.access);
-        return data.access;
+        if (response.status != 200)
+            return clear_localStorage();
+        return access;
     }
-    return access;
+    const response1 = await fetch("https://localhost:8000/api/token/refresh/", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refresh: refresh })
+    });
+    if (response1.status != 200)
+        return clear_localStorage();
+    const data = await response1.json();
+    const response2 = await fetch("https://localhost:8000/is_authenticated/", {
+        headers: { 'Authorization': `Bearer ${data.access}` }
+    });
+    if (response2.status != 200)
+        return clear_localStorage();
+    localStorage.setItem('access_token', data.access);
+    return data.access;
 }
 
 export const getJWT = async () => {
@@ -107,7 +119,6 @@ export const NewPage = async (url, func, addhistory = true) => {
                 }
             });
             webSockets = [];
-
             document.body.children[1].replaceWith(doc.body.children[1]);
         } else {
             removeEvent();
@@ -161,8 +172,8 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
             'X-CSRFToken': csrf_token
         },
         body: JSON.stringify(fields),
-    }).then( async response => {
-        return {data : await response.json(), status: response.status};
+    }).then(async response => {
+        return { data: await response.json(), status: response.status };
     }).then(data => {
         handle_data(data);
     }).catch(error => {
@@ -171,6 +182,7 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
     // }
 
 }
+
 const func = {
     "header-home-btn": () => { NewPage('/home', Home) },
     "header-chat-btn": () => { NewPage('/chat', Chat) },
