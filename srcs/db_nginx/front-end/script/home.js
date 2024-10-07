@@ -2,6 +2,7 @@ import { NewPage, getJWT } from "/utils.js";
 import { GamePlaySocket } from "/header.js";
 import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";
+import { RemoteTournament } from "./remotetournament.js";
 import { Game } from "./game.js";
 import { Local } from "./local.js";
 import { Multi } from "./multi.js";
@@ -90,7 +91,7 @@ export async function Home() {
     });
 
     document.getElementById("home-add").addEventListener('click', async () => {
-        NewPage("/tournament", Tournament);
+        NewPage("/remotetournament", RemoteTournament);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {

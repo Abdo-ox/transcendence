@@ -216,7 +216,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
         self.role = None
-        self.room_name = None
+        self.room_name = self.scope['url_route']['kwargs'].get('room_name', None)
         self.GameTask = None
         self.del_cache = False
         await self.accept()
@@ -252,6 +252,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 # Check if there are enough users to create a roomç
                 if len(user_queue) >= 2:
                     await self.create_room()
+            else:
+                await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         if 'key' in data:
             self.handle_key(data['key'])
@@ -312,3 +314,21 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
             await self.close()
         else:        
             await self.send(text_data=json.dumps(event['game_state']))
+
+
+
+class RemoteTournamentConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope['user']
+        self.room_name = self.scope['url_route']['kwargs'].get('room_name', None)
+        await self.accept()
+
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+
+    async def send_game_state(self, event):
+        await self.send(text_data=json.dumps(event['game_state']))

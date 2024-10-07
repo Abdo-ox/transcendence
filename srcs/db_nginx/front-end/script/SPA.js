@@ -7,6 +7,7 @@ import { Profile } from "/profile.js"
 import { ResetPassword } from "/resetpassword.js"
 import { Reset} from "/reset.js"
 import { Tournament } from "/tournament.js"
+import { RemoteTournament } from "/remotetournament.js"
 import { Local } from "/local.js"
 import { Multi } from "/multi.js"
 import { Game } from "/game.js"
@@ -62,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case "/tournament":
             NewPage("/tournament", Tournament);
             break;
+        case "/remotetournament":
+                NewPage("/remotetournament", RemoteTournament);
+                break;
         case "/confirmationMail":
             NewPage("/confirmationMail",ConfirmationMail);
             break;
