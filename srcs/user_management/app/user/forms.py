@@ -84,12 +84,13 @@ class LoginForm(forms.ModelForm):
 class EditUserForm(RegisterationForm):
     class Meta:
         model = User
-        fields = ('username', 'last_name', 'first_name', 'email')
+        fields = ('username', 'last_name', 'first_name',)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['password1'].required = False
         self.fields['password2'].required = False
+        self.fields['email'].required = False
     
     def clean_password1(self):
         pass

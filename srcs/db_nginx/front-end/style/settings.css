@@ -81,6 +81,7 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .settings-crop-image-container input {
@@ -379,6 +380,23 @@ input:checked+.settings-slider::before {
     font-weight: 500;
 }
 
+.settingserror{
+    color: rgb(187, 101, 101);
+    font-size: 1.1 em;
+    font-family: 'Courier New', Courier, monospace;
+}
+.setting-changeemail{
+    color: rgba(255, 220, 255, 0.6);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1em;
+}
+/* #settings-img-to-crop
+{
+    position: relative;
+    max-width:400px ;
+    object-fit: cover;
+} */
 @media screen and (max-width: 670px) {
     .settings-flex2 {
         flex-direction: column;
