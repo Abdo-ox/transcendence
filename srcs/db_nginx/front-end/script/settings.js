@@ -32,11 +32,10 @@ export async function Settings() {
             document.getElementById('settings-enable2fa').checked = data.current.enable2fa;
             if (data.current.intraNet) {
                 document.getElementById("settings-username").readOnly = true;
-                document.getElementById("settings-username").style.hove
-                document.getElementById("settings-first_name").readOnly = true;
                 document.getElementById("settings-last_name").readOnly = true;
-                document.getElementById("settings-email").readOnly = true;
-                document.getElementById("settings-save-btn").style.display = "none";
+                document.getElementById("sett-change-email").style.display="none";
+                document.getElementById("email-label-sett").style.display="none";
+                document.getElementById("settings-change-btn").style.display = "none";
                 document.getElementById("settings-para").style.display = "block";
                 document.getElementById("settings-passText").style.display = "block";
                 document.getElementById("settings-changePassword").style.display = "none";
@@ -50,6 +49,7 @@ export async function Settings() {
     const securityInfo = document.getElementById("settings-security-info");
     const firsShow = document.getElementById("settings-firstShow");
     profileBtn.addEventListener("click", function () {
+        document.getElementById("settings-SaveImg").style.display = 'none';
         profileInfo.style.display = "block";
         securityInfo.style.display = "none";
         document.getElementById("settings-crop-image-container").style.display = "none";
@@ -59,6 +59,7 @@ export async function Settings() {
     });
 
     securityBtn.addEventListener("click", function () {
+        document.getElementById("settings-SaveImg").style.display = 'none';
         securityInfo.style.display = "block";
         profileInfo.style.display = "none";
         document.getElementById("settings-crop-image-container").style.display = "none";
@@ -89,7 +90,7 @@ export async function Settings() {
             imageWrapper.innerHTML = ``;
             imgElement = new Image();
             imgElement.src = e.target.result;
-            imgElement.classList.add('settings-img-to-corp');
+            imgElement.classList.add('settings-img-to-crop');
             imageWrapper.appendChild(imgElement);
             createCropBox();
         };
@@ -100,7 +101,7 @@ export async function Settings() {
             cropBox.classList.add('settings-cropBox');
             console.log("img.offsetleft", imgElement.offsetLeft);
             imageWrapper.appendChild(cropBox);
-            boxRect = document.querySelector('.cropBox').getBoundingClientRect();
+            boxRect = document.querySelector('.settings-cropBox').getBoundingClientRect();
             makeDraggable(cropBox);
         };
 
@@ -158,7 +159,6 @@ export async function Settings() {
 
         ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
         document.getElementById("settings-profile-image1").src = canvas.toDataURL();
-        document.getElementById("settings-profile-image").src = canvas.toDataURL();
         document.getElementById("settings-crop-image-container").style.display = "none";
         document.getElementById("settings-SaveImg").style.display = "flex";
         document.getElementById("settings-SaveImg").style.flexDirection = "column";
@@ -210,7 +210,7 @@ export async function Settings() {
                 }
                 const data = await response.json();
                 console.log(data);
-                if (response.ok) {
+                if (data.data == "edited") {
                     console.log(response);
                     document.getElementById("settings-name").innerHTML = editedData['username'];
                     document.getElementById("settings-username").value = editedData['username'];
@@ -219,11 +219,12 @@ export async function Settings() {
 
                 }
                 else
+                   {
+                    document.getElementById("resetmail-user-errorMessage").textContent = "username is already in use ";
                     console.log("Failed to update ", response.statusText);
+                   } 
 
             }
-
-
         }
         catch (error) {
             console.log("failed to update data in catch : ", error);
