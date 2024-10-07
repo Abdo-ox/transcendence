@@ -1,4 +1,4 @@
-import { NewPage } from "/utils.js";
+import { NewPage,getJWT } from "/utils.js";
 import { Settings } from "./settings.js";
 
 export async function ConfirmationMail() {
@@ -7,7 +7,7 @@ export async function ConfirmationMail() {
 
 
         try {
-            let code = document.getElementById("confirminputmail-code").value;
+            let code = document.getElementById("confirmMail-inputemail").value;
             let trimcode = code.trim();
             if (!/^\d{6}$/.test(code) || trimcode == '') {
                 reseterrorMsg.textContent = 'Code must be exactly 6 digits long';

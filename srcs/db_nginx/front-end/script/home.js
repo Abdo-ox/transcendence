@@ -94,6 +94,10 @@ export async function Home() {
         NewPage("/remotetournament", RemoteTournament);
     });
 
+    // document.getElementById('home-add').addEventListener((event)=> {
+    //     event.target.style.display = 'flex';
+    // });
+
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");

@@ -8,7 +8,7 @@ header {
     justify-content: space-between !important;
     align-items: center !important;
     transition: 0.5s !important;
-    z-index: 1000 !important;
+    z-index: 900 !important;
     /* background-color: #1b2141 !important; */
 }
 
@@ -134,7 +134,7 @@ header .header-action .header-searchBx input {
     all: unset;
     position: relative;
     list-style: none;
-    display: flex !important;
+    display: none !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
@@ -294,7 +294,7 @@ header .header-action .header-searchBx input {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.header-notiItem {
+.notiItem {
     position: relative;
     display: flex;
     padding: 15px 5px;
@@ -304,11 +304,11 @@ header .header-action .header-searchBx input {
     background-color: #b5c2fd;
 }
 
-.header-notiItem:hover {
+.notiItem:hover {
     background-color: #a2aee3;
 }
 
-.header-notiItem .header-accept .header-button {
+.notiItem .accept .button {
     cursor: pointer;
     position: absolute;
     width: 55px;
@@ -324,14 +324,14 @@ header .header-action .header-searchBx input {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-.header-notiItem img {
+.notiItem img {
     display: block;
     width: 30px;
     margin-right: 10px;
     border-radius: 50%;
 }
 
-.header-notiItem .header-text p {
+.notiItem .text p {
     color: white;
     width: calc(100% - 20px);
 }
