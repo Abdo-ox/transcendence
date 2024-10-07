@@ -167,6 +167,7 @@
 }
 
 #frame #sidepanel #search input {
+  all: unset;
   font-family: "proxima-nova", "Source Sans Pro", sans-serif;
   padding: 10px 0 10px 46px;
   /* width: calc(100% - 25px); */
