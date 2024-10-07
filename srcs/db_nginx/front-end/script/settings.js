@@ -100,7 +100,7 @@ export async function Settings() {
             cropBox.classList.add('settings-cropBox');
             console.log("img.offsetleft", imgElement.offsetLeft);
             imageWrapper.appendChild(cropBox);
-            boxRect = document.querySelector('.cropBox').getBoundingClientRect();
+            boxRect = document.querySelector('.settings-cropBox').getBoundingClientRect();
             makeDraggable(cropBox);
         };
 
