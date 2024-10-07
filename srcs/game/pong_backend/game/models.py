@@ -56,6 +56,7 @@ class User(AbstractBaseUser):
     is_2fa_passed = models.BooleanField(default=False)
     reset_Code    = models.BigIntegerField(default=0)
     MailConfirmation = models.BigIntegerField(default=0)
+    coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'user'
@@ -121,3 +122,17 @@ class MultiGame(models.Model):
         
     class Meta:
         db_table='multigame'
+
+class Coalition(models.Model):
+    name = models.TextField(default='')
+    score = models.PositiveIntegerField(default=0)
+    image = models.TextField(default='')
+
+    class Meta:
+        db_table = 'coalition'
+
+class AddCoalition(models.Model):
+    add = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        db_table = 'addcoalition'
