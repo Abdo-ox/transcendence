@@ -9,8 +9,9 @@ class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
         # print(f"too is ::: {data['to']}")
         content = {
-            'message': f"{data['message']}",
+            'message': data['message'],
             'to': data['to'],
+            'flag': data['flag']
         }
         return self.send_chat_message(content)
     def connect(self):

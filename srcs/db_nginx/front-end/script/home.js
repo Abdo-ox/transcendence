@@ -67,7 +67,8 @@ export async function Home() {
                     GamePlaySocket.send(JSON.stringify({
                         'from': data.currentUser.username,
                         'to': button.getAttribute('username'),
-                        'message': `${data.currentUser.username} send freind request.`
+                        'message': `${data.currentUser.username} send freind request.`,
+                        'flag': 'FreindR'
                     }));
                 }
                 button.style.display = 'none';
