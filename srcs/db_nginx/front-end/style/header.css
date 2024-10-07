@@ -8,7 +8,7 @@ header {
     justify-content: space-between !important;
     align-items: center !important;
     transition: 0.5s !important;
-    z-index: 1000 !important;
+    z-index: 900 !important;
     /* background-color: #1b2141 !important; */
 }
 
@@ -134,7 +134,7 @@ header .header-action .header-searchBx input {
     all: unset;
     position: relative;
     list-style: none;
-    display: flex !important;
+    display: none !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
