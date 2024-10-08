@@ -11,22 +11,18 @@ export async function Home() {
     if (!access_token)
         return ;
     /**** coalition rank** */
-    // const SettingBtn = document.getElementById('settings-btn');
-    // SettingBtn.classList.remove('header-activ-page2'); 
-    // if (!SettingBtn.classList.contains('header-li-a-style')) {
-    //     SettingBtn.classList.add('header-li-a-style'); 
-    // }
-
-    // const chatBtn = document.getElementById('chat-btn');
-    // chatBtn.classList.remove('header-activ-page2'); 
-    // if (!chatBtn.classList.contains('header-li-a-style')) 
-    //     chatBtn.classList.add('header-li-a-style'); 
-
-
-
     let t1 = document.getElementById("home-coalFirst");
     let t2 = document.getElementById("home-coalSecond");
     let t3 = document.getElementById("home-coalThird");
+    function CompareScore(score1,score2,score3)
+    {
+        let scores = [score1, score2, score3];
+        scores.sort((a,b) => b - a);
+        console.log("first place" , scores[0]);
+        console.log("second place" , scores[1]);
+        console.log("3 place" , scores[2]);
+    }
+  
     /**** add event listener for the nemu bar side ****/
 
     const response = await fetch('https://localhost:8000/api/suggest/friend/', {

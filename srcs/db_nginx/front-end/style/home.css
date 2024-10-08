@@ -679,13 +679,30 @@ section {
     flex-direction: column;
     align-items: left end;
 }
-
+#home-coalition-winner
+{
+ position: absolute;
+    left: 37%;
+    color: #FFD700;
+    box-shadow: #FFD700 0px 10px 20px -10px;
+    
+}
 .home-coali-bx {
+ 
+    min-width: 70px;
     width: 70%;
     height: 70%;
     object-fit: cover;
 }
+#home-coalSecond
+{
+    margin-left: 10px;
+}
+#home-coalThird
+{
+    margin-left: -20px;
 
+}
 .home-coali-bx img {
     width: 100%;
     height: 100%;
