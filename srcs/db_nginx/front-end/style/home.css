@@ -1138,8 +1138,9 @@ section {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    width: 50%;
-    height: 50%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 30%;
 }
 
 .home-tournamet-form input {
@@ -1230,7 +1231,7 @@ input:hover, .home-tournament-form-btn:hover {
 
 @media (max-width: 850px) {
     .home-form-input{
-        width: 80%;
+        width: 50%;
     }
 
     .home-t-content {

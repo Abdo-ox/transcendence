@@ -93,9 +93,9 @@ export async function Home() {
         NewPage("/tournament", Tournament);
     });
 
-    // document.getElementById('home-add').addEventListener((event)=> {
-    //     event.target.style.display = 'flex';
-    // });
+    document.getElementById("home-join-btn").addEventListener('click', event => {
+        document.getElementById("home-tournamet-form").style.display = 'flex';
+    });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
