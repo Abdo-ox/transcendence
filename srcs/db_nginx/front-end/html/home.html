@@ -17,8 +17,18 @@
 
             </div>
             <div class="home-flex1">
-                <h2>Suggestions </h2>
-                <div id="home-suggestions-container" class="home-users-list"></div>
+                <div class="home-tournament-local">
+                    <h2>Ready to Rise?</h2>
+                    <p>Step up and join the Tournament Local! This is your moment to prove your skills,
+                        face off against the best, and carve your name in the hall of champions.
+                    </p>
+                    <strong>The tournament is calling—will you answer?</strong>
+                    <button class="home-btn">start</button>
+                </div>
+                <div class="home-suggestion-container">
+                    <h2>Suggestions</h2>
+                    <div id="home-suggestions-items" class="home-users-list"></div>
+                </div>
                 <div class="home-logout-container" id="home-logout-container">
                     <svg class="home-logout-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
                         height="42px" viewBox="0 0 24 24" width="35px" fill="#BD1414BE">
@@ -309,15 +319,15 @@
             <div class="home-form-input">
                 <div class="home-input-label-container">
                     <label class="home-input-label" for="tournament-name">Tournament Name:</label>
-                    <input type="text" class="tournament-Name" name="tournament-name">
+                    <input type="text" class="tournament-Name" id="tournament-name" name="tournament-name">
                 </div>
                 <div class="home-input-label-container">
                     <label class="home-input-label" for="nick-name">Nick Name:</label>
-                    <input type="text" class="tournament-nickname" name="nick-name">
+                    <input type="text" class="tournament-nickname" id="nick-name" name="nick-name">
                 </div>
                 <div class="home-input-label-container">
                     <label class="home-input-label" for="tournament-picture">Tournament Picture:</label>
-                    <input type="file" class="tournament-picture" name="tournament-picture">
+                    <input type="file" class="tournament-picture" id="tournament-picture" name="tournament-picture">
                 </div>
                 <button class="home-btn">SAVE</button>
             </div>

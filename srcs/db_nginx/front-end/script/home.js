@@ -40,7 +40,7 @@ export async function Home() {
     }
     const data = await response.json();
 
-    const suggestionscontainer = document.getElementById("home-suggestions-container");
+    const suggestionscontainer = document.getElementById("home-suggestions-items");
     suggestionscontainer.innerHTML = '';
     data.suggestions.forEach(user => {
         suggestionscontainer.innerHTML += `
