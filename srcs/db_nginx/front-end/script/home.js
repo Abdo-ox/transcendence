@@ -5,6 +5,7 @@ import { Tournament } from "./tournament.js";
 import { Game } from "./game.js";
 import { Local } from "./local.js";
 import { Multi } from "./multi.js";
+import { TournamentFr } from "./fr-tournament.js";
 
 export async function Home() {
     let access_token = await getJWT();
@@ -85,12 +86,13 @@ export async function Home() {
         NewPage("/local", Local);
     });
 
-    document.getElementById("home-add").addEventListener('click', async () => {
+    document.getElementById("home-start").addEventListener('click', async () => {
         NewPage("/tournament", Tournament);
     });
 
-    document.getElementById("home-join-btn").addEventListener('click', event => {
-        document.getElementById("home-tournamet-form").style.display = 'flex';
+    document.getElementById("home-add").addEventListener('click', event => {
+        // document.getElementById("home-tournamet-form").style.display = 'flex';
+        NewPage("/fr-tournament", TournamentFr);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
