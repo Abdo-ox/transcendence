@@ -8,63 +8,178 @@
     align-items: center;
     justify-content: space-between;
     align-items: center;
-    margin: 80px 40px 40px 40px;
+    /* flex: 1; */
+    margin: 80px 10px 10px 10px;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: #1b2141;
-    height: calc(100vh - 120px);
-    width: calc(100vw - 80px);
+    height: calc(100vh - 100px);
+    width: calc(100vw - 20px);
     border-radius: 20px;
     padding: 0 10px;
     overflow: hidden;
 }
 
-.fr-tournament-part{
+.fr-tournament-part {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 0 10px;
-    flex:1;
+    flex: 1;
     height: 60%;
+    min-height: 120px;
 }
 
-.fr-tournament-part1,.fr-tournament-part5 {
+.fr-tournament-part1,
+.fr-tournament-part5 {
     justify-content: space-between;
 }
-.fr-tournament-player{
+
+.fr-tournament-part3 {
+    justify-content: flex-end;
+    padding: 0;
+}
+
+.fr-tournament-player {
     flex: 1;
     width: 100%;
     max-height: 60px;
     min-height: 60px;
     border-radius: 20px;
-    border: yellowgreen 2px solid;
+    border: #4a0dac 2px solid;
     background-color: #1b2141;
-    z-index:999;
+    box-shadow: #b1c0ff 0px 0px 0px 0px;
+    z-index: 999;
 }
 
-.fr-tournament-part3 img{
-    width: 100px;
-    height: 150px;
+.fr-tournament-player h5 {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    font-size: 2vw;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.fr-tournament-img img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110%;
     object-fit: cover;
 }
 
-.fr-tournament-player3{
+.fr-tournament-img {
+    /* min-width: 60px; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: max-content;
+    transform: translate(-50%, -50%);
+}
+
+.fr-tournament-player3 {
     position: relative;
 }
-.fr-tournament-player3::after{
-    all:unset;
+
+.fr-tournament-flech1,
+.fr-tournament-flech2,
+.fr-tournament-flech3,
+.fr-tournament-flech4 {
     content: '';
     position: absolute;
-    right: 90%;
-    top: 50%;
-    width: calc(10% + 80px);
-    height: 430%;
-    transform: translateY(-50%);
-    border-radius: 20px;
+    right: 70%;
+    top: 30px;
+    bottom: 30px;
+    width: calc(30% + 20px);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     border-right: 2px solid grey;
     border-top: 2px solid grey;
     border-bottom: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-flech2 {
+    left: 70%;
+    top: 50%;
+    bottom: 30px;
+    border-radius: unset;
+    border: unset;
+    border-bottom-left-radius: 20px;
+    border-left: 2px solid grey;
+    border-bottom: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-flech3 {
+    right: 70%;
+    top: 50%;
+    bottom: 30px;
+    border-radius: unset;
+    border-bottom-right-radius: 20px;
+    border-top: unset;
+}
+
+.fr-tournament-flech4 {
+    left: 70%;
+    top: 30px;
+    bottom: 30px;
+    border-radius: unset;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    border-right: unset;
+    border-left: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-container-input-btn {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.fr-tournament-container-input-btn input {
+    display: inline;
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 1;
+    border-style: none;
+    outline: none;
+    height: calc(1em + 1.6em + 0.2em);
+    width: 100%;
+    padding: 0.8em 1em;
+    border: 0.25em solid transparent;
+    background-image: linear-gradient(#050e2d, #1b2141), linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: 0.8s ease-out;
+}
+
+.fr-tournament-container-input-btn button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    height: 100%;
+    aspect-ratio: 1/1;
+    transform: translateY(-50%);
+    border:  0.25em solid transparent;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    outline: none;
+    text-decoration: none;
+    color: #784ba0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
