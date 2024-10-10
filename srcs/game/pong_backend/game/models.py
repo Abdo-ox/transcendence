@@ -57,6 +57,7 @@ class User(AbstractBaseUser):
     reset_Code    = models.BigIntegerField(default=0)
     MailConfirmation = models.BigIntegerField(default=0)
     coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
+    score         = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'user'
