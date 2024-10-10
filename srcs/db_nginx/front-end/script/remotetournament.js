@@ -1,20 +1,48 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "/utils.js";
 
 export const RemoteTournament = async () => {
-    await getJWT();
+    let token = await getJWT();
 
     // get tournament name from local storage
     let tournament_name = localStorage.getItem('tournament_name');
 
     // connect to socket
     const socket = new WebSocket(`ws://localhost:9090/ws/tournament/?token=${token}`);
+    webSockets.push(socket);
 
-    // on open, send create or join / continue request
+    socket.onmessage = function(event) {
+        let tournamentState = JSON.parse(event.data);
+        console.log(tournamentState);
+    }
 
     // if create, i.e. no roomname in localstorage, send create request to socket
     if (!tournament_name) {
         // give user input field to name tournament
-        // handle errors: duplicate name, size
+        document.getElementById('tournament-name-input').style.display = '';
+        document.getElementById('add-tournament-name').addEventListener('click', function() {
+            const nameInput = document.getElementById('tournament-name');
+            const nameError = document.getElementById('tournament-name-error');
+            const name = nameInput.value.trim();
+
+            // Reset error message
+            nameError.style.display = 'none';
+            nameError.textContent = '';
+
+            // Validation checks
+            if (!name) {
+                nameError.textContent = 'Nickname cannot be empty.';
+            } else if (name.length > 30) {
+                nameError.textContent = "Nickname can't be longer than 30 characters.";
+            }
+            // send create request message to socket and handle if duplicate
+            socket.send(JSON.stringify({
+                'create':true,
+                'name':name,
+            }));
+
+            // Show the error message
+            nameError.style.display = 'block';
+        });
 
         // after creation, take user to tournament bracket
 
