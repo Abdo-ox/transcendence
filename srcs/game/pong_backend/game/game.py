@@ -4,6 +4,7 @@ import random
 import time
 from . models import MultiGame
 from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
 
 class GameLogic:
         
@@ -161,7 +162,17 @@ class GameLogic:
             
     async def save_game_results(self):
         self.game.player1Score = self.game_state['paddle1']['score']
+        self.user1.score += self.game_state['paddle1']['score']
+        await self.user1.asave()
+        coalition = await sync_to_async(lambda: self.user1.coalition)()
+        coalition.score += self.game_state['paddle1']['score']
+        await coalition.asave()
         self.game.player2Score = self.game_state['paddle2']['score']
+        self.user2.score += self.game_state['paddle2']['score']
+        await self.user2.asave()
+        coalition = await sync_to_async(lambda: self.user2.coalition)()
+        coalition.score += self.game_state['paddle2']['score']
+        await coalition.asave()
         self.game.isOver = True
         if self.game.player1Score > self.game.player2Score:
             self.game.winner = self.user1
