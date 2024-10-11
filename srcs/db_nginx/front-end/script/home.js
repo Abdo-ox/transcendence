@@ -10,20 +10,51 @@ import { TournamentFr } from "./fr-tournament.js";
 export async function Home() {
     let access_token = await getJWT();
     if (!access_token)
-        return ;
+        return;
     /**** coalition rank** */
     let t1 = document.getElementById("home-coalFirst");
     let t2 = document.getElementById("home-coalSecond");
     let t3 = document.getElementById("home-coalThird");
-    function CompareScore(score1,score2,score3)
-    {
+    function CompareScore(score1, score2, score3) {
         let scores = [score1, score2, score3];
-        scores.sort((a,b) => b - a);
-        console.log("first place" , scores[0]);
-        console.log("second place" , scores[1]);
-        console.log("3 place" , scores[2]);
+        scores.sort((a, b) => b - a);
+        console.log("first place", scores[0]);
+        console.log("second place", scores[1]);
+        console.log("3 place", scores[2]);
     }
-  
+    /*****js of card tournaments***** */
+    const stack = document.querySelector(".homeCard-stack");
+    const cards = Array.from(stack.children)
+        .reverse()
+        .filter((child) => child.classList.contains("homeCard-card"));
+
+    cards.forEach((card) => stack.appendChild(card));
+
+    function moveCard() {
+        const lastCard = stack.lastElementChild;
+        if (lastCard.classList.contains("homeCard-card")) {
+            lastCard.classList.add("homeCard-swap");
+
+            setTimeout(() => {
+                lastCard.classList.remove("homeCard-swap");
+                stack.insertBefore(lastCard, stack.firstElementChild);
+            }, 1200);
+        }
+    }
+
+    // let autoplayInterval = setInterval(moveCard, 4000);
+
+    stack.addEventListener("click", function (e) {
+        const card = e.target.closest(".homeCard-card");
+        if (card && card === stack.lastElementChild) {
+            card.classList.add("homeCard-swap");
+
+            setTimeout(() => {
+                card.classList.remove("homeCard-swap");
+                stack.insertBefore(card, stack.firstElementChild);
+            }, 1200);
+        }
+    });
     /**** add event listener for the nemu bar side ****/
 
     const response = await fetch('https://localhost:8000/api/suggest/friend/', {
