@@ -5,8 +5,10 @@ import time
 from django.core.cache import cache
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from . models import Game
-from . game import GameLogic
+from asgiref.sync import sync_to_async
+from django.db import IntegrityError
+from . models import Game, Tournament
+from . game import GameLogic, TournamentLogic, TournamentLogicInstances
 
 # protect from anonymous user
 
@@ -27,10 +29,15 @@ class GameConsumer(AsyncWebsocketConsumer):
             cache.delete(self.user.username)
         if self.game_state['started']:
             self.game.playerScore = self.game_state['paddle1']['score']
+            self.user.score += self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
                 self.game.won = True
-            database_sync_to_async(self.game.save)()
+            await self.game.asave()
+            await self.user.asave()
+            coalition = await sync_to_async(lambda: self.user.coalition)()
+            coalition.score += self.game_state['paddle1']['score']
+            await coalition.asave()
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -216,7 +223,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
         self.role = None
-        self.room_name = None
+        self.room_name = self.scope['url_route']['kwargs'].get('room_name', None)
         self.GameTask = None
         self.del_cache = False
         await self.accept()
@@ -252,6 +259,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 # Check if there are enough users to create a roomç
                 if len(user_queue) >= 2:
                     await self.create_room()
+            else:
+                await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         if 'key' in data:
             self.handle_key(data['key'])
@@ -312,3 +321,72 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
             await self.close()
         else:        
             await self.send(text_data=json.dumps(event['game_state']))
+
+
+
+class RemoteTournamentConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope['user']
+        self.room_name = None
+        self.instance = None
+        self.logic = None
+        self.del_cache = False
+        await self.accept()
+
+
+    async def disconnect(self, close_code):
+        if self.del_cache:
+            cache.delete(self.user.username)
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        self.room_name = data['name']
+
+        # check if user already in game or tournament
+        in_game = cache.get(self.user.username)
+        if in_game:
+            await self.send(json.dumps({'uaig':True})) # abbreviation for 'user already in game'
+            await self.close()
+            return
+
+        await self.channel_layer.group_add(self.room_name, self.channel_name)
+
+        if 'create' in data:
+            try:
+                self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
+            except IntegrityError:
+                await self.send(text_data=json.dumps({'duplicate':True}))
+                await self.close()
+                return
+            
+            await self.send(text_data=json.dumps({'created':True}))
+
+            await database_sync_to_async(self.instance.players.add)(self.user)
+            
+            self.logic = TournamentLogic(self.room_name, self.instance, self.user)
+            await self.send(text_data=json.dumps(self.logic.get_state()))
+
+        elif 'join' in data:
+            self.instance = await Tournament.objects.aget(name=self.room_name)
+            if self.instance.Ongoing or self.instance.isOver:
+                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.close()
+                return
+            await database_sync_to_async(self.instance.players.add)(self.user)
+
+            # join room
+            self.logic = TournamentLogicInstances[self.room_name]
+            # invoke logic to send state udate to all users and update model instance
+
+
+        elif 'continue' in data:
+            self.logic = TournamentLogicInstances[self.room_name]
+            self.logic.players.append(self.user)
+            await self.send(text_data=json.dumps(self.logic.get_state()))
+            # join room
+
+        cache.set(self.user.username, True)
+        self.del_cache = True
+
+    async def send_tournament_state(self, event):
+        await self.send(text_data=json.dumps(event['tournament_state']))

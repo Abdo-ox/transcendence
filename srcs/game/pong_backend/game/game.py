@@ -4,6 +4,7 @@ import random
 import time
 from . models import MultiGame
 from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
 
 class GameLogic:
         
@@ -161,16 +162,78 @@ class GameLogic:
             
     async def save_game_results(self):
         self.game.player1Score = self.game_state['paddle1']['score']
+        self.user1.score += self.game_state['paddle1']['score']
+        await self.user1.asave()
+        coalition = await sync_to_async(lambda: self.user1.coalition)()
+        coalition.score += self.game_state['paddle1']['score']
+        await coalition.asave()
         self.game.player2Score = self.game_state['paddle2']['score']
+        self.user2.score += self.game_state['paddle2']['score']
+        await self.user2.asave()
+        coalition = await sync_to_async(lambda: self.user2.coalition)()
+        coalition.score += self.game_state['paddle2']['score']
+        await coalition.asave()
         self.game.isOver = True
         if self.game.player1Score > self.game.player2Score:
             self.game.winner = self.user1
         elif self.game.player2Score > self.game.player1Score:
             self.game.winner = self.user2
         
-        await database_sync_to_async(self.game.save)()
+        await self.game.asave()
 
     def update_game_state(self):
         self.update_ball()
         self.update_paddle('paddle1')
         self.update_paddle('paddle2')
+
+
+TournamentLogicInstances = {}
+class TournamentLogic:
+    def __init__(self, room_name, tournament, creator):
+        self.room_name = room_name
+        self.tournament = tournament
+        self.state = {}
+        self.n = 0
+        self.players = creator # user
+        self.winners = [] # user
+        TournamentLogic[room_name] = self
+        self.init_tournament()
+
+    def init_tournament(self):
+        self.set_state()
+
+    def get_next_games(self):
+        if len(self.players) == 4 and not self.n:
+            players = [self.players[k].username for k in self.players]
+            next = [players[0:2],[players[2:]]]
+        elif self.n == 2:
+            next = [self.winners[e].username for e in self.winners]
+        else:
+            next = self.state.get('next_games', [])
+        return next
+
+
+    def set_state(self):
+        self.state = {
+            'players': [self.players[k].username for k in self.players],
+            'winners': [self.winners[k].username for k in self.winners],
+            'n': self.n,
+            'next_games': self.get_next_games(),
+        }
+
+    def get_state(self):
+        self.set_state()
+        return self.state
+
+    def init_games(self):
+        if not self.n:
+            MultiGame.objects.create(room_name = self.generate_names(self.state['players'][0:2]))
+            MultiGame.players.add(self.players[0:2])
+            MultiGame.objects.create(room_name = self.generate_names(self.state['players'][2:]))
+            MultiGame.players.add(self.players[2:])            
+        elif self.n == 2:
+            MultiGame.objects.create(room_name = self.generate_names(self.state['winners']))
+            MultiGame.players.add(self.winners)
+
+    def generate_names(self, players):
+        return f'{players[0]}-{players[1]}-{self.room_name}'

@@ -26,7 +26,7 @@ http {
         ssl_certificate $PATH_CRT/crt.crt;
         ssl_certificate_key $PATH_CRT/crt.key;
 
-        location ~* ^/(landingpage|register|login|home|confirmationMail|profile|settings|2faa|resetpassword|reset|chat|game|multi|local|tournament)$ {
+        location ~* ^/(landingpage|register|login|home|confirmationMail|profile|settings|2faa|resetpassword|reset|chat|game|multi|local|tournament|remotetournament)$ {
             root /usr/share/nginx/html/;
             try_files /html/SPA.html =404;
         }

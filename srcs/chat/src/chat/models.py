@@ -120,6 +120,7 @@ class User(AbstractBaseUser):
     reset_Code    = models.BigIntegerField(default=0)
     MailConfirmation = models.BigIntegerField(default=0)
     coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
+    score         = models.IntegerField(default=0)
 
     
     class Meta:
@@ -186,10 +187,12 @@ class Game(models.Model):
         db_table='game'
     
 class Tournament(models.Model):
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='', unique=True, blank=False)
     players = models.ManyToManyField(User, related_name='tournaments')
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
-    
+    Ongoing = models.BooleanField(default=False)
+    isOver = models.BooleanField(default=False)
+
     class Meta:
         db_table='tournament'
 
