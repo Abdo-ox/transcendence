@@ -168,7 +168,7 @@ class GameLogic:
         elif self.game.player2Score > self.game.player1Score:
             self.game.winner = self.user2
         
-        await database_sync_to_async(self.game.save)()
+        await self.game.asave()
 
     def update_game_state(self):
         self.update_ball()

@@ -5,6 +5,7 @@ import time
 from django.core.cache import cache
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from asgiref.sync import sync_to_async
 from django.db import IntegrityError
 from . models import Game, Tournament
 from . game import GameLogic, TournamentLogic, TournamentLogicInstances
@@ -29,13 +30,14 @@ class GameConsumer(AsyncWebsocketConsumer):
         if self.game_state['started']:
             self.game.playerScore = self.game_state['paddle1']['score']
             self.user.score += self.game_state['paddle1']['score']
-            self.user.coalition.score += self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
                 self.game.won = True
-            database_sync_to_async(self.game.save)()
-            database_sync_to_async(self.user.save)()
-            database_sync_to_async(self.user.coalition.save)()
+            await self.game.asave()
+            await self.user.asave()
+            coalition = await sync_to_async(lambda: self.user.coalition)()
+            coalition.score += self.game_state['paddle1']['score']
+            await coalition.asave()
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -365,7 +367,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps(self.logic.get_state()))
 
         elif 'join' in data:
-            self.instance = await database_sync_to_async(Tournament.objects.get)(name=self.room_name)
+            self.instance = await Tournament.objects.aget(name=self.room_name)
             if self.instance.Ongoing or self.instance.isOver:
                 await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
                 await self.close()
