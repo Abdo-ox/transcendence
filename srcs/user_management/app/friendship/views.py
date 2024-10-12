@@ -15,16 +15,16 @@ def acceptFriendRequest(request):
         username = request.GET.get('username')
         print(c.b, "friend", username, flush=True)
         if not username:
-            return HttpResponse('Bad request',status=400)
+            return JsonResponse({'error':'user name of the sender not sent to backend !'}, status=400)
         user = User.objects.get(username=username)
         try:
             friend_request = FriendRequest.objects.get(sender=user, receiver=request.user, is_active=True)
             friend_request.accept()
-            return HttpResponse('ok')
+            return JsonResponse({'error':'ok'})
         except FriendRequest.DoesNotExist:
-            return HttpResponse('Forbidden', status=403)
+            return JsonResponse({'error':'Forbidden'}, status=403)
     except User.DoesNotExist:
-        return HttpResponse('Forbidden', status=403)
+        return JsonResponse({'error':'send user not exist !'}, status=403)
  
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
