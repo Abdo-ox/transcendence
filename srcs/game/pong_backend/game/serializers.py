@@ -20,7 +20,7 @@ class GameProfileSerializer(serializers.ModelSerializer):
 class MultiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = MultiGame
-        fields = ['players', 'winner', 'Player1Score', 'Player2Score']
+        fields = ['player1', 'player2', 'winner', 'Player1Score', 'Player2Score']
 
 class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
