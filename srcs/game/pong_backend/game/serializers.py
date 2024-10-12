@@ -11,3 +11,8 @@ class WinStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['score']
+
+class GameProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['wins', 'losses', 'totalGames']
