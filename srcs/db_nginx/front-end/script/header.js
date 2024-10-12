@@ -1,15 +1,26 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
 
-function FriendRqEvent(){
- ////
+async function FriendRqEvent(from) {
+    ////
+    const token = await getJWT();
+    const response = await fetch(`https://localhost:8000/friend/accept/?${from}`, {
+        headers: {
+            Authorization: `bearer ${token}`
+        }
+    }).then(response => async () => { return { 'data': await response.json(), status: response.status } });
+    if (response.status == 200)
+        console.log("friend added successfully");
+    else {
+        console.log("error in accepting friend request error: ", response.data.error);
+    }
     console.log(`inside Friend event handler`)
 }
 
-function GameRqEvent(){
+function GameRqEvent() {
     console.log(`inside Friend event handler`)
     ////
-} 
+}
 
 export function displayNotification(data) {
     createNotificationPanel();
@@ -25,7 +36,7 @@ export function displayNotification(data) {
     if (data['flag'] === 'GameR')
         button.addEventListener('click', GameRqEvent);
     if (data['flag'] === 'FreindR')
-        button.addEventListener('click', FriendRqEvent);
+        button.addEventListener('click', FriendRqEvent(data['from']));
     button.className = 'button'
     button.textContent = 'accept'
     var Notif = document.createElement('p');
@@ -140,21 +151,12 @@ export async function header() {
         console.log('Notif WebSocket connection opened');
     };
 
-<<<<<<< HEAD
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
-            displayNotification(data['message'])
+            displayNotification(data)
     };
-=======
-GamePlaySocket.onmessage = (e) => {
-    var data = JSON.parse(e.data);
-    console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
-    if (data['to'] === CurrentUser)
-        displayNotification(data)
-};
->>>>>>> walid's-branch
 
     GamePlaySocket.onclose = () => {
         console.error('GamePlaySocket closed');
@@ -187,7 +189,7 @@ GamePlaySocket.onmessage = (e) => {
     // Add click event listener to the notification icon
     document.getElementById('header-notification-icon')?.addEventListener('click', event => {
         event.stopPropagation(); // Prevent the event from bubbling up
-        const notif  = document.getElementById('header-notif-div');
+        const notif = document.getElementById('header-notif-div');
         if (notif.style.display == 'block')
             notif.style.display = 'none';
         else
