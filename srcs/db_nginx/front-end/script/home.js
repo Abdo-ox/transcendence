@@ -123,10 +123,15 @@ export async function Home() {
         NewPage("/tournament", Tournament);
     });
 
-    document.getElementById("home-add").addEventListener('click', event => {
-        // document.getElementById("home-tournamet-form").style.display = 'flex';
-        NewPage("/fr-tournament", TournamentFr);
-    });
+    // document.getElementById("home-add").addEventListener('click', event => {
+    //  NewPage("/fr-tournament", TournamentFr);
+    // });
+
+    const t = (event, data)=> {
+        console.log(`event:${event}`, `data:${data}`);
+    }
+
+    document.getElementById("home-add").addEventListener('click', t.bind("data", "event"));
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
