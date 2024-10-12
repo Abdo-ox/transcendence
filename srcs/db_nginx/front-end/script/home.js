@@ -9,10 +9,6 @@ import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
 
 function pieChart2(data) {
-    console.log(
-        
-        "hellllllo"
-    );
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
     let tournament = (data.tournament * 100) / total;
     let ai = (data.ai_match * 100) / total;
@@ -33,6 +29,26 @@ function pieChart2(data) {
             #86a8e7 0 ${friend + ai}deg,
             #ffd600 0 ${friend + ai + unknown}deg,
             #0091ad 0 ${friend + ai + unknown + tournament}deg)`);
+}
+
+const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
+    console.log(`button:${button}`);
+        const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, { headers: {
+                Authorization: `Bearer ${await getJWT()}`
+            }
+        });
+        if (response.status == 200) {
+            if (GamePlaySocket.readyState === WebSocket.OPEN) {
+                GamePlaySocket.send(JSON.stringify({
+                    'from': currentUser.username,
+                    'to': button.getAttribute('username'),
+                    'message': `${currentUser.username} send freind request.`,
+                    'flag': 'FreindR'
+                }));
+            }
+            button.style.display = 'none';
+            button.parentElement.querySelector(`.home-${action[1]}-btn`).style.display = 'block';
+        }
 }
 
 export async function Home() {
@@ -107,32 +123,17 @@ export async function Home() {
                                 </div>
                                 <h3>${user.username}</h3>
                             </div>
-                            <button class="home-request-btn" username="${user.username}">send</button>
+                            <button class="home-send-btn" username="${user.username}">send</button>
                             <button class="home-cancel-btn" username="${user.username}">cancel</button>
                     </div>`;
     });
-    document.querySelectorAll('.home-request-btn').forEach(button => {
-        button.addEventListener('click', async () => {
-            console.log("the user you want to create a friendship with is: ", button.getAttribute('username'));
-            const response = await fetch(`https://localhost:8000/friend/request/?username=${button.getAttribute('username')}`, {
-                headers: {
-                    Authorization: `Bearer ${await getJWT()}`
-                }
-            });
-            if (response.status == 200) {
-                if (GamePlaySocket.readyState === WebSocket.OPEN) {
-                    GamePlaySocket.send(JSON.stringify({
-                        'from': data.currentUser.username,
-                        'to': button.getAttribute('username'),
-                        'message': `${data.currentUser.username} send freind request.`,
-                        'flag': 'FreindR'
-                    }));
-                }
-                button.style.display = 'none';
-                button.parentElement.querySelector('.home-cancel-btn').style.display = 'block';
-            }
-        });
-    })
+    document.querySelectorAll('.home-send-btn').forEach(button => {
+        button.addEventListener('click', buttonsEventHandler.bind(null, button, GamePlaySocket, ['create', 'cancel'], data.currentUser));
+    });
+
+    document.querySelectorAll('.home-cancel-btn').forEach(button => {
+        button.addEventListener('click', buttonsEventHandler.bind(null, button, GamePlaySocket, ['cancel', 'send'], data.currentUser));
+    });
     // game events
     document.getElementById("home-ai-play").addEventListener('click', () => {
         NewPage("/game", Game);
@@ -146,7 +147,7 @@ export async function Home() {
         NewPage("/local", Local);
     });
 
-    document.getElementById("home-start").addEventListener('click', async () => {
+    document.getElementById("home-local-button").addEventListener('click', async () => {
         NewPage("/tournament", Tournament);
     });
 
