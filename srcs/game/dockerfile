@@ -1,9 +1,11 @@
 FROM    python:3.10
 
-COPY    pong_backend .
 COPY    requirements.txt .
-COPY    script/script.sh .
 
 RUN     pip install -r requirements.txt
+
+COPY certs certs
+COPY    pong_backend .
+COPY    script/script.sh .
 
 CMD ["bash","script.sh"]

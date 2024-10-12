@@ -120,7 +120,10 @@ class User(AbstractBaseUser):
     reset_Code    = models.BigIntegerField(default=0)
     MailConfirmation = models.BigIntegerField(default=0)
     coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
-
+    score         = models.IntegerField(default=0)
+    totalGames    = models.IntegerField(default=0)
+    wins          = models.IntegerField(default=0)
+    losses        = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'user'
@@ -186,23 +189,24 @@ class Game(models.Model):
         db_table='game'
     
 class Tournament(models.Model):
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='', unique=True, blank=False)
     players = models.ManyToManyField(User, related_name='tournaments')
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
-    
+    Ongoing = models.BooleanField(default=False)
+    isOver = models.BooleanField(default=False)
+
     class Meta:
         db_table='tournament'
 
 class MultiGame(models.Model):
-    # fix related name
     players = models.ManyToManyField(User, related_name='multiPlayerGames')
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
-    # to change to charfield later
     room_name = models.CharField(max_length=255, default='')
     tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
+    friendMatch = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
         

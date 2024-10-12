@@ -5,15 +5,17 @@ import { Home } from "/home.js"
 import { Settings } from "/settings.js"
 import { Profile } from "/profile.js"
 import { ResetPassword } from "/resetpassword.js"
-import { Reset} from "/reset.js"
+import { Reset } from "/reset.js"
 import { Tournament } from "/tournament.js"
+import { RemoteTournament } from "/remotetournament.js"
 import { Local } from "/local.js"
 import { Multi } from "/multi.js"
 import { Game } from "/game.js"
 import { NewPage } from "/utils.js"
 import { Chat } from "/chat.js"
 import { Twofactor } from "/2faa.js"
-import { ConfirmationMail} from "/confirmationMail.js"
+import { ConfirmationMail } from "/confirmationMail.js"
+import { TournamentFr } from "./fr-tournament.js"
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -62,8 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
         case "/tournament":
             NewPage("/tournament", Tournament);
             break;
+        case "/remotetournament":
+                NewPage("/remotetournament", RemoteTournament);
+                break;
         case "/confirmationMail":
-            NewPage("/confirmationMail",ConfirmationMail);
+            NewPage("/confirmationMail", ConfirmationMail);
+            break;
+        case "/fr-tournament":
+            NewPage("/fr-tournament", TournamentFr);
             break;
     }
 });

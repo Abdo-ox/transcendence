@@ -24,7 +24,7 @@ export const Game = async () => {
     /* ---->  game logic  <---- */
     const canvas = document.getElementById("canvas");
     const keys = [];
-    const socket = new WebSocket(`ws://localhost:9090/ws/game/?token=${token}`);
+    const socket = new WebSocket(`wss://localhost:9090/ws/game/?token=${token}`);
     webSockets.push(socket);
 
     let rect = canvas.getBoundingClientRect();
