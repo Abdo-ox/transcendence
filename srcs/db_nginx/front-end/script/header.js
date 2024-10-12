@@ -36,7 +36,7 @@ export function displayNotification(data) {
     if (data['flag'] === 'GameR')
         button.addEventListener('click', GameRqEvent);
     if (data['flag'] === 'FreindR')
-        button.addEventListener('click', FriendRqEvent);
+        button.addEventListener('click', FriendRqEvent(data['from']));
     button.className = 'button'
     button.textContent = 'accept'
     var Notif = document.createElement('p');
