@@ -1,17 +1,28 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from . models import Game
+from . models import User, MultiGame, Game, Tournament
 
 
 # TODO: create serializer for tournament        
 class TournamentSerializer(serializers.ModelSerializer):
     pass
 
-class GameSerializer(serializers.ModelSerializer):
-    player = serializers.ReadOnlyField(source='player.username')
-    
+# win stats
+class WinStatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['score']
+
+class GameProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['wins', 'losses', 'totalGames']
+
+class MultiGameHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MultiGame
+        fields = ['player1', 'player2', 'winner', 'Player1Score', 'Player2Score']
+
+class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = '__all__'
-        
-# TODO: create serializer for multiplayer game
+        fields = ['playerScore', 'aiScore', 'won']

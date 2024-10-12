@@ -1,7 +1,28 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
 
-export function displayNotification(message) {
+async function FriendRqEvent(from) {
+    ////
+    const token = await getJWT();
+    const response = await fetch(`https://localhost:8000/friend/accept/?${from}`, {
+        headers: {
+            Authorization: `bearer ${token}`
+        }
+    }).then(response => async () => { return { 'data': await response.json(), status: response.status } });
+    if (response.status == 200)
+        console.log("friend added successfully");
+    else {
+        console.log("error in accepting friend request error: ", response.data.error);
+    }
+    console.log(`inside Friend event handler`)
+}
+
+function GameRqEvent() {
+    console.log(`inside Friend event handler`)
+    ////
+}
+
+export function displayNotification(data) {
     createNotificationPanel();
     var notifDiv = document.getElementById('header-notif-div');
     var notiItem = document.createElement('div');
@@ -12,10 +33,14 @@ export function displayNotification(message) {
     var accept = document.createElement('div');
     accept.className = 'accept'
     var button = document.createElement('button');
+    if (data['flag'] === 'GameR')
+        button.addEventListener('click', GameRqEvent);
+    if (data['flag'] === 'FreindR')
+        button.addEventListener('click', FriendRqEvent(data['from']));
     button.className = 'button'
     button.textContent = 'accept'
     var Notif = document.createElement('p');
-    Notif.textContent = message;
+    Notif.textContent = data["message"];
     const img = document.createElement('img')
     img.src = "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
     text.appendChild(Notif)
@@ -130,7 +155,7 @@ export async function header() {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
-            displayNotification(data['message'])
+            displayNotification(data)
     };
 
     GamePlaySocket.onclose = () => {
@@ -164,7 +189,7 @@ export async function header() {
     // Add click event listener to the notification icon
     document.getElementById('header-notification-icon')?.addEventListener('click', event => {
         event.stopPropagation(); // Prevent the event from bubbling up
-        const notif  = document.getElementById('header-notif-div');
+        const notif = document.getElementById('header-notif-div');
         if (notif.style.display == 'block')
             notif.style.display = 'none';
         else

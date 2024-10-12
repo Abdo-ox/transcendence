@@ -65,7 +65,6 @@ export const Tournament = async () => {
 
         let i = 1;
         winners.forEach(element => {
-            console.log(winners);
             let box = document.getElementById(`winner${i}`);
             box.textContent = element;
             i += 1;

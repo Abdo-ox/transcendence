@@ -134,7 +134,8 @@ async function bodychat(UserData) {
         GamePlaySocket.send(JSON.stringify({
           'from': username,
           'to': nameElement.textContent,
-          'message': `${username} invites u to play.`
+          'message': `${username} invites u to play.`,
+          'flag': 'GameR'
         }));
         // };
       }

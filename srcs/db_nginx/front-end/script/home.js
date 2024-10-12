@@ -2,6 +2,7 @@ import { NewPage, getJWT } from "/utils.js";
 import { GamePlaySocket } from "/header.js";
 import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";
+import { RemoteTournament } from "./remotetournament.js";
 import { Game } from "./game.js";
 import { Local } from "./local.js";
 import { Multi } from "./multi.js";
@@ -96,7 +97,8 @@ export async function Home() {
                     GamePlaySocket.send(JSON.stringify({
                         'from': data.currentUser.username,
                         'to': button.getAttribute('username'),
-                        'message': `${data.currentUser.username} send freind request.`
+                        'message': `${data.currentUser.username} send freind request.`,
+                        'flag': 'FreindR'
                     }));
                 }
                 button.style.display = 'none';
@@ -121,10 +123,15 @@ export async function Home() {
         NewPage("/tournament", Tournament);
     });
 
-    document.getElementById("home-add").addEventListener('click', event => {
-        // document.getElementById("home-tournamet-form").style.display = 'flex';
-        NewPage("/fr-tournament", TournamentFr);
-    });
+    // document.getElementById("home-add").addEventListener('click', event => {
+    //  NewPage("/fr-tournament", TournamentFr);
+    // });
+
+    const t = (event, data)=> {
+        console.log(`event:${event}`, `data:${data}`);
+    }
+
+    document.getElementById("home-add").addEventListener('click', t.bind("data", "event"));
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
