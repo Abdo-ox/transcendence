@@ -232,7 +232,11 @@
 }
 
 #frame #sidepanel #contacts ul li.contact {
+<<<<<<< HEAD
+  /* all: unset; */
+=======
   visibility: visible;
+>>>>>>> origin/main
   position: relative;
   padding: 10px;
   font-size: 0.9em;
