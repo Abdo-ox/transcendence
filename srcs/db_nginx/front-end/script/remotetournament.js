@@ -5,7 +5,7 @@ export const RemoteTournament = async () => {
 
     // get tournament name from local storage
     let tournament_name = localStorage.getItem('tournament_name');
-    const response = await fetch('http://localhost:9090/gameprofile/', {
+    const response = await fetch('http://localhost:9090/multigamehistory/', {
         headers: {
             'Authorization': `Bearer ${token}`,
         }
