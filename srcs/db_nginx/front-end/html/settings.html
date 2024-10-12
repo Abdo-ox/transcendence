@@ -34,14 +34,14 @@
                     nothing found
                 </div>
                 <div id="settings-crop-image-container" class="settings-crop-image-container">
-                    <h3 class="settings-text-center">Upload Image</h3>
+                    <h3 class="setting-changeemail" style="padding-top:15px ;font-size: 1.5em;"> Upload Image</h3>
                     <input type="file" id="settings-upload" class="settings-input settings-inputsettings-form-control" accept="image/*">
                     <div id="settings-image-wrapper" class="settings-image-wrapper">
                     </div>
-                    <button id="settings-crop-btn"  class="settings- btn-primary mt-3">Crop Image</button>
+                    <button id="settings-crop-btn"  class="settings-btn-primary ">Crop</button>
                 </div>
                 <div id="settings-SaveImg" style="display: none;">
-                    <h3>Submit the profile change </h3>
+                    <h3  class="setting-changeemail" style="padding-top:15px ;font-size: 1.5em;">Submit the profile change </h3>
                     <button id="settings-saveid"  class="settings-profile-btn">Save</button>
                 </div>
                 <div id="settings-profile-info" style="display: none; ">
@@ -58,12 +58,16 @@
                             <label class="settings-input-group__label" for="last_name">Last Name:</label>
                             <input class="settings-input" type="text" id="settings-last_name" name="last_name">
                         </div>
-                        <div class="settings-input-group__form-group">
+                        <h4 class="settingserror" id="resetmail-user-errorMessage"></h4>
+                        <button class="settings-btn" id="settings-save-btn">Save </button>
+                        <h4 class="setting-changeemail" id="sett-change-email">Change your Gmail Acount</h4>
+                        <div class="settings-input-group__form-group" id="email-label-sett">
                             <label class="settings-input-group__label" for="email">Your Email:</label>
                             <input  class="settings-input" type="email" id="settings-email" name="email">
                         </div>
-                        <button class="settings-btn" id="settings-save-btn">Save </button>
-                        <p class="settings-para" id="settings-para">You have log in with an intranet account, you can't modify this</p>
+                        <h4  class="settingserror" id="resetmail-errorMessage"></h4>
+                        <button class="settings-btn" id="settings-change-btn"  style="padding-left: 30px;padding-right: 30px;">Change</button>
+                        <p class="settings-para" id="settings-para">You have log in with an intranet account, you can modify just the first_name and last_name feilds.</p>
                     </div>
                 </div>
 

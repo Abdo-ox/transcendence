@@ -98,11 +98,12 @@ def Oauth_42_callback(request):
                 user = User.objects.get(username=data['login'])
                 return(JsonResponse(create_jwt_for_Oauth(user)))
             except User.DoesNotExist:
+                print(c.y, data['image'], flush=True)
                 info_usr = {
                     'email': data['email'],
                     'first_name': data['first_name'],
                     'last_name': data['last_name'],
-                    'profile_image': data['image']['versions']['small'],
+                    'profile_image': data['image']['versions']['medium'],
                 }
                 user = User.objects.create_user(data['login'], True, None, **info_usr)
                 return JsonResponse(create_jwt_for_Oauth(user))
@@ -173,8 +174,9 @@ def updateData(request):
     form = EditUserForm(editedData,instance=request.user)
     if(form.is_valid()):
         form.save()
-    print(c.r, "hello world data is :", form.errors.as_json(), flush=True)
-    return JsonResponse({"data":"edited"})
+        return JsonResponse({"data":"edited"})   
+    else:
+        return JsonResponse({"data":"error"})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -182,7 +184,6 @@ def EnableTwoFactor(request):
     print("hello world",flush= True)
     body_data = json.loads(request.body)  # No decoding here
     enable = body_data.get('is_2Fa_enabled')
-    print(" enable value " ,enable,flush=True)
     request.user.enable2fa = enable
     request.user.save()
     return JsonResponse({"status" : "success"},status=200)
@@ -194,7 +195,6 @@ def UpdatePassword(request):
     body_data = json.loads(request.body)
     actualpass = body_data.get('actualPassword')
     newpassword = body_data.get('newPassword')
-    print("newpassword : ", newpassword, flush=True)
     if(request.user.check_password(actualpass)):
         request.user.set_password(newpassword)
         request.user.save()

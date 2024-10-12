@@ -37,7 +37,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-ASGI_APPLICATION = 'myproject.asgi.application'
+ASGI_APPLICATION = 'pong.asgi.application'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
@@ -98,14 +98,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://127.0.0.1",
 ]
 
-# CORS_ALLOW_METHODS = [
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "PATCH",
-#     "POST",
-#     "PUT",
-# ]
+CORS_ALLOW_METHODS = [
+    "GET",
+]
 
 CSRF_TRUSTED_ORIGINS =  ['https://localhost', 'https://127.0.0.1']
 

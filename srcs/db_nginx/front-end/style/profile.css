@@ -231,8 +231,13 @@
     display: flex;
     position: relative;
     justify-content: end;
+    gap: 10px;
 }
-
+.profile-dashbord h4{
+    all:unset;
+    font-weight: 650 ;
+    font-family: 'Poppins', sans-serif;
+}
 .profile-box {
     margin-right: 15px;
     box-shadow: #c0b6b6 0px 3px 8px;
@@ -301,7 +306,7 @@ circle {
 
 }
 
-svg {
+.profile-svg {
     position: absolute;
     top: 0;
     left: 0;
@@ -320,6 +325,7 @@ svg {
     flex-direction: column;
     position: relative;
     align-items: center;
+    justify-content: center;
     box-shadow: #c0b6b6 0px 3px 8px;
 }
 
@@ -693,6 +699,7 @@ svg {
     width: 15%;
     border-radius: 20px;
     margin-right: 20px;
+    align-items: center;
 }
 
 .profile-searchBx {
@@ -726,8 +733,12 @@ svg {
 }
 
 .profile-users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
-    padding: 5px;
+    align-items: center;
+    /* padding: 5px; */
     border-radius: inherit;
     max-height: 1210px;
     /* overflow-y: hidden; */
@@ -738,12 +749,12 @@ svg {
 }
 
 .profile-user {
+    all:unset;
     background-color: #1f3d4738;
     backdrop-filter: blur(5px);
     box-shadow: #c0b6b6 0px 3px 8px;
-    width: 95%;
-    height: 80px;
-    margin: 10px 5px 0 5px;
+    width: 90%;
+    height: 60px;
     flex: 1;
     gap: auto;
     display: flex;
@@ -756,6 +767,11 @@ svg {
     border-radius: 8px;
 }
 
+.profile-user h3{
+    all: unset;
+    font-size: 16px;
+
+}
 .profile-user img {
     flex: 1;
     width: 50px;

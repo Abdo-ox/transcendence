@@ -2,7 +2,9 @@ import { getCsrfToken, NewPage, submitForm } from "/utils.js";
 import { Login } from "/login.js"
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
 
-const handle_data = (data) => {
+const handle_data = (data_status) => {
+    const data = data_status.data;
+    const status = data_status.status;
     console.log("daata registred is ", data);
     if (data.state === 'registered')
         NewPage('/login',Login, false);

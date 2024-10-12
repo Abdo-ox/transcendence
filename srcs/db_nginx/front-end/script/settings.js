@@ -1,29 +1,16 @@
-import { getJWT, getCsrfToken, redirectTwoFactor } from "/utils.js"
+import { getJWT, getCsrfToken, NewPage} from "/utils.js"
+import {ConfirmationMail} from "/confirmationMail.js"
 
 
 
 // window.removeEventListener('popstate', routing);
 // window.addEventListener('popstate', routing);
+
 export async function Settings() {
 
-    // const homeBtn = document.getElementById('home-btn');
-    // homeBtn.classList.remove('header-activ-page2'); 
-    // if (!homeBtn.classList.contains('header-li-a-style')) {
-    //     homeBtn.classList.add('header-li-a-style'); 
-    // }
-    
-    // const chatBtn = document.getElementById('chat-btn');
-    // chatBtn.classList.remove('header-activ-page2'); 
-    // if (!chatBtn.classList.contains('header-li-a-style')) 
-    //     chatBtn.classList.add('header-li-a-style'); 
-    
-    // const settingBtn = document.getElementById('settings-btn');
-    // if (settingBtn) {
-    //     settingBtn.classList.remove('header-li-a-style');
-    //     settingBtn.classList.add('header-activ-page2');
-    // }
+
     let userdata = null;
-    const fields = ['username', 'first_name', 'last_name', 'email'];
+    const fields = ['username', 'first_name', 'last_name'];
     const csrf_token = await getCsrfToken();
     fetch("https://localhost:8000/api/settings/", {
         headers: {
@@ -45,11 +32,10 @@ export async function Settings() {
             document.getElementById('settings-enable2fa').checked = data.current.enable2fa;
             if (data.current.intraNet) {
                 document.getElementById("settings-username").readOnly = true;
-                document.getElementById("settings-username").style.hove
-                document.getElementById("settings-first_name").readOnly = true;
                 document.getElementById("settings-last_name").readOnly = true;
-                document.getElementById("settings-email").readOnly = true;
-                document.getElementById("settings-save-btn").style.display = "none";
+                document.getElementById("sett-change-email").style.display="none";
+                document.getElementById("email-label-sett").style.display="none";
+                document.getElementById("settings-change-btn").style.display = "none";
                 document.getElementById("settings-para").style.display = "block";
                 document.getElementById("settings-passText").style.display = "block";
                 document.getElementById("settings-changePassword").style.display = "none";
@@ -63,6 +49,7 @@ export async function Settings() {
     const securityInfo = document.getElementById("settings-security-info");
     const firsShow = document.getElementById("settings-firstShow");
     profileBtn.addEventListener("click", function () {
+        document.getElementById("settings-SaveImg").style.display = 'none';
         profileInfo.style.display = "block";
         securityInfo.style.display = "none";
         document.getElementById("settings-crop-image-container").style.display = "none";
@@ -72,6 +59,7 @@ export async function Settings() {
     });
 
     securityBtn.addEventListener("click", function () {
+        document.getElementById("settings-SaveImg").style.display = 'none';
         securityInfo.style.display = "block";
         profileInfo.style.display = "none";
         document.getElementById("settings-crop-image-container").style.display = "none";
@@ -102,7 +90,7 @@ export async function Settings() {
             imageWrapper.innerHTML = ``;
             imgElement = new Image();
             imgElement.src = e.target.result;
-            imgElement.classList.add('settings-img-to-corp');
+            imgElement.classList.add('settings-img-to-crop');
             imageWrapper.appendChild(imgElement);
             createCropBox();
         };
@@ -113,7 +101,7 @@ export async function Settings() {
             cropBox.classList.add('settings-cropBox');
             console.log("img.offsetleft", imgElement.offsetLeft);
             imageWrapper.appendChild(cropBox);
-            boxRect = document.querySelector('.cropBox').getBoundingClientRect();
+            boxRect = document.querySelector('.settings-cropBox').getBoundingClientRect();
             makeDraggable(cropBox);
         };
 
@@ -171,7 +159,6 @@ export async function Settings() {
 
         ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
         document.getElementById("settings-profile-image1").src = canvas.toDataURL();
-        document.getElementById("settings-profile-image").src = canvas.toDataURL();
         document.getElementById("settings-crop-image-container").style.display = "none";
         document.getElementById("settings-SaveImg").style.display = "flex";
         document.getElementById("settings-SaveImg").style.flexDirection = "column";
@@ -189,13 +176,16 @@ export async function Settings() {
     }
 
     document.getElementById("settings-save-btn").addEventListener("click", async () => {
-        const formData = new FormData();
         let edited = false;
+        let emailedited = false;
         let editedData = {};
         try {
             fields.forEach(field => {
-                const element = document.getElementById(fsettings - ield);
-                if (element.value.trim() == '') {
+
+
+                console.log(" feild 2 : ", field);
+                const element = document.getElementById("settings-" + field);
+                if ((element.value).trim() == '') {
                     alert("field" + field + " should not be empty");
                     throw "empty field";
                 }
@@ -204,25 +194,36 @@ export async function Settings() {
                 editedData[field] = element.value;
             });
             if (edited) {
+
+                console.log("edited Data : ", editedData);
                 const response = await fetch('https://localhost:8000/api/update/', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
-                        // 'X-CRFToken': await getCsrfToken(),
                         'Content-type': 'application/json'
                     },
                     body: JSON.stringify(editedData)
                 })
-                if (response.ok) {
+                if (!response.ok) {
+                    console.error('Failed to fetch update data:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                console.log(data);
+                if (data.data == "edited") {
                     console.log(response);
                     document.getElementById("settings-name").innerHTML = editedData['username'];
                     document.getElementById("settings-username").value = editedData['username'];
                     document.getElementById("settings-first_name").value = editedData['first_name'];
                     document.getElementById("settings-last_name").value = editedData['last_name'];
-                    document.getElementById("settings-email").value = editedData['email'];
+
                 }
                 else
+                   {
+                    document.getElementById("resetmail-user-errorMessage").textContent = "username is already in use ";
                     console.log("Failed to update ", response.statusText);
+                   } 
+
             }
         }
         catch (error) {
@@ -294,7 +295,43 @@ export async function Settings() {
         }
 
     });
+    document.getElementById("settings-change-btn").addEventListener("click", async () => {
+        let email = document.getElementById("settings-email").value;
+        const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
+        if (gmailRegex.test(email)) {
+            document.getElementById("resetmail-errorMessage").textContent = ""; // Clear error message
+            console.log("Valid Gmail address:", email);
+        } else {
+            document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
+            return;
+        }
+        const response = await fetch('https://localhost:8000/MailConfirmation/', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${await getJWT()}`,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({ 'newemail': email })
+
+        });
+
+        if (!response.ok) {
+            console.error('Failed to confirm user:', response.status, response.statusText);
+            return;
+        }
+        const data = await response.json();
+        console.log("*******data mail response **** is : ", data);
+        if (data.status == 'redirect') {
+            localStorage.setItem("NewEmail", email)
+            NewPage("/confirmationMail", ConfirmationMail);
+        }
+        if (data.status == 'failed')
+            document.getElementById("resetmail-errorMessage").textContent = "Failed to send email code check again!";
+        if (data.status == 'dublicated')
+            document.getElementById("resetmail-errorMessage").textContent = "Email is already in use!";
+
+    });
     document.getElementById("settings-enable2fa").addEventListener("change", async (event) => {
         const checkbox = event.target;
         let is_2Fa_enabled = checkbox.checked;

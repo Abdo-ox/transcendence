@@ -4,33 +4,38 @@ import { Register } from "/register.js";
 import { ResetPassword } from "/resetpassword.js";
 console.log("the login.js called");
 
-const  handle_data = async (data) => {
-    localStorage.setItem('access_token', data.access);
-    localStorage.setItem('refresh_token', data.refresh);
-    console.log("data access :",data.access);
-    fetch('https://localhost:8000/api/twoFaCalled/',{
-        headers:{
-            Authorization: `Bearer ${await getJWT()}`
-        }
-    })
-    .then(response => {
-        return response.json()})
-    .then((data) => {
-        console.log("passs   by handle hetre");
-       console.log("dara ok",data);
-        NewPage(window.location.pathname, Home);
-    })
-    .catch((error) =>{
-        console.log("errrrrrrrrror her login :",error);
-    })
-    // console.log("ended here ==============");
-    // NewPage('/home', Home);
+const  handle_data = async (data_status) => {
+    const data = data_status.data;
+    const status = data_status.status;
+
+    if (status == 200){
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        await fetch('https://localhost:8000/api/twoFaCalled/',{
+            headers:{
+                Authorization: `Bearer ${data.access}`
+            }
+        })
+        .then(response => {
+            return response.json()})
+        .then((data) => {
+            NewPage("/home", Home);
+        })
+        .catch((error) =>{
+            console.log("error in login :", error);
+        });
+    } else {
+        // handle error of login 
+        console.log("error:", data_status);
+    } 
 }
 
 const is_authenticated = async () => {
     const access = localStorage.getItem('access_token');
+    const refresh = localStorage.getItem('refresh_token');
     console.log("check_is_authenticated: access=", access);
-    if (access != 'undefined' && access != null) {
+    console.log("check_is_authenticated: refresh=", refresh);
+    if (access != 'undefined' && access != null && refresh != null && refresh != 'undefined') {
         NewPage("/home", Home);
         return 1;
     }
@@ -90,7 +95,7 @@ export async function Login() {
                             console.log(data);
                             popup.close();
                             clearInterval(pollPopup);
-                            handle_data(data);
+                            handle_data({data, status: response.status});
                         } else {
                             console.error("response not ok in log with intra");
                             popup.close();

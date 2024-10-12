@@ -44,15 +44,29 @@ body::-webkit-scrollbar-thumb:hover {
     padding: 5px 0 0 5px;
     border-radius: 8px;
 }
+.home-suggestion-img{
+    width: 45px;
+    height: 45px;
+}
 
-.home-user img {
-    flex: 1;
-    width: 50px;
-    height: 50px;
+.home-suggestion-img img {
     border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home-suggestion-container {
+    padding-top: 20px;
+   background-color: #1b2141;
+   flex:1;
+   border-radius: 20px;
+   width: 100%;
 }
 
 .home-user button {
+    line-height: 1;
+    height: 30px;
     cursor: pointer;
     font-family: 'Courier New', Courier, 'monospace';
     font-size: 1em;
@@ -111,6 +125,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .home-info-user h3{
     font-size: 16px;
+    padding-left: 5px;
     overflow: hidden;
     margin: 0;
 }
@@ -139,20 +154,43 @@ body::-webkit-scrollbar-thumb:hover {
     /* justify-content: flex-start; */
     align-items: center;
     position: relative;
-    padding: 10px 5px 0 5px;
+    /* padding: 10px 5px 0 5px; */
     flex: 1;
-    background-color: #1b2141;
+    /* background-color: #1b2141; */
     /* max-width: 200px; */
-    min-width: 170px;
+    min-width: 222px;
     border-radius: 20px;
 }
 
 .home-flex1 h2 {
     color: #1aeeef;
-    font-size: 2vw;
+    /* font-size: 2vw; */
     width: 100%;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
+}
+
+.home-tournament-local {
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    background-color: #1b2141;
+    border-radius: 20px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-tournament-local p, strong {
+    text-align: center;
+    color: rgb(118, 161, 213);
+}
+
+.home-tournament-local .home-btn{
+    width: 118px;
+    height: 50px;
+    text-align: center;
+    padding: 0;
 }
 
 /****flex2****/
@@ -168,7 +206,7 @@ body::-webkit-scrollbar-thumb:hover {
 /**tournament*/
 section {
     position: relative;
-    gap: 20px;
+    gap: 40px;
     display: flex;
     flex-direction: column;
     /* justify-content: space-around; */
@@ -189,7 +227,7 @@ section {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 40px;
     width: 100%;
     height: 450px;
     border-radius: 20px;
@@ -205,14 +243,16 @@ section {
 }
 
 .home-Info {
+    position: relative;
     /* flex:1; */
+  
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 20px;
     max-width: 50%;
-    min-width: 250px;
+    min-width: 190px;
     padding: 0 0;
     text-align: justify;
 }
@@ -631,7 +671,7 @@ section {
     flex:1;
     flex-direction: column;
     text-align: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     max-width: 250px;
     gap: 10px;
@@ -672,13 +712,30 @@ section {
     flex-direction: column;
     align-items: left end;
 }
-
+#home-coalition-winner
+{
+ position: absolute;
+    left: 37%;
+    color: #FFD700;
+    box-shadow: #FFD700 0px 10px 20px -10px;
+    
+}
 .home-coali-bx {
+ 
+    min-width: 70px;
     width: 70%;
     height: 70%;
     object-fit: cover;
 }
+#home-coalSecond
+{
+    margin-left: 10px;
+}
+#home-coalThird
+{
+    margin-left: -20px;
 
+}
 .home-coali-bx img {
     width: 100%;
     height: 100%;
@@ -1095,13 +1152,111 @@ section {
 }
 
 .home-logout-container h4 {
-    font-weight: bold;
+    all: unset;
+    font-weight: 700;
+    font-size: 20px;
     color: #BD1414BE;
 }
 
 .home-logout-icon {
     transform: rotate(180deg);
 }
+
+.home-tournamet-form {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    background-color: #000000de;
+}
+
+.home-input-label-container{
+    position: relative;
+    width: 100%;
+}
+
+.home-form-input {
+    display: flex;
+    position: relative ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 300px;
+    min-width: 200px;
+    height: 30%;
+}
+
+.home-tournamet-form input {
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 1;
+    border-style: none;
+    outline: none;
+    height: calc(1em + 1.6em + 0.2em);
+    width: 100%;
+    padding: 0.8em 1em;
+    border: 0.25em solid transparent;
+    background-image: linear-gradient(#050e2d, #1b2141), linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: 0.8s ease-out;
+}
+
+
+input:hover, .home-tournament-form-btn:hover {
+    background-position: 100% 0;
+}
+
+.home-input-label  {
+    line-height: 1;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-style: none;
+    outline: none;
+    position: absolute;
+    background-color:#000000de ;
+    border-radius: 20px;
+    padding: 1px 7px;
+    /* left: 25px; */
+    top: 2.5px;
+    transform: translateY(-50%);
+    /* border: 0.25em solid transparent;
+    background-image: linear-gradient(#050e2d, #050e2d), linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%); */
+    border: 1px solid transparent;
+    background-size: 200% 100%;
+
+}
+
+.home-tournament-form-btn {
+    all: unset;
+    text-align: center;
+    color: #fff;
+    border-style: none; 
+     outline: none;
+    font-weight: bold;
+    width:60px;
+    height: 100px;
+    border: 0.25em solid transparent;
+    background-image: linear-gradient(#050e2d, #1b2141), linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%); 
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%; 
+     transition: 0.8s ease-out; 
+}
+/* .home-tournament-form-btn:hover{
+  color: #1b1f32;
+  background-color: white;
+} */
 
 @keyframes animate {
     0% {
@@ -1116,8 +1271,135 @@ section {
         border-radius: 50%;
     }
 }
-
-
+.homeCard-stack {
+    min-width: 50%;
+    position: relative;
+  }
+  .homeCard-tr-name
+{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 80%;
+    left: 50%;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4);
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.homeCard-card
+{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    min-width: 180px;
+    max-width: 280px;
+    height: 380px;
+    min-height: 300px;
+    border-radius: 2rem;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25),
+      0 15px 20px 0 rgba(0, 0, 0, 0.125);
+    transition: transform 0.6s;
+    /* user-select: none; */
+}
+.homeCard-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+    /* pointer-events: none; */
+    /* filter: blur(2px);
+    -webkit-filter: blur(1px); */
+  }
+  
+.homeCard-title
+{
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    background: -webkit-linear-gradient(0deg, #f76591, #ffc16f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    text-align: center;
+}
+  .homeCard-card:nth-last-child(n + 5) {
+    --x: calc(-50% + 90px);
+    transform: translate(var(--x), -50%) scale(0.85);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.01);
+  }
+  
+  .homeCard-card:nth-last-child(4) {
+    --x: calc(-50% + 60px);
+    transform: translate(var(--x), -50%) scale(0.9);
+  }
+  
+  .homeCard-card:nth-last-child(3) {
+    --x: calc(-50% + 30px);
+    transform: translate(var(--x), -50%) scale(0.95);
+  }
+  
+  .homeCard-card:nth-last-child(2) {
+    --x: calc(-50%);
+    transform: translate(var(--x), -50%) scale(1);
+  }
+  
+  .homeCard-card:nth-last-child(1) {
+    --x: calc(-50% - 30px);
+    transform: translate(var(--x), -50%) scale(1.05);
+  }
+  
+  .homeCard-card:nth-last-child(1) img {
+    box-shadow: 0 1px 5px 5px rgba(255, 193, 111, 0.5);
+  }
+  .homeCard-swap {
+    animation: swap 1.3s ease-out forwards;
+  }
+  
+  @keyframes swap {
+    30% {
+      transform: translate(calc(var(--x) - 250px), -50%) scale(0.85) rotate(-5deg)
+        rotateY(65deg);
+    }
+    100% {
+      transform: translate(calc(var(--x) - 30px), -50%) scale(0.5);
+      z-index: -1;
+    }
+  }
+  
+  /* Media queries for keyframes */
+  
+  @media (max-width: 1200px) {
+    @keyframes swap {
+      30% {
+        transform: translate(calc(var(--x) - 200px), -50%) scale(0.85)
+          rotate(-5deg) rotateY(65deg);
+      }
+  
+      100% {
+        transform: translate(calc(var(--x) - 30px), -50%) scale(0.5);
+        z-index: -1;
+      }
+    }
+  }
+  
+  @media (max-width: 1050px) {
+    @keyframes swap {
+      30% {
+        transform: translate(calc(var(--x) - 150px), -50%) scale(0.85)
+          rotate(-5deg) rotateY(65deg);
+      }
+  
+      100% {
+        transform: translate(calc(var(--x) - 30px), -50%) scale(0.5);
+        z-index: -1;
+      }
+    }
+  }
 /* @media(max-width:1090px) {
     .home-t-content {
         transform: scale(0.home-7);
@@ -1125,12 +1407,29 @@ section {
 } */
 
 @media (max-width: 850px) {
-    .home-t-content {
-        max-width: 100%;
-        transform: scale(1);
-        flex-wrap: wrap;
+    .home-form-input{
+        width: 50%;
     }
 
+    .home-t-content {
+        max-width: 100%;
+        /* transform: scale(1); */
+        flex-wrap: wrap;
+     
+        height: 700px;
+        gap: 20px;
+        
+    }
+    .homeCard-stack{
+        width: 100%;
+        /* background-color: #0091ad; */
+        height: 60%;
+    }
+    .homeCard-card
+    {    min-width: 180px;
+        max-width: 280px;
+        height: 350px;
+    }
     .home-content {
         /* width: 100vw; */
         flex-direction: column;
@@ -1190,6 +1489,8 @@ section {
 
     .home-Info {
         justify-content: space-around;
+        max-width: 90%;
+        max-height: 40%;
     }
 
     .home-flex1 {
