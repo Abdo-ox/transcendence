@@ -1,8 +1,17 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
 
-function FriendRqEvent(){
+async function FriendRqEvent(from) {
  ////
+    const token = await getJWT();
+    const response = await fetch(`https://localhost:8000/friend/accept/?${from}`, { headers: {
+        Authorization: `bearer ${token}`
+    }}).then(response => async () => {return {'data': await response.json(), status: response.status}});
+    if (response.status == 200)
+        console.log("friend added successfully");
+    else {
+        console.log("error in accepting friend request error: ", response.data.error);
+    }
     console.log(`inside Friend event handler`)
 }
 
