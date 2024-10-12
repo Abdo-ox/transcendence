@@ -121,6 +121,7 @@ class MultiGame(models.Model):
     tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
+    friendMatch = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
         

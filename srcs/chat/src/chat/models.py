@@ -199,15 +199,14 @@ class Tournament(models.Model):
         db_table='tournament'
 
 class MultiGame(models.Model):
-    # fix related name
     players = models.ManyToManyField(User, related_name='multiPlayerGames')
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
-    # to change to charfield later
     room_name = models.CharField(max_length=255, default='')
     tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
+    friendMatch = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
         

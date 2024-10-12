@@ -266,6 +266,8 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 if len(user_queue) >= 2:
                     await self.create_room()
             else:
+                # TODO: check if logic instance is started: handle accordingly
+                # TODO: set friendMatch field to true
                 await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         if 'key' in data:
