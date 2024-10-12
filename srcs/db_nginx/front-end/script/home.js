@@ -8,6 +8,33 @@ import { Local } from "./local.js";
 import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
 
+function pieChart2(data) {
+    console.log(
+        
+        "hellllllo"
+    );
+    const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
+    let tournament = (data.tournament * 100) / total;
+    let ai = (data.ai_match * 100) / total;
+    let friend = (data.friend_match * 100) / total;
+    let unknown = (data.unkown_match * 100) / total;
+    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}"`);
+    document.getElementById('home-ai').style.setProperty('--content', `"${ai}"`);
+    document.getElementById('home-friend').style.setProperty('--content', `"${friend}"`);
+    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}"`);
+    tournament = (data.tournament * 360) / total;
+    ai = (data.ai_match * 360) / total;
+    friend = (data.friend_match * 360) / total;
+    unknown = (data.unkown_match * 360) / total;
+    document.getElementById('home-pie-chart-2').style.setProperty('background', `
+        radial-gradient(circle, #1b2141 40%, transparent 41%),
+        conic-gradient(from 30deg,
+            #d16ba5 0 ${friend}deg,
+            #86a8e7 0 ${friend + ai}deg,
+            #ffd600 0 ${friend + ai + unknown}deg,
+            #0091ad 0 ${friend + ai + unknown + tournament}deg)`);
+}
+
 export async function Home() {
     let access_token = await getJWT();
     if (!access_token)
@@ -138,4 +165,13 @@ export async function Home() {
         localStorage.removeItem("refresh_token");
         NewPage("/login", Login, false);
     });
+    const token = await getJWT();
+    const dt  = await fetch("https://localhost:9090/matchcount/",{ headers : {
+                    Authorization: `Bearer ${token}`
+    }}).then(response => {
+        if (response.status == 200)
+            return response.json();
+    });
+    pieChart2(dt);
+
 }

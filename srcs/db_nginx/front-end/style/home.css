@@ -952,7 +952,23 @@ section {
     /* width: 105px; */
 }
 
+.home-tournament{
+    --content:'100';
+}
+.home-ai{
+    --content:'50';
+}
+
+.home-unknown{
+    --content:'70';
+}
+
+.home-friend{
+    --content:'90';
+}
+
 .home-span::before {
+    content: var(--content);
     position: absolute;
     display: flex;
     color: rgb(5, 5, 5);
@@ -960,7 +976,6 @@ section {
     justify-content: center;
     top: -5px;
     left: -13px;
-    content: '100%';
     font-size: 10px;
     font-weight: 400;
 

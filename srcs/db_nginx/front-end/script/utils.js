@@ -222,3 +222,16 @@ export const makePageActive = (page) => {
         homeBtn.querySelector('a').style.setProperty('--font-weight', '600');
     }
 }
+
+export const acceptFriendRequest = (button) => {
+    button.addEventListener('click', async () => {
+        const resp = await fetch("https://localhost:8000/friend/accept/", { headers: {
+            'Authorization': `Bearer ${access_token}`,
+        }}).then(response => ({'data': response.json(), 'status': response.status }));
+        if (resp.status == 200)
+            console.log("friend request accepted")
+        else {
+            console.log("error", resp.data.error);
+        }
+    });
+}
