@@ -224,7 +224,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 # Multiplayer consumer
 
 user_queue = set()
-
+friend_match_d = {}
 class MultiGameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
@@ -239,6 +239,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         if self.del_cache:
             cache.delete(self.user.username)
         if self.room_name:
+            friend_match_d.pop(self.room_name, 'd')
             self.GameTask.disconnected = True
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
 
@@ -266,29 +267,34 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 if len(user_queue) >= 2:
                     await self.create_room()
             else:
-                # TODO: check if logic instance is started: handle accordingly
-                # TODO: set friendMatch field to true
-                await self.channel_layer.group_add(self.room_name, self.channel_name)
+                if not friend_match_d.get(self.room_name, None):
+                    friend_match_d[self.room_name] = self
+                else:
+                    await self.create_room()
+                    friend_match_d.remove(self.room_name)                
 
         if 'key' in data:
             self.handle_key(data['key'])
 
 
     async def create_room(self):
-        # Pop two users from the queue
-        # user1
-        user_queue.remove(self)
-        user1 = self
-        
-        user2 = user_queue.pop()
+        if not self.room_name:
+            # Pop two users from the queue
+            # user1
+            user_queue.remove(self)
+            user1 = self
 
-        # Create a unique room name
-        self.room_name = f"room_{user1.user.id}{user1.channel_name.split('!')[-1]}_{user2.channel_name.split('!')[-1]}{user2.user.id}"
+            user2 = user_queue.pop()
 
-        # Set the room name
-        user1.room_name = self.room_name
-        user2.room_name = self.room_name
+            # Create a unique room name
+            self.room_name = f"room_{user1.user.id}{user1.channel_name.split('!')[-1]}_{user2.channel_name.split('!')[-1]}{user2.user.id}"
 
+            # Set the room name
+            user1.room_name = self.room_name
+            user2.room_name = self.room_name
+        else:
+            user1 = friend_match_d[self.room_name]
+            user2 = self
         # Add both users to the room
         await user1.channel_layer.group_add(self.room_name, user1.channel_name)
         await user2.channel_layer.group_add(self.room_name, user2.channel_name)

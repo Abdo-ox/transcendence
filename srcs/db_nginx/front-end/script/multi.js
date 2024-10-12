@@ -22,9 +22,14 @@ export const Multi = async () => {
 
 
     /* ---->  game logic  <---- */
+    let room_name = localStorage.getItem('room_name')
     const canvas = document.getElementById("canvas");
     const keys = [];
-    const socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/?token=${token}`);
+    const socket = undefined
+    if (room_name)
+        socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/${room_name}/?token=${token}`);
+    else
+        socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/?token=${token}`);
     webSockets.push(socket);
 
     let c = 3; // countdown
