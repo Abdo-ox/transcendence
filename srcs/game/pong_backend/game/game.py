@@ -161,24 +161,33 @@ class GameLogic:
             self.game_active = False
             
     async def save_game_results(self):
+        # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
-        await self.user1.asave()
+        # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
         await coalition.asave()
+        # user
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
-        await self.user2.asave()
+        # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
         await coalition.asave()
+        
         self.game.isOver = True
         if self.game.player1Score > self.game.player2Score:
             self.game.winner = self.user1
+            self.user1.wins += 1
+            self.user2.losses += 1
         elif self.game.player2Score > self.game.player1Score:
             self.game.winner = self.user2
+            self.user2.wins += 1
+            self.user1.losses += 1
         
+        await self.user1.asave()
+        await self.user2.asave()
         await self.game.asave()
 
     def update_game_state(self):

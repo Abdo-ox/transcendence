@@ -28,13 +28,19 @@ class GameConsumer(AsyncWebsocketConsumer):
         if self.del_cache:
             cache.delete(self.user.username)
         if self.game_state['started']:
+            # user
             self.game.playerScore = self.game_state['paddle1']['score']
             self.user.score += self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
+            self.user.totalGames += 1
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
                 self.game.won = True
+                self.user.wins += 1
+            else:
+                self.user.losses += 1
             await self.game.asave()
             await self.user.asave()
+            # coalition
             coalition = await sync_to_async(lambda: self.user.coalition)()
             coalition.score += self.game_state['paddle1']['score']
             await coalition.asave()

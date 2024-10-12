@@ -5,7 +5,13 @@ export const RemoteTournament = async () => {
 
     // get tournament name from local storage
     let tournament_name = localStorage.getItem('tournament_name');
-
+    const response = await fetch('http://localhost:9090/winstats/', {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+    const data = await response.json();
+    console.log(data)
     // connect to socket
     const socket = new WebSocket(`ws://localhost:9090/ws/tournament/?token=${token}`);
     webSockets.push(socket);
