@@ -5,7 +5,7 @@ export const RemoteTournament = async () => {
 
     // get tournament name from local storage
     let tournament_name = localStorage.getItem('tournament_name');
-    const response = await fetch('http://localhost:9090/aigamehistory/', {
+    const response = await fetch('https://localhost:9090/aigamehistory/', {
         headers: {
             'Authorization': `Bearer ${token}`,
         }
@@ -13,7 +13,8 @@ export const RemoteTournament = async () => {
     const data = await response.json();
     console.log(data)
     // connect to socket
-    const socket = new WebSocket(`ws://localhost:9090/ws/tournament/?token=${token}`);
+    const socket = new WebSocket(`wss://localhost:9090/ws/tournament/?token=${token}`);
+    console.log(socket)
     webSockets.push(socket);
 
     socket.onmessage = function(event) {

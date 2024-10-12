@@ -57,7 +57,6 @@ class AiGameHistoryView(APIView):
 
     def get(self, request):
         user = request.user
-        print(user.games.count(), flush=True)
         serializer = AiGameHistorySerializer(user.games, many=True)
 
         return Response(serializer.data)

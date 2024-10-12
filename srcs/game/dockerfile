@@ -4,6 +4,7 @@ COPY    requirements.txt .
 
 RUN     pip install -r requirements.txt
 
+COPY certs certs
 COPY    pong_backend .
 COPY    script/script.sh .
 
