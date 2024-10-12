@@ -278,6 +278,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
 
 
     async def create_room(self):
+        friend_match = False
         if not self.room_name:
             # Pop two users from the queue
             # user1
@@ -293,6 +294,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
             user1.room_name = self.room_name
             user2.room_name = self.room_name
         else:
+            friend_match = True
             user1 = friend_match_d[self.room_name]
             user2 = self
         # Add both users to the room
@@ -302,7 +304,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
         user1.role = 'paddle1'
         user2.role = 'paddle2'
         
-        user1.GameTask = GameLogic(self.room_name, user1, user2)
+        user1.GameTask = GameLogic(self.room_name, user1, user2, friend_match)
         user2.GameTask = user1.GameTask
         
         await self.channel_layer.group_send(self.room_name, {

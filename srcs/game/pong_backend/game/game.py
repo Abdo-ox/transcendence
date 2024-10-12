@@ -8,7 +8,7 @@ from asgiref.sync import sync_to_async
 
 class GameLogic:
         
-    def __init__(self, room_name, user1, user2):
+    def __init__(self, room_name, user1, user2, friend_match):
         self.room_name = room_name
         self.game_active = True
         self.game = None
@@ -18,16 +18,17 @@ class GameLogic:
         self.game_state['started'] = True
         self.user1 = user1.user
         self.user2 = user2.user
-        asyncio.create_task(self.init_task(user1.user, user2.user, room_name))
+        asyncio.create_task(self.init_task(user1.user, user2.user, room_name, friend_match))
         
-    async def init_task(self, user1, user2, room_name):
-        self.game = await self.create_obj(user1, user2, room_name)
+    async def init_task(self, user1, user2, room_name, friend_match):
+        self.game = await self.create_obj(user1, user2, room_name, friend_match)
         await self.game_loop()
     
     # to fix sync to async compatibility
     async def create_obj(self, user1, user2, room_name):
         game = await database_sync_to_async(MultiGame.objects.create)(
-            room_name = room_name
+            room_name = room_name,
+            friendMatch = friend_match,
         )
         database_sync_to_async(game.players.add)(user1, user2)
         return game
