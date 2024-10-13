@@ -158,6 +158,8 @@ export async function header() {
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)
+        else if (data['to'] === CurrentUser || data['from'] === CurrentUser)
+            localStorage.setItem('room_name', data['to'] + '_' + data['from']);
     };
 
     GamePlaySocket.onclose = () => {
