@@ -1,5 +1,7 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
+import { Multi } from "./multi.js";
+
 
 async function FriendRqEvent(notifItem, endpoint) {
     ////
@@ -17,8 +19,13 @@ async function FriendRqEvent(notifItem, endpoint) {
     }).catch(error => console.log(error.error));
 }
 
-function GameRqEvent() {
+async function GameRqEvent(data) {
+    GamePlaySocket.send(JSON.stringify({
+        'playwith': data['from']
+    }))
     console.log(`inside Friend event handler`)
+    localStorage.setItem('room_name', data['to'] + '_' + data['from']);
+    NewPage("/multi", Multi);
     ////
 }
 
@@ -45,7 +52,9 @@ export function displayNotification(data) {
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
     if (data['flag'] === 'GameR') {
-        acceptButton.addEventListener('click', GameRqEvent);
+        acceptButton.addEventListener('click', function() {
+            GameRqEvent(data);
+        });
         declineButton.addEventListener('click', () => notiItem.remove());
     }
     if (data['flag'] === 'FriendR') {
@@ -154,12 +163,11 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
-        console.log(data)
-        console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
+        // console.log(`GamePlaySocket onmessage and this data is "${data['to']} and from is ${data['from']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)
-        else if (data['to'] === CurrentUser || data['from'] === CurrentUser)
-            localStorage.setItem('room_name', data['to'] + '_' + data['from']);
+        else if (data['playwith'] === CurrentUser)
+            NewPage("/multi", Multi);
     };
 
     GamePlaySocket.onclose = () => {
