@@ -33,22 +33,23 @@ function pieChart2(data) {
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
     console.log(`button:${button}`);
-        const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, { headers: {
-                Authorization: `Bearer ${await getJWT()}`
-            }
-        });
-        if (response.status == 200) {
-            if (GamePlaySocket.readyState === WebSocket.OPEN) {
-                GamePlaySocket.send(JSON.stringify({
-                    'from': currentUser.username,
-                    'to': button.getAttribute('username'),
-                    'message': `${currentUser.username} send freind request.`,
-                    'flag': 'FreindR'
-                }));
-            }
-            button.style.display = 'none';
-            button.parentElement.querySelector(`.home-${action[1]}-btn`).style.display = 'block';
+    const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
+        headers: {
+            Authorization: `Bearer ${await getJWT()}`
         }
+    });
+    if (response.status == 200) {
+        if (GamePlaySocket.readyState === WebSocket.OPEN) {
+            GamePlaySocket.send(JSON.stringify({
+                'from': currentUser.username,
+                'to': button.getAttribute('username'),
+                'message': `${currentUser.username} send freind request.`,
+                'flag': 'FreindR'
+            }));
+        }
+        button.style.display = 'none';
+        button.parentElement.querySelector(`.home-${action[1]}-btn`).style.display = 'block';
+    }
 }
 
 export async function Home() {
@@ -127,12 +128,13 @@ export async function Home() {
                             <button class="home-cancel-btn" username="${user.username}">cancel</button>
                     </div>`;
     });
+
     document.querySelectorAll('.home-send-btn').forEach(button => {
-        button.addEventListener('click', buttonsEventHandler.bind(null, button, GamePlaySocket, ['create', 'cancel'], data.currentUser));
+        button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['create', 'cancel'], data.currentUser));
     });
 
     document.querySelectorAll('.home-cancel-btn').forEach(button => {
-        button.addEventListener('click', buttonsEventHandler.bind(null, button, GamePlaySocket, ['cancel', 'send'], data.currentUser));
+        button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['cancel', 'send'], data.currentUser));
     });
     // game events
     document.getElementById("home-ai-play").addEventListener('click', () => {
@@ -151,15 +153,9 @@ export async function Home() {
         NewPage("/tournament", Tournament);
     });
 
-    // document.getElementById("home-add").addEventListener('click', event => {
-    //  NewPage("/fr-tournament", TournamentFr);
-    // });
-
-    const t = (event, data)=> {
-        console.log(`event:${event}`, `data:${data}`);
-    }
-
-    document.getElementById("home-add").addEventListener('click', t.bind("data", "event"));
+    document.getElementById("home-add").addEventListener('click', event => {
+     NewPage("/fr-tournament", TournamentFr);
+    });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
@@ -167,12 +163,11 @@ export async function Home() {
         NewPage("/login", Login, false);
     });
     const token = await getJWT();
-    const dt  = await fetch("https://localhost:9090/matchcount/",{ headers : {
-                    Authorization: `Bearer ${token}`
-    }}).then(response => {
-        if (response.status == 200)
-            return response.json();
-    });
-    pieChart2(dt);
-
+    const dt = await fetch("https://localhost:9090/matchcount/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => ({status: response.status, data: response.json()}));
+    if (dt.status == 200)
+        pieChart2(dt);
 }
