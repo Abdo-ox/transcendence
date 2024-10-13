@@ -23,37 +23,24 @@ function GameRqEvent() {
 }
 
 export function displayNotification(data) {
-    createNotificationPanel();
+    console.log(`data isss -------------- ${data}`)
     var notifDiv = document.getElementById('header-notif-div');
     var notiItem = document.createElement('div');
-    notiItem.id = 'notiItem'
-    notiItem.className = 'notiItem'
-    var text = document.createElement('div');
-    text.className = 'text'
-    var accept = document.createElement('div');
-    accept.className = 'accept'
-    var button = document.createElement('button');
+    
+    notiItem.id = data[from];
+    notiItem.innerHTML = `
+        <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
+        <p>${data[from]} send friend request.</p>
+        <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+        <svg class="header-svg-cancel" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        `
+    notiItem.setAttribute('class', 'notiItem');
+    var button = notiItem.querySelector('#accept');
     if (data['flag'] === 'GameR')
         button.addEventListener('click', GameRqEvent);
     if (data['flag'] === 'FreindR')
-        button.addEventListener('click', FriendRqEvent(data['from']));
-    button.className = 'button'
-    button.textContent = 'accept'
-    var Notif = document.createElement('p');
-    Notif.textContent = data["message"];
-    const img = document.createElement('img')
-    img.src = "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
-    text.appendChild(Notif)
-    accept.appendChild(button)
-    notiItem.appendChild(img)
-    notiItem.appendChild(text)
-    notiItem.appendChild(accept)
-    notifDiv.appendChild(notiItem)
-}
-
-export function createNotificationPanel() {
-    let notificationPanel = document.getElementById('header-notif-div');
-    notificationPanel.style.display = 'block';
+        button.addEventListener('click', FriendRqEvent.bind(data['from']));
+    notifDiv.appendChild(notiItem);
 }
 
 function Handler() {
@@ -62,7 +49,7 @@ function Handler() {
 }
 
 export function removeEvent() {
-    document.removeEventListener('click', Handler);
+    document.body.removeEventListener('click', Handler);
 }
 
 export let GamePlaySocket = null;
@@ -153,6 +140,7 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
+        console.log(data)
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)
@@ -197,8 +185,9 @@ export async function header() {
     });
 
     // Hide the notification panel if clicking outside
-    document.addEventListener('click', Handler);
+    document.body.addEventListener('click', Handler);
 
+    document.getElementById("header-notif-div").addEventListener("click", () => console.log("clicked header notiv div"))
 
     const access = await getJWT();
     if (!access)
@@ -215,14 +204,12 @@ export async function header() {
         data.forEach(sender => {
             const notifItem = document.createElement('div');
             notifItem.className = "notiItem";
-            notifItem.id = "notiItem";
             notifItem.innerHTML = `
-            <img src="${sender.profile_image}">
-                <div class="text">
-                    <p>${sender.username} send u friend request.</p>
-                </div>
-            <div class="accept"><button class="button">accept</button></div>`
-            notifItem.querySelector(".button").addEventListener('click', async () => {
+                <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
+                <p>abdoox send friend request.</p>
+                <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+                <svg class="header-svg-cancel" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>`
+            notifItem.querySelector("#accept").addEventListener('click', async () => {
                 fetch("https://localhost:8000/friend/accept/?username=" + sender.username, {
                     headers: {
                         'Authorization': `Bearer ${await getJWT()}`,
