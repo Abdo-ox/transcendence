@@ -23,6 +23,7 @@ function GameRqEvent() {
 }
 
 export function displayNotification(data) {
+    console.log(`data isss -------------- ${data}`)
     var notifDiv = document.getElementById('header-notif-div');
     var notiItem = document.createElement('div');
     
@@ -139,6 +140,7 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
+        console.log(data)
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)

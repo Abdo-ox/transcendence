@@ -40,11 +40,13 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
     });
     if (response.status == 200) {
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
+            console.log(`current user img ==  ${currentUser}`)
             GamePlaySocket.send(JSON.stringify({
                 'from': currentUser.username,
                 'to': button.getAttribute('username'),
                 'message': `${currentUser.username} send freind request.`,
-                'flag': 'FreindR'
+                'flag': 'FreindR',
+                'img': currentUser.profile_image
             }));
         }
         button.style.display = 'none';
