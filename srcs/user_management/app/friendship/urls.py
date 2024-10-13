@@ -8,7 +8,8 @@ sendFriendRequests)
 
 urlpatterns = [
     path('create/', createFriendRequest),
-    path('cancel/', cancelFriendRequest),
     path('accept/', acceptFriendRequest),
+    path('cancel/', cancelFriendRequest),
+    path('decline/', declineFriendRequest),
     path('friendRequests/', sendFriendRequests),
 ]

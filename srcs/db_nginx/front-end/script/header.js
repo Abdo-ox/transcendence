@@ -23,22 +23,37 @@ function GameRqEvent() {
 }
 
 export function displayNotification(data) {
+    if (data['status'] == 'cancel' && data['flag'] == 'FriendR') {
+        document.getElementById("notifItem-" + data['from'])?.remove();
+        return;
+    }
     var notifDiv = document.getElementById('header-notif-div');
     var notiItem = document.createElement('div');
-    
-    notiItem.id = data[from];
+
+    notiItem.id = 'notifItem-' + data[from];
     notiItem.innerHTML = `
         <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
         <p>${data[from]} send friend request.</p>
         <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-        <svg class="header-svg-cancel" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
         `
     notiItem.setAttribute('class', 'notiItem');
-    var button = notiItem.querySelector('#accept');
-    if (data['flag'] === 'GameR')
-        button.addEventListener('click', GameRqEvent);
-    if (data['flag'] === 'FreindR')
-        button.addEventListener('click', FriendRqEvent.bind(data['from']));
+    const acceptButton = notiItem.querySelector('#accept');
+    const declineButton = notiItem.querySelector('#accept');
+    if (data['flag'] === 'GameR') {
+        acceptButton.addEventListener('click', GameRqEvent);
+        declineButton.addEventListener('click', () => notiItem.remove());
+    }
+    if (data['flag'] === 'FriendR') {
+        acceptButton.addEventListener('click', FriendRqEvent.bind(data['from']));
+        declineButton.addEventListener('click', () => {
+            fetch(`https://localhost:8000/friend/decline/?${data['from']}`, {
+                headers: {
+                    Authorization: `bearer ${token}`,
+                }
+            }).then(response => response.status && notiItem.remove());
+        });
+    }
     notifDiv.appendChild(notiItem);
 }
 
