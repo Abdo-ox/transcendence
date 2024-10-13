@@ -1,12 +1,10 @@
 import { createWebSocket } from '/socketsManager.js';
 import { getJWT } from '/utils.js';
 import { GamePlaySocket } from '/header.js';
-console.log("chat called");
 let TargetUser = null; // make this variable local
 export async function Chat() {
   const url = new URL(window.location.href);
-  // Check if the pathname is '/chat'
-  if (url.pathname === '/chat/?') {
+  if (url.pathname === '/chat') {
     const params = new URLSearchParams(url.search);
     TargetUser = params.get('user');
   }
@@ -32,7 +30,6 @@ export async function Chat() {
 
 async function bodychat(UserData) {
   const username = UserData.username;
-  console.log(`username from bodychat is === ${username}`)
   let htmlContent = 0;
   if (!htmlContent) {
     htmlContent = `
@@ -65,15 +62,13 @@ async function bodychat(UserData) {
 
     document.body.appendChild(newFrame);
     fetchData();
-    if (UserData.friends) {
+    if (TargetUser && UserData.friends) {
       UserData.friends.forEach(friend => {
         if (friend.username === TargetUser) {
           createHtmlPrf();
           updateProfile(TargetUser);
           chatListview(TargetUser, 'createWebSocket');
-          // GamePlay();
-          // Create the new URL
-          const newUrl = `https://localhost/chat/?user=${TargetUser}`
+          const newUrl = `https://localhost/chat?user=${TargetUser}`
           console.log(`new query --------------- ${newUrl}`)
           history.pushState(null, '', newUrl);
         }
@@ -90,22 +85,6 @@ async function bodychat(UserData) {
       console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
       let access_token = await getJWT();
       console.log(`contacts-list event called and the access token is ${access_token}`)
-
-      const data = await fetch(`http://127.0.0.1:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(contact.id)}`, {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${access_token}`,
-          'Content-Type': 'application/json'  // Optional, but a good practice
-        }
-      })
-        .then(response => response.json()) // Call json() to parse the response
-        .then(data => {
-          console.log(data)
-          // console.log(`user/data response "${JSON.stringify(data, null, 2)}"`)
-        })
-        .catch(error => {
-          console.error('Error:', error); // Handle errors
-        });
       if (contact) {
         console.log('contact exests')
         createHtmlPrf();
@@ -336,7 +315,7 @@ async function bodychat(UserData) {
     contactProfile.appendChild(VerticalDots);
     profileContainer.appendChild(contactProfile);
 
-    const newUrl = `https://localhost/chat/?user=${user}`
+    const newUrl = `https://localhost/chat?user=${user}`
     history.pushState(null, '', newUrl);
     // Add click event listener to the VerticalDots icon
     document.getElementById('VerticalDots').addEventListener('click', event => {
