@@ -40,11 +40,10 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
     });
     if (response.status == 200) {
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
-            console.log(`current user img ==  ${currentUser}`)
             GamePlaySocket.send(JSON.stringify({
                 'from': currentUser.username,
                 'to': button.getAttribute('username'),
-                'message': `${currentUser.username} send freind request.`,
+                'message': `${currentUser.username} ${action[0]} friend request.`,
                 'flag': 'FriendR',
                 'img': currentUser.profile_image
             }));
@@ -132,7 +131,7 @@ export async function Home() {
     });
 
     document.querySelectorAll('.home-send-btn').forEach(button => {
-        button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['create', 'cancel'], data.currentUser));
+        button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['send', 'cancel'], data.currentUser));
     });
 
     document.querySelectorAll('.home-cancel-btn').forEach(button => {
@@ -156,7 +155,7 @@ export async function Home() {
     });
 
     document.getElementById("home-add").addEventListener('click', event => {
-     NewPage("/fr-tournament", TournamentFr);
+        NewPage("/fr-tournament", TournamentFr);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
@@ -169,7 +168,7 @@ export async function Home() {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    }).then(response => ({status: response.status, data: response.json()}));
+    }).then(response => ({ status: response.status, data: response.json() }));
     if (dt.status == 200)
         pieChart2(dt);
 }
