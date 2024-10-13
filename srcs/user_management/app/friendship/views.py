@@ -45,7 +45,7 @@ def cancelFriendRequest(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def cancelFriendRequest(request):
+def declineFriendRequest(request):
     try:
         username = request.GET.get('username')
         if not username:

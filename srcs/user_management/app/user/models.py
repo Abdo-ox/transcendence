@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
         )
         number.add = number.add + 1
         if number.add > 3:
-            number.add = 0
+            number.add = 1
         number.save()
         if password:
             user.set_password(password)

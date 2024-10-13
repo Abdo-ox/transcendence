@@ -30,10 +30,10 @@ export function displayNotification(data) {
     var notifDiv = document.getElementById('header-notif-div');
     var notiItem = document.createElement('div');
 
-    notiItem.id = 'notifItem-' + data[from];
+    notiItem.id = 'notifItem-' + data['from'];
     notiItem.innerHTML = `
         <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
-        <p>${data[from]} send friend request.</p>
+        <p>${data['from']} send friend request.</p>
         <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
         <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
         `
@@ -116,6 +116,7 @@ const addheader = () => {
     window.addEventListener('scroll', () => {
         header.classList.toggle('header-sticky', window.scrollY > 0);
     });
+    document.getElementById("header-notif-div").addEventListener('click', (event) => event.stopPropagation());
 }
 
 export async function header() {
@@ -154,6 +155,7 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
+        console.log(data)
         console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)
@@ -199,8 +201,6 @@ export async function header() {
 
     // Hide the notification panel if clicking outside
     document.body.addEventListener('click', Handler);
-
-    document.getElementById("header-notif-div").addEventListener("click", () => console.log("clicked header notiv div"))
 
     const access = await getJWT();
     if (!access)
