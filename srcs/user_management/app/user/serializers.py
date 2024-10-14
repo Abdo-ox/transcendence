@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email'] 
+        fields = ['username', 'profile_image'] 
 
 class ChatUserSerializer(serializers.ModelSerializer):
     friends = UserDetailSerializer(many=True, read_only=True, source='user.friends') 

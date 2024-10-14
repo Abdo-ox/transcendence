@@ -125,7 +125,8 @@ export const NewPage = async (url, func, addhistory = true) => {
             removeEvent();
             document.body.replaceWith(doc.body);
             if (document.body.querySelector('header')) {
-                if (!await header())
+                const t = await header();
+                if (!t)
                     return;
             }
         }
@@ -221,4 +222,17 @@ export const makePageActive = (page) => {
         homeBtn.querySelector('a').style.setProperty('--color', '#FFFFFF');
         homeBtn.querySelector('a').style.setProperty('--font-weight', '600');
     }
+}
+
+export const acceptFriendRequest = (button) => {
+    button.addEventListener('click', async () => {
+        const resp = await fetch("https://localhost:8000/friend/accept/", { headers: {
+            'Authorization': `Bearer ${access_token}`,
+        }}).then(response => ({'data': response.json(), 'status': response.status }));
+        if (resp.status == 200)
+            console.log("friend request accepted")
+        else {
+            console.log("error", resp.data.error);
+        }
+    });
 }

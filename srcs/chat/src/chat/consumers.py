@@ -8,10 +8,18 @@ from .views import get_messages, get_user_contact, get_current_ChatID, get_parti
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
         # print(f"too is ::: {data['to']}")
-        content = {
-            'message': f"{data['message']}",
-            'to': data['to'],
-        }
+        if data['playwith'] == 'null':
+            content = {
+                'message': data['message'],
+                'to': data['to'],
+                'flag': data['flag'],
+                'img': data['img'],
+                'from': data['from']
+            }
+        else:
+            content = {
+                'playwith': data['playwith']
+            }
         return self.send_chat_message(content)
     def connect(self):
         # Check if the user is authenticated

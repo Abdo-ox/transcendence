@@ -92,7 +92,6 @@ export async function Login() {
                         });
                         if (response.ok) {
                             const data = await response.json();
-                            console.log(data);
                             popup.close();
                             clearInterval(pollPopup);
                             handle_data({data, status: response.status});

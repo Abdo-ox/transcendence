@@ -297,11 +297,13 @@ header .header-action .header-searchBx input {
 .notiItem {
     position: relative;
     display: flex;
-    padding: 15px 5px;
+    padding: 5px;
+    gap: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     cursor: pointer;
     background-color: #b5c2fd;
+    align-items: center;
 }
 
 .notiItem:hover {
@@ -319,23 +321,34 @@ header .header-action .header-searchBx input {
     border-radius: 10px;
     border: none;
     color: white;
-    background-color: #a2aee3;
+    background-color: #a9b4e6;
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .notiItem img {
     display: block;
-    width: 30px;
-    margin-right: 10px;
+    height: 50px;
+    aspect-ratio: 1/1;
     border-radius: 50%;
 }
 
-.notiItem .text p {
+.notiItem p {
+    all: unset;
     color: white;
     width: calc(100% - 20px);
 }
 
+.header-svg-accept, .header-svg-decline {
+    height: 30px;
+    width: 50px;
+    object-fit: cover;
+    background-color: #eceffc;
+    border-radius: 50%;
+}
+.header-svg-accept {
+    background-color: rgb(255, 255, 255);
+}
 .header-activ-page2
 {
     color: #fff !important;
