@@ -30,12 +30,15 @@ async function FriendRqEvent(notifItem, endpoint, data) {
     }).catch(error => console.log(error));
 }
 
-async function GameRqEvent(data) {
+async function GameRqEvent(data, notiItem) {
+    notiItem.remove()
     GamePlaySocket.send(JSON.stringify({
-        'playwith': data['from']
+        'playwith': data['from'],
+        'room_name': data['to'] + '_' + data['from']
     }))
     console.log(`inside Friend event handler`)
     localStorage.setItem('room_name', data['to'] + '_' + data['from']);
+    console.log(`from target ${localStorage.getItem('room_name')}`)
     NewPage("/multi", Multi);
     ////
 }
@@ -79,8 +82,13 @@ export function displayNotification(data) {
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
     if (data['flag'] === 'GameR') {
-        acceptButton.addEventListener('click', function () {
-            GameRqEvent(data);
+        const timeout = setTimeout(() => {
+            notiItem.remove();
+            clearTimeout(timeout);
+            console.log('Element removed due to inactivity.');
+          }, 10000); // 5 seconds
+        acceptButton.addEventListener('click', function() {
+            GameRqEvent(data, notiItem);
         });
         declineButton.addEventListener('click', () => notiItem.remove());
     }
@@ -192,9 +200,17 @@ export async function header() {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
         if (data['to'] === CurrentUser)
+<<<<<<< HEAD
+            displayNotification(data)
+        else if (data['playwith'] === CurrentUser){
+            localStorage.setItem('room_name', data['room_name']);
+            console.log(`from the sender ${localStorage.getItem('room_name')}`)
+=======
             displayNotification(data);
         else if (data['playwith'] === CurrentUser)
+>>>>>>> eef226680915ef6c668f738f3e4eb2ddabcd6190
             NewPage("/multi", Multi);
+        }
     };
 
     GamePlaySocket.onclose = () => {
