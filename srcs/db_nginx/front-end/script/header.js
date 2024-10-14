@@ -1,46 +1,102 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
+import { Multi } from "./multi.js";
 
-async function FriendRqEvent(from) {
+
+async function FriendRqEvent(notifItem, endpoint, data) {
     ////
     const token = await getJWT();
-    const response = await fetch(`https://localhost:8000/friend/accept/?${from}`, {
+    fetch(`https://localhost:8000/${endpoint}`, {
         headers: {
-            Authorization: `bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
-    }).then(response => async () => { return { 'data': await response.json(), status: response.status } });
-    if (response.status == 200)
-        console.log("friend added successfully");
-    else {
-        console.log("error in accepting friend request error: ", response.data.error);
-    }
-    console.log(`inside Friend event handler`)
+    }).then(response => {
+        if (response.ok) {
+            if (GamePlaySocket.readyState === WebSocket.OPEN) {
+                GamePlaySocket.send(JSON.stringify({
+                    'from': data['to'],
+                    'to': data['from'],
+                    'message': `${endpoint}`,
+                    'flag': 'FriendR',
+                    'img': 'clear',
+                    'playwith': 'null'
+                }));
+            }
+            console.log("hello");
+            notifItem.remove();
+        }
+        else
+            throw response.json();
+    }).catch(error => console.log(error));
 }
 
-function GameRqEvent() {
+async function GameRqEvent(data, notiItem) {
+    notiItem.remove()
+    GamePlaySocket.send(JSON.stringify({
+        'playwith': data['from'],
+        'room_name': data['to'] + '_' + data['from']
+    }))
     console.log(`inside Friend event handler`)
+    localStorage.setItem('room_name', data['to'] + '_' + data['from']);
+    console.log(`from target ${localStorage.getItem('room_name')}`)
+    NewPage("/multi", Multi);
     ////
+}
+
+function createNewNotifItem(from) {
+    const notiItem = document.createElement('div');
+
+    notiItem.id = 'notifItem-' + from.username;
+    notiItem.innerHTML = `
+        <img src="${from.profile_image}">
+        <p>${from.username} send friend request.</p>
+        <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+        <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        `
+    notiItem.setAttribute('class', 'notiItem');
+    return notiItem;
 }
 
 export function displayNotification(data) {
-    console.log(`data isss -------------- ${data}`)
-    var notifDiv = document.getElementById('header-notif-div');
-    var notiItem = document.createElement('div');
-    
-    notiItem.id = data[from];
-    notiItem.innerHTML = `
-        <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
-        <p>${data[from]} send friend request.</p>
-        <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-        <svg class="header-svg-cancel" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-        `
-    notiItem.setAttribute('class', 'notiItem');
-    var button = notiItem.querySelector('#accept');
-    if (data['flag'] === 'GameR')
-        button.addEventListener('click', GameRqEvent);
-    if (data['flag'] === 'FreindR')
-        button.addEventListener('click', FriendRqEvent.bind(data['from']));
-    notifDiv.appendChild(notiItem);
+    console.log(data);
+    if (data['flag'] == 'FriendR') {
+        if (data['message'].includes('decline')) {
+            console.log("home-user-" + data['from']);
+            const accept = document.getElementById("home-user-" + data['from'])?.querySelector('.home-send-btn');
+            const cancel = document.getElementById("home-user-" + data['from'])?.querySelector('.home-cancel-btn');
+            if (accept && cancel){
+                accept.style.display = 'block';
+                cancel.style.display = 'none';
+            }
+            return;
+        } else if (data['message'].includes('cancel')) {
+            document.getElementById("notifItem-" + data['from'])?.remove();
+            return;
+        }
+        else if (data['message'].includes('accept')) {
+            document.getElementById("home-user-" + data['from'])?.remove();
+            return;
+        }
+    }
+    var notiItem = createNewNotifItem({ username: data['from'], profile_image: data['img'] });
+    const acceptButton = notiItem.querySelector('#accept');
+    const declineButton = notiItem.querySelector('#decline');
+    if (data['flag'] === 'GameR') {
+        const timeout = setTimeout(() => {
+            notiItem.remove();
+            clearTimeout(timeout);
+            console.log('Element removed due to inactivity.');
+          }, 10000); // 5 seconds
+        acceptButton.addEventListener('click', function() {
+            GameRqEvent(data, notiItem);
+        });
+        declineButton.addEventListener('click', () => notiItem.remove());
+    }
+    if (data['flag'] === 'FriendR') {
+        acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${data['from']}`, data));
+        declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${data['from']}`, data));
+    }
+    document.getElementById('header-notif-div').appendChild(notiItem);
 }
 
 function Handler() {
@@ -102,6 +158,7 @@ const addheader = () => {
     window.addEventListener('scroll', () => {
         header.classList.toggle('header-sticky', window.scrollY > 0);
     });
+    document.getElementById("header-notif-div").addEventListener('click', (event) => event.stopPropagation());
 }
 
 export async function header() {
@@ -132,7 +189,8 @@ export async function header() {
         console.error('An error occurred:', error);
     }
 
-
+    if (GamePlaySocket)
+        GamePlaySocket.close();
     GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
     GamePlaySocket.onopen = () => {
         console.log('Notif WebSocket connection opened');
@@ -140,16 +198,24 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
-        console.log(data)
-        console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
+        console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
         if (data['to'] === CurrentUser)
+<<<<<<< HEAD
             displayNotification(data)
+        else if (data['playwith'] === CurrentUser){
+            localStorage.setItem('room_name', data['room_name']);
+            console.log(`from the sender ${localStorage.getItem('room_name')}`)
+=======
+            displayNotification(data);
+        else if (data['playwith'] === CurrentUser)
+>>>>>>> eef226680915ef6c668f738f3e4eb2ddabcd6190
+            NewPage("/multi", Multi);
+        }
     };
 
     GamePlaySocket.onclose = () => {
         console.error('GamePlaySocket closed');
     };
-
 
     const menuicon = document.getElementById("header-menu-icon");
     if (menuicon) {
@@ -187,8 +253,6 @@ export async function header() {
     // Hide the notification panel if clicking outside
     document.body.addEventListener('click', Handler);
 
-    document.getElementById("header-notif-div").addEventListener("click", () => console.log("clicked header notiv div"))
-
     const access = await getJWT();
     if (!access)
         return;
@@ -202,21 +266,12 @@ export async function header() {
         console.log("error in fetch friend requests");
     }).then(data => {
         data.forEach(sender => {
-            const notifItem = document.createElement('div');
-            notifItem.className = "notiItem";
-            notifItem.innerHTML = `
-                <img src="https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&amp;t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7">
-                <p>abdoox send friend request.</p>
-                <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-                <svg class="header-svg-cancel" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>`
-            notifItem.querySelector("#accept").addEventListener('click', async () => {
-                fetch("https://localhost:8000/friend/accept/?username=" + sender.username, {
-                    headers: {
-                        'Authorization': `Bearer ${await getJWT()}`,
-                    }
-                });
-            });
-            document.getElementById("header-notif-div").appendChild(notifItem);
+            const notiItem = createNewNotifItem(sender);
+            const acceptButton = notiItem.querySelector('#accept');
+            const declineButton = notiItem.querySelector('#decline');
+            acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));
+            declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));
+            document.getElementById("header-notif-div").appendChild(notiItem);
         });
     }).catch(error => {
         console.log("can't fetch friend requests error accured ", error);

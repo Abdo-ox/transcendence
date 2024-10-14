@@ -339,7 +339,7 @@ header .header-action .header-searchBx input {
     width: calc(100% - 20px);
 }
 
-.header-svg-accept, .header-svg-cancel {
+.header-svg-accept, .header-svg-decline {
     height: 30px;
     width: 50px;
     object-fit: cover;

@@ -115,7 +115,8 @@ async function bodychat(UserData) {
           'to': nameElement.textContent,
           'message': `${username} invites u to play.`,
           'flag': 'GameR',
-          'img': UserData.profile_image
+          'img': UserData.profile_image,
+          'playwith': 'null'
         }));
         // };
       }

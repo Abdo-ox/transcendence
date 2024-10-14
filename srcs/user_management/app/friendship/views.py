@@ -15,16 +15,16 @@ def acceptFriendRequest(request):
         username = request.GET.get('username')
         print(c.b, "friend", username, flush=True)
         if not username:
-            return JsonResponse({'error':'user name of the sender not sent to backend !'}, status=400)
+            return JsonResponse({'error': 'pear username not send at the query string'}, status=400)
         user = User.objects.get(username=username)
         try:
             friend_request = FriendRequest.objects.get(sender=user, receiver=request.user, is_active=True)
             friend_request.accept()
-            return JsonResponse({'error':'ok'})
+            return JsonResponse({})
         except FriendRequest.DoesNotExist:
-            return JsonResponse({'error':'Forbidden'}, status=403)
+            return JsonResponse({'error': f'there is no friend request sender: {user} reciever: {request.user}'}, status=403)
     except User.DoesNotExist:
-        return JsonResponse({'error':'send user not exist !'}, status=403)
+        return JsonResponse({'error': f'there is no user ander username {username}'}, status=403)
  
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -32,17 +32,34 @@ def cancelFriendRequest(request):
     try:
         username = request.GET.get('username')
         if not username:
-            return HttpResponse('Bad request',status=400)
+            return JsonResponse({'error': 'pear username not send at the query string'},status=400)
         user = User.objects.get(username=username)
         try:
             friend_request = FriendRequest.objects.get(sender=request.user, receiver=user, is_active=True)
             friend_request.cancel()
-            return HttpResponse('ok')
+            return JsonResponse({})
         except FriendRequest.DoesNotExist:
-            return HttpResponse('Forbidden', status=403)
+            return JsonResponse({'error': f'there is no friend request sender: {request.user} reciever: {user}'}, status=403)
     except User.DoesNotExist:
-        return HttpResponse('Forbidden', status=403)
-       
+        return JsonResponse({'error': f'there is no user ander username {username}'}, status=403)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def declineFriendRequest(request):
+    try:
+        username = request.GET.get('username')
+        if not username:
+            return JsonResponse({'error': 'pear username not send at the query string'},status=400)
+        user = User.objects.get(username=username)
+        try:
+            friend_request = FriendRequest.objects.get(sender=user, receiver=request.user, is_active=True)
+            friend_request.decline()
+            return JsonResponse({})
+        except FriendRequest.DoesNotExist:
+            return JsonResponse({'error': f'there is no friend request sender: {user} reciever: {request.user}'}, status=403)
+    except User.DoesNotExist:
+        return JsonResponse({'error': f'there is no user ander username {username}'}, status=403)
+      
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def createFriendRequest(request):
@@ -51,17 +68,17 @@ def createFriendRequest(request):
         print(c.g, f"user:{request.GET.get('username')}", flush=True)
         username = request.GET.get('username')
         if not username:
-            return HttpResponse('Bad request',status=400)
+            return JsonResponse({'error': 'pear username not send at the query string'}, status=400)
         user = User.objects.get(username=username)
         friend_list, created = FriendList.objects.get_or_create(user=user)
         if request.user in friend_list.friends.all():
-            raise User.DoesNotExist('')
+            return JsonResponse({'error': '${request.user}, {username} already friends'}, status=400)
         t, created = FriendRequest.objects.get_or_create(sender=request.user, receiver=user)
         t.is_active = True
         t.save()
-        return HttpResponse("ok")
+        return JsonResponse({})
     except User.DoesNotExist:
-        return HttpResponse("Forbidden", status=403)
+        return JsonResponse({'error': f'there is no user ander username {username}'}, status=403)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

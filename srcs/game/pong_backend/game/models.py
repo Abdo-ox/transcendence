@@ -115,8 +115,8 @@ class Tournament(models.Model):
 
 class MultiGame(models.Model):
     players = models.ManyToManyField(User, related_name='multiPlayerGames')
-    # player1 = models.ForeignKey(User, related_name='player1')
-    # player2 = models.ForeignKey(User, related_name='player2')
+    player1 = models.ForeignKey(User, related_name='player1', on_delete=models.DO_NOTHING)
+    player2 = models.ForeignKey(User, related_name='player2', on_delete=models.DO_NOTHING)
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
     room_name = models.CharField(max_length=255, default='')

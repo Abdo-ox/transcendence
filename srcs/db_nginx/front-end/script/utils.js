@@ -125,7 +125,8 @@ export const NewPage = async (url, func, addhistory = true) => {
             removeEvent();
             document.body.replaceWith(doc.body);
             if (document.body.querySelector('header')) {
-                if (!await header())
+                const t = await header();
+                if (!t)
                     return;
             }
         }

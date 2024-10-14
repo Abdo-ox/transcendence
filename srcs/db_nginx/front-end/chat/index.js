@@ -134,7 +134,8 @@ async function bodychat(UserData) {
             'from': username,
             'to': nameElement.textContent,
             'message': `${username} invites u to play.`,
-            'flag': 'Game'
+            'flag': 'Game',
+            'playwith': 'null'
           }));
         // };
       }
