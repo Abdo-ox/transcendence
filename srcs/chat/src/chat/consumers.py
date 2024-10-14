@@ -18,7 +18,8 @@ class NotificationConsumer(WebsocketConsumer):
             }
         else:
             content = {
-                'playwith': data['playwith']
+                'playwith': data['playwith'],
+                'room_name': data['room_name']
             }
         return self.send_chat_message(content)
     def connect(self):

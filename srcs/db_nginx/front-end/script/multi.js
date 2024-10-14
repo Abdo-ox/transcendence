@@ -25,7 +25,7 @@ export const Multi = async () => {
     let room_name = localStorage.getItem('room_name');
     const canvas = document.getElementById("canvas");
     const keys = [];
-    const socket = undefined
+    let socket = undefined
     if (room_name) {
         socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/${room_name}/?token=${token}`);
         localStorage.removeItem('room_name');

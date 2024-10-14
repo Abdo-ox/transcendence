@@ -19,12 +19,15 @@ async function FriendRqEvent(notifItem, endpoint) {
     }).catch(error => console.log(error.error));
 }
 
-async function GameRqEvent(data) {
+async function GameRqEvent(data, notiItem) {
+    notiItem.remove()
     GamePlaySocket.send(JSON.stringify({
-        'playwith': data['from']
+        'playwith': data['from'],
+        'room_name': data['to'] + '_' + data['from']
     }))
     console.log(`inside Friend event handler`)
     localStorage.setItem('room_name', data['to'] + '_' + data['from']);
+    console.log(`from target ${localStorage.getItem('room_name')}`)
     NewPage("/multi", Multi);
     ////
 }
@@ -52,8 +55,13 @@ export function displayNotification(data) {
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
     if (data['flag'] === 'GameR') {
+        const timeout = setTimeout(() => {
+            notiItem.remove();
+            clearTimeout(timeout);
+            console.log('Element removed due to inactivity.');
+          }, 10000); // 5 seconds
         acceptButton.addEventListener('click', function() {
-            GameRqEvent(data);
+            GameRqEvent(data, notiItem);
         });
         declineButton.addEventListener('click', () => notiItem.remove());
     }
@@ -166,8 +174,11 @@ export async function header() {
         // console.log(`GamePlaySocket onmessage and this data is "${data['to']} and from is ${data['from']}"`);
         if (data['to'] === CurrentUser)
             displayNotification(data)
-        else if (data['playwith'] === CurrentUser)
+        else if (data['playwith'] === CurrentUser){
+            localStorage.setItem('room_name', data['room_name']);
+            console.log(`from the sender ${localStorage.getItem('room_name')}`)
             NewPage("/multi", Multi);
+        }
     };
 
     GamePlaySocket.onclose = () => {
