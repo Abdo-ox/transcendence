@@ -3,7 +3,7 @@ import { Profile } from "/profile.js"
 import { Multi } from "./multi.js";
 
 
-async function FriendRqEvent(notifItem, endpoint) {
+async function FriendRqEvent(notifItem, endpoint, data) {
     ////
     const token = await getJWT();
     fetch(`https://localhost:8000/${endpoint}`, {
@@ -11,12 +11,23 @@ async function FriendRqEvent(notifItem, endpoint) {
             Authorization: `Bearer ${token}`
         }
     }).then(response => {
-        console.log("status_code:", response.ok);
-        if (response.ok)
+        if (response.ok) {
+            if (GamePlaySocket.readyState === WebSocket.OPEN) {
+                GamePlaySocket.send(JSON.stringify({
+                    'from': data['to'],
+                    'to': data['from'],
+                    'message': `${endpoint}`,
+                    'flag': 'FriendR',
+                    'img': 'clear',
+                    'playwith': 'null'
+                }));
+            }
+            console.log("hello");
             notifItem.remove();
+        }
         else
             throw response.json();
-    }).catch(error => console.log(error.error));
+    }).catch(error => console.log(error));
 }
 
 async function GameRqEvent(data, notiItem) {
@@ -47,9 +58,25 @@ function createNewNotifItem(from) {
 }
 
 export function displayNotification(data) {
-    if (data['message'].includes('cancel') && data['flag'] == 'FriendR') {
-        document.getElementById("notifItem-" + data['from'])?.remove();
-        return;
+    console.log(data);
+    if (data['flag'] == 'FriendR') {
+        if (data['message'].includes('decline')) {
+            console.log("home-user-" + data['from']);
+            const accept = document.getElementById("home-user-" + data['from'])?.querySelector('.home-send-btn');
+            const cancel = document.getElementById("home-user-" + data['from'])?.querySelector('.home-cancel-btn');
+            if (accept && cancel){
+                accept.style.display = 'block';
+                cancel.style.display = 'none';
+            }
+            return;
+        } else if (data['message'].includes('cancel')) {
+            document.getElementById("notifItem-" + data['from'])?.remove();
+            return;
+        }
+        else if (data['message'].includes('accept')) {
+            document.getElementById("home-user-" + data['from'])?.remove();
+            return;
+        }
     }
     var notiItem = createNewNotifItem({ username: data['from'], profile_image: data['img'] });
     const acceptButton = notiItem.querySelector('#accept');
@@ -66,8 +93,8 @@ export function displayNotification(data) {
         declineButton.addEventListener('click', () => notiItem.remove());
     }
     if (data['flag'] === 'FriendR') {
-        acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${data['from']}`));
-        declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${data['from']}`));
+        acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${data['from']}`, data));
+        declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${data['from']}`, data));
     }
     document.getElementById('header-notif-div').appendChild(notiItem);
 }
@@ -171,12 +198,17 @@ export async function header() {
 
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
-        // console.log(`GamePlaySocket onmessage and this data is "${data['to']} and from is ${data['from']}"`);
+        console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
         if (data['to'] === CurrentUser)
+<<<<<<< HEAD
             displayNotification(data)
         else if (data['playwith'] === CurrentUser){
             localStorage.setItem('room_name', data['room_name']);
             console.log(`from the sender ${localStorage.getItem('room_name')}`)
+=======
+            displayNotification(data);
+        else if (data['playwith'] === CurrentUser)
+>>>>>>> eef226680915ef6c668f738f3e4eb2ddabcd6190
             NewPage("/multi", Multi);
         }
     };
@@ -237,8 +269,8 @@ export async function header() {
             const notiItem = createNewNotifItem(sender);
             const acceptButton = notiItem.querySelector('#accept');
             const declineButton = notiItem.querySelector('#decline');
-            acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`));
-            declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`));
+            acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));
+            declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));
             document.getElementById("header-notif-div").appendChild(notiItem);
         });
     }).catch(error => {
