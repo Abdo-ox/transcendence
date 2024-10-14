@@ -130,8 +130,10 @@ export const NewPage = async (url, func, addhistory = true) => {
                     return;
             }
         }
-        if (document.querySelector('header'))
+        if (document.querySelector('header')){
+            console.log(document.querySelector('header'));
             makePageActive(url.substring(1));
+        }
         func();
         window.removeEventListener('popstate', routing);
         window.addEventListener('popstate', routing);
@@ -143,6 +145,7 @@ export const NewPage = async (url, func, addhistory = true) => {
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {
+    console.log("submit form ");
     let fields = {};
     for (const id of ids) {
         const fieldName = id.substring(id.indexOf("-") + 1);
