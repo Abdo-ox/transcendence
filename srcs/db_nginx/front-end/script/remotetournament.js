@@ -5,21 +5,16 @@ export const RemoteTournament = async () => {
 
     // get tournament name from local storage
     let tournament_name = localStorage.getItem('tournament_name');
-    const response = await fetch('https://localhost:9090/aigamehistory/', {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        }
-    })
-    const data = await response.json();
-    console.log(data)
+    let tournamentState = undefined;
+
     // connect to socket
     const socket = new WebSocket(`wss://localhost:9090/ws/tournament/?token=${token}`);
-    console.log(socket)
     webSockets.push(socket);
 
     socket.onmessage = function(event) {
-        let tournamentState = JSON.parse(event.data);
+        tournamentState = JSON.parse(event.data);
         console.log(tournamentState);
+        displayTournamentBracket();
     }
 
     // if create, i.e. no roomname in localstorage, send create request to socket
@@ -40,13 +35,13 @@ export const RemoteTournament = async () => {
                 nameError.textContent = 'Nickname cannot be empty.';
             } else if (name.length > 30) {
                 nameError.textContent = "Nickname can't be longer than 30 characters.";
+            } else {
+                // send create request message to socket and handle if duplicate
+                socket.send(JSON.stringify({
+                    'create':true,
+                    'name':name,
+                }));
             }
-            // send create request message to socket and handle if duplicate
-            socket.send(JSON.stringify({
-                'create':true,
-                'name':name,
-            }));
-
             // Show the error message
             nameError.style.display = 'block';
         });
@@ -56,4 +51,25 @@ export const RemoteTournament = async () => {
     } else { // if user is joining / continuing a tournament, take them right to the tournament bracket
 
     }
+
+    function displayTournamentBracket() {
+        const bracket = document.getElementById('tournament-bracket');
+
+        let i = 1;
+        tournamentState.players.forEach(element => {
+            let box = document.getElementById(`player${i}`);
+            box.textContent = element;
+            i += 1;
+        });
+
+        i = 1;
+        tournamentState.winners.forEach(element => {
+            let box = document.getElementById(`winner${i}`);
+            box.textContent = element;
+            i += 1;
+        });
+        
+        document.getElementById('tournament-name-input').style.display = 'none';
+        bracket.style.display = 'flex';
+    };
 }

@@ -372,7 +372,6 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
             except IntegrityError:
                 await self.send(text_data=json.dumps({'duplicate':True}))
-                await self.close()
                 return
             
             await self.send(text_data=json.dumps({'created':True}))
