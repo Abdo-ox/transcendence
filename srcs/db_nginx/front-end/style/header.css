@@ -132,14 +132,14 @@ header .header-action .header-searchBx input {
 
 .header-nav-side {
     all: unset;
-    position: relative;
+    position: absolute;
     list-style: none;
     display: none !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
     position: fixed !important;
-    width: max-content !important;
+    width: 100px !important;
     top: 20px !important;
     right: 55px !important;
     gap: 20px !important;

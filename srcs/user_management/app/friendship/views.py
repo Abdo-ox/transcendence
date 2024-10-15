@@ -13,7 +13,6 @@ from user.serializers import CurrentSerializer
 def acceptFriendRequest(request):
     try:
         username = request.GET.get('username')
-        print(c.b, "friend", username, flush=True)
         if not username:
             return JsonResponse({'error': 'pear username not send at the query string'}, status=400)
         user = User.objects.get(username=username)
@@ -63,9 +62,7 @@ def declineFriendRequest(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def createFriendRequest(request):
-    print(c.c, "createFriendRequestCalled", flush=True)
     try:
-        print(c.g, f"user:{request.GET.get('username')}", flush=True)
         username = request.GET.get('username')
         if not username:
             return JsonResponse({'error': 'pear username not send at the query string'}, status=400)
@@ -84,11 +81,25 @@ def createFriendRequest(request):
 @permission_classes([IsAuthenticated])
 def sendFriendRequests(request):
     ids = FriendRequest.objects.filter(receiver=request.user, is_active=True).values_list('sender', flat=True)
-    print(c.r, "ids", ids, flush=True)
-    
     senders = User.objects.filter(id__in=ids)
-    print(c.r, "senders", senders, flush=True)
     if senders.exists():
         data = CurrentSerializer(senders, many=True)
         return JsonResponse(data.data, safe=False)
     return JsonResponse([], safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def unFriend(request):
+    try:
+        username = request.GET.get('username')
+        if not username:
+            return JsonResponse({'error': 'pear username not send at the query string'}, status=400)
+        user = User.objects.get(username=username)
+        friend_list, created = FriendList.objects.get_or_create(user=user)
+        if request.user not in friend_list.friends.all():
+            return JsonResponse({'error': '${request.user}, {username} are not friends'}, status=400)
+        friend_list.unfriend(request.user)
+        # freind_list.save()
+        return JsonResponse({})
+    except User.DoesNotExist:
+        return JsonResponse({'error': f'there is no user ander username {username}'}, status=403)
