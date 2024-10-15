@@ -114,7 +114,7 @@ async function bodychat(UserData) {
         GamePlaySocket.send(JSON.stringify({
           'from': username,
           'to': nameElement.textContent,
-          'message': `${username} invites u to play.`,
+          'message': ` invites u to play.`,
           'flag': 'GameR',
           'img': UserData.profile_image,
           'playwith': 'null'

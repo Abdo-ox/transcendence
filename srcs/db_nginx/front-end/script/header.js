@@ -18,7 +18,7 @@ async function FriendRqEvent(notifItem, endpoint, data) {
                     'to': data['from'],
                     'message': `${endpoint}`,
                     'flag': 'FriendR',
-                    'img': 'clear',
+                    'img': '',
                     'playwith': 'null'
                 }));
             }
@@ -43,14 +43,14 @@ async function GameRqEvent(data, notiItem) {
     ////
 }
 
-function createNewNotifItem(from) {
+function createNewNotifItem(data) {
     const notiItem = document.createElement('div');
 
-    notiItem.id = 'notifItem-' + from.username;
+    notiItem.id = 'notifItem-' + data.to;
     console.log(`notifitem id ===  ${notiItem.id}`)
     notiItem.innerHTML = `
-        <img src="${from.profile_image}">
-        <p>${from.username} send friend request.</p>
+        <img src="${data.img}">
+        <p>${data.to} ${data.message}.</p>
         <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
         <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
         `
@@ -79,7 +79,7 @@ export function displayNotification(data) {
             return;
         }
     }
-    var notiItem = createNewNotifItem({ username: data['from'], profile_image: data['img'] });
+    var notiItem = createNewNotifItem(data);
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
     if (data['flag'] === 'GameR') {
@@ -210,7 +210,7 @@ export async function header() {
             localStorage.setItem('room_name', data['room_name']);
             console.log(`from the sender ${localStorage.getItem('room_name')}`)
             NewPage("/multi", Multi);
-    };
+    }};
 
     GamePlaySocket.onclose = () => {
         console.error('GamePlaySocket closed');
@@ -265,7 +265,7 @@ export async function header() {
         console.log("error in fetch friend requests");
     }).then(data => {
         data.forEach(sender => {
-            const notiItem = createNewNotifItem(sender);
+            const notiItem = createNewNotifItem({'from': CurrentUser, 'to': sender.username, 'img': CurrentUser.profile_image, message: 'send friend request'});
             const acceptButton = notiItem.querySelector('#accept');
             const declineButton = notiItem.querySelector('#decline');
             acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));
