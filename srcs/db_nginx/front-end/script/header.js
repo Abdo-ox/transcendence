@@ -200,17 +200,9 @@ export async function header() {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
         if (data['to'] === CurrentUser)
-<<<<<<< HEAD
-            displayNotification(data)
-        else if (data['playwith'] === CurrentUser){
-            localStorage.setItem('room_name', data['room_name']);
-            console.log(`from the sender ${localStorage.getItem('room_name')}`)
-=======
             displayNotification(data);
         else if (data['playwith'] === CurrentUser)
->>>>>>> eef226680915ef6c668f738f3e4eb2ddabcd6190
             NewPage("/multi", Multi);
-        }
     };
 
     GamePlaySocket.onclose = () => {
