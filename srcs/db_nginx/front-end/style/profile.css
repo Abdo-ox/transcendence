@@ -1,14 +1,14 @@
 @import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
 @import url('https://fonts.cdnfonts.com/css/poppins');
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #1aeeef;
     border-radius: 6px;
-}
+} */
 
 .profile-content {
     display: flex;

@@ -153,7 +153,7 @@ async function bodychat(UserData) {
 
   // Function to create or toggle the menu panel
 
-  function createmenuPanel() {
+  function createmenuPanel(username) {
     let menu = document.getElementById('menu');
     const joingame = document.createElement('button');
     const BlockUser = document.createElement('button');
@@ -175,6 +175,14 @@ async function bodychat(UserData) {
     }
     menu.classList.toggle('active');
     GamePlay();
+    BlockUser.addEventListener('click', async () => {
+      const token = await getJWT();
+      fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => console.log(response.status));
+    });
   }
 
 
@@ -338,7 +346,7 @@ async function bodychat(UserData) {
     // Add click event listener to the VerticalDots icon
     document.getElementById('VerticalDots').addEventListener('click', event => {
       event.stopPropagation();
-      createmenuPanel();
+      createmenuPanel(user);
     });
 
   }

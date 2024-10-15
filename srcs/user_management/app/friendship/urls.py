@@ -4,7 +4,8 @@ from .views import (createFriendRequest,
 acceptFriendRequest,
 cancelFriendRequest,
 declineFriendRequest,
-sendFriendRequests)
+sendFriendRequests,
+unFriend)
 
 
 urlpatterns = [
@@ -12,5 +13,6 @@ urlpatterns = [
     path('accept/', acceptFriendRequest),
     path('cancel/', cancelFriendRequest),
     path('decline/', declineFriendRequest),
+    path('unfriend/', unFriend),
     path('friendRequests/', sendFriendRequests),
 ]

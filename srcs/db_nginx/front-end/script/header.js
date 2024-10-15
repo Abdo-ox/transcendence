@@ -102,7 +102,9 @@ export function displayNotification(data) {
 
 function Handler() {
     const notificationPanel = document.getElementById('header-notif-div');
+    const menu = document.getElementById('header-side-bar');
     notificationPanel.style.display = 'none';
+    menu.style.display = 'none';
 }
 
 export function removeEvent() {
@@ -218,7 +220,8 @@ export async function header() {
 
     const menuicon = document.getElementById("header-menu-icon");
     if (menuicon) {
-        menuicon.addEventListener('click', () => {
+        menuicon.addEventListener('click', (event) => {
+            event.stopPropagation();
             document.getElementById("header-side-bar").style.setProperty('display', 'flex', 'important');
         });
     }
