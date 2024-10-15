@@ -318,7 +318,7 @@ async function bodychat(UserData) {
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
-    VerticalDots.src = "https://localhost/chat/images/dots.svg"
+    VerticalDots.src = "https://localhost/images/dots.svg"
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');

@@ -46,11 +46,11 @@ async function GameRqEvent(data, notiItem) {
 function createNewNotifItem(data) {
     const notiItem = document.createElement('div');
 
-    notiItem.id = 'notifItem-' + data.to;
+    notiItem.id = 'notifItem-' + data.from;
     console.log(`notifitem id ===  ${notiItem.id}`)
     notiItem.innerHTML = `
         <img src="${data.img}">
-        <p>${data.to} ${data.message}.</p>
+        <p>${data.from} ${data.message}.</p>
         <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
         <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
         `
@@ -265,7 +265,7 @@ export async function header() {
         console.log("error in fetch friend requests");
     }).then(data => {
         data.forEach(sender => {
-            console.log(sender.username);
+            console.log("inside foreach", sender.username);
             const notiItem = createNewNotifItem({'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request'});
             const acceptButton = notiItem.querySelector('#accept');
             const declineButton = notiItem.querySelector('#decline');
