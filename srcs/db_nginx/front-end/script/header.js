@@ -265,7 +265,8 @@ export async function header() {
         console.log("error in fetch friend requests");
     }).then(data => {
         data.forEach(sender => {
-            const notiItem = createNewNotifItem({'from': CurrentUser, 'to': sender.username, 'img': CurrentUser.profile_image, message: 'send friend request'});
+            console.log(sender.username);
+            const notiItem = createNewNotifItem({'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request'});
             const acceptButton = notiItem.querySelector('#accept');
             const declineButton = notiItem.querySelector('#decline');
             acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, {'from': sender.username, 'to': CurrentUser}));

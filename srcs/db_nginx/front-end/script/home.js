@@ -43,7 +43,7 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
             GamePlaySocket.send(JSON.stringify({
                 'from': currentUser.username,
                 'to': button.getAttribute('username'),
-                'message': `${currentUser.username} ${action[0]} friend request.`,
+                'message': `${action[0]} friend request.`,
                 'flag': 'FriendR',
                 'img': currentUser.profile_image,
                 'playwith': 'null'
