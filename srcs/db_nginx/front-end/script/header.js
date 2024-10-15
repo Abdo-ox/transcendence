@@ -47,6 +47,7 @@ function createNewNotifItem(from) {
     const notiItem = document.createElement('div');
 
     notiItem.id = 'notifItem-' + from.username;
+    console.log(`notifitem id ===  ${notiItem.id}`)
     notiItem.innerHTML = `
         <img src="${from.profile_image}">
         <p>${from.username} send friend request.</p>
@@ -86,7 +87,7 @@ export function displayNotification(data) {
             notiItem.remove();
             clearTimeout(timeout);
             console.log('Element removed due to inactivity.');
-          }, 10000); // 5 seconds
+          }, 20000); // 5 seconds
         acceptButton.addEventListener('click', function() {
             GameRqEvent(data, notiItem);
         });
@@ -199,16 +200,15 @@ export async function header() {
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
-        if (data['to'] === CurrentUser)
-<<<<<<< HEAD
+        if (data['to'] === CurrentUser && data['message'].includes("cancel")){
+            document.getElementById("notifItem-" + data['from'])?.remove();
+            console.log(`request cancled`)
+        }
+        else if (data['to'] === CurrentUser)
             displayNotification(data)
         else if (data['playwith'] === CurrentUser){
             localStorage.setItem('room_name', data['room_name']);
             console.log(`from the sender ${localStorage.getItem('room_name')}`)
-=======
-            displayNotification(data);
-        else if (data['playwith'] === CurrentUser)
->>>>>>> eef226680915ef6c668f738f3e4eb2ddabcd6190
             NewPage("/multi", Multi);
         }
     };
