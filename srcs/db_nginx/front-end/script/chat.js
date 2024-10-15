@@ -176,6 +176,7 @@ async function bodychat(UserData) {
     menu.classList.toggle('active');
     GamePlay();
     BlockUser.addEventListener('click', async () => {
+      BlockUser.textContent = 'Blocked'
       const token = await getJWT();
       fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
         headers: {
