@@ -4,7 +4,9 @@ from . models import User, MultiGame, Game, Tournament
 
 # TODO: create serializer for tournament        
 class TournamentSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Tournament
+        fields = ['name']
 
 # win stats
 class WinStatSerializer(serializers.ModelSerializer):

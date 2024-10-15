@@ -26,7 +26,7 @@ class GameLogic:
     
     # to fix sync to async compatibility
     async def create_obj(self, user1, user2, room_name):
-        game = await database_sync_to_async(MultiGame.objects.create)(
+        game = await MultiGame.objects.acreate(
             room_name = room_name,
             friendMatch = friend_match,
             player1 = user1,
@@ -209,10 +209,15 @@ class TournamentLogic:
         self.players = [creator] # user
         self.winners = [] # user
         TournamentLogicInstances[room_name] = self
-        self.init_tournament()
-
-    def init_tournament(self):
         self.set_state()
+
+    async def add_user_to_group(self, consumer):
+        channel_layer = get_channel_layer()
+        await consumer.channel_layer.group_add(self.room_name, consumer.channel_name)
+        await channel_layer.group_send(self.room_name, {
+            'type': 'send.tournament.state',
+            'state': self.get_state(),
+        })
 
     def get_next_games(self):
         if len(self.players) == 4 and not self.n:

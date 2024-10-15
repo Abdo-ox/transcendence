@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer
+from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer
 from .models import Game, MultiGame, Tournament
 
 class WinStatsView(APIView):
@@ -58,5 +58,13 @@ class AiGameHistoryView(APIView):
     def get(self, request):
         user = request.user
         serializer = AiGameHistorySerializer(user.games, many=True)
+
+        return Response(serializer.data)
+
+class TournamentsView(APIView):
+
+    def get(self, request):
+        user = request.user
+        serializer = TournamentSerializer(Tournament.objects.all(), many=True)
 
         return Response(serializer.data)
