@@ -24,7 +24,7 @@ class FriendList(models.Model):
 
     def unfriend(self, removee):
         self.removeFriend(removee)
-        friend = frinedship.objects.get(user=removee)
+        friend = FriendList.objects.get(user=removee)
         friend.removeFriend(self.user)
 
 class FriendRequest(models.Model):

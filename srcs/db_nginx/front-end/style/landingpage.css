@@ -3,14 +3,14 @@
 
 
 /*scroll bar*/
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #1aeeef;
   border-radius: 6px;
-}
+} */
 
 .landing-header {
   position: fixed;

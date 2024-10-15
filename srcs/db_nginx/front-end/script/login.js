@@ -19,6 +19,7 @@ const  handle_data = async (data_status) => {
         .then(response => {
             return response.json()})
         .then((data) => {
+            console.log("pathname:", window.location.pathname);
             NewPage("/home", Home);
         })
         .catch((error) =>{
@@ -60,14 +61,7 @@ export async function Login() {
         submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
     });
 
-    document.body.addEventListener('keydown', (event) => {
-        if (event.key == 'Enter')
-            submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
-
-    });
-
     document.getElementById('login-intra-btn').addEventListener('click', async () => {
-        console.log('clicked');
         const response = await fetch("https://localhost:8000/api/42/data/");
         if (response.ok) {
             const data = await response.json();

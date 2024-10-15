@@ -16,12 +16,16 @@ import { Chat } from "/chat.js"
 import { Twofactor } from "/2faa.js"
 import { ConfirmationMail } from "/confirmationMail.js"
 import { TournamentFr } from "./fr-tournament.js"
+import { NotFound } from "./notfound.js"
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname;
-
+    console.log("pathname:", pathname);
     switch (pathname) {
+        case "/":
+            NewPage("/landingpage", Home);
+            break;
         case "/home":
             NewPage("/home", Home);
             break;
@@ -73,5 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case "/fr-tournament":
             NewPage("/fr-tournament", TournamentFr);
             break;
+        default:
+            NewPage("/notfound", NotFound);
     }
 });

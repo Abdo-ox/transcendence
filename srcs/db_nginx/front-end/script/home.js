@@ -43,7 +43,7 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
             GamePlaySocket.send(JSON.stringify({
                 'from': currentUser.username,
                 'to': button.getAttribute('username'),
-                'message': `${currentUser.username} ${action[0]} friend request.`,
+                'message': `${action[0]} friend request.`,
                 'flag': 'FriendR',
                 'img': currentUser.profile_image,
                 'playwith': 'null'
@@ -119,16 +119,16 @@ export async function Home() {
     suggestionscontainer.innerHTML = '';
     data.suggestions.forEach(user => {
         suggestionscontainer.innerHTML += `
-                    <div class="home-user">
-                            <div class="home-info-user">
-                                <div class="home-suggestion-img">
-                                    <img src="${user.profile_image}">
-                                </div>
-                                <h3>${user.username}</h3>
-                            </div>
-                            <button class="home-send-btn" username="${user.username}">send</button>
-                            <button class="home-cancel-btn" username="${user.username}">cancel</button>
-                    </div>`;
+            <div class="home-user" id="home-user-${user.username}">
+                    <div class="home-info-user">
+                        <div class="home-suggestion-img">
+                            <img src="${user.profile_image}">
+                        </div>
+                        <h3>${user.username}</h3>
+                    </div>
+                    <button class="home-send-btn" username="${user.username}">send</button>
+                    <button class="home-cancel-btn" username="${user.username}">cancel</button>
+            </div>`;
     });
 
     document.querySelectorAll('.home-send-btn').forEach(button => {

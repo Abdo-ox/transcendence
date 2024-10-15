@@ -100,26 +100,43 @@ async function bodychat(UserData) {
 
   /// handel play event
   function GamePlay() {
-    document.getElementById('game-play').addEventListener('click', event => {
+    const gamePlay = document.getElementById('game-play');
+    gamePlay.addEventListener('click', event => {
       const profile_container = document.getElementById('profile-container');
       const contact_profile = profile_container.querySelector('.contact-profile');
       const nameElement = contact_profile.querySelector('p');
       console.log(`game play nameElement is ${nameElement}`)
       if (nameElement != "")
         console.log(`play event happened and nameEl is ${nameElement.textContent}`)
-      if (GamePlaySocket.readyState === WebSocket.OPEN) {
+      if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
         // GamePlaySocket.onopen = () => {
         console.log('WebSocket connection opened');
         GamePlaySocket.send(JSON.stringify({
           'from': username,
           'to': nameElement.textContent,
-          'message': `${username} invites u to play.`,
+          'message': ` invites u to play.`,
           'flag': 'GameR',
           'img': UserData.profile_image,
           'playwith': 'null'
         }));
         // };
       }
+      if (gamePlay.textContent === "cancel"){
+          if (GamePlaySocket.readyState === WebSocket.OPEN) {
+            console.log('WebSocket connection opened');
+          GamePlaySocket.send(JSON.stringify({
+            'from': username,
+            'to': nameElement.textContent,
+            'message': `${username} cancel play request.`,
+            'flag': 'GameR',
+            'img': UserData.profile_image,
+            'playwith': 'null'
+          }));
+        }
+        gamePlay.textContent = "play"
+      }
+      else
+        gamePlay.textContent = "cancel"
     });
   }
 
@@ -136,7 +153,7 @@ async function bodychat(UserData) {
 
   // Function to create or toggle the menu panel
 
-  function createmenuPanel() {
+  function createmenuPanel(username) {
     let menu = document.getElementById('menu');
     const joingame = document.createElement('button');
     const BlockUser = document.createElement('button');
@@ -158,6 +175,14 @@ async function bodychat(UserData) {
     }
     menu.classList.toggle('active');
     GamePlay();
+    BlockUser.addEventListener('click', async () => {
+      const token = await getJWT();
+      fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => console.log(response.status));
+    });
   }
 
 
@@ -301,7 +326,7 @@ async function bodychat(UserData) {
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
-    VerticalDots.src = "https://localhost/chat/images/dots.svg"
+    VerticalDots.src = "https://localhost/images/dots.svg"
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');
@@ -321,7 +346,7 @@ async function bodychat(UserData) {
     // Add click event listener to the VerticalDots icon
     document.getElementById('VerticalDots').addEventListener('click', event => {
       event.stopPropagation();
-      createmenuPanel();
+      createmenuPanel(user);
     });
 
   }
