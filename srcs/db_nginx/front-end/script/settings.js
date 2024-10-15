@@ -283,7 +283,6 @@ export async function Settings() {
                     .then(response => {
                         if (response.ok) {
                             document.getElementById("settings-profile-image").src = canvas.toDataURL();
-                            console.log("change bam bam");
                             document.getElementById("settings-SaveImg").style.display = "none";
                         }
 
