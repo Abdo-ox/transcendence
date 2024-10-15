@@ -100,14 +100,15 @@ async function bodychat(UserData) {
 
   /// handel play event
   function GamePlay() {
-    document.getElementById('game-play').addEventListener('click', event => {
+    const gamePlay = document.getElementById('game-play');
+    gamePlay.addEventListener('click', event => {
       const profile_container = document.getElementById('profile-container');
       const contact_profile = profile_container.querySelector('.contact-profile');
       const nameElement = contact_profile.querySelector('p');
       console.log(`game play nameElement is ${nameElement}`)
       if (nameElement != "")
         console.log(`play event happened and nameEl is ${nameElement.textContent}`)
-      if (GamePlaySocket.readyState === WebSocket.OPEN) {
+      if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
         // GamePlaySocket.onopen = () => {
         console.log('WebSocket connection opened');
         GamePlaySocket.send(JSON.stringify({
@@ -120,6 +121,22 @@ async function bodychat(UserData) {
         }));
         // };
       }
+      if (gamePlay.textContent === "cancel"){
+          if (GamePlaySocket.readyState === WebSocket.OPEN) {
+            console.log('WebSocket connection opened');
+          GamePlaySocket.send(JSON.stringify({
+            'from': username,
+            'to': nameElement.textContent,
+            'message': `${username} cancel play request.`,
+            'flag': 'GameR',
+            'img': UserData.profile_image,
+            'playwith': 'null'
+          }));
+        }
+        gamePlay.textContent = "play"
+      }
+      else
+        gamePlay.textContent = "cancel"
     });
   }
 
