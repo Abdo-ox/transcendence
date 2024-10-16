@@ -113,7 +113,8 @@ async function bodychat(UserData) {
           'message': ` invites u to play.`,
           'flag': 'GameR',
           'img': UserData.profile_image,
-          'playwith': 'null'
+          'playwith': 'null',
+          'block': 'false'
         }));
         // };
       }
@@ -126,7 +127,8 @@ async function bodychat(UserData) {
             'message': `${username} cancel play request.`,
             'flag': 'GameR',
             'img': UserData.profile_image,
-            'playwith': 'null'
+            'playwith': 'null',
+            'block': 'false'
           }));
         }
         gamePlay.textContent = "play"
