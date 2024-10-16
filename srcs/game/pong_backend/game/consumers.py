@@ -273,7 +273,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                     friend_match_d[self.room_name] = self
                 else:
                     await self.create_room()
-                    friend_match_d.remove(self.room_name)                
+                    friend_match_d.pop(self.room_name, None)                
 
         if 'key' in data:
             self.handle_key(data['key'])
