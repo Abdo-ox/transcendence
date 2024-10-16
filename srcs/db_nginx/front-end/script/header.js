@@ -19,7 +19,8 @@ async function FriendRqEvent(notifItem, endpoint, data) {
                     'message': `${endpoint}`,
                     'flag': 'FriendR',
                     'img': '',
-                    'playwith': 'null'
+                    'playwith': 'null',
+                    'block': 'false'
                 }));
             }
             console.log("hello");
@@ -34,7 +35,8 @@ async function GameRqEvent(data, notiItem) {
     notiItem.remove()
     GamePlaySocket.send(JSON.stringify({
         'playwith': data['from'],
-        'room_name': data['to'] + '_' + data['from']
+        'room_name': data['to'] + '_' + data['from'],
+        'block': 'false'
     }))
     console.log(`inside Friend event handler`)
     localStorage.setItem('room_name', data['to'] + '_' + data['from']);
@@ -202,17 +204,41 @@ export async function header() {
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
         console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']}"`);
-        if (data['to'] === CurrentUser && data['message'].includes("cancel")){
+        if (data.block === 'false' && data['to'] === CurrentUser && data['message'].includes("cancel")){
             document.getElementById("notifItem-" + data['from'])?.remove();
             console.log(`request cancled`)
         }
-        else if (data['to'] === CurrentUser)
+        else if (data.block === 'false' && data['to'] === CurrentUser)
             displayNotification(data)
-        else if (data['playwith'] === CurrentUser){
+        else if (data.block == 'false' && data['playwith'] === CurrentUser){
             localStorage.setItem('room_name', data['room_name']);
             console.log(`from the sender ${localStorage.getItem('room_name')}`)
-            NewPage("/multi", Multi);
-    }};
+            NewPage("/multi", Multi);}
+        else if (data.block === 'True' && data['block_target'] === CurrentUser){
+            const targetContact = document.getElementById(data.from);
+            const profileContainer = document.getElementById('profile-container');
+            
+            if (targetContact) targetContact.remove();
+            
+            if (profileContainer) {
+                const nameElement = profileContainer.querySelector('.contact-profile p');
+                if (nameElement && nameElement.textContent === data.from) {
+                    const chatLog = document.querySelector('#chat-log');
+                    const messageInput = document.querySelector('#chat-message-input');
+                    const messageSubmit = document.querySelector('#chat-message-submit');
+            
+                    // Remove elements only if they exist
+                    messageSubmit?.remove();
+                    messageInput?.remove();
+                    profileContainer.remove();
+            
+                    // Clear chat log efficiently
+                    if (chatLog) chatLog.textContent = '';
+                }
+            }
+            
+        }
+    };
 
     GamePlaySocket.onclose = () => {
         console.error('GamePlaySocket closed');
