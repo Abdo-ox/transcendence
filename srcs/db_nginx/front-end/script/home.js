@@ -165,6 +165,25 @@ export async function Home() {
         NewPage("/login", Login, false);
     });
     const token = await getJWT();
+
+    // tournament cards 
+    const tours = await fetch("https://localhost:9090/tournaments/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+
+    let test = await tours.json();
+    console.log('here', test);
+    document.getElementById("tournament-title").innerText = test[0].name;
+    document.getElementById("join").addEventListener('click', () => {
+        localStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+        NewPage("/remotetournament", RemoteTournament);
+    });
+
+    // tournament cards end
+
     const dt = await fetch("https://localhost:9090/matchcount/", {
         headers: {
             Authorization: `Bearer ${token}`

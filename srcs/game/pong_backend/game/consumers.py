@@ -3,6 +3,7 @@ import asyncio
 import random
 import time
 from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
@@ -351,6 +352,8 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, close_code):
+        if self.room_name:
+            await self.channel_layer.group_discard(self.room_name, self.channel_name)
         if self.del_cache:
             cache.delete(self.user.username)
 
@@ -361,7 +364,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         # check if user already in game or tournament
         in_game = cache.get(self.user.username)
         if in_game:
-            await self.send(json.dumps({'uaig':True})) # abbreviation for 'user already in game'
+            await self.send(json.dumps({'uaig':'Already in game / tournament.'}))
             await self.close()
             return
 
@@ -372,37 +375,38 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
             except IntegrityError:
                 await self.send(text_data=json.dumps({'duplicate':True}))
-                await self.close()
                 return
-            
-            await self.send(text_data=json.dumps({'created':True}))
 
             await database_sync_to_async(self.instance.players.add)(self.user)
-            
+
             self.logic = TournamentLogic(self.room_name, self.instance, self.user)
-            await self.send(text_data=json.dumps(self.logic.get_state()))
+            await self.logic.add_user_to_group(self)
 
         elif 'join' in data:
-            self.instance = await Tournament.objects.aget(name=self.room_name)
-            if self.instance.Ongoing or self.instance.isOver:
+            try:
+                self.instance = await Tournament.objects.aget(name=self.room_name)
+            except ObjectDoesNotExist:
                 await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
                 await self.close()
                 return
-            await database_sync_to_async(self.instance.players.add)(self.user)
 
-            # join room
+            if (self.instance.Ongoing and not await database_sync_to_async(self.instance.players.filter(id=self.user.id).exists)()) or self.instance.isOver:
+                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.close()
+                return
+
             self.logic = TournamentLogicInstances[self.room_name]
-            # invoke logic to send state udate to all users and update model instance
 
+            if not await database_sync_to_async(self.instance.players.filter(id=self.user.id).exists)():
+                await database_sync_to_async(self.instance.players.add)(self.user)
 
-        elif 'continue' in data:
-            self.logic = TournamentLogicInstances[self.room_name]
-            self.logic.players.append(self.user)
-            await self.send(text_data=json.dumps(self.logic.get_state()))
-            # join room
+                self.logic.players.append(self.user)
+                await self.logic.add_user_to_group(self)
+            else:
+                await self.send(text_data=json.dumps(self.logic.get_state()))
 
         cache.set(self.user.username, True)
         self.del_cache = True
 
     async def send_tournament_state(self, event):
-        await self.send(text_data=json.dumps(event['tournament_state']))
+        await self.send(text_data=json.dumps(event['state']))
