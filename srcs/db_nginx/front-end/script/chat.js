@@ -66,7 +66,7 @@ async function bodychat(UserData) {
       UserData.friends.forEach(friend => {
         if (friend.username === TargetUser) {
           createHtmlPrf();
-          updateProfile(TargetUser);
+          updateProfile(friend);
           chatListview(TargetUser, 'createWebSocket');
           const newUrl = `https://localhost/chat?user=${TargetUser}`
           console.log(`new query --------------- ${newUrl}`)
@@ -81,20 +81,16 @@ async function bodychat(UserData) {
         console.error('No .contact element found');
         return;
       }
-      console.log(`target user iss ${contact.id}`)
-      console.log(`the authonticat contact is ${username} , and the other contact is ${contact.id}`)
-      let access_token = await getJWT();
-      console.log(`contacts-list event called and the access token is ${access_token}`)
       if (contact) {
+        let imgElement = contact.querySelector('img');
+        let user = {username: contact.id, profile_image: imgElement.src};
         console.log('contact exests')
         createHtmlPrf();
-        updateProfile(contact.id);
+        updateProfile(user);
         chatListview(contact.id, 'createWebSocket');
       }
-      else {
+      else
         console.log(`conctact doesn't exests`)
-      }
-      // GamePlay();
     });
   }
 
@@ -136,20 +132,9 @@ async function bodychat(UserData) {
         gamePlay.textContent = "play"
       }
       else
-        gamePlay.textContent = "cancel"
+      gamePlay.textContent = "cancel"
     });
   }
-
-  // GamePlaySocket.onmessage = (e) => {
-  //     var data = JSON.parse(e.data);
-  //     console.log(`GamePlaySocket onmessage and this data is "${data['to']}"`);
-  //     if (data['to'] === username)
-  //       displayNotification(data['message'])
-  //   };
-
-  //   GamePlaySocket.onclose = () => {
-  //     console.error('GamePlaySocket closed');
-  //   };
 
   // Function to create or toggle the menu panel
 
@@ -176,6 +161,31 @@ async function bodychat(UserData) {
     menu.classList.toggle('active');
     GamePlay();
     BlockUser.addEventListener('click', async () => {
+<<<<<<< HEAD
+      BlockUser.textContent = 'Blocked'
+=======
+      var chatLog = document.querySelector('#chat-log');
+      const profileContainer = document.getElementById('profile-container');
+      const targetContact = document.getElementById(username);
+      const messageInput = document.querySelector('#chat-message-input');
+      const messageSubmit = document.querySelector('#chat-message-submit');
+      messageSubmit.remove();
+      messageInput.remove();
+      targetContact.remove()
+      profileContainer.remove()
+      if (GamePlaySocket.readyState === WebSocket.OPEN) {
+        console.log(`inside send block request =========================`)
+        GamePlaySocket.send(JSON.stringify({
+          'block': 'True',
+          'block_target': username,
+          'from': UserData.username
+        }));
+      }
+      if (chatLog) {
+        while (chatLog.firstChild)
+          chatLog.removeChild(chatLog.firstChild);
+        }
+>>>>>>> walid's-branch
       const token = await getJWT();
       fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
         headers: {
@@ -200,6 +210,7 @@ async function bodychat(UserData) {
 
   function fetchData() {
     UserData.friends.forEach(friend => {
+      console.log(`-------------- ${friend.username}  ---------------------`);
       createSuperuser(friend)
     });
   }
@@ -224,6 +235,7 @@ async function bodychat(UserData) {
   }
 
   function createSuperuser(user) {
+    console.log(`userdata isss ${JSON.stringify(user)}`)
     const li = document.createElement('li');
     li.className = 'contact';
     li.id = user.username;
@@ -236,7 +248,7 @@ async function bodychat(UserData) {
     // ------------------------------- show the user data catched -------------------------------------
     // console.log(`friend object equal ======= ${JSON.stringify(user)}`)
     const img = document.createElement('img');
-    img.src = "https://img.freepik.com/free-vector/blond-man-with-eyeglasses-icon-isolated_24911-100831.jpg?w=996&t=st=1717845286~exp=1717845886~hmac=2e25e3c66793f5ddc2454b5ec1f103c4f76628b9043b8f8320fa703250a3a8b7";
+    img.src = user.profile_image;
     img.alt = '';
 
     const meta = document.createElement('div');
@@ -322,7 +334,7 @@ async function bodychat(UserData) {
   function updateProfile(user) {
     const profileContainer = document.getElementById('profile-container');
     profileContainer.innerHTML = '';
-
+    
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
@@ -330,23 +342,23 @@ async function bodychat(UserData) {
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');
-    img.src = "https://cdn.intra.42.fr/users/7f374d7bb3c60ce254cc0d66f25f1957/werrahma.JPG";
+    img.src = user.profile_image;
     img.alt = '';
 
     const name = document.createElement('p');
-    name.textContent = user;
+    name.textContent = user.username;
 
     contactProfile.appendChild(img);
     contactProfile.appendChild(name);
     contactProfile.appendChild(VerticalDots);
     profileContainer.appendChild(contactProfile);
 
-    const newUrl = `https://localhost/chat?user=${user}`
+    const newUrl = `https://localhost/chat?user=${user.username}`
     history.pushState(null, '', newUrl);
     // Add click event listener to the VerticalDots icon
     document.getElementById('VerticalDots').addEventListener('click', event => {
       event.stopPropagation();
-      createmenuPanel(user);
+      createmenuPanel(user.username);
     });
 
   }
