@@ -10,7 +10,7 @@ class NotificationConsumer(WebsocketConsumer):
         # print(f"too is ::: {data['to']}")
         print('----------------------------', flush=True)
         print(data, flush=True)
-        if data['playwith'] == 'null':
+        if data['block'] == 'false' and data['playwith'] == 'null':
             content = {
                 'message': data['message'],
                 'to': data['to'],
@@ -18,10 +18,17 @@ class NotificationConsumer(WebsocketConsumer):
                 'img': data['img'],
                 'from': data['from']
             }
-        else:
+        elif data['block'] == 'false' and data['playwith'] != 'null':
             content = {
                 'playwith': data['playwith'],
-                'room_name': data['room_name']
+                'room_name': data['room_name'],
+                'block': 'false'
+            }
+        elif data['block'] == 'True':
+            content = {
+                'from': data['from'],
+                'block': 'True',
+                'block_target': data['block_target'],
             }
         return self.send_chat_message(content)
     def connect(self):
