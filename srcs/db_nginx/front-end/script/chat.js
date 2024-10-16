@@ -113,7 +113,8 @@ async function bodychat(UserData) {
           'message': ` invites u to play.`,
           'flag': 'GameR',
           'img': UserData.profile_image,
-          'playwith': 'null'
+          'playwith': 'null',
+          'block': 'false'
         }));
         // };
       }
@@ -126,7 +127,8 @@ async function bodychat(UserData) {
             'message': `${username} cancel play request.`,
             'flag': 'GameR',
             'img': UserData.profile_image,
-            'playwith': 'null'
+            'playwith': 'null',
+            'block': 'false'
           }));
         }
         gamePlay.textContent = "play"
@@ -161,9 +163,6 @@ async function bodychat(UserData) {
     menu.classList.toggle('active');
     GamePlay();
     BlockUser.addEventListener('click', async () => {
-<<<<<<< HEAD
-      BlockUser.textContent = 'Blocked'
-=======
       var chatLog = document.querySelector('#chat-log');
       const profileContainer = document.getElementById('profile-container');
       const targetContact = document.getElementById(username);
@@ -185,7 +184,6 @@ async function bodychat(UserData) {
         while (chatLog.firstChild)
           chatLog.removeChild(chatLog.firstChild);
         }
->>>>>>> walid's-branch
       const token = await getJWT();
       fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
         headers: {
