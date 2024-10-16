@@ -2,6 +2,7 @@ import json
 import asyncio
 import random
 import time
+from copy import deepcopy
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -359,18 +360,9 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        self.room_name = data['name']
-
-        # check if user already in game or tournament
-        in_game = cache.get(self.user.username)
-        if in_game:
-            await self.send(json.dumps({'uaig':'Already in game / tournament.'}))
-            await self.close()
-            return
-
-        await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         if 'create' in data:
+            self.room_name = data['name']
             try:
                 self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
             except IntegrityError:
@@ -381,8 +373,19 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
             self.logic = TournamentLogic(self.room_name, self.instance, self.user)
             await self.logic.add_user_to_group(self)
+            
+            # check if user already in game or tournament
+            in_game = cache.get(self.user.username)
+            if in_game:
+                await self.send(json.dumps({'message':'Already in game / tournament.'}))
+                await self.close()
+                return
+            
+            cache.set(self.user.username, True)
+            self.del_cache = True
 
         elif 'join' in data:
+            self.room_name = data['name']
             try:
                 self.instance = await Tournament.objects.aget(name=self.room_name)
             except ObjectDoesNotExist:
@@ -405,8 +408,20 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
             else:
                 await self.send(text_data=json.dumps(self.logic.get_state()))
 
-        cache.set(self.user.username, True)
-        self.del_cache = True
+            # check if user already in game or tournament
+            in_game = cache.get(self.user.username)
+            if in_game:
+                await self.send(json.dumps({'message':'Already in game / tournament.'}))
+                await self.close()
+                return
+
+            cache.set(self.user.username, True)
+            self.del_cache = True
 
     async def send_tournament_state(self, event):
-        await self.send(text_data=json.dumps(event['state']))
+        data = deepcopy(event['state'])
+        if 'play' in data and data['n']:
+            if not self.user.username in data['next_games'][0]:
+                data.pop('play', None)
+
+        await self.send(text_data=json.dumps(data))

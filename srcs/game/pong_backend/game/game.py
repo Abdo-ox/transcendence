@@ -215,17 +215,13 @@ class TournamentLogic:
         if len(self.players) == 4:
             self.tournament.Ongoing = True
             await self.tournament.asave()
-            # start game logic
+            self.init_games()
         channel_layer = get_channel_layer()
         await consumer.channel_layer.group_add(self.room_name, consumer.channel_name)
         await channel_layer.group_send(self.room_name, {
             'type': 'send.tournament.state',
             'state': self.get_state(),
         })
-
-    # start game logic:
-    # init games
-    # update state
 
     # TODO: update function to be called from game logic instance to update state and send
     # update winner
@@ -239,9 +235,10 @@ class TournamentLogic:
     def get_next_games(self):
         if len(self.players) == 4 and not self.n:
             players = [e.username for e in self.players]
-            next = [players[0:2],[players[2:]]]
+            next = [players[0:2],players[2:]]
+            self.state['play'] = True
         elif self.n == 2:
-            next = [e.username for e in self.winners]
+            next = [[e.username for e in self.winners]]
         else:
             next = self.state.get('next_games', [])
         return next
