@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 
 class FriendList(models.Model):
     user                = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
@@ -38,6 +38,11 @@ class FriendRequest(models.Model):
 
     def __str__(self):
         return self.sender.username
+    
+    def save(self, *args, **kwargs):
+        if self.sender == self.receiver:
+            raise ValidationError("sender could not be the receiver at the same time.")
+        super().save(*args, **kwargs)
 
     def accept(self):
         recieverList, yes = FriendList.objects.get_or_create(user=self.receiver)
