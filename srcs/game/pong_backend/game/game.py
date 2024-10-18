@@ -212,16 +212,16 @@ class TournamentLogic:
         self.set_state()
 
     async def add_user_to_group(self, consumer):
-        if len(self.players) == 4:
-            self.tournament.Ongoing = True
-            await self.tournament.asave()
-            self.init_games()
         channel_layer = get_channel_layer()
         await consumer.channel_layer.group_add(self.room_name, consumer.channel_name)
         await channel_layer.group_send(self.room_name, {
             'type': 'send.tournament.state',
             'state': self.get_state(),
         })
+        if len(self.players) == 4:
+            self.tournament.Ongoing = True
+            await self.tournament.asave()
+            await sync_to_async(self.init_games)()
 
     # TODO: update function to be called from game logic instance to update state and send
     # update winner
@@ -235,13 +235,12 @@ class TournamentLogic:
     def get_next_games(self):
         if len(self.players) == 4 and not self.n:
             players = [e.username for e in self.players]
-            next = [players[0:2],players[2:]]
+            self.state['next_games'] = [players[0:2],players[2:]]
             self.state['play'] = True
         elif self.n == 2:
-            next = [[e.username for e in self.winners]]
+            self.state['next_games'] = [[e.username for e in self.winners]]
         else:
-            next = self.state.get('next_games', [])
-        return next
+            self.state['next_games'] = self.state.get('next_games', [])
 
 
     def set_state(self):
@@ -249,8 +248,8 @@ class TournamentLogic:
             'players': [e.username for e in self.players],
             'winners': [e.username for e in self.winners],
             'n': self.n,
-            'next_games': self.get_next_games(),
         }
+        self.get_next_games(),
 
     def get_state(self):
         self.set_state()
@@ -258,13 +257,13 @@ class TournamentLogic:
 
     def init_games(self):
         if not self.n:
-            MultiGame.objects.create(room_name = self.generate_names(self.state['players'][0:2]))
-            MultiGame.players.add(self.players[0:2])
-            MultiGame.objects.create(room_name = self.generate_names(self.state['players'][2:]))
-            MultiGame.players.add(self.players[2:])            
+            game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][0:2]), player1=self.players[0], player2=self.players[1])
+            game.players.add(*self.players[0:2])
+            game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
+            game.players.add(*self.players[2:])            
         elif self.n == 2:
-            MultiGame.objects.create(room_name = self.generate_names(self.state['winners']))
-            MultiGame.players.add(self.winners)
+            game = MultiGame.objects.create(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
+            game.players.add(*self.winners)
 
     def generate_names(self, players):
         return f'{players[0]}-{players[1]}-{self.room_name}'
