@@ -13,10 +13,10 @@ export const Multi = async () => {
         player1.innerHTML = data.username;
         player1_img.src = data.profile_image;
     });
-    let myModal = undefined;
+    let multiModal = undefined;
     // add event listner for chnaging the page to a new page
     document.getElementById("play-btn").addEventListener('click', () => {
-        myModal.hide();
+        multiModal.hide();
         NewPage("/multi", Multi);
     });
 
@@ -61,7 +61,7 @@ export const Multi = async () => {
             op_img.src = gameState.img;
         } else if (gameState.uaig) {
             uaig = true;
-                const msg = document.getElementById("myModalLabel");
+                const msg = document.getElementById("multiModalLabel");
                 msg.innerHTML = "Already in game!";
                 showModal();
         } else {
@@ -125,8 +125,8 @@ export const Multi = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        myModal.show();
+        multiModal = new bootstrap.Modal(document.getElementById('multiModal'));
+        multiModal.show();
     }
 
     function draw() {
@@ -155,7 +155,7 @@ export const Multi = async () => {
         if (gameState.over) {
             console.log('here')
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
-            const msg = document.getElementById("myModalLabel");
+            const msg = document.getElementById("multiModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
             showModal();
         } else if (!gameState.started) {

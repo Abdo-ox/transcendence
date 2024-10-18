@@ -13,10 +13,10 @@ export const Game = async () => {
         player1_img.src = data.profile_image;
     });
 
-    let myModal = undefined;
+    let gameModal = undefined;
     // add event listner for chnaging the page to a new page
     document.getElementById("play-btn").addEventListener('click', () => {
-        myModal.hide();
+        gameModal.hide();
         NewPage("/game", Game);
     });
 
@@ -60,7 +60,7 @@ export const Game = async () => {
         gameState = JSON.parse(event.data);
         if (gameState.uaig) {
             uaig = true;
-            const msg = document.getElementById("myModalLabel");
+            const msg = document.getElementById("gameModalLabel");
             msg.innerHTML = "Already in game!";
             showModal();
         } else {
@@ -95,8 +95,8 @@ export const Game = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        myModal.show();
+        gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
+        gameModal.show();
     }
 
     function draw() {
@@ -119,7 +119,7 @@ export const Game = async () => {
 
         if (gameState.over) {
             ctx.fillText(gameState.paddle1.score >= gameState.paddle2.score ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
-            const msg = document.getElementById("myModalLabel");
+            const msg = document.getElementById("gameModalLabel");
             msg.innerHTML = gameState.paddle1.score >= gameState.paddle2.score ? "Winner!" : "Loser!";
             showModal();
         } else if (!gameStarted) {
