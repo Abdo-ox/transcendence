@@ -70,6 +70,7 @@ export async function Home() {
         console.log("second place", scores[1]);
         console.log("3 place", scores[2]);
     }
+   
     /*****js of card tournaments***** */
     const stack = document.querySelector(".homeCard-stack");
     const cards = Array.from(stack.children)
@@ -175,13 +176,13 @@ export async function Home() {
     });
 
 
-    let test = await tours.json();
-    console.log('here', test);
-    document.getElementById("tournament-title").innerText = test[0].name;
-    document.getElementById("join").addEventListener('click', () => {
-        localStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-        NewPage("/remotetournament", RemoteTournament);
-    });
+    // let test = await tours.json();
+    // console.log('here', test);
+    // document.getElementById("tournament-title").innerText = test[0].name;
+    // document.getElementById("join").addEventListener('click', () => {
+    //     localStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+    //     NewPage("/remotetournament", RemoteTournament);
+    // });
 
     // tournament cards end
 
