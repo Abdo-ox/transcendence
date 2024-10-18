@@ -15,6 +15,7 @@ from django.utils.crypto import get_random_string
 import os
 from pathlib import Path
 from project.decorators import TwoFctor_Decorator
+from django.db import IntegrityError
 
 from friendship.models import FriendList
 from user.models import User
@@ -42,12 +43,15 @@ def Register(request):
         return JsonResponse({'error' : 'Invalid JSON format'}, status=400)
     form = RegisterationForm(data)
     if form.is_valid():
-        User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
-                'email':form.cleaned_data['email'],
-                'first_name':form.cleaned_data['first_name'],
-                'last_name':form.cleaned_data['last_name'],
-            })
-        return JsonResponse({"state": "registered"})
+        try:
+            User.objects.create_user(form.cleaned_data['username'], False, form.cleaned_data['password1'],**{
+                    'email':form.cleaned_data['email'],
+                    'first_name':form.cleaned_data['first_name'],
+                    'last_name':form.cleaned_data['last_name'],
+                })
+            return JsonResponse({"state": "registered"})
+        except (IntegrityError) as e:
+            return JsonResponse({'errors': [str(e)]})
     errors = json.loads(form.errors.as_json())
     all_errors = []
     for fieldErrors in errors.values():
