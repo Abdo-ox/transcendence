@@ -421,7 +421,8 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
     async def send_tournament_state(self, event):
         data = deepcopy(event['state'])
         if 'play' in data and data['n']:
-            if not self.user.username in data['next_games'][0]:
+            if self.user.username not in sum(data['next_games'],[]):
                 data.pop('play', None)
+            print(data, flush=True)
 
         await self.send(text_data=json.dumps(data))
