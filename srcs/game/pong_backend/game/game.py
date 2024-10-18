@@ -71,7 +71,7 @@ class GameLogic:
 
     async def game_loop(self):
         channel_layer = get_channel_layer()
-        fps = 60
+        fps = 40
         
         # send game state to set off timer
         await channel_layer.group_send(self.room_name, {
