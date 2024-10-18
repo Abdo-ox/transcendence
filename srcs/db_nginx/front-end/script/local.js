@@ -2,9 +2,9 @@ import { NewPage, getJWT } from "/utils.js";
 
 export const Local = async () => {
     let token = await getJWT();
-    let myModal = undefined;
+    let localModal = undefined;
     document.getElementById("play-btn").addEventListener('click', () => {
-        myModal.hide();
+        localModal.hide();
         NewPage("/local", Local);
     });
 
@@ -19,8 +19,8 @@ export const Local = async () => {
 
     // Function to trigger modal programmatically
     function showModal() {
-        myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        myModal.show();
+        localModal = new bootstrap.Modal(document.getElementById('localModal'));
+        localModal.show();
     }
 
     class Game {
@@ -111,7 +111,7 @@ export const Local = async () => {
 
             if (this.over) {
                 this.ctx.fillText(this.player1.score > this.player2.score ? "Player 1 Won!" : "Player 2 Won!", canvas.width / 2, canvas.height / 2);
-                const msg = document.getElementById("myModalLabel");
+                const msg = document.getElementById("localModalLabel");
                 msg.innerHTML = this.player1.score > this.player2.score ? "Player 1 Won!" : "Player 2 Won!";
                 showModal();
             } else if (!this.started) {

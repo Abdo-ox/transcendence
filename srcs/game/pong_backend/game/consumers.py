@@ -72,8 +72,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
-                'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vx': 0.008 * height,
+                'vy': 0.008 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -86,7 +86,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'y': (height / 2) - (0.125 * height),  
                 'score': 0,
             },
-            'v': 0.015 * height,
+            'v': 0.008 * height,
             'len': 0.25 * height,
             'maxScore': 7,
             'over': False,
@@ -211,6 +211,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         paddle2 = self.game_state['paddle2']
         if paddle1['score'] >= self.game_state['maxScore'] or paddle2['score'] >= self.game_state['maxScore']:
             self.game_state['over'] = True
+            self.game_active = False
 
     def update_game_state(self):
         self.update_ball()
@@ -423,6 +424,5 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         if 'play' in data and data['n']:
             if self.user.username not in sum(data['next_games'],[]):
                 data.pop('play', None)
-            print(data, flush=True)
 
         await self.send(text_data=json.dumps(data))

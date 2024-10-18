@@ -6,7 +6,7 @@ export const RemoteTournament = async () => {
 
     let tournament_name = localStorage.getItem('tournament_name');
     let tournamentState = undefined;
-    let tournamentModal = undefined;
+    let remotetournamentModal = undefined;
 
     // connect to socket
     const socket = new WebSocket(`wss://localhost:9090/ws/tournament/?token=${token}`);
@@ -21,7 +21,7 @@ export const RemoteTournament = async () => {
         } else if (tournamentState.players)
             displayTournamentBracket();
         else if (tournamentState.message) {
-            document.getElementById('tournamentModalLabel').innerText = tournamentState.message;
+            document.getElementById('remotetournamentModalLabel').innerText = tournamentState.message;
             showModal();
         }
     }
@@ -68,12 +68,12 @@ export const RemoteTournament = async () => {
     };
 
     function showModal() {
-        tournamentModal = new bootstrap.Modal(document.getElementById('tournamentModal'));
-        tournamentModal.show();
+        remotetournamentModal = new bootstrap.Modal(document.getElementById('remotetournamentModal'));
+        remotetournamentModal.show();
     };
 
     document.getElementById("okay-btn").addEventListener('click', () => {
-        tournamentModal.hide();
+        remotetournamentModal.hide();
         NewPage("/home", Home);
     });
 

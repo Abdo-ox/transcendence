@@ -18,8 +18,8 @@
             <div class="profile-profile-items">
                 <div class="profile-half">
                     <div class="profile-coalition-box">
-                        <img class="profile-background" src="/images/coalition/yyy.png" alt="">
-                        <img class="profile-coalition" src="/images/coalition/comodor.png" alt="">
+                        <!-- <img class="profile-background" src="/images/coalition/sheild.png" alt=""> -->
+                        <img class="profile-coalition" src="/images/whitwill/coalition5.png" alt="">
                     </div>
                     <div class="profile-clip">
                         <div class="profile-flip">
@@ -40,11 +40,11 @@
                     </div>
                     <div class="profile-level-bx">
                         <div class="profile-level-name">
-                            <h4>level <span>5</span></h4>
-                            <h4><span>30</span> Points</h4>
+                            <h4>level <span id="current-level">5</span></h4>
+                            <h4><span id="current-points">30</span> Points</h4>
                         </div>
                         <div class="profile-level-line">
-                            <div class="profile-level-progress"></div>
+                            <div  id="profile-level-progress" class="profile-level-progress"></div>
                         </div>
                     </div>
                 </div>
@@ -54,14 +54,13 @@
                         <div class="profile-skill">
                             <div class="profile-outer">
                                 <div class="profile-inner">
-                                    <div id="profile-number">
-                                        65%
+                                    <div id="profile-number">0%
                                     </div>
                                 </div>
                             </div>
                             <svg class="profile-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
                                 <defs>
-                                    <linearGradient id="profile-MorningDewGradient">
+                                    <linearGradient id="MorningDewGradient">
                                         <stop offset="0%" stop-color="#a8c0ff" />
                                         <stop offset="100%" stop-color="#3f2b96" />
                                     </linearGradient>
@@ -77,13 +76,13 @@
                             <div class="profile-outer">
                                 <div class="profile-inner">
                                     <div id="profile-lose">
-                                        95%
+                                        0%
                                     </div>
                                 </div>
                             </div>
                             <svg class="profile-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
                                 <defs>
-                                    <linearGradient id="profile-OceanBlueGradient">
+                                    <linearGradient id="OceanBlueGradient">
                                         <stop offset="0%" stop-color="#00c6ff" />
                                         <stop offset="100%" stop-color="#0072ff" />
                                     </linearGradient>
@@ -110,14 +109,16 @@
                     <div class="profile-acheiv-Box">
                         <div class="profile-cover">
                             <img src="/images/acheivements/firstServe.png" alt="">
-                            <div class="profile-cardbox">
+                            <div class="item_bar cell"><div class="progress" data-progress="80"></div></div>
+
+                           <!--  <div class="profile-cardbox">
                                 <div id="profile-locked1">
                                     <i class="fas fa-lock"></i>
                                 </div>
                                 <h4>First Serve</h4>
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="profile-cover">
+                        <!-- <div class="profile-cover">
                             <img src="/images/acheivements/firstServe.png" alt="">
                             <div class="profile-cardbox">
                                 <div id="profile-locked1">
@@ -143,7 +144,7 @@
                                 </div>
                                 <h4>Rookie Score</h4>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="profile-history">

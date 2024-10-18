@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .scroll-container {
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      background-color: #f0f0f0;
+    }
+
+    .scroll-container:hover {
+      overflow: auto; /* Show scroll on hover */
+    }
+
+    /* Style the scrollbar for WebKit browsers */
+    .scroll-container::-webkit-scrollbar {
+      width: 10px;
+      background: transparent;
+    }
+
+    .scroll-container:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.4); /* Dark thumb on hover */
+      border-radius: 5px;
+    }
+
+    /* For Firefox */
+    .scroll-container {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
+    }
+
+    .content {
+      padding: 10px;
+      height: 400px; /* To make the content overflow */
+    }
+  </style>
+</head>
+<body>
+
+<div class="scroll-container">
+  <div class="content">
+    <p>This is some content that overflows.</p>
+    <p>Scrollbars will only appear when you hover over the container.</p>
+    <p>Try moving your mouse over the container to see the effect.</p>
+    <p>More content to ensure it overflows...</p>
+    <p>More content to ensure it overflows...</p>
+    <p>More content to ensure it overflows...</p>
+  </div>
+</div>
+
+</body>
+</html>

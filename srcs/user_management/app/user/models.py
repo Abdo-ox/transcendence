@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
         if not data or 'email' not in data:
             raise ValueError('User must have email address')
         number, yes = AddCoalition.objects.get_or_create(id=1)
-        print(c.r, "number", number.add, flush=True)
+        print(c.r, "number", Coalition.objects.get(id=number.add).name, flush=True)
         user = self.model(
             email = self.normalize_email(data['email']),
             username = username,

@@ -6,7 +6,7 @@ export const Tournament = async () => {
     let nicknames = JSON.parse(localStorage.getItem('nicknames')) || [];
     let nicknameIndex = 1;
     let tournamentModal = undefined;
-    let myModal = undefined;
+    let tournamentgameModal = undefined;
     let winners = JSON.parse(localStorage.getItem('winners')) || [];
 
     if (nicknames.length > 0) {
@@ -130,7 +130,7 @@ export const Tournament = async () => {
         document.getElementById('game-player2').textContent = player2;
 
         document.getElementById("okay-btn").addEventListener('click', () => {
-            myModal.hide();
+            tournamentgameModal.hide();
             NewPage("/tournament", Tournament);
         });
 
@@ -144,8 +144,8 @@ export const Tournament = async () => {
     
         // Function to trigger modal programmatically
         function showModal() {
-            myModal = new bootstrap.Modal(document.getElementById('myModal'));
-            myModal.show();
+            tournamentgameModal = new bootstrap.Modal(document.getElementById('tournamentgameModal'));
+            tournamentgameModal.show();
         }
     
         class Game {
@@ -156,6 +156,7 @@ export const Tournament = async () => {
                 this.v = 0.015 * canvas.height;
                 this.len = 0.25 * canvas.height; // paddles len
                 this.r = 0.015 * canvas.height; // radius of ball and width of paddles
+                this.max = 7; // max score
                 this.ball = {
                     x: canvas.width / 4,
                     y: canvas.height / 3,
@@ -215,7 +216,7 @@ export const Tournament = async () => {
                     this.ball.x_d *= -1;
                 this.ball.x += this.v * this.ball.x_d;
                 this.ball.y += this.v * this.ball.y_d;
-                if (this.player1.score == 3 || this.player2.score == 3)
+                if (this.player1.score == this.max || this.player2.score == this.max)
                     this.over = 1;
             }
     
@@ -238,7 +239,7 @@ export const Tournament = async () => {
                     this.ctx.fillText(this.player1.score > this.player2.score ? `${player1} Won!` : `${player2} Won!`, canvas.width / 2, canvas.height / 2);
                     winners.push(this.player1.score > this.player2.score ? player1 : player2)
                     localStorage.setItem('winners', JSON.stringify(winners));
-                    const msg = document.getElementById("myModalLabel");
+                    const msg = document.getElementById("tournamentgameModalLabel");
                     msg.innerHTML = this.player1.score > this.player2.score ? `${player1} Won!` : `${player2} Won!`;
                     n += 1;
                     localStorage.setItem('n', JSON.stringify(n));
