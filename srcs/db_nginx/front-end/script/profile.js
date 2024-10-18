@@ -53,31 +53,36 @@ export async function Profile() {
     styleElement2.innerHTML = `@keyframes animLose { 100% { stroke-dashoffset: ${strokeDashoffset2}; }}`;
     document.head.appendChild(styleElement2);
     document.getElementById('profile-LossRate').style.animation = 'animLose 2s linear forwards';
-    // Define level thresholds
+
     const Levels = [
-        { level: 0, max: 7 },
-        { level: 1, max: 21 },
-        { level: 2, max: 42 },
-        { level: 3, max: 63 },
-        { level: 4, max: 90 },
-        { level: 5, max: 110 }
+        { level: 0, min: 0, max: 7 },
+        { level: 1, min: 8, max: 21 },
+        { level: 2, min: 22, max: 42 },
+        { level: 3, min: 43, max: 63 }, 
+        { level: 4, min: 64, max: 90 },
+        { level: 5, min: 91, max: 110 },
+        { level: 6, min: 111, max: 130 },
+        { level: 7, min: 131, max: 150 },
     ];
-
-    function updateProgress(currentLevel, currentPoints) {
-        const maxPoints = Levels[currentLevel].max;
-        if (currentLevel > 0) {
-            previousMaxPoints = Levels[currentLevel - 1].max;
-        } else {
-            previousMaxPoints = 0;
+    
+    function updateProgress(currentPoints) {
+        let currentLevel = 0;
+        
+        for (let i = 0; i < Levels.length; i++) {
+            if (currentPoints >= Levels[i].min && currentPoints <= Levels[i].max) {
+                currentLevel = Levels[i].level;
+                break;
+            }
         }
-        const totalPoints = maxPoints - previousMaxPoints;
-        const percentage = ((currentPoints - previousMaxPoints) / totalPoints) * 100;
+    
+        let percentage = (currentPoints / 150) * 100; 
         const progressBar = document.getElementById('profile-level-progress');
+        
         progressBar.style.width = percentage + '%';
-        // document.getElementById('current-points').innerText = currentPoints;
-        // document.getElementById('current-level').innerText = currentLevel;
+    
+        console.log(`Current Level: ${currentLevel}`);
+        document.getElementById("current-level").innerHTML = currentLevel;
     }
-    updateProgress(2, 30);
-
-
+    updateProgress(25);
+    
 }
