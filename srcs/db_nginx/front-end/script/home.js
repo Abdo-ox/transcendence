@@ -157,7 +157,7 @@ export async function Home() {
     });
 
     document.getElementById("home-add").addEventListener('click', event => {
-        NewPage("/remotetournament", TournamentFr);
+        NewPage("/remotetournament", RemoteTournament);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
