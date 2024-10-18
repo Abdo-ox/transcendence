@@ -96,51 +96,59 @@ async function bodychat(UserData) {
 
   /// handel play event
   function GamePlay() {
-    const gamePlay = document.getElementById('game-play');
+    const profile_container = document.getElementById('profile-container');
+    const contact_profile = profile_container.querySelector('.contact-profile');
+    const nameElement = contact_profile.querySelector('p');
+    let gamePlay = document.getElementById('game-play');
+
+    // Remove existing event listener if it exists
+    let clonedGamePlay = gamePlay.cloneNode(true);
+    gamePlay.parentNode.replaceChild(clonedGamePlay, gamePlay);
+    gamePlay = clonedGamePlay; // reassign the element after cloning
+
     gamePlay.addEventListener('click', event => {
-      const profile_container = document.getElementById('profile-container');
-      const contact_profile = profile_container.querySelector('.contact-profile');
-      const nameElement = contact_profile.querySelector('p');
-      console.log(`game play nameElement is ${nameElement}`)
-      if (nameElement != "")
-        console.log(`play event happened and nameEl is ${nameElement.textContent}`)
-      if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
-        // GamePlaySocket.onopen = () => {
-        console.log('WebSocket connection opened');
-        GamePlaySocket.send(JSON.stringify({
-          'from': username,
-          'to': nameElement.textContent,
-          'message': ` invites u to play.`,
-          'flag': 'GameR',
-          'img': UserData.profile_image,
-          'playwith': 'null',
-          'block': 'false'
-        }));
-        // };
-      }
-      if (gamePlay.textContent === "cancel"){
-          if (GamePlaySocket.readyState === WebSocket.OPEN) {
-            console.log('WebSocket connection opened');
-          GamePlaySocket.send(JSON.stringify({
-            'from': username,
-            'to': nameElement.textContent,
-            'message': `${username} cancel play request.`,
-            'flag': 'GameR',
-            'img': UserData.profile_image,
-            'playwith': 'null',
-            'block': 'false'
-          }));
+        console.log(`game play nameElement is ${nameElement.textContent}`)
+        if (nameElement != "")
+            console.log(`play event happened and nameEl is ${gamePlay.textContent}`)
+        if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
+            GamePlaySocket.send(JSON.stringify({
+                'from': username,
+                'to': nameElement.textContent,
+                'message': ` invites u to play.`,
+                'flag': 'GameR',
+                'img': UserData.profile_image,
+                'playwith': 'null',
+                'block': 'false'
+            }));
         }
-        gamePlay.textContent = "play"
-      }
-      else
-      gamePlay.textContent = "cancel"
+        if (gamePlay.textContent === "cancel") {
+            console.log(`i am inside the condition if (gamePlay.textContent === "cancel")`)
+            if (GamePlaySocket.readyState === WebSocket.OPEN) {
+                console.log('WebSocket connection opened');
+                console.log(`inside cancel and from username is ${username}`)
+                GamePlaySocket.send(JSON.stringify({
+                    'from': username,
+                    'to': nameElement.textContent,
+                    'message': `${username} cancel play request.`,
+                    'flag': 'GameR',
+                    'img': UserData.profile_image,
+                    'playwith': 'null',
+                    'block': 'false'
+                }));
+            }
+            gamePlay.textContent = "play";
+        } else {
+            gamePlay.textContent = "cancel";
+        }
     });
-  }
+}
 
   // Function to create or toggle the menu panel
 
   function createmenuPanel(username) {
+    let profile_container = document.getElementById('profile-container');
+    const contact_profile = profile_container.querySelector('.contact-profile');
+    const nameElement = contact_profile.querySelector('p');
     let menu = document.getElementById('menu');
     const joingame = document.createElement('button');
     const BlockUser = document.createElement('button');
@@ -157,7 +165,6 @@ async function bodychat(UserData) {
       menu.id = 'menu'
       menu.appendChild(joingame)
       menu.appendChild(BlockUser)
-      let profile_container = document.getElementById('profile-container')
       profile_container.insertBefore(menu, profile_container.firstChild);
     }
     menu.classList.toggle('active');
