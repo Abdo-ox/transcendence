@@ -46,7 +46,8 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
                 'message': `${action[0]} friend request.`,
                 'flag': 'FriendR',
                 'img': currentUser.profile_image,
-                'playwith': 'null'
+                'playwith': 'null',
+                'block': 'false'
             }));
         }
         button.style.display = 'none';

@@ -8,20 +8,28 @@ from .views import get_messages, get_user_contact, get_current_ChatID, get_parti
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
         # print(f"too is ::: {data['to']}")
-        print('----------------------------', flush=True)
-        print(data, flush=True)
-        if data['playwith'] == 'null':
+        # print('----------------------------', flush=True)
+        # print(data, flush=True)
+        if data['block'] == 'false' and data['playwith'] == 'null':
             content = {
                 'message': data['message'],
                 'to': data['to'],
                 'flag': data['flag'],
                 'img': data['img'],
-                'from': data['from']
+                'from': data['from'],
+                'block': 'false'
             }
-        else:
+        elif data['block'] == 'false' and data['playwith'] != 'null':
             content = {
                 'playwith': data['playwith'],
-                'room_name': data['room_name']
+                'room_name': data['room_name'],
+                'block': 'false'
+            }
+        elif data['block'] == 'True':
+            content = {
+                'from': data['from'],
+                'block': 'True',
+                'block_target': data['block_target'],
             }
         return self.send_chat_message(content)
     def connect(self):

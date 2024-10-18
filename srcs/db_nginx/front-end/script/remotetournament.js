@@ -15,7 +15,10 @@ export const RemoteTournament = async () => {
     socket.onmessage = function (event) {
         tournamentState = JSON.parse(event.data);
         console.log(tournamentState);
-        if (tournamentState.players)
+        if (tournamentState.duplicate) {
+            const err = document.getElementById('tournament-name-error').textContent = "This name has already been used.";
+            err.style.display = '';
+        } else if (tournamentState.players)
             displayTournamentBracket();
         else if (tournamentState.message) {
             document.getElementById('tournamentModalLabel').innerText = tournamentState.message;
@@ -90,6 +93,9 @@ export const RemoteTournament = async () => {
             box.textContent = element;
             i += 1;
         });
+
+        if (tournamentState.play)
+            document.getElementById('play').style.display = '';
 
         document.getElementById('tournament-name-input').style.display = 'none';
         bracket.style.display = 'flex';

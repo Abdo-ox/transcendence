@@ -60,6 +60,7 @@ services:
       - net
     volumes:
       - ./srcs/is_ready:/is_ready
+      - ./srcs/game/pong_backend:/game
 
 networks:
   net:
