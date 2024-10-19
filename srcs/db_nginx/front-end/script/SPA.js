@@ -18,66 +18,79 @@ import { ConfirmationMail } from "/confirmationMail.js"
 import { TournamentFr } from "./fr-tournament.js"
 import { NotFound } from "./notfound.js"
 
+const func = {
+    "/home": Home,
+    "/chat": Chat,
+    "/settings":  Settings,
+    "/profile":  Profile,
+    
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("SPA page called");
     const pathname = window.location.pathname;
-    console.log("pathname:", pathname);
+    window.addEventListener('popstate', (event) => {
+        event.preventDefault();
+        const name = window.location.pathname;
+        console.log(`name:${name} func:${func[name]}`);
+        NewPage(name, func[name], false);
+    });
     switch (pathname) {
         case "/":
-            NewPage("/landingpage", Home);
+            NewPage("/landingpage", Landing, false);
             break;
         case "/home":
-            NewPage("/home", Home);
+            NewPage("/home", Home, false);
             break;
         case "/landingpage":
-            NewPage("/landingpage", Landing);
+            NewPage("/landingpage", Landing, false);
             break;
         case "/login":
-            NewPage("/login", Login);
+            NewPage("/login", Login, false);
             break;
         case "/register":
-            NewPage("/register", Register);
+            NewPage("/register", Register, false);
             break;
         case "/settings":
-            NewPage("/settings", Settings);
+            NewPage("/settings", Settings, false);
             break;
         case "/resetpassword":
-            NewPage("/resetpassword", ResetPassword);
+            NewPage("/resetpassword", ResetPassword, false);
             break;
         case "/reset":
-            NewPage("/reset", Reset);
+            NewPage("/reset", Reset, false);
             break;
         case "/profile":
-            NewPage("/profile", Profile);
+            NewPage("/profile", Profile, false);
             break;
         case "/chat":
-            NewPage("/chat", Chat);
+            NewPage("/chat", Chat, false);
             break;
         case "/2faa":
-            NewPage("/2faa", Twofactor);
+            NewPage("/2faa", Twofactor, false);
             break;
         case "/game":
-            NewPage("/game", Game);
+            NewPage("/game", Game, false);
             break;
         case "/local":
-            NewPage("/local", Local);
+            NewPage("/local", Local, false);
             break;
         case "/multi":
-            NewPage("/multi", Multi);
+            NewPage("/multi", Multi, false);
             break;
         case "/tournament":
-            NewPage("/tournament", Tournament);
+            NewPage("/tournament", Tournament, false);
             break;
         case "/remotetournament":
-                NewPage("/remotetournament", RemoteTournament);
-                break;
+            NewPage("/remotetournament", RemoteTournament, false);
+            break;
         case "/confirmationMail":
-            NewPage("/confirmationMail", ConfirmationMail);
+            NewPage("/confirmationMail", ConfirmationMail, false);
             break;
         case "/fr-tournament":
-            NewPage("/fr-tournament", TournamentFr);
+            NewPage("/fr-tournament", TournamentFr, false);
             break;
         default:
-            NewPage("/notfound", NotFound);
+            NewPage("/notfound", NotFound, false);
     }
 });

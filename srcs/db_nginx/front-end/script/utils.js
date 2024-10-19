@@ -8,10 +8,6 @@ import { Profile } from "/profile.js";
 
 export let webSockets = [];
 
-export const routing = (event) => {
-    // NewPage(window.location.pathname, true, false);
-}
-
 export const getCsrfToken = async () => {
     return await fetch("https://localhost:8000/api/csrf_token/")
         .then(response => response.json())
@@ -74,6 +70,7 @@ const is_valid = async (access, refresh) => {
         });
         if (response.status != 200)
             return clear_localStorage();
+        document.body.style.visibility = 'visible';
         return access;
     }
     const response1 = await fetch("https://localhost:8000/api/token/refresh/", {
@@ -92,6 +89,7 @@ const is_valid = async (access, refresh) => {
     if (response2.status != 200)
         return clear_localStorage();
     localStorage.setItem('access_token', data.access);
+    document.body.style.visibility = 'visible';
     return data.access;
 }
 
@@ -133,13 +131,10 @@ export const NewPage = async (url, func, addhistory = true) => {
         if (document.querySelector('header'))
             makePageActive(url.substring(1));
         func();
-        window.removeEventListener('popstate', routing);
-        window.addEventListener('popstate', routing);
         if (addhistory)
             history.pushState({}, '', url);
-    } else {
+    } else
         console.log("error in fetch the new page '", url, "'.");
-    }
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {
@@ -224,15 +219,15 @@ export const makePageActive = (page) => {
     }
 }
 
-export const acceptFriendRequest = (button) => {
-    button.addEventListener('click', async () => {
-        const resp = await fetch("https://localhost:8000/friend/accept/", { headers: {
-            'Authorization': `Bearer ${access_token}`,
-        }}).then(response => ({'data': response.json(), 'status': response.status }));
-        if (resp.status == 200)
-            console.log("friend request accepted")
-        else {
-            console.log("error", resp.data.error);
-        }
-    });
+export const is_authenticated = async () => {
+    const access = localStorage.getItem('access_token');
+    const refresh = localStorage.getItem('refresh_token');
+    console.log("check_is_authenticated: access=", access);
+    console.log("check_is_authenticated: refresh=", refresh);
+    if (access != 'undefined' && access != null && refresh != null && refresh != 'undefined') {
+        NewPage("/home", Home);
+        return 1;
+    } 
+    document.body.style.visibility = 'visible';
+    return (0);
 }
