@@ -3,8 +3,7 @@ import { Home } from "./home.js";
 
 export const RemoteTournament = async () => {
     let token = await getJWT();
-// update to session storage
-    let tournament_name = localStorage.getItem('tournament_name');
+    let tournament_name = sessionStorage.getItem('tournament_name');
     let tournamentState = undefined;
     let remotetournamentModal = undefined;
     let in_game = false
@@ -45,7 +44,6 @@ export const RemoteTournament = async () => {
 
     socket.onopen = function (event) {
         // update to session storage
-        // if create, i.e. no roomname in localstorage, send create request to socket
         if (!tournament_name) {
             // give user input field to name tournament
             document.getElementById('tournament-name-input').style.display = '';
@@ -80,8 +78,6 @@ export const RemoteTournament = async () => {
                 'join':true,
                 'name':tournament_name,
             }));
-            // update to session storage
-            localStorage.removeItem('tournament_name');
         }
     };
 

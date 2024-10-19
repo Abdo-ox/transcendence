@@ -158,6 +158,7 @@ export async function Home() {
     });
 
     document.getElementById("home-add").addEventListener('click', event => {
+        sessionStorage.removeItem('tournament_name');
         NewPage("/remotetournament", RemoteTournament);
     });
 
@@ -179,8 +180,7 @@ export async function Home() {
     let test = await tours.json();
     document.getElementById("tournament-title").innerText = test[0].name;
     document.getElementById("join").addEventListener('click', () => {
-        // update to session storage
-        localStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
         NewPage("/remotetournament", RemoteTournament);
     });
 
