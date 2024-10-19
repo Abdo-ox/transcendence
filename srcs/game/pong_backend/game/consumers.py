@@ -349,15 +349,12 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         self.room_name = None
         self.instance = None
         self.logic = None
-        self.del_cache = False
         await self.accept()
 
 
     async def disconnect(self, close_code):
         if self.room_name:
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
-        if self.del_cache:
-            cache.delete(self.user.username)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -374,19 +371,10 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
             self.logic = TournamentLogic(self.room_name, self.instance, self.user)
             await self.logic.add_user_to_group(self)
-            
-            # check if user already in game or tournament
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'message':'Already in game / tournament.'}))
-                await self.close()
-                return
-            
-            cache.set(self.user.username, True)
-            self.del_cache = True
 
         elif 'join' in data:
             self.room_name = data['name']
+
             try:
                 self.instance = await Tournament.objects.aget(name=self.room_name)
             except ObjectDoesNotExist:
@@ -409,15 +397,8 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
             else:
                 await self.send(text_data=json.dumps(self.logic.get_state()))
 
-            # check if user already in game or tournament
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'message':'Already in game / tournament.'}))
-                await self.close()
-                return
-
-            cache.set(self.user.username, True)
-            self.del_cache = True
+        elif 'play' in data:
+            await self.logic.join_game(self.user, self)
 
     async def send_tournament_state(self, event):
         data = deepcopy(event['state'])
@@ -426,3 +407,9 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 data.pop('play', None)
 
         await self.send(text_data=json.dumps(data))
+
+    async def send_game_state(self, event):
+        await self.send(text_data=json.dumps(event['game_state']))
+        if event['game_state']['over']:
+            pass
+            # update won field
