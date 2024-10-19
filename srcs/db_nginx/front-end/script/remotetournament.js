@@ -24,6 +24,8 @@ export const RemoteTournament = async () => {
             document.getElementById('remotetournamentModalLabel').innerText = tournamentState.message;
             showModal();
         } else {
+            gameState = tournamentState;
+            scaleGameState();
             if (!in_game) {
                 in_game = true;
                 document.getElementById('tournament-bracket').style.display = 'none';
@@ -32,10 +34,8 @@ export const RemoteTournament = async () => {
                 setCanvasSize();
             }
             // else
-            gameState = tournamentState;
-            scaleGameState()
             if (gameState.countdown && gameState.started) {       
-                countdown()
+                countdown();
             }
             else {
                 draw();
@@ -128,7 +128,7 @@ export const RemoteTournament = async () => {
     // add event listner for chnaging the page to a new page
     document.getElementById("game-okay-btn").addEventListener('click', () => {
         remoteGameModal.hide();
-        in_game = true;
+        in_game = false;
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('tournament-bracket').style.display = 'flex';
     });

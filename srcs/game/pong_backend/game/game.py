@@ -437,10 +437,14 @@ class TournamentLogic:
         # check if game instance already exists
         instance = logicInstances.get(game_room, None)
         if instance:
-            pass
+            # call function to send users data
+            await consumer.channel_layer.group_add(game_room, consumer.channel_name)
+            consumer.role = 'paddle1' if user == users[0] else 'paddle2'
+            consumer.gameLogic = instance
         else:
             await consumer.channel_layer.group_add(game_room, consumer.channel_name)
-            TournamentGameLogic(game_room, *users)
+            consumer.role = 'paddle1' if user == users[0] else 'paddle2'
+            consumer.gameLogic = TournamentGameLogic(game_room, *users)
 
 
     def get_next_games(self):

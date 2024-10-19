@@ -349,12 +349,16 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         self.room_name = None
         self.instance = None
         self.logic = None
+        self.gameLogic = None
+        self.role = None
         await self.accept()
 
 
     async def disconnect(self, close_code):
         if self.room_name:
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        if self.gameLogic:
+            gameLogic.disconnected = True
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -400,6 +404,13 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         elif 'play' in data:
             await self.logic.join_game(self.user, self)
 
+        elif 'key' in data:
+            if self.gameLogic:
+                self.handle_key(data['key'])
+
+    def handle_key(self, key):
+        self.gameLogic.keys[self.role][key] = not self.gameLogic.keys[self.role].get(key, False)
+
     async def send_tournament_state(self, event):
         data = deepcopy(event['state'])
         if 'play' in data and data['n']:
@@ -409,7 +420,9 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(data))
 
     async def send_game_state(self, event):
-        if event['game_state']['over'] and event['game_state']['winner'] == self.user.username:
-            event['game_state']['won'] = True
+        if event['game_state']['over']:
+            self.gameLogic = None
+            if event['game_state']['winner'] == self.user.username:
+                event['game_state']['won'] = True
         await self.send(text_data=json.dumps(event['game_state']))
         
