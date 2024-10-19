@@ -13,8 +13,7 @@ export const RemoteTournament = async () => {
     webSockets.push(socket);
 
     socket.onmessage = function (event) {
-        tournamentState = JSON.parse(event.data);
-        if (tournamentState.duplicate) {
+        tournamentState = JSON.parse(event.data);        if (tournamentState.duplicate) {
             sessionStorage.removeItem('tournament_name');
             const err = document.getElementById('tournament-name-error').textContent = "This name has already been used.";
             err.style.display = '';
@@ -23,18 +22,26 @@ export const RemoteTournament = async () => {
         else if (tournamentState.message) {
             document.getElementById('remotetournamentModalLabel').innerText = tournamentState.message;
             showModal();
+        } else if (tournamentState.users_data) {
+            let player = document.getElementById("player1-name");
+            player.innerHTML = tournamentState.user1;
+            let op_img = document.getElementById("player1-img");
+            op_img.src = tournamentState.user1img;
+            player = document.getElementById("player2-name");
+            player.innerHTML = tournamentState.user2;
+            op_img = document.getElementById("player2-img");
+            op_img.src = tournamentState.user2img;
         } else {
             gameState = tournamentState;
-            scaleGameState();
             if (!in_game) {
                 in_game = true;
                 document.getElementById('tournament-bracket').style.display = 'none';
-                // add user data here
                 document.getElementById('game-container').style.display = 'flex';
                 setCanvasSize();
             }
             // else
-            if (gameState.countdown && gameState.started) {       
+            scaleGameState();
+            if (gameState.countdown) {       
                 countdown();
             }
             else {
@@ -167,14 +174,14 @@ export const RemoteTournament = async () => {
     }
 
     document.addEventListener("keydown", function(event){
-        if (keys[event.key] || !gameState.started)
+        if (keys[event.key] || !gameState.started || !in_game)
             return
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function(event){
-        if (!gameState.started)
+        if (!gameState.started || !in_game)
             return
         keys[event.key] = false
         sendKey(event.key)
@@ -210,8 +217,6 @@ export const RemoteTournament = async () => {
             const msg = document.getElementById("remoteGameModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
             showModal();
-        } else if (!gameState.started) {
-            ctx.fillText("Waiting...", canvas.width / 2, canvas.height / 2);
         } else if (gameState.countdown) {
             ctx.fillText(c, canvas.width / 2, canvas.height / 2);
         }

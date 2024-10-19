@@ -1,6 +1,7 @@
 from channels.layers import get_channel_layer
 import asyncio
 import random
+import json
 import time
 from . models import MultiGame
 from channels.db import database_sync_to_async
@@ -436,14 +437,20 @@ class TournamentLogic:
             users = self.players[2:]
         # check if game instance already exists
         instance = logicInstances.get(game_room, None)
+        consumer.role = 'paddle1' if user == users[0] else 'paddle2'
+        await consumer.send(text_data=json.dumps({
+            'users_data': True,
+            'user1': users[0].username,
+            'user1img': users[0].profile_image,
+            'user2': users[1].username,
+            'user2img': users[1].profile_image,
+        }))
         if instance:
             # call function to send users data
             await consumer.channel_layer.group_add(game_room, consumer.channel_name)
-            consumer.role = 'paddle1' if user == users[0] else 'paddle2'
             consumer.gameLogic = instance
         else:
             await consumer.channel_layer.group_add(game_room, consumer.channel_name)
-            consumer.role = 'paddle1' if user == users[0] else 'paddle2'
             consumer.gameLogic = TournamentGameLogic(game_room, *users)
 
 

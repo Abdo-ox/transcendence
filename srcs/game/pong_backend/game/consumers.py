@@ -72,8 +72,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
-                'vx': 0.008 * height,
-                'vy': 0.008 * height,
+                'vx': 0.015 * height,
+                'vy': 0.015 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -358,7 +358,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         if self.room_name:
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
         if self.gameLogic:
-            gameLogic.disconnected = True
+            self.gameLogic.disconnected = True
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -400,6 +400,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 await self.logic.add_user_to_group(self)
             else:
                 await self.send(text_data=json.dumps(self.logic.get_state()))
+                await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         elif 'play' in data:
             await self.logic.join_game(self.user, self)
