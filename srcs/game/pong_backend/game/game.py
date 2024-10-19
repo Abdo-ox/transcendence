@@ -275,12 +275,19 @@ class TournamentGameLogic:
             await asyncio.sleep(1 / fps)
             
         await self.save_game_results()
-        
+
+    def get_winner(self):
+        if self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']:
+            self.game_state['winner'] = self.user1.username
+        else:
+            self.game_state['winner'] = self.user2.username
+
     # set time out for user after disconnection
     def time_out(self):
         if self.disconnected:
             self.game_active = False
             self.game_state['over'] = True
+            self.get_winner()
 
     def update_paddle(self, paddle_key):
         if self.keys[paddle_key].get('ArrowUp', False) or self.keys[paddle_key].get('w', False):
@@ -346,6 +353,7 @@ class TournamentGameLogic:
         if paddle1['score'] >= self.game_state['maxScore'] or paddle2['score'] >= self.game_state['maxScore']:
             self.game_state['over'] = True
             self.game_active = False
+            self.get_winner()
             
     async def save_game_results(self):
         # user

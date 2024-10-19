@@ -409,7 +409,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(data))
 
     async def send_game_state(self, event):
+        if event['game_state']['over'] and event['game_state']['winner'] == self.user.username:
+            event['game_state']['won'] = True
         await self.send(text_data=json.dumps(event['game_state']))
-        if event['game_state']['over']:
-            pass
-            # update won field
+        

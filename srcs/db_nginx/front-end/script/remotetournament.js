@@ -15,6 +15,7 @@ export const RemoteTournament = async () => {
     socket.onmessage = function (event) {
         tournamentState = JSON.parse(event.data);
         if (tournamentState.duplicate) {
+            sessionStorage.removeItem('tournament_name');
             const err = document.getElementById('tournament-name-error').textContent = "This name has already been used.";
             err.style.display = '';
         } else if (tournamentState.players)
@@ -43,7 +44,6 @@ export const RemoteTournament = async () => {
     }
 
     socket.onopen = function (event) {
-        // update to session storage
         if (!tournament_name) {
             // give user input field to name tournament
             document.getElementById('tournament-name-input').style.display = '';
@@ -67,6 +67,7 @@ export const RemoteTournament = async () => {
                         'create':true,
                         'name':name,
                     }));
+                    sessionStorage.setItem('tournament_name', tournament_name);
                 }
                 // Show the error message
                 nameError.style.display = 'block';
@@ -137,7 +138,6 @@ export const RemoteTournament = async () => {
 
     let c = 3; // countdown
     let gameState = {};
-    let rev = false; // to reverse gamestate if player 2
 
     function countdown() {
         const interval = setInterval(() => {
@@ -150,17 +150,10 @@ export const RemoteTournament = async () => {
     }
 
     function scaleGameState() {
-        if (!rev) {
-            // scale x
-            gameState.paddle1.x *= canvas.width
-            gameState.paddle2.x *= canvas.width
-            gameState.ball.x    *= canvas.width
-        } else {
-            // scale x
-            gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
-            gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
-        }
+        gameState.paddle1.x *= canvas.width
+        gameState.paddle2.x *= canvas.width
+        gameState.ball.x    *= canvas.width
+
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height
         gameState.paddle2.y = gameState.paddle2.y   * canvas.height
@@ -208,16 +201,11 @@ export const RemoteTournament = async () => {
         let font_weight = Math.round(0.06 * canvas.height)
         ctx.font = font_weight+"px Poppins";
         ctx.textAlign = "center";
-        if (!rev) {
-            ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
-            ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
-        } else {
-            ctx.fillText(gameState.paddle2.score, 0.05 * canvas.width, 0.05 * canvas.width);
-            ctx.fillText(gameState.paddle1.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
-        }
+
+        ctx.fillText(gameState.paddle1.score, 0.05 * canvas.width, 0.05 * canvas.width);
+        ctx.fillText(gameState.paddle2.score, canvas.width - 0.05 * canvas.width, 0.05 * canvas.width);
 
         if (gameState.over) {
-            console.log('here')
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("remoteGameModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
