@@ -202,9 +202,10 @@ class GameLogic:
 logicInstances = {}
 class TournamentGameLogic:
         
-    def __init__(self, room_name, user1, user2):
+    def __init__(self, room_name, user1, user2, update_method):
         logicInstances[room_name] = self
         self.room_name = room_name
+        self.update_method = update_method
         self.game_active = True
         self.game = None
         self.disconnected = False
@@ -267,8 +268,8 @@ class TournamentGameLogic:
         
         self.game_state['countdown'] = False
         while self.game_active:
-            self.update_game_state()
-            self.time_out()
+            await self.update_game_state()
+            await self.time_out()
             await channel_layer.group_send(self.room_name, {
                 'type': 'send.game.state',
                 'game_state': self.game_state
@@ -277,18 +278,21 @@ class TournamentGameLogic:
             
         await self.save_game_results()
 
-    def get_winner(self):
+    async def get_winner(self):
         if self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']:
             self.game_state['winner'] = self.user1.username
+            winner = self.user1
         else:
             self.game_state['winner'] = self.user2.username
+            winner = self.user2
+        await self.update_method(winner)
 
     # set time out for user after disconnection
-    def time_out(self):
+    async def time_out(self):
         if self.disconnected:
             self.game_active = False
             self.game_state['over'] = True
-            self.get_winner()
+            await self.get_winner()
 
     def update_paddle(self, paddle_key):
         if self.keys[paddle_key].get('ArrowUp', False) or self.keys[paddle_key].get('w', False):
@@ -303,13 +307,13 @@ class TournamentGameLogic:
         if 0 <= new_y <= self.game_state['height'] - self.game_state['len']:
             paddle['y'] = new_y
 
-    def update_ball(self):
+    async def update_ball(self):
         ball = self.game_state['ball']
-        self.check_collision()
+        await self.check_collision()
         ball['x'] += ball['vx']
         ball['y'] += ball['vy']
 
-    def check_collision(self):
+    async def check_collision(self):
         ball = self.game_state['ball']
         paddle1 = self.game_state['paddle1']
         paddle2 = self.game_state['paddle2']
@@ -334,7 +338,7 @@ class TournamentGameLogic:
         if (ball['y'] - ball['r'] <= 0 and ball['vy'] < 0) or (ball['y'] + ball['r'] >= height and ball['vy'] > 0):
             ball['vy'] *= -1
 
-        self.check_game_over()
+        await self.check_game_over()
 
     def reset_ball(self, scored_on):
         ball = self.game_state['ball']
@@ -348,13 +352,13 @@ class TournamentGameLogic:
             ball['vx'] = -self.game_state['v']
         ball['y'] = random.random()
 
-    def check_game_over(self):
+    async def check_game_over(self):
         paddle1 = self.game_state['paddle1']
         paddle2 = self.game_state['paddle2']
         if paddle1['score'] >= self.game_state['maxScore'] or paddle2['score'] >= self.game_state['maxScore']:
             self.game_state['over'] = True
             self.game_active = False
-            self.get_winner()
+            await self.get_winner()
             
     async def save_game_results(self):
         # user
@@ -386,8 +390,8 @@ class TournamentGameLogic:
         await self.user2.asave()
         await self.game.asave()
 
-    def update_game_state(self):
-        self.update_ball()
+    async def update_game_state(self):
+        await self.update_ball()
         self.update_paddle('paddle1')
         self.update_paddle('paddle2')
 
@@ -397,6 +401,7 @@ class TournamentLogic:
     def __init__(self, room_name, tournament, creator):
         self.room_name = room_name
         self.tournament = tournament
+        self.channel_layer = get_channel_layer()
         self.state = {}
         self.n = 0
         self.players = [creator] # user
@@ -405,7 +410,7 @@ class TournamentLogic:
         self.set_state()
 
     async def add_user_to_group(self, consumer):
-        channel_layer = get_channel_layer()
+        channel_layer = self.channel_layer
         await consumer.channel_layer.group_add(self.room_name, consumer.channel_name)
         await channel_layer.group_send(self.room_name, {
             'type': 'send.tournament.state',
@@ -416,11 +421,22 @@ class TournamentLogic:
             await self.tournament.asave()
             await sync_to_async(self.init_games)()
 
-    # TODO: update function to be called from game logic instance to update state and send
-    # update winner
-    # update game count
-    # init games
-    # send state
+    async def update_state(self, winner):
+        idx = -1
+        for i,e in enumerate(self.state['next_games']):
+            if winner.username in e:
+                idx = i
+        if idx != -1:
+            del self.state['next_games'][idx]
+
+        self.n += 1
+        self.winners.append(winner)
+        state = self.get_state()
+        await sync_to_async(self.init_games)()
+        await self.channel_layer.group_send(self.room_name, {
+            'type': 'send.tournament.state',
+            'state': state,
+        })
 
     # join game:
     # check if the instance has already started, otherwise, create instance
@@ -451,14 +467,13 @@ class TournamentLogic:
             consumer.gameLogic = instance
         else:
             await consumer.channel_layer.group_add(game_room, consumer.channel_name)
-            consumer.gameLogic = TournamentGameLogic(game_room, *users)
+            consumer.gameLogic = TournamentGameLogic(game_room, *users, self.update_state)
 
 
     def get_next_games(self):
         if len(self.players) == 4 and not self.n:
             players = [e.username for e in self.players]
             self.state['next_games'] = [players[0:2],players[2:]]
-            self.state['play'] = True
         elif self.n == 2:
             self.state['next_games'] = [[e.username for e in self.winners]]
         else:
@@ -470,6 +485,7 @@ class TournamentLogic:
             'players': [e.username for e in self.players],
             'winners': [e.username for e in self.winners],
             'n': self.n,
+            'play': True,
         }
         self.get_next_games(),
 

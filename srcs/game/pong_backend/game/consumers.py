@@ -399,7 +399,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 self.logic.players.append(self.user)
                 await self.logic.add_user_to_group(self)
             else:
-                await self.send(text_data=json.dumps(self.logic.get_state()))
+                await self.send_tournament_state({'state':self.logic.get_state()})
                 await self.channel_layer.group_add(self.room_name, self.channel_name)
 
         elif 'play' in data:
@@ -414,9 +414,8 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
     async def send_tournament_state(self, event):
         data = deepcopy(event['state'])
-        if 'play' in data and data['n']:
-            if self.user.username not in sum(data['next_games'],[]):
-                data.pop('play', None)
+        if self.user.username not in sum(data['next_games'],[]):
+            data.pop('play', None)
 
         await self.send(text_data=json.dumps(data))
 

@@ -124,6 +124,9 @@ export const RemoteTournament = async () => {
 
         if (tournamentState.play)
             document.getElementById('play').style.display = '';
+        else {
+            document.getElementById('play').style.display = 'none';
+        }
 
         document.getElementById('tournament-name-input').style.display = 'none';
         if (!in_game)
