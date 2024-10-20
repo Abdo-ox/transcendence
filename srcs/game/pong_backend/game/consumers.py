@@ -33,6 +33,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             # user
             self.game.playerScore = self.game_state['paddle1']['score']
             self.user.score += self.game_state['paddle1']['score']
+            self.user.last_score = self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
             self.user.totalGames += 1
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
