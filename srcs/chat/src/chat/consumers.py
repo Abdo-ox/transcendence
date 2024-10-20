@@ -5,6 +5,33 @@ from .models import Message
 from django.contrib.auth.models import AnonymousUser
 from .views import get_messages, get_user_contact, get_current_ChatID, get_participants
 
+
+# consumer for handling warm notif and status
+
+class UserStatusConsumer(WebsocketConsumer):
+    def connect(self):
+        user = get_user_contact()
+        if (self.scope['user']):
+            # Mark user as online
+            self.user.is_online = True
+            self.user.save()
+            async_to_sync(self.channel_layer.group_add)(
+                "online_users", self.channel_name
+                )
+        self.accept()
+        else:
+            self.close()
+
+    def disconnect(self, close_code):
+        if self.user.is_authenticated:
+            # Mark user as offline
+            self.user.profile.is_online = False
+            self.user.profile.save()
+        async_to_sync(self.channel_layer.group_discard)(
+            "online_users", self.channel_name
+        )
+
+
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
         # print(f"too is ::: {data['to']}")
