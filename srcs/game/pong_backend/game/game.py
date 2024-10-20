@@ -361,6 +361,8 @@ class TournamentGameLogic:
             await self.get_winner()
             
     async def save_game_results(self):
+        # remove game logic from dict
+        del logicInstances[self.room_name]
         # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
@@ -431,6 +433,8 @@ class TournamentLogic:
 
         self.n += 1
         self.winners.append(winner)
+        if self.n == 3:
+            await self.save_tournament()
         state = self.get_state()
         await sync_to_async(self.init_games)()
         await self.channel_layer.group_send(self.room_name, {
@@ -438,8 +442,12 @@ class TournamentLogic:
             'state': state,
         })
 
-    # join game:
-    # check if the instance has already started, otherwise, create instance
+    async def save_tournament(self):
+        self.tournament.isOver = True
+        self.tournament.Ongoing = False
+        self.tournament.winner = self.winners[-1]
+        await self.tournament.asave()
+
     async def join_game(self, user, consumer):
         # generate room name given username
         if user in self.winners:

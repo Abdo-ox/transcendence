@@ -140,7 +140,8 @@ export const RemoteTournament = async () => {
     document.getElementById("game-okay-btn").addEventListener('click', () => {
         remoteGameModal.hide();
         in_game = false;
-        NewPage("/remotetournament", RemoteTournament);
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('tournament-bracket').style.display = 'flex';
     });
 
     const canvas = document.getElementById("canvas");
@@ -150,6 +151,7 @@ export const RemoteTournament = async () => {
     let gameState = {};
 
     function countdown() {
+        c = 3;
         draw();
         c--;
         const interval = setInterval(() => {
