@@ -443,6 +443,7 @@ class TournamentLogic:
         })
 
     async def save_tournament(self):
+        del TournamentLogicInstances[self.room_name]
         self.tournament.isOver = True
         self.tournament.Ongoing = False
         self.tournament.winner = self.winners[-1]
