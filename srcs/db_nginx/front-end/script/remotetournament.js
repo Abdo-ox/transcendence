@@ -177,6 +177,8 @@ export const RemoteTournament = async () => {
     }
 
     function sendKey(key) {
+        if (socket.readyState == socket.CLOSED)
+            return
         socket.send(JSON.stringify({'key': key}));
     }
 

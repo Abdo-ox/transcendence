@@ -110,14 +110,14 @@ export const Multi = async () => {
     }
 
     document.addEventListener("keydown", function(event){
-        if (keys[event.key] || !gameState.started || uaig || socket.CLOSED)
+        if (keys[event.key] || !gameState.started || uaig || socket.readyState == socket.CLOSED)
             return
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function(event){
-        if (!gameState.started || uaig || socket.CLOSED)
+        if (!gameState.started || uaig || socket.readyState == socket.CLOSED)
             return
         keys[event.key] = false
         sendKey(event.key)
