@@ -45,29 +45,29 @@
             <div class="players-container">
                 <div class="profile">
                     <div class="img-bx">
-                        <img src="" alt="Player 1">
+                        <img id="player1-img" src="" alt="Player 1">
                     </div>
-                    <span class="player-name" id="game-player1"></span>
+                    <span class="player-name" id="player1-name"></span>
                 </div>
                 <div class="profile">
                     <div class="img-bx">
-                        <img src="" alt="Player 2">
+                        <img id="player2-img" src="" alt="Player 2">
                     </div>
-                    <span class="player-name" id="game-player2">?</span>
+                    <span class="player-name" id="player2-name"></span>
                 </div>
             </div>
     
             <canvas id="canvas"></canvas>
     
             <!-- The Modal -->
-            <div class="modal fade" id="remotetournamentModal" tabindex="-1" aria-labelledby="remotetournamentModalLabel" aria-hidden="true">
+            <div class="modal fade" id="remoteGameModal" tabindex="-1" aria-labelledby="remoteGameModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="remotetournamentModalLabel"></h5>
+                            <h5 class="modal-title" id="remoteGameModalLabel"></h5>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="test-btn">Okay</button>
+                            <button type="button" class="btn btn-primary" id="game-okay-btn">Okay</button>
                         </div>
                     </div>
                 </div>
