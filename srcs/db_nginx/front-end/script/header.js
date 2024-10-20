@@ -50,7 +50,6 @@ function createNewNotifItem(data) {
     const notiItem = document.createElement('div');
 
     notiItem.id = 'notifItem-' + data.from;
-    console.log(`notifitem id ===  ${notiItem.id}`)
     notiItem.innerHTML = `
         <img src="${data.img}">
         <p>${data.from} ${data.message}.</p>
@@ -341,7 +340,6 @@ export async function header() {
         console.log("error in fetch friend requests");
     }).then(data => {
         data.forEach(sender => {
-            console.log("inside foreach", sender.username);
             const notiItem = createNewNotifItem({ 'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request' });
             const acceptButton = notiItem.querySelector('#accept');
             const declineButton = notiItem.querySelector('#decline');

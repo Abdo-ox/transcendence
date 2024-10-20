@@ -27,7 +27,6 @@ const func = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("SPA page called");
     const pathname = window.location.pathname;
     window.addEventListener('popstate', (event) => {
         event.preventDefault();

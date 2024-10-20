@@ -178,7 +178,6 @@ export async function Home() {
 
 
     // let test = await tours.json();
-    // console.log(test)
     // document.getElementById("tournament-title").innerText = test[0].name;
     // document.getElementById("join").addEventListener('click', () => {
     //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
