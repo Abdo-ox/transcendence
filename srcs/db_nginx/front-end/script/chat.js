@@ -174,7 +174,7 @@ async function bodychat(UserData) {
       const profileContainer = document.getElementById('profile-container');
       const targetContact = document.getElementById(username);
       const messageInput = document.querySelector('#chat-message-input');
-      const messageSubmit = document.querySelector('#chat-message-submit');
+      const messageSubmit = document.getElementById('submit-button');
       messageSubmit.remove();
       messageInput.remove();
       targetContact.remove()
@@ -232,7 +232,7 @@ async function bodychat(UserData) {
       <div class="wrap">
         <div class="wrap">
           <input id="chat-message-input" type="text" placeholder="  Write your message..." />
-          <button id="chat-message-submit" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+          <img id="submit-button" src="https://localhost/images/send.svg"/>
         </div>
     </div>`;
 
