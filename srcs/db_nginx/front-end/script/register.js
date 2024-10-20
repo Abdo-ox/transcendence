@@ -1,6 +1,7 @@
 import { getCsrfToken, NewPage, submitForm } from "/utils.js";
 import { Login } from "/login.js"
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
+import { is_authenticated } from "./utils.js";
 
 const handle_data = (data_status) => {
     const data = data_status.data;
@@ -11,7 +12,8 @@ const handle_data = (data_status) => {
 }
 
 export async function Register() {
-
+    if (await is_authenticated())
+        return;
     console.log("register.js called");
     const csrf_token = await getCsrfToken();
     const ids = ['register-first_name', 'register-last_name', 'register-username', 'register-email', 'register-password1', 'register-password2'];

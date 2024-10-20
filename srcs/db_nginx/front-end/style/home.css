@@ -138,23 +138,19 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* justify-content: flex-start; */
     align-items: center;
     position: relative;
-    /* padding: 10px 5px 0 5px; */
     flex: 1;
-    /* background-color: #1b2141; */
-    /* max-width: 200px; */
     min-width: 190px;
     border-radius: 20px;
 }
 
 .home-flex1 h2 {
     color: #1aeeef;
-    /* font-size: 2vw; */
     width: 100%;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
+    font-size: 2vw;
 }
 
 .home-tournament-local {
@@ -435,7 +431,9 @@ section {
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
 }
 
-
+.home-statistic h2 {
+    color: #1aeeef;
+}
 .home-crown-img {
     height: 70px;
 

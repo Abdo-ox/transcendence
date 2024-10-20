@@ -9,7 +9,6 @@ header {
     align-items: center !important;
     transition: 0.5s !important;
     z-index: 900 !important;
-    /* background-color: #1b2141 !important; */
 }
 
 .header-sticky {
