@@ -51,23 +51,29 @@ export const Game = async () => {
     socket.onopen = function (event) {
         socket.send(JSON.stringify({
             'start': true,
-            'width': canvas.width * devicePixelRatio,
-            'height': canvas.height * devicePixelRatio
         }));
     };
 
     socket.onmessage = function (event) {
         gameState = JSON.parse(event.data);
-        if (gameState.uaig) {
-            uaig = true;
-            const msg = document.getElementById("gameModalLabel");
-            msg.innerHTML = "Already in game!";
-            showModal();
-        } else {
-            count_down = false;
-            draw();
-        }
+        scaleGameState();
+        count_down = false;
+        draw();
     };
+
+    function scaleGameState() {
+        // scale x
+        gameState.paddle1.x *= canvas.width
+        gameState.paddle2.x *= canvas.width
+        gameState.ball.x    *= canvas.width
+
+        // scale y
+        gameState.paddle1.y = gameState.paddle1.y   * canvas.height
+        gameState.paddle2.y = gameState.paddle2.y   * canvas.height
+        gameState.ball.y    = gameState.ball.y      * canvas.height
+        gameState.len       = gameState.len         * canvas.height
+        gameState.ball.r    = gameState.ball.r      * canvas.height
+    }
 
     function sendKey(key) {
         if (!uaig) {
