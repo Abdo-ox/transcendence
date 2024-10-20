@@ -28,3 +28,8 @@ class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['playerScore', 'aiScore', 'won']
+
+class LeaderBoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','profile_image','socre','last_score']
