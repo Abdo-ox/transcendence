@@ -32,19 +32,6 @@ export const redirectTwoFactor = (data, status) => {
     }
     return (1);
 }
-const isReallyTokenValid = async (access) => {
-
-    const resp = await fetch("https://localhost:8000/is_authenticated/", {
-        'Autorization': `Bearer ${access}`
-    });
-    if (resp.status == 401) {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        NewPage("/login", Login, false);
-        throw "access not expired but not valid";
-    }
-    return true;
-}
 
 const is_expired = (access) => {
     let payload = access.split('.')[1];
@@ -222,8 +209,6 @@ export const makePageActive = (page) => {
 export const is_authenticated = async () => {
     const access = localStorage.getItem('access_token');
     const refresh = localStorage.getItem('refresh_token');
-    console.log("check_is_authenticated: access=", access);
-    console.log("check_is_authenticated: refresh=", refresh);
     if (access != 'undefined' && access != null && refresh != null && refresh != 'undefined') {
         NewPage("/home", Home);
         return 1;

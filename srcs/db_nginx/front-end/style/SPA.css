@@ -29,6 +29,19 @@ body {
     overflow-y: auto;
     visibility: hidden;
 }
+form {
+    position: relative;
+}
+
+.blur-content{
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: blur(0.1);
+}
 
 ::-webkit-scrollbar {
     position: absolute;

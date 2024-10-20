@@ -61,6 +61,7 @@ class User(AbstractBaseUser):
     totalGames    = models.IntegerField(default=0)
     wins          = models.IntegerField(default=0)
     losses        = models.IntegerField(default=0)
+    online        = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'user'
