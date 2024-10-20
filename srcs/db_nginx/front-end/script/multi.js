@@ -153,7 +153,6 @@ export const Multi = async () => {
         }
 
         if (gameState.over) {
-            console.log('here')
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("multiModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
