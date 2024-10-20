@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer
-from .models import Game, MultiGame, Tournament
+from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer, LeaderboardSerializer
+from .models import Game, MultiGame, Tournament, User
 
 class WinStatsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -66,5 +66,14 @@ class TournamentsView(APIView):
     def get(self, request):
         user = request.user
         serializer = TournamentSerializer(Tournament.objects.all(), many=True)
+
+        return Response(serializer.data)
+
+class LeaderboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = LeaderboardSerializer(users, many=True)
 
         return Response(serializer.data)
