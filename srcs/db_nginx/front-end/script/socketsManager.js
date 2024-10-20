@@ -44,7 +44,7 @@ export async function createWebSocket(ChatID, username)
     };
   
     const messageInput = document.querySelector('#chat-message-input');
-    const messageSubmit = document.querySelector('#chat-message-submit');
+    const messageSubmit = document.getElementById('submit-button');
   
     if (messageInput) {
       console.log('messageInput pressed')

@@ -280,7 +280,7 @@ export async function header() {
                 if (nameElement && nameElement.textContent === data.from) {
                     const chatLog = document.querySelector('#chat-log');
                     const messageInput = document.querySelector('#chat-message-input');
-                    const messageSubmit = document.querySelector('#chat-message-submit');
+                    const messageSubmit = document.getElementById('submit-button');
 
                     // Remove elements only if they exist
                     messageSubmit?.remove();
