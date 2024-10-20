@@ -168,6 +168,7 @@ class GameLogic:
         # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
+        self.user1.last_score = self.game_state['paddle1']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
@@ -175,6 +176,7 @@ class GameLogic:
         # user
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
+        self.user2.last_score = self.game_state['paddle2']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
@@ -366,6 +368,7 @@ class TournamentGameLogic:
         # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
+        self.user1.last_score = self.game_state['paddle1']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
@@ -373,6 +376,7 @@ class TournamentGameLogic:
         # user
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
+        self.user2.last_score += self.game_state['paddle2']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
