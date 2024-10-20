@@ -13,9 +13,11 @@ export const RemoteTournament = async () => {
     webSockets.push(socket);
 
     socket.onmessage = function (event) {
-        tournamentState = JSON.parse(event.data);        if (tournamentState.duplicate) {
+        tournamentState = JSON.parse(event.data);
+        if (tournamentState.error) {
             sessionStorage.removeItem('tournament_name');
-            const err = document.getElementById('tournament-name-error').textContent = "This name has already been used.";
+            const err = document.getElementById('tournament-name-error');
+            err.textContent = tournamentState.message;
             err.style.display = '';
         } else if (tournamentState.players)
             displayTournamentBracket();

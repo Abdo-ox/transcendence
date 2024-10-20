@@ -365,10 +365,13 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
 
         if 'create' in data:
             self.room_name = data['name']
+            if not self.room_name.isascii() or not self.room_name.isalnum():
+                await self.send(text_data=json.dumps({'error':True, 'message': 'Name can only contain Alphanumerics.'}))
+                return
             try:
                 self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
             except IntegrityError:
-                await self.send(text_data=json.dumps({'duplicate':True}))
+                await self.send(text_data=json.dumps({'error':True, 'message': 'Name has already been used.'}))
                 return
 
             await database_sync_to_async(self.instance.players.add)(self.user)
