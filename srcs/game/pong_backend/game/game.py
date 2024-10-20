@@ -483,7 +483,6 @@ class TournamentLogic:
     def set_state(self):
         self.state['players'] = [e.username for e in self.players]
         self.state['winners'] = [e.username for e in self.winners]
-        self.state['n'] = self.n
         self.state['play'] = True
 
         self.get_next_games()

@@ -385,11 +385,13 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
             try:
                 self.instance = await Tournament.objects.aget(name=self.room_name)
             except ObjectDoesNotExist:
+                print('here1', flush=True)
                 await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
                 await self.close()
                 return
 
             if (self.instance.Ongoing and not await database_sync_to_async(self.instance.players.filter(id=self.user.id).exists)()) or self.instance.isOver:
+                print('here', flush=True)
                 await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
                 await self.close()
                 return

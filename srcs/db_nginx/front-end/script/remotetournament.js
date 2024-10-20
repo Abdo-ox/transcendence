@@ -41,9 +41,8 @@ export const RemoteTournament = async () => {
                 document.getElementById('game-container').style.display = 'flex';
                 setCanvasSize();
             }
-            // else
             scaleGameState();
-            if (gameState.countdown) {       
+            if (gameState.countdown) {
                 countdown();
             }
             else {
@@ -76,7 +75,7 @@ export const RemoteTournament = async () => {
                         'create':true,
                         'name':name,
                     }));
-                    sessionStorage.setItem('tournament_name', tournament_name);
+                    sessionStorage.setItem('tournament_name', name);
                 }
                 // Show the error message
                 nameError.style.display = 'block';
@@ -141,8 +140,7 @@ export const RemoteTournament = async () => {
     document.getElementById("game-okay-btn").addEventListener('click', () => {
         remoteGameModal.hide();
         in_game = false;
-        document.getElementById('game-container').style.display = 'none';
-        document.getElementById('tournament-bracket').style.display = 'flex';
+        NewPage("/remotetournament", RemoteTournament);
     });
 
     const canvas = document.getElementById("canvas");
@@ -152,6 +150,8 @@ export const RemoteTournament = async () => {
     let gameState = {};
 
     function countdown() {
+        draw();
+        c--;
         const interval = setInterval(() => {
             draw();
         
@@ -192,8 +192,7 @@ export const RemoteTournament = async () => {
         sendKey(event.key)
     });
 
-    // Function to trigger modal programmatically
-    function showModal() {
+    function showGameModal() {
         remoteGameModal = new bootstrap.Modal(document.getElementById('remoteGameModal'));
         remoteGameModal.show();
     }
@@ -221,7 +220,7 @@ export const RemoteTournament = async () => {
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("remoteGameModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
-            showModal();
+            showGameModal();
         } else if (gameState.countdown) {
             ctx.fillText(c, canvas.width / 2, canvas.height / 2);
         }
