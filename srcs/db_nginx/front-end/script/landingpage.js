@@ -1,12 +1,10 @@
-import { getCsrfToken } from "/utils.js";
+import { is_authenticated, NewPage } from "./utils.js";
+import { Login } from "/login.js";
 
-// window.addEventListener('scroll', function () {
-//     var header = document.querySelector('header');
-//     header.classList.toggle('sticky', window.scrollY > 0);
-// });
 
 export  async function Landing()
 {
-    const csrf_token = await getCsrfToken();
-    // loadAnotherPage('landing-login-btn', '/login.html'); newpage here 
+    if (await is_authenticated())
+        return;
+    document.getElementById("landing-login-btn").addEventListener('click', ()=> NewPage('/login', Login, false));
 }

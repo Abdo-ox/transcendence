@@ -1,13 +1,7 @@
 import { getJWT, getCsrfToken, NewPage} from "/utils.js"
 import {ConfirmationMail} from "/confirmationMail.js"
 
-
-
-// window.removeEventListener('popstate', routing);
-// window.addEventListener('popstate', routing);
-
 export async function Settings() {
-
 
     let userdata = null;
     const fields = ['username', 'first_name', 'last_name'];
