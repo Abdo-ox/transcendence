@@ -88,13 +88,15 @@ export const Game = async () => {
     }
 
     document.addEventListener("keydown", function (event) {
-        if (keys[event.key])
-            return
+        if (keys[event.key] || socket.CLOSED)
+            return;
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function (event) {
+        if (socket.CLOSED)
+            return;
         keys[event.key] = false
         sendKey(event.key)
     });
