@@ -33,7 +33,6 @@ class GameLogic:
             player1 = user1,
             player2 = user2,
         )
-        database_sync_to_async(game.players.add)(user1, user2)
         return game
 
     @staticmethod
@@ -507,12 +506,9 @@ class TournamentLogic:
     def init_games(self):
         if not self.n:
             game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][0:2]), player1=self.players[0], player2=self.players[1])
-            game.players.add(*self.players[0:2])
             game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
-            game.players.add(*self.players[2:])            
         elif self.n == 2:
             game = MultiGame.objects.create(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
-            game.players.add(*self.winners)
 
     def generate_names(self, players):
         return f'{players[0]}-{players[1]}-{self.room_name}'
