@@ -200,6 +200,7 @@ class Tournament(models.Model):
         db_table='tournament'
 
 class MultiGame(models.Model):
+    players = models.ManyToManyField(User, related_name='multiPlayerGames')
     player1 = models.ForeignKey(User, related_name='player1', on_delete=models.DO_NOTHING)
     player2 = models.ForeignKey(User, related_name='player2', on_delete=models.DO_NOTHING)
     player2Score = models.IntegerField(default=0)
