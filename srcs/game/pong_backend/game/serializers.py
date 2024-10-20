@@ -17,7 +17,7 @@ class WinStatSerializer(serializers.ModelSerializer):
 class GameProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['wins', 'losses', 'totalGames']
+        fields = ['username','score','profile_image','wins', 'losses', 'totalGames']
 
 class MultiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +28,8 @@ class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['playerScore', 'aiScore', 'won']
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','profile_image','score','last_score']

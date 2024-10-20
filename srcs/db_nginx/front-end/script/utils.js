@@ -96,15 +96,14 @@ export const NewPage = async (url, func, addhistory = true) => {
     if (response.ok) {
         const data = await response.text();
         const doc = (new DOMParser()).parseFromString(data, 'text/html');
-
+        // close all sockets
+        webSockets.forEach(ws => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        });
+        webSockets = [];
         if (doc.querySelector('header') && document.querySelector('header')) {
-            // close all sockets
-            webSockets.forEach(ws => {
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.close();
-                }
-            });
-            webSockets = [];
             document.body.children[1].replaceWith(doc.body.children[1]);
         } else {
             removeEvent();

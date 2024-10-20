@@ -21,18 +21,16 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_state = {}
         self.keys = {}
         self.game = Game(player=self.user)
-        self.del_cache = False
         self.prediction = 0
         await self.accept()
 
     async def disconnect(self, close_code):   
         self.game_active = False
-        if self.del_cache:
-            cache.delete(self.user.username)
         if self.game_state['started']:
             # user
             self.game.playerScore = self.game_state['paddle1']['score']
             self.user.score += self.game_state['paddle1']['score']
+            self.user.last_score = self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
             self.user.totalGames += 1
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
@@ -50,15 +48,9 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         if 'start' in data:
-            self.initialize_game(data['width'], data['height'])
+            self.initialize_game()
             await self.send_game_state()
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'uaig':True})) # abbreviation for 'user already in game'
-                await self.close()
-                return
-            cache.set(self.user.username, True)
-            self.del_cache = True
+
         if 'start_game' in data:
             self.game_active = True
             self.game_state['started'] = True
@@ -66,14 +58,16 @@ class GameConsumer(AsyncWebsocketConsumer):
         if 'key' in data:
             self.handle_key(data['key'])
         
-    def initialize_game(self, width, height):
+    def initialize_game(self):
+        height = 1
+        width = 1
         self.prediction = height / 2
         self.game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
-                'vx': 0.008 * height,
-                'vy': 0.008 * height,
+                'vx': 0.015 * height,
+                'vy': 0.015 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -349,53 +343,48 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
         self.room_name = None
         self.instance = None
         self.logic = None
-        self.del_cache = False
+        self.gameLogic = None
+        self.role = None
         await self.accept()
 
 
     async def disconnect(self, close_code):
         if self.room_name:
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
-        if self.del_cache:
-            cache.delete(self.user.username)
+        if self.gameLogic:
+            self.gameLogic.disconnected = True
 
     async def receive(self, text_data):
         data = json.loads(text_data)
 
         if 'create' in data:
             self.room_name = data['name']
+            if not self.room_name.isascii() or not self.room_name.isalnum():
+                await self.send(text_data=json.dumps({'error':True, 'message': 'Name can only contain Alphanumerics.'}))
+                return
             try:
                 self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
             except IntegrityError:
-                await self.send(text_data=json.dumps({'duplicate':True}))
+                await self.send(text_data=json.dumps({'error':True, 'message': 'Name has already been used.'}))
                 return
 
             await database_sync_to_async(self.instance.players.add)(self.user)
 
             self.logic = TournamentLogic(self.room_name, self.instance, self.user)
             await self.logic.add_user_to_group(self)
-            
-            # check if user already in game or tournament
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'message':'Already in game / tournament.'}))
-                await self.close()
-                return
-            
-            cache.set(self.user.username, True)
-            self.del_cache = True
 
         elif 'join' in data:
             self.room_name = data['name']
+
             try:
                 self.instance = await Tournament.objects.aget(name=self.room_name)
             except ObjectDoesNotExist:
-                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.send(text_data=json.dumps({'message':"This tournament doesn't exist!"}))
                 await self.close()
                 return
 
             if (self.instance.Ongoing and not await database_sync_to_async(self.instance.players.filter(id=self.user.id).exists)()) or self.instance.isOver:
-                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.send(text_data=json.dumps({'message':"This tournament has already started!" if not self.instance.isOver else "This tournament is over!"}))
                 await self.close()
                 return
 
@@ -407,22 +396,30 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 self.logic.players.append(self.user)
                 await self.logic.add_user_to_group(self)
             else:
-                await self.send(text_data=json.dumps(self.logic.get_state()))
+                await self.send_tournament_state({'state':self.logic.get_state()})
+                await self.channel_layer.group_add(self.room_name, self.channel_name)
 
-            # check if user already in game or tournament
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'message':'Already in game / tournament.'}))
-                await self.close()
-                return
+        elif 'play' in data:
+            await self.logic.join_game(self.user, self)
 
-            cache.set(self.user.username, True)
-            self.del_cache = True
+        elif 'key' in data:
+            if self.gameLogic:
+                self.handle_key(data['key'])
+
+    def handle_key(self, key):
+        self.gameLogic.keys[self.role][key] = not self.gameLogic.keys[self.role].get(key, False)
 
     async def send_tournament_state(self, event):
         data = deepcopy(event['state'])
-        if 'play' in data and data['n']:
-            if self.user.username not in sum(data['next_games'],[]):
-                data.pop('play', None)
+        if self.user.username not in sum(data['next_games'],[]):
+            data.pop('play', None)
 
         await self.send(text_data=json.dumps(data))
+
+    async def send_game_state(self, event):
+        if event['game_state']['over']:
+            self.gameLogic = None
+            if event['game_state']['winner'] == self.user.username:
+                event['game_state']['won'] = True
+        await self.send(text_data=json.dumps(event['game_state']))
+        
