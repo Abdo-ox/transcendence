@@ -23,7 +23,7 @@ class MatchCountView(APIView):
     def get(self, request):
         data = {}
         user = request.user
-        data['tournament'] = user.tournament.count()
+        data['tournament'] = user.tournaments.count()
         data['ai_match'] = user.games.count()
         data['friend_match'] = user.multiPlayerGames.filter(friendMatch=True).count()
         data['unkown_match'] = user.multiPlayerGames.filter(friendMatch=False, tournament__isnull=True).count()
