@@ -28,6 +28,7 @@ export async function Profile() {
         return;
     }
     const data = await response.json();
+    console.log("data is :", data);
     document.getElementById("profile-matchScore").innerHTML = data.totalGames;
     document.getElementById("profile-tournamentsScore").innerHTML = data.tournaments;
     let sum = data.tournaments + data.totalGames;
@@ -58,31 +59,82 @@ export async function Profile() {
         { level: 0, min: 0, max: 7 },
         { level: 1, min: 8, max: 21 },
         { level: 2, min: 22, max: 42 },
-        { level: 3, min: 43, max: 63 }, 
+        { level: 3, min: 43, max: 63 },
         { level: 4, min: 64, max: 90 },
         { level: 5, min: 91, max: 110 },
         { level: 6, min: 111, max: 130 },
         { level: 7, min: 131, max: 150 },
     ];
-    
+
     function updateProgress(currentPoints) {
         let currentLevel = 0;
-        
+
         for (let i = 0; i < Levels.length; i++) {
             if (currentPoints >= Levels[i].min && currentPoints <= Levels[i].max) {
                 currentLevel = Levels[i].level;
                 break;
             }
         }
-    
-        let percentage = (currentPoints / 150) * 100; 
+
+        let percentage = (currentPoints / 150) * 100;
         const progressBar = document.getElementById('profile-level-progress');
-        
+
         progressBar.style.width = percentage + '%';
-    
+
         console.log(`Current Level: ${currentLevel}`);
         document.getElementById("current-level").innerHTML = currentLevel;
     }
     updateProgress(25);
-    
+    data.score = 10;
+    /** calc pourcentage for acheivements**/
+    function calcP(cond, requi) {
+        let per;
+        if (cond < requi)
+            per = ((cond / requi) * 100).toFixed(0);
+        else
+            per = 100;
+        return per;
+    }
+    const percentage = [];
+    function CalcProgress(data) {
+        /*FIRST SERVE*/
+        percentage[0] = calcP(data.score, 7);
+        /*Matchmaker*/
+        percentage[1] = calcP(data.totalGames, 5);
+        /*Paddle Master */
+        percentage[2] = calcP(data.wins, 10);
+        /*Rockie Score*/
+        percentage[3] = calcP(data.score, 100);
+    }
+    const progressCircle = document.querySelectorAll('.profile-progress');
+    const ProgressPercent = document.querySelectorAll('.ProgressPercent');
+    CalcProgress(data);
+    let i = 0;
+    ProgressPercent.forEach((element) => {
+
+        element.firstChild.textContent = percentage[i];
+        i++;
+    })
+    const color = [];
+    i = 0;
+    progressCircle.forEach((element) => {
+        if (percentage[i] == 100) {
+            element.style.display = 'none';
+            i++;
+        }
+        color[i] = getComputedStyle(element).getPropertyValue('--clr').trim();
+        i++;
+    })
+    i = 0;
+    progressCircle.forEach((element) => {
+        console.log(percentage[i]);
+        element.style.background = `conic-gradient(${color[i]} 0%, ${color[i]} ${percentage[i]}%, transparent ${percentage[i]}%, transparent 100%)`;
+        i++;
+    })
+    /*change pourcentage acheivement */
+    // const percentage = 50;
+    // const progressCircle = document.getElementById('progressCircle');
+    // const color = getComputedStyle(progressCircle).getPropertyValue('--clr').trim();
+    // progressCircle.style.background = `conic-gradient(${color} 0%, ${color} ${percentage}%, transparent ${percentage}%, transparent 100%)`;
+
 }
