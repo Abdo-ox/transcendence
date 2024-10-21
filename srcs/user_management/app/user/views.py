@@ -18,7 +18,7 @@ from project.decorators import TwoFctor_Decorator
 from django.db import IntegrityError
 
 from friendship.models import FriendList
-from user.models import User
+from user.models import User, Coalition
 
 from user.forms import (RegisterationForm,
 LoginForm,
@@ -28,7 +28,8 @@ from .serializers import(UserSerializer,
 ChatUserSerializer,
 AccountSerializer,
 CurrentSerializer,
-SuggestionSerializer
+SuggestionSerializer,
+CoalitionSerializer
 )  
 
 @api_view(['POST'])
@@ -215,4 +216,15 @@ def UpdateisPassed(request):
         return JsonResponse({"status":"ok"},status=200)
     return JsonResponse({"status":"also ok"},status=200)
     
-    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def coalitions(request):
+    coalitions = Coalition.objects.all()
+    coalitions = CoalitionSerializer(coalitions, many=True)
+    return JsonResponse(coalitions.data, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def coalition(request):
+    coalition = CoalitionSerializer(request.user.coalition)
+    return JsonResponse(coalition.data)
