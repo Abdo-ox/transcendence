@@ -9,28 +9,51 @@ from .views import get_messages, get_user_contact, get_current_ChatID, get_parti
 # consumer for handling warm notif and status
 
 class UserStatusConsumer(WebsocketConsumer):
+
+    def create_event(self, status):
+        # Send the status to the group
+        async_to_sync(self.channel_layer.group_send)(
+            'online_users', {
+                "type": "chat_message",
+                "is_online": status
+            }
+        )
+
     def connect(self):
-        user = get_user_contact()
-        if (self.scope['user']):
+        if self.scope['user']:
+            user = get_user_contact(self.scope['user'])  # Get user contact
             # Mark user as online
-            self.user.is_online = True
-            self.user.save()
+            self.create_event("True")  # Use 'self' when calling a method in the class
+            user.is_online = True  # Update the user object, not self.user
+            user.save()
             async_to_sync(self.channel_layer.group_add)(
                 "online_users", self.channel_name
-                )
-        self.accept()
+            )
+            self.accept()
         else:
+            print("anonymousUser", flush=True)
             self.close()
 
     def disconnect(self, close_code):
-        if self.user.is_authenticated:
+        if self.scope['user']:
+            user = get_user_contact(self.scope['user'])  # Get user contact
             # Mark user as offline
-            self.user.profile.is_online = False
-            self.user.profile.save()
-        async_to_sync(self.channel_layer.group_discard)(
-            "online_users", self.channel_name
-        )
+            self.create_event("False")  # Use 'self' when calling a method in the class
+            user.is_online = False  # Update the user object, not self.user
+            user.save()
+            async_to_sync(self.channel_layer.group_discard)(
+                "online_users", self.channel_name
+            )
+        else:
+            self.close()
 
+    # Receive message from room group
+    def chat_message(self, event):
+        # Since you're sending 'is_online', not 'message', access that field
+        is_online = event["is_online"]
+
+        # Send the online status to WebSocket
+        self.send(text_data=json.dumps({"is_online": is_online}))
 
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
