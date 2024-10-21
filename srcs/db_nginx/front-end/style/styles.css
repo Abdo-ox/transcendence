@@ -1,24 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
 @import url('https://fonts.cdnfonts.com/css/poppins');
 
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-} */
-
-/* body {
-    color: #fff;
-    background: #050e2d;
-    display: flex;
-    width: 100%;
-    height: calc(100vh - 40px);
-    gap: 20px;
-    flex-direction: column;
-    align-items: center;
-}               */
-
 .img-bx {
     width: 40px;
     height: 40px;
@@ -52,7 +34,6 @@ canvas {
     border-radius: 10px;
     width: 60%;
     max-width: 1000px;
-    height: calc(0.5 * width);
     background-color: #1b2141;
 }
 
@@ -190,66 +171,14 @@ canvas {
     align-items: flex-end;
 }
 
-/* .left-column .bracket-box:nth-child(1),
-.left-column .bracket-box:nth-child(3) {
-    position: relative;
-}
-
-.left-column .bracket-box:nth-child(1)::after, .left-column .bracket-box:nth-child(3)::after {
-    position: absolute;
-    content: "";
-    width: 75%;
-    height: 4px;
-    background: #fff;
-    left: 100%;
-} */
-
 
 .left-column .bracket-box:nth-child(2) {
     align-self: flex-end;
 }
 
-/* .left-column .bracket-box:nth-child(2)::after {
-    position: absolute;
-    content: "";
-    width: 56%;
-    height: 4px;
-    background: #fff;
-    left: -56%;
-}
-.left-column .bracket-box:nth-child(2)::before {
-    position: absolute;
-    content: "";
-    width: 4px;
-    height: 381%;
-    background: #fff;
-    left: -56%;
-} */
 
 .right-column .bracket-box:nth-child(2) {
     align-self: flex-start;
-}
-
-/* .right-column .bracket-box:nth-child(2)::after {
-    position: absolute;
-    content: "";
-    width: 4px;
-    height: 381%;
-    background: #fff;
-    right: -56%;
-}
-.right-column .bracket-box:nth-child(2)::before {
-    position: absolute;
-    content: "";
-    width: 56%;
-    height: 4px;
-    background: #fff;
-    right: -56%;
-} */
-
-/* .right-column .bracket-box:nth-child(1),
-.right-column .bracket-box:nth-child(3) {
-    position: relative;
 }
 
 .right-column .bracket-box:nth-child(1)::before, .right-column .bracket-box:nth-child(3)::before {
@@ -301,5 +230,18 @@ canvas {
     }
     .profile {
         margin-bottom: 10px;
+    }
+    canvas {
+        width: 90%;
+    }
+}
+
+@media (max-width: 450px) {
+    .profile {
+        display: none;
+    }
+    canvas {
+        transform: rotate(-90deg);
+        width: 120%;
     }
 }

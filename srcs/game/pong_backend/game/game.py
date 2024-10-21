@@ -169,6 +169,7 @@ class GameLogic:
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
         self.user1.last_score = self.game_state['paddle1']['score']
+        self.user1.totalGames += 1
         # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
@@ -177,17 +178,18 @@ class GameLogic:
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
         self.user2.last_score = self.game_state['paddle2']['score']
+        self.user2.totalGames += 1
         # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
         await coalition.asave()
         
         self.game.isOver = True
-        if self.game.player1Score > self.game.player2Score:
+        if self.game.player1Score >= self.game.player2Score:
             self.game.winner = self.user1
             self.user1.wins += 1
             self.user2.losses += 1
-        elif self.game.player2Score > self.game.player1Score:
+        else:
             self.game.winner = self.user2
             self.user2.wins += 1
             self.user1.losses += 1
