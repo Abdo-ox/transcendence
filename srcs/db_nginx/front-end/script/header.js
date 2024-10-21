@@ -240,7 +240,7 @@ export async function header() {
     };
     UserStatusSock.onmessage = (e) => {
         var data = JSON.parse(e.data);
-        console.log(`userstatus ----<  ${data}`)
+        console.log(`userstatus ----<  ${JSON.stringify(data)}`)
     }
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
