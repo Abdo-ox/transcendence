@@ -12,7 +12,9 @@ currentUserData,
 updateData,
 EnableTwoFactor,
 UpdatePassword,
-UpdateisPassed,)
+UpdateisPassed,
+coalitions,
+coalition)
 
 urlpatterns = [
     path('register/', Register, name='register'),
@@ -22,8 +24,10 @@ urlpatterns = [
     path('settings/', accountSettings),
     path('upload-profile/', UploadProfile),
     path('update/', updateData),
-    path('currentUser/',currentUserData),
-    path('Enable2Fa/',EnableTwoFactor),
-    path('ChangePassword/',UpdatePassword),
-    path('twoFaCalled/',UpdateisPassed),
+    path('currentUser/', currentUserData),
+    path('Enable2Fa/', EnableTwoFactor),
+    path('ChangePassword/', UpdatePassword),
+    path('twoFaCalled/', UpdateisPassed),
+    path('coalitions/', coalitions),
+    path('coalition/', coalition),
 ]
