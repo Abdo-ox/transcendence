@@ -205,11 +205,11 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    const tours = await fetch("https://localhost:9090/tournaments/", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
+    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // });
 
 
     // let test = await tours.json();

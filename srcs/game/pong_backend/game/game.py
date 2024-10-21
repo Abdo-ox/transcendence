@@ -33,7 +33,7 @@ class GameLogic:
             player1 = user1,
             player2 = user2,
         )
-        database_sync_to_async(game.players.add)(user1, user2)
+        await database_sync_to_async(game.players.add)(user1, user2)
         return game
 
     @staticmethod

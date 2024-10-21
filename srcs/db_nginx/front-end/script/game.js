@@ -76,25 +76,25 @@ export const Game = async () => {
     }
 
     function sendKey(key) {
-        if (!uaig) {
-            if (!gameStarted) {
-                socket.send(JSON.stringify({ 'start_game': true }));
-                gameStarted = true;
-                count_down = true;
-                countdown();
-            }
-            socket.send(JSON.stringify({ 'key': key }));
+        if (!gameStarted) {
+            socket.send(JSON.stringify({ 'start_game': true }));
+            gameStarted = true;
+            count_down = true;
+            countdown();
         }
+        socket.send(JSON.stringify({ 'key': key }));
     }
 
     document.addEventListener("keydown", function (event) {
-        if (keys[event.key])
-            return
+        if (keys[event.key] || socket.readyState == socket.CLOSED)
+            return;
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function (event) {
+        if (socket.readyState == socket.CLOSED)
+            return;
         keys[event.key] = false
         sendKey(event.key)
     });
