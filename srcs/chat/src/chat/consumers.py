@@ -4,66 +4,6 @@ from channels.generic.websocket import WebsocketConsumer
 from .models import Message
 from django.contrib.auth.models import AnonymousUser
 from .views import get_messages, get_user_contact, get_current_ChatID, get_participants
-import time
-
-# consumer for handling warm notif and status
-
-class UserStatusConsumer(WebsocketConsumer):
-    
-    def connect(self):
-        self.room_group_name = 'online_users'
-        
-        if self.scope['user'] != AnonymousUser():
-            user = get_user_contact(self.scope['user'])
-            user.is_online = True
-            user.save()
-            print("current status === ", user.is_online, flush=True)
-
-            async_to_sync(self.channel_layer.group_add)(
-                self.room_group_name, self.channel_name
-            )
-
-            self.accept()
-
-            self.send_user_status("True")
-
-        else:
-            self.close()
-
-    def disconnect(self, close_code):
-        user = get_user_contact(self.scope['user'])
-        user.is_online = False
-        user.save()
-        print("current status === ", user.is_online, flush=True)
-
-        self.send_user_status("False")
-
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name, self.channel_name
-        )
-    
-    def send_user_status(self, status):
-        # Send the status message to the group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {
-                "type": "user_status_message",
-                "is_online": status,
-                "username": self.scope['user'].username
-            }
-        )
-
-    # Receive message from the group and handle it
-    def user_status_message(self, event):
-        print("user_status_message method called", flush=True)
-
-        is_online = event["is_online"]
-        username = event["username"]
-
-        self.send(text_data=json.dumps({
-            "is_online": is_online,
-            "username": username
-        }))
-
 
 # consumer for handling warm notif and status
 
@@ -123,55 +63,6 @@ class UserStatusConsumer(WebsocketConsumer):
             "username": username
         }))
 
-
-# consumer for handling warm notif and status
-
-class UserStatusConsumer(WebsocketConsumer):
-
-    def create_event(self, status):
-        # Send the status to the group
-        async_to_sync(self.channel_layer.group_send)(
-            'online_users', {
-                "type": "chat_message",
-                "is_online": status
-            }
-        )
-
-    def connect(self):
-        if self.scope['user']:
-            user = get_user_contact(self.scope['user'])  # Get user contact
-            # Mark user as online
-            self.create_event("True")  # Use 'self' when calling a method in the class
-            user.is_online = True  # Update the user object, not self.user
-            user.save()
-            async_to_sync(self.channel_layer.group_add)(
-                "online_users", self.channel_name
-            )
-            self.accept()
-        else:
-            print("anonymousUser", flush=True)
-            self.close()
-
-    def disconnect(self, close_code):
-        if self.scope['user']:
-            user = get_user_contact(self.scope['user'])  # Get user contact
-            # Mark user as offline
-            self.create_event("False")  # Use 'self' when calling a method in the class
-            user.is_online = False  # Update the user object, not self.user
-            user.save()
-            async_to_sync(self.channel_layer.group_discard)(
-                "online_users", self.channel_name
-            )
-        else:
-            self.close()
-
-    # Receive message from room group
-    def chat_message(self, event):
-        # Since you're sending 'is_online', not 'message', access that field
-        is_online = event["is_online"]
-
-        # Send the online status to WebSocket
-        self.send(text_data=json.dumps({"is_online": is_online}))
 
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
