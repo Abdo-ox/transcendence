@@ -9,7 +9,7 @@ import time
 # consumer for handling warm notif and status
 
 class UserStatusConsumer(WebsocketConsumer):
-    
+
     def connect(self):
         self.room_group_name = 'online_users'
         
