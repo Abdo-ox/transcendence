@@ -2,6 +2,7 @@ import json
 import asyncio
 import random
 import time
+import csv
 from copy import deepcopy
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
@@ -80,9 +81,9 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'y': (height / 2) - (0.125 * height),  
                 'score': 0,
             },
-            'v': 0.008 * height,
+            'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 7,
+            'maxScore': 1,
             'over': False,
             'started': False,
             'width': width,
@@ -127,7 +128,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                 vx *= -1
                 v *= -1
             v *= -1
-            
+        # with open('/is_ready/predictions.csv', 'a+') as file:
+        #     file.write(f'{x},{y},{vx},{v},{r}\n') 
         self.prediction = r
             
     def handle_key(self, key):
@@ -260,7 +262,7 @@ class MultiGameConsumer(AsyncWebsocketConsumer):
                 # Add the user to the queue
                 user_queue.add(self)
     
-                # Check if there are enough users to create a roomç
+                # Check if there are enough users to create a room
                 if len(user_queue) >= 2:
                     await self.create_room()
             else:

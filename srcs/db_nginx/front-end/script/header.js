@@ -3,7 +3,8 @@ import { Profile } from "/profile.js"
 import { Multi } from "./multi.js";
 
 let CurrentUser = "";
-
+export let GamePlaySocket = null;
+export let UserStatusSock = null;
 async function FriendRqEvent(notifItem, endpoint, data) {
     ////
     const token = await getJWT();
@@ -147,7 +148,7 @@ export function removeEvent() {
     document.body.removeEventListener('click', Handler);
 }
 
-export let GamePlaySocket = null;
+
 
 const addheader = () => {
     const header = document.querySelector('header');
@@ -230,10 +231,17 @@ export async function header() {
     if (GamePlaySocket)
         GamePlaySocket.close();
     GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
+    UserStatusSock = new WebSocket(`ws://127.0.0.1:9000/ws/status/?token=${access_token}`);
+    UserStatusSock.onopen = () => {
+        console.log('UserStatusSock');
+    }
     GamePlaySocket.onopen = () => {
         console.log('Notif WebSocket connection opened');
     };
-
+    UserStatusSock.onmessage = (e) => {
+        var data = JSON.parse(e.data);
+        console.log(`userstatus ----<  ${JSON.stringify(data)}`)
+    }
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
         console.log(`data is   ${JSON.stringify(data)}`)
