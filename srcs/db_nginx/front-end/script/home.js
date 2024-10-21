@@ -9,6 +9,7 @@ import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
 
 function pieChart2(data) {
+    console.log("------------------------------------------->", data);
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
     let tournament = (data.tournament * 100) / total;
     let ai = (data.ai_match * 100) / total;
@@ -64,6 +65,23 @@ function laederBoard(data) {
             <img src="${user.profile_image}">
         </div>`
     });
+}
+
+function coalition(data) {
+    const total = data.reduce((sum, obj) => sum + obj.score, 0);
+    const scr = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
+
+    console.log(total);
+    document.getElementById("home-night-spin-name").innerHTML = data[0].name;
+    document.getElementById("home-night-spin-percent").innerHTML = scr[0]  + '%';
+    document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
+    document.getElementById("home-ghost-paddle-percent").innerHTML = scr[1]  + '%';
+    document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
+    document.getElementById("home-eclipse-pong-percent").innerHTML = scr[2]  + '%';
+    document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
+            #3CB371  ${scr[0]}deg,
+            #FFD700  ${scr[0]}deg ${scr[1]}deg,
+            #4682B4  ${scr[1]}deg ${scr[2]}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -228,7 +246,7 @@ export async function Home() {
     }).then(response => {
         if (response.status == 200)
             return response.json();
-    }).then(data => pieChart2(dt)
+    }).then(data => pieChart2(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
 
     fetch("https://localhost:9090/leaderboard/", {
@@ -240,4 +258,11 @@ export async function Home() {
             return response.json();
     }).then(data => laederBoard(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
+
+    fetch("https://localhost:8000/api/coalitions/", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => response.json()).then(data => coalition(data));
+    
 }
