@@ -31,6 +31,41 @@ function pieChart2(data) {
             #0091ad 0 ${friend + ai + unknown + tournament}deg)`);
 }
 
+function fillPhase(target_phase, user_data) {
+    document.getElementById(`home-${target_phase}-img`).src = user_data.profile_image;
+    document.getElementById(`home-${target_phase}-username`).innerHTML = user_data.username;
+    document.getElementById(`home-${target_phase}-score`).innerHTML = user_data.score;
+}
+
+function laederBoard(data) {
+    console.log("leader board:", data);
+    const leaderboardcontainer = document.getElementById('home-leader-board');
+    data.sort((a, b) => b.score - a.score);
+    if (data.length > 0)
+        fillPhase('first', data[0]);
+    if (data.length > 1)
+        fillPhase('second', data[1]);
+    if (data.length > 2)
+        fillPhase('third', data[2]);
+    for (let i = 0; i < 3 && data.length; i++)
+        data.shift();
+    data.forEach(user => {
+        leaderboardcontainer.innerHTML += `<div class="home-user-class">
+            <h3>${user.username}</h3>
+            <div class="home-up-down">
+                <p>+${user.last_score}</p>
+                <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960"
+                    width="15px" fill="#75FB4C">
+                    <path
+                        d="m296-224-56-56 240-240 240 240-56 56-184-183-184 183Zm0-240-56-56 240-240 240 240-56 56-184-183-184 183Z" />
+                </svg>
+            </div>
+            <p class="home-score-value">${user.score} point</p>
+            <img src="${user.profile_image}">
+        </div>`
+    });
+}
+
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
     console.log(`button:${button}`);
     const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
@@ -170,27 +205,39 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    const tours = await fetch("https://localhost:9090/tournaments/", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
+    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // });
 
 
-    let test = await tours.json();
-    document.getElementById("tournament-title").innerText = test[0].name;
-    document.getElementById("join").addEventListener('click', () => {
-        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-        NewPage("/remotetournament", RemoteTournament);
-    });
+    // let test = await tours.json();
+    // document.getElementById("tournament-title").innerText = test[0].name;
+    // document.getElementById("join").addEventListener('click', () => {
+    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+    //     NewPage("/remotetournament", RemoteTournament);
+    // });
 
     // tournament cards end
 
-    const dt = await fetch("https://localhost:9090/matchcount/", {
+    fetch("https://localhost:9090/matchcount/", {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    }).then(response => ({ status: response.status, data: response.json() }));
-    if (dt.status == 200)
-        pieChart2(dt);
+    }).then(response => {
+        if (response.status == 200)
+            return response.json();
+    }).then(data => pieChart2(dt)
+    ).catch(error => console.log("error in fetch matchcount :", error));
+
+    fetch("https://localhost:9090/leaderboard/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        if (response.status == 200)
+            return response.json();
+    }).then(data => laederBoard(data)
+    ).catch(error => console.log("error in fetch matchcount :", error));
 }

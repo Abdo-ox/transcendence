@@ -110,14 +110,14 @@ export const Multi = async () => {
     }
 
     document.addEventListener("keydown", function(event){
-        if (keys[event.key] || !gameState.started || uaig)
+        if (keys[event.key] || !gameState.started || uaig || socket.readyState == socket.CLOSED)
             return
         keys[event.key] = true;
         sendKey(event.key);
     });
 
     document.addEventListener("keyup", function(event){
-        if (!gameState.started || uaig)
+        if (!gameState.started || uaig || socket.readyState == socket.CLOSED)
             return
         keys[event.key] = false
         sendKey(event.key)
@@ -153,7 +153,6 @@ export const Multi = async () => {
         }
 
         if (gameState.over) {
-            console.log('here')
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("multiModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";

@@ -21,18 +21,16 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_state = {}
         self.keys = {}
         self.game = Game(player=self.user)
-        self.del_cache = False
         self.prediction = 0
         await self.accept()
 
     async def disconnect(self, close_code):   
         self.game_active = False
-        if self.del_cache:
-            cache.delete(self.user.username)
         if self.game_state['started']:
             # user
             self.game.playerScore = self.game_state['paddle1']['score']
             self.user.score += self.game_state['paddle1']['score']
+            self.user.last_score = self.game_state['paddle1']['score']
             self.game.aiScore = self.game_state['paddle2']['score']
             self.user.totalGames += 1
             if (self.game_state['paddle1']['score'] > self.game_state['paddle2']['score']):
@@ -50,15 +48,9 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         if 'start' in data:
-            self.initialize_game(data['width'], data['height'])
+            self.initialize_game()
             await self.send_game_state()
-            in_game = cache.get(self.user.username)
-            if in_game:
-                await self.send(json.dumps({'uaig':True})) # abbreviation for 'user already in game'
-                await self.close()
-                return
-            cache.set(self.user.username, True)
-            self.del_cache = True
+
         if 'start_game' in data:
             self.game_active = True
             self.game_state['started'] = True
@@ -66,7 +58,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         if 'key' in data:
             self.handle_key(data['key'])
         
-    def initialize_game(self, width, height):
+    def initialize_game(self):
+        height = 1
+        width = 1
         self.prediction = height / 2
         self.game_state = {
             'ball': {
@@ -385,12 +379,12 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
             try:
                 self.instance = await Tournament.objects.aget(name=self.room_name)
             except ObjectDoesNotExist:
-                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.send(text_data=json.dumps({'message':"This tournament doesn't exist!"}))
                 await self.close()
                 return
 
             if (self.instance.Ongoing and not await database_sync_to_async(self.instance.players.filter(id=self.user.id).exists)()) or self.instance.isOver:
-                await self.send(text_data=json.dumps({'message':"Can't join tournamet. Try again!"}))
+                await self.send(text_data=json.dumps({'message':"This tournament has already started!" if not self.instance.isOver else "This tournament is over!"}))
                 await self.close()
                 return
 

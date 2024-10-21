@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import WinStatsView, MatchCountView, GameProfileView, MultiGameHistoryView, AiGameHistoryView, TournamentsView
+from .views import WinStatsView, MatchCountView, GameProfileView, MultiGameHistoryView, AiGameHistoryView, TournamentsView, LeaderboardView, TournamentHistoryView
 
 urlpatterns = [
     path('winstats/', WinStatsView.as_view()),
@@ -8,4 +8,6 @@ urlpatterns = [
     path('multigamehistory/', MultiGameHistoryView.as_view()),
     path('aigamehistory/', AiGameHistoryView.as_view()),
     path('tournaments/', TournamentsView.as_view()),
+    path('leaderboard/', LeaderboardView.as_view()),
+    path('tournamenthistory/', TournamentHistoryView.as_view()),
 ]

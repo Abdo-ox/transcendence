@@ -33,7 +33,7 @@ class GameLogic:
             player1 = user1,
             player2 = user2,
         )
-        database_sync_to_async(game.players.add)(user1, user2)
+        await database_sync_to_async(game.players.add)(user1, user2)
         return game
 
     @staticmethod
@@ -168,6 +168,7 @@ class GameLogic:
         # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
+        self.user1.last_score = self.game_state['paddle1']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
@@ -175,6 +176,7 @@ class GameLogic:
         # user
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
+        self.user2.last_score = self.game_state['paddle2']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
@@ -361,9 +363,12 @@ class TournamentGameLogic:
             await self.get_winner()
             
     async def save_game_results(self):
+        # remove game logic from dict
+        del logicInstances[self.room_name]
         # user
         self.game.player1Score = self.game_state['paddle1']['score']
         self.user1.score += self.game_state['paddle1']['score']
+        self.user1.last_score = self.game_state['paddle1']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user1.coalition)()
         coalition.score += self.game_state['paddle1']['score']
@@ -371,6 +376,7 @@ class TournamentGameLogic:
         # user
         self.game.player2Score = self.game_state['paddle2']['score']
         self.user2.score += self.game_state['paddle2']['score']
+        self.user2.last_score += self.game_state['paddle2']['score']
         # coalition
         coalition = await sync_to_async(lambda: self.user2.coalition)()
         coalition.score += self.game_state['paddle2']['score']
@@ -431,6 +437,8 @@ class TournamentLogic:
 
         self.n += 1
         self.winners.append(winner)
+        if self.n == 3:
+            await self.save_tournament()
         state = self.get_state()
         await sync_to_async(self.init_games)()
         await self.channel_layer.group_send(self.room_name, {
@@ -438,8 +446,13 @@ class TournamentLogic:
             'state': state,
         })
 
-    # join game:
-    # check if the instance has already started, otherwise, create instance
+    async def save_tournament(self):
+        del TournamentLogicInstances[self.room_name]
+        self.tournament.isOver = True
+        self.tournament.Ongoing = False
+        self.tournament.winner = self.winners[-1]
+        await self.tournament.asave()
+
     async def join_game(self, user, consumer):
         # generate room name given username
         if user in self.winners:
@@ -483,7 +496,6 @@ class TournamentLogic:
     def set_state(self):
         self.state['players'] = [e.username for e in self.players]
         self.state['winners'] = [e.username for e in self.winners]
-        self.state['n'] = self.n
         self.state['play'] = True
 
         self.get_next_games()

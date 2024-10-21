@@ -1,8 +1,26 @@
 from rest_framework import serializers
 from . models import User, MultiGame, Game, Tournament
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'profile_image']
 
-# TODO: create serializer for tournament        
+class MultiGameHistorySerializer(serializers.ModelSerializer):
+    player1 = UserSerializer()
+    player2 = UserSerializer()
+    winner = UserSerializer()
+    class Meta:
+        model = MultiGame
+        fields = ['player1', 'player2', 'winner', 'player1Score', 'player2Score']
+
+class TournamentHistorySerializer(serializers.ModelSerializer):
+    games = MultiGameHistorySerializer(many=True)
+    winner = UserSerializer()
+    class Meta:
+        model = Tournament
+        fields = ['winner', 'games']
+
 class TournamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tournament
@@ -17,14 +35,15 @@ class WinStatSerializer(serializers.ModelSerializer):
 class GameProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['wins', 'losses', 'totalGames']
+        fields = ['username','score','profile_image','wins', 'losses', 'totalGames']
 
-class MultiGameHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MultiGame
-        fields = ['player1', 'player2', 'winner', 'Player1Score', 'Player2Score']
 
 class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['playerScore', 'aiScore', 'won']
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','profile_image','score','last_score']

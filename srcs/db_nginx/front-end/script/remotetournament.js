@@ -41,9 +41,8 @@ export const RemoteTournament = async () => {
                 document.getElementById('game-container').style.display = 'flex';
                 setCanvasSize();
             }
-            // else
             scaleGameState();
-            if (gameState.countdown) {       
+            if (gameState.countdown) {
                 countdown();
             }
             else {
@@ -76,7 +75,7 @@ export const RemoteTournament = async () => {
                         'create':true,
                         'name':name,
                     }));
-                    sessionStorage.setItem('tournament_name', tournament_name);
+                    sessionStorage.setItem('tournament_name', name);
                 }
                 // Show the error message
                 nameError.style.display = 'block';
@@ -152,6 +151,9 @@ export const RemoteTournament = async () => {
     let gameState = {};
 
     function countdown() {
+        c = 3;
+        draw();
+        c--;
         const interval = setInterval(() => {
             draw();
         
@@ -175,6 +177,8 @@ export const RemoteTournament = async () => {
     }
 
     function sendKey(key) {
+        if (socket.readyState == socket.CLOSED)
+            return
         socket.send(JSON.stringify({'key': key}));
     }
 
@@ -192,8 +196,7 @@ export const RemoteTournament = async () => {
         sendKey(event.key)
     });
 
-    // Function to trigger modal programmatically
-    function showModal() {
+    function showGameModal() {
         remoteGameModal = new bootstrap.Modal(document.getElementById('remoteGameModal'));
         remoteGameModal.show();
     }
@@ -221,7 +224,7 @@ export const RemoteTournament = async () => {
             ctx.fillText(gameState.won ? "Winner!" : "Loser!", canvas.width / 2, canvas.height / 2);
             const msg = document.getElementById("remoteGameModalLabel");
             msg.innerHTML = gameState.won ? "Winner!" : "Loser!";
-            showModal();
+            showGameModal();
         } else if (gameState.countdown) {
             ctx.fillText(c, canvas.width / 2, canvas.height / 2);
         }
