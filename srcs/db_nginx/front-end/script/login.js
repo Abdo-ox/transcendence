@@ -31,10 +31,15 @@ const handle_data = async (data_status) => {
         // handle error of login 
         console.log("error:", data_status);
     }
+    ancor.style.pointerEvents = 'auto';
+    ancor.classList.remove("non-active");
+    loginButton.style.pointerEvents = 'auto';
+    loginButton.classList.remove("non-active");
 }
 
 
-async function oAuthHandler(event) {
+async function oAuthHandler(ancor, loginButton, event) {
+
     const response = await fetch("https://localhost:8000/api/42/callback/", {
         method: 'POST',
         headers: {
@@ -46,8 +51,13 @@ async function oAuthHandler(event) {
         const data = await response.json();
         handle_data({ data, status: response.status });
     } else {
+
         console.error("response not ok in log with intra");
     }
+    loginButton.style.pointerEvents = 'auto';
+    loginButton.classList.remove("non-active");
+    ancor.style.pointerEvents = 'auto';
+    ancor.classList.remove("non-active");
 }
 
 export async function Login() {
@@ -62,18 +72,32 @@ export async function Login() {
         NewPage("/register", Register, false);
     });
 
-    document.getElementById('login-login-btn').addEventListener('click', (event) => {
+    const ancor = document.getElementById('login-intra-btn'); 
+    const loginButton = document.getElementById('login-login-btn'); 
+    loginButton.addEventListener('click', async (event) => {
         event.preventDefault();
-        submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
+        loginButton.style.pointerEvents = 'none';
+        loginButton.classList.add("non-active");
+        ancor.style.pointerEvents = 'none';
+        ancor.classList.add("non-active");
+        await submitForm('https://localhost:8000/api/token/', ids, csrf_token, handle_data);
+        loginButton.style.pointerEvents = 'auto';
+        loginButton.classList.remove("non-active");
+        ancor.style.pointerEvents = 'auto';
+        ancor.classList.remove("non-active");
     });
 
-    document.getElementById('login-intra-btn').addEventListener('click', async () => {
+    ancor.addEventListener('click', async () => {
+        loginButton.style.pointerEvents = 'auto';
+        loginButton.classList.remove("non-active");
+        ancor.style.pointerEvents = 'auto';
+        ancor.classList.remove("non-active");
         const response = await fetch("https://localhost:8000/api/42/data/");
         if (response.ok) {
             const data = await response.json();
             const url = new URLSearchParams(data.app);
             window.removeEventListener('message', oAuthHandler);
-            window.addEventListener('message', oAuthHandler);
+            window.addEventListener('message', oAuthHandler.bind(null, ancor, loginButton));
             const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', `width=600,height=700,left=${window.innerWidth / 2 - 300 + window.screenX},top=${window.innerHeight / 2 - 350 + window.screenY}`);
         }
     });
