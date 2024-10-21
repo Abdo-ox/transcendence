@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer, LeaderboardSerializer
+from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer, LeaderboardSerializer, TournamentHistorySerializer
 from .models import Game, MultiGame, Tournament, User
 
 class WinStatsView(APIView):
@@ -26,7 +26,7 @@ class MatchCountView(APIView):
         data['tournament'] = user.tournaments.count()
         data['ai_match'] = user.games.count()
         data['friend_match'] = user.multiPlayerGames.filter(friendMatch=True).count()
-        data['unkown_match'] = user.multiPlayerGames.filter(friendMatch=False, tournaments__isnull=True).count()
+        data['unkown_match'] = user.multiPlayerGames.filter(friendMatch=False, tournament__isnull=True).count()
 
         return Response(data)
 
@@ -75,5 +75,14 @@ class LeaderboardView(APIView):
     def get(self, request):
         users = User.objects.all()
         serializer = LeaderboardSerializer(users, many=True)
+
+        return Response(serializer.data)
+
+class TournamentHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        users = request.user
+        serializer = TournamentHistorySerializer(user.tournaments, many=True)
 
         return Response(serializer.data)
