@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import User
 from friendship.models import FriendRequest
 from rest_framework import serializers
-from .models import User
+from .models import User, Coalition
 from friendship.models import  FriendList
 from project.settings import C as c
 
@@ -55,3 +55,8 @@ class CurrentSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'profile_image']
+        
+class CoalitionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coalition
+        fields = ['name', 'image', 'score']

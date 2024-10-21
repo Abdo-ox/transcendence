@@ -599,7 +599,7 @@ section {
 
 .home-user-class h3{
     font-size: 20px;
-    width: 160px;
+    width: 120px;
 }
 
 .home-score {
@@ -816,19 +816,23 @@ section {
 .home-coalition-bar {
     border-radius: 2px;
     width: 40px;
-    height: 13px;
+    height: 20px;
+    line-height: 1.2;
+    text-align: center;
 }
 
 .home-one-bar {
     display: flex;
     align-items: center;
     gap: 5px;
+    font-weight: bold;
 }
 
 .home-flex-chart-bars {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 4px;
     /* align-items: center; */
     font-size: small;
 }
@@ -858,11 +862,6 @@ section {
     width: 80%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    background: conic-gradient(from 30deg,
-            var(--c1)  calc(var(--comodore-degr) - 3deg),
-            var(--c2) var(--comodore-degr) calc(var(--comodore-degr) + var(--pandora-degr) - 3deg),
-            var(--c3) calc(var(--comodore-degr) + var(--pandora-degr)) calc(var(--comodore-degr) + var(--pandora-degr) + var(--freax-degr) - 3deg),
-            var(--c4) calc(var(--comodore-degr) + var(--pandora-degr) + var(--freax-degr)) 357deg);
     margin-top: 10%;
     margin-left: auto;
     margin-right: auto;

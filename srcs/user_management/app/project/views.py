@@ -1,6 +1,4 @@
-from django.shortcuts import render, redirect
 from user.models import User 
-from .serializer import UserSerializer
 from django.http import JsonResponse, HttpResponse
 from django.middleware.csrf import get_token
 from rest_framework.decorators import api_view, permission_classes
@@ -11,13 +9,9 @@ import os
 from django.utils.crypto import get_random_string
 import random
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.conf import settings
 import json
-from django.contrib.auth import authenticate 
-from rest_framework.permissions import IsAuthenticated
 from .decorators import TwoFctor_Decorator
+
 @api_view(['POST'])
 def resetpassword(request):
     body_data = json.loads(request.body)  # No decoding here
@@ -30,8 +24,6 @@ def resetpassword(request):
     confirmation_code = str(random.randint(100000,999999))
     user.reset_Code = confirmation_code 
     user.save()
-    # request.session['reset_code'] = confirmation_code
-    # request.session['reset_user_email'] = user_email
     print("verfication code",confirmation_code,flush=True)
     subject = 'Your confirmation Code '
     message = f'Yourconfirmation code is :{confirmation_code}'
