@@ -1,23 +1,23 @@
 from rest_framework import serializers
 from . models import User, MultiGame, Game, Tournament
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'profile_image']
 
+# TODO: create serializer for tournament        
 class TournamentSerializer(serializers.ModelSerializer):
-    winner = UserSerializer()
-    players = UserSerializer(many=True)
     class Meta:
         model = Tournament
-        fields = ['name', 'winner', 'players']
+        fields = ['name']
 
 # win stats
 class WinStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['score']
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'profile_image']
 
 class GameProfileSerializer(serializers.ModelSerializer):
     class Meta:
