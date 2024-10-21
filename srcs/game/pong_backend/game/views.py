@@ -8,7 +8,6 @@ class WinStatsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        print('here', flush=True)
         user = request.user
         serializer = WinStatSerializer(user)
         data = serializer.data
