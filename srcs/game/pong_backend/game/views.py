@@ -82,7 +82,7 @@ class TournamentHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        users = request.user
+        user = request.user
         serializer = TournamentHistorySerializer(user.tournaments, many=True)
 
         return Response(serializer.data)

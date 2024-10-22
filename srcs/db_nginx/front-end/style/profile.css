@@ -834,9 +834,11 @@ circle {
     display: flex;
     background-color: #1b2141;
     width: 15%;
+    min-width: 220px;
     border-radius: 20px;
     margin-right: 20px;
     align-items: center;
+    gap: 10px;
 }
 
 .profile-searchBx {
@@ -878,7 +880,7 @@ circle {
     /* padding: 5px; */
     border-radius: inherit;
     max-height: 1210px;
-    /* overflow-y: hidden; */
+    overflow-y: hidden;
 }
 
 .profile-users-list:hover {
@@ -887,9 +889,12 @@ circle {
 
 .profile-user {
     all: unset;
-    background-color: #1f3d4738;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid #444;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
-    box-shadow: #c0b6b6 0px 3px 8px;
+    border-radius: 10px;
+    background-color: #1f3d4738;
     width: 90%;
     height: 60px;
     flex: 1;
@@ -898,25 +903,34 @@ circle {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid rgba(156, 148, 148, 0.1);
     padding: 5px 0 0 5px;
-    /* background-color: #150d33; */
     border-radius: 8px;
 }
 
 .profile-user h3 {
     all: unset;
     font-size: 16px;
-
+    color: #8e9ca5;
+    margin-right: 40px;
+    font-weight: 500;
 }
 
-.profile-user img {
+.profile-user .profile-friendImg {
     flex: 1;
-    width: 50px;
-    height: 50px;
+   max-width: 40px;
+    max-height: 40px;
     border-radius: 50%;
+    object-fit: cover;
+    /* border: 4px solid rgb(110, 24, 24); */
 }
-
+.profile-chat
+{
+    flex: 1;
+    max-width: 37px;
+     max-height: 37px;
+     border-radius: 50%;
+     object-fit: cover; 
+}
 .profile-user button {
 
     font-family: 'Courier New', Courier, 'monospace';
@@ -961,19 +975,16 @@ circle {
 }
 
 .profile-info-user {
-    justify-content: center;
+    justify-content: space-between;
     width: 80%;
+    height: 50px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    /* flex-direction: column; */
     font-size: 12px;
     overflow: hidden;
 }
 
-.profile-flex-2 .profile-logout {
-    position: absolute;
-    bottom: 0;
-    width: 90%;
-}
 
 @media screen and (max-width: 1270px) {
     .profile-dashbord {
