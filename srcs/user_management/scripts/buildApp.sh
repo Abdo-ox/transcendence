@@ -1,10 +1,9 @@
 #!/bin/bash
-while [ ! -f "/is_ready/user_management" ]; do
-    sleep 1
-done
-rm -f /is_ready/user_management
 
+echo "Starting User Management Service"
 
-echo "RUN SERVER"
-touch /is_ready/game
-watchfiles --target-type command "hypercorn  project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"
+# Wait until chat service is ready (healthcheck ensures it's healthy)
+echo "Starting the server..."
+
+# Use watchfiles to monitor changes and restart hypercorn automatically
+watchfiles --target-type command "hypercorn project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"

@@ -1,11 +1,8 @@
 #!/bin/bash
-echo in runchat
-while [ ! -f "/is_ready/chat" ]; do
-    sleep 1
-done
-rm -f /is_ready/chat
+echo "Running Chat Service"
 
 python manage.py makemigrations
+
 cat << EOF > chat/migrations/00002_create_coalitions.py
 from django.db import migrations
 from chat.models import Coalition
@@ -28,5 +25,5 @@ EOF
 
 python manage.py migrate
 
-touch /is_ready/user_management
-service redis-server start && python manage.py runserver 0.0.0.0:8000
+service redis-server start
+python manage.py runserver 0.0.0.0:8000
