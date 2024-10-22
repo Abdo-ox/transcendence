@@ -57,11 +57,6 @@ class GetChatID(APIView):
 
         user1 = request.query_params.get('username1')
         user2 = request.query_params.get('username2')
-        # authorization = request.headers.get('Authorization')
-    
-        # if authorization:
-        #     token = authorization.split(' ')[1]  # 'Bearer <token>'
-        #     print('Authorization Token:', token, flush=True)
         try:
             user1_contact = Contact.objects.get(user__username=user1)
             user2_contact = Contact.objects.get(user__username=user2)
@@ -69,7 +64,7 @@ class GetChatID(APIView):
             print('is_friend ------------', is_friend, flush=True)
         except Contact.DoesNotExist:
             return Response({'error': 'One or both users do not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # i can u get_or_create method in this case to optimise it
+        # i can do get_or_create method in this case to optimise it
         chat = Chat.objects.filter(participants=user1_contact).filter(participants=user2_contact).first()
         if chat:
             serializer = ChatSerializer(chat)
@@ -79,7 +74,7 @@ class GetChatID(APIView):
             new_chat = Chat.objects.create()
             new_chat.participants.add(user1_contact, user2_contact)
             serializer = ChatSerializer(new_chat)
-            return Response({'chat_id': new_chat.id}, status=status.HTTP_201_CREATED)
+            return Response({'ChatID': new_chat.id}, status=status.HTTP_201_CREATED)
 
 # class ChatListView(ListAPIView):
 #     permission_classes = [IsAuthenticated]
