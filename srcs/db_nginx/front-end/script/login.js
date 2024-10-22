@@ -31,10 +31,6 @@ const handle_data = async (data_status) => {
         // handle error of login 
         console.log("error:", data_status);
     }
-    ancor.style.pointerEvents = 'auto';
-    ancor.classList.remove("non-active");
-    loginButton.style.pointerEvents = 'auto';
-    loginButton.classList.remove("non-active");
 }
 
 
