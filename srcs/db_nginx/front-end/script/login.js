@@ -1,8 +1,7 @@
-import { getCsrfToken, NewPage, submitForm, getJWT } from "/utils.js";
+import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "/utils.js";
 import { Home } from "/home.js";
 import { Register } from "/register.js";
 import { ResetPassword } from "/resetpassword.js";
-import { is_authenticated } from "./utils.js";
 console.log("the login.js called");
 
 const handle_data = async (data_status) => {
@@ -25,11 +24,13 @@ const handle_data = async (data_status) => {
                 NewPage("/home", Home);
             })
             .catch((error) => {
+                document.getElementById("error-container").innerHTML = `hello world again and again`;
                 console.log("error in login :", error);
             });
     } else {
         // handle error of login 
         console.log("error:", data_status);
+        printErrorInScreen([data_status.data.detail]);
     }
 }
 
@@ -101,5 +102,4 @@ export async function Login() {
         console.log("i am here ****************");
         NewPage("/resetpassword", ResetPassword, false);
     });
-
-}
+}   
