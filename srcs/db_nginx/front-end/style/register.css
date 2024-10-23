@@ -141,6 +141,7 @@
 
 .register-wrapper .register-btn
 {
+    position: relative;
     width: 50%;
     height: 45px;
     background:#fff;

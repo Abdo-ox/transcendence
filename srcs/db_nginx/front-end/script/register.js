@@ -29,9 +29,15 @@ export async function Register() {
     document.getElementById('register-password1').value = pass;                                       //to remove 
     document.getElementById('register-password2').value = pass;                                       //to remove 
 
-    document.getElementById('register-submit-btn').addEventListener('click', (event) => {
+    const registerButton = document.getElementById('register-submit-btn');
+    registerButton.addEventListener('click', async (event) => {
         event.preventDefault();
-        submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
+        console.log("hello");
+        event.target.style.pointerEvents = 'none';
+        registerButton.classList.add('non-active');
+        await submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
+        registerButton.style.pointerEvents = 'auto';
+        registerButton.classList.remove('non-active');
     });
 }
 

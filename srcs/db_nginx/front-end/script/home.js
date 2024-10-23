@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, printErrorInScreen} from "/utils.js";
 import { GamePlaySocket } from "/header.js";
 import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";
@@ -85,7 +85,6 @@ function coalition(data) {
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
-    console.log(`button:${button}`);
     const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
         headers: {
             Authorization: `Bearer ${await getJWT()}`
@@ -105,6 +104,10 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
         }
         button.style.display = 'none';
         button.parentElement.querySelector(`.home-${action[1]}-btn`).style.display = 'block';
+    }
+    else {
+        errors = await response.json();
+        printErrorInScreen(errors.errors);
     }
 }
 
@@ -164,8 +167,8 @@ export async function Home() {
             'Authorization': `Bearer ${access_token}`,
         }
     })
-    if (!response.ok) {
-        console.error('Failed to fetch suggest friends  :', response.status, response.statusText);
+    if (!response.status) {
+        console.error('Failed to fetch suggest friends.');
         return;
     }
     const data = await response.json();
