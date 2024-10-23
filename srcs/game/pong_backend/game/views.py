@@ -91,11 +91,7 @@ class LeaderboardView(APIView):
 class TournamentHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, username=None):
-        if not username:
-            user = request.user
-        else:
-            user = User.objects.get(username=username)
+    def get(self, request):
         user = request.user
         serializer = TournamentHistorySerializer(user.tournaments, many=True)
 
