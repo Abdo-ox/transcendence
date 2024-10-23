@@ -110,8 +110,10 @@ export async function createWebSocket(ChatID, username)
 
         // msgListTag.appendChild(imgTag);
         msgListTag.appendChild(pTag);
-        document.querySelector('#chat-log').appendChild(msgListTag);
-        scrollToBottom();
+        var chatLOG = document.querySelector('#chat-log')
+        if (chatLOG)
+            chatLOG.appendChild(msgListTag);
+          scrollToBottom();
     }
 }
 

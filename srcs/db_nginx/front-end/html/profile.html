@@ -23,11 +23,11 @@
                     </div>
                     <div class="profile-clip">
                         <div class="profile-flip">
-                            <img src="/images/fourtnite4k/images.jpeg" alt="">
+                            <img  id="profile-profileimage" src="/images/fourtnite4k/images.jpeg" alt="">
                         </div>
                         <div class="profile-title-box">
                             <div class="profile-sub-title">
-                                <h4>username</h4>
+                                <h4 id="profile-username">username</h4>
                                 <div class="profile-setting-box">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </div>
@@ -107,94 +107,36 @@
                 <div class="profile-acheivements">
                     <h2 class="profile-h2Title">Acheivements</h2>
                     <div class="profile-acheiv-Box">
-                        <div class="profile-cover">
-                            <img src="/images/acheivements/firstServe.png" alt="">
-                            <div class="item_bar cell"><div class="progress" data-progress="80"></div></div>
-
-                           <!--  <div class="profile-cardbox">
-                                <div id="profile-locked1">
-                                    <i class="fas fa-lock"></i>
-                                </div>
-                                <h4>First Serve</h4>
-                            </div> -->
-                        </div>
-                        <!-- <div class="profile-cover">
-                            <img src="/images/acheivements/firstServe.png" alt="">
-                            <div class="profile-cardbox">
-                                <div id="profile-locked1">
-                                    <i class="fas fa-lock"></i>
-                                </div>
-                                <h4>Matchmaker</h4>
+                        <div class="profile-glass" style="--r:-15" data-text="First Serve">
+                            <div class="profile-progress" style=" --clr:#43f94a;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
                             </div>
                         </div>
-                        <div class="profile-cover">
-                            <img src="/images/acheivements/firstServe.png" alt="">
-                            <div class="profile-cardbox">
-                                <div id="profile-locked1">
-                                    <i class="fas fa-lock"></i>
-                                </div>
-                                <h4>Paddle Master</h4>
+                         <div class="profile-glass" style="--r:5"data-text="Matchmaker" >
+                            <div class="profile-progress"  style="--clr:#2ccde9;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
                             </div>
-                        </div>
-                        <div class="profile-cover">
-                            <img src="/images/acheivements/firstServe.png" alt="">
-                            <div class="profile-cardbox">
-                                <div id="profile-locked1">
-                                    <i class="fas fa-lock"></i>
-                                </div>
-                                <h4>Rookie Score</h4>
+                         </div>
+                         <div class="profile-glass" style="--r:25"data-text="Paddle Master"> 
+                            <div class="profile-progress"  style="--clr:#fb297b;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
                             </div>
-                        </div> -->
+                         </div>
+                         <div class="profile-glass" style="--r:-15"data-text="Rockie Score">
+                            <div class="profile-progress" style="--clr:#ffe047;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
+                            </div>
+                         </div>
                     </div>
                 </div>
                 <div class="profile-history">
                     <h2 class="profile-h2Title">Match History</h2>
-                    <div class="profile-matchhISTORY">
-                        <div class="profile-game-entry">
-                            <div class="profile-player">
-                                <img id="profile-player1" src="/images/src/profile.jpg" alt="Player 1 Profile Picture">
-                                <span class="profile-player-name">Player1</span>
-                            </div>
-                            <div class="profile-points">
-                                <span class="profile-player-points">5</span>
-                                <span>:</span>
-                                <span class="profile-opponent-points">1</span>
-                            </div>
-                            <div class="profile-player">
-                                <span   class="profile-player-name">Player2 </span>
-                                <img  id="profile-player2" src="/images/src/profile.jpg" alt="Player 2 Profile Picture">
-                            </div>
-                        </div>
-                        <!-- <div class="profile-game-entry">
-                            <div class="profile-player">
-                                <img src="src/profile.jpg" alt="Player 1 Profile Picture">
-                                <span class="profile-player-name">Player1</span>
-                            </div>
-                            <div class="profile-points">
-                                <span class="profile-player-points">5</span>
-                                <span>:</span>
-                                <span class="profile-opponent-points">1</span>
-                            </div>
-                            <div class="profile-player">
-                                <span   class="profile-player-name">Player2 </span>
-                                <img  id="profile-player2" src="src/profile.jpg" alt="Player 2 Profile Picture">
-                            </div>
-                        </div>
-                        <div class="profile-game-entry">
-                            <div class="profile-player">
-                                <img src="src/profile.jpg" alt="Player 1 Profile Picture">
-                                <span class="profile-player-name">Player1</span>
-                            </div>
-                            <div class="profile-points">
-                                <span class="profile-player-points">5</span>
-                                <span>:</span>
-                                <span class="profile-opponent-points">1</span>
-                            </div>
-                            <div class="profile-player">
-                                <span   class="profile-player-name">Player2 </span>
-                                <img  id="profile-player2" src="src/profile.jpg" alt="Player 2 Profile Picture">
-                            </div>
-                        </div> -->
+                    <div id="profile-arrayHistory" class="profile-matchhISTORY">
+                        <p  id="history-para" class="history-para">No matches yet! Dive in and start your adventure!</p>
                     </div>
                     
                 </div>
@@ -222,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="profile-tournamentHistory">
+                <!-- <div class="profile-tournamentHistory">
                     <h2 class="profile-h2Title">tournaments History</h2>
                     <div class="profile-history-list">
                         <div class="profile-tournament-item">
@@ -248,7 +190,7 @@
                              </div>
                          </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="profile-flex-2">
@@ -279,7 +221,6 @@
                     <button>send</button>
                 </div>
             </div>
-            <img class="profile-logout" src="/images/acheivements/logOut.png" alt="">
         </div>
     </div>
 </body>
