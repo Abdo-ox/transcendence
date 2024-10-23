@@ -61,5 +61,4 @@ http {
     }
 }
 EOF
-touch db_nginx
 nginx -g "daemon off;"
