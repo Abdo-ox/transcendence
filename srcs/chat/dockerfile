@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 RUN pip install --upgrade pip --root-user-action=ignore && pip  install -r requirements.txt --root-user-action=ignore
 
-RUN apt-get update && apt-get install -y redis-server
+# RUN apt-get update && apt-get install -y redis-server
 
 COPY src /app/
 

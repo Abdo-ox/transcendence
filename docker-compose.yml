@@ -46,8 +46,16 @@ services:
       timeout: 10s
       retries: 5
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - net
+
   chat:
-    build: ./srcs/chat
+    build: 
+      context: ./srcs
+      dockerfile: chat/Dockerfile
     container_name: chat
     ports:
       - "9000:8000"
@@ -56,14 +64,17 @@ services:
     networks:
       - net
     depends_on:
+      redis:
+          condition: service_started
       db_nginx:
         condition: service_healthy  # Wait until db_nginx is healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f https://localhost:8000 || exit 1"]  # Customize based on app health
 
   game:
-    build: ./srcs/game
-    container_name: game
+    build: 
+      context: ./srcs
+      dockerfile: game/Dockerfile
     ports:
       - "9090:8000"
     env_file:
@@ -73,6 +84,8 @@ services:
     volumes:
       - ./srcs/game/pong_backend:/game
     depends_on:
+      redis:
+          condition: service_started
       db_nginx:
         condition: service_healthy  # Wait until db_nginx is healthy
     healthcheck:
