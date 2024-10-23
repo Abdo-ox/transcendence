@@ -9,8 +9,10 @@
     background-color: #1aeeef;
     border-radius: 6px;
 } */
-
-.profile-content {
+body
+{
+    perspective: 1000px;
+}.profile-content {
     display: flex;
     margin-top: 100px;
     width: 100%;
@@ -73,9 +75,13 @@
 }
 
 .profile-coalition-box .profile-coalition {
+    all: unset;
     position: relative;
-    width: 100%;
-    height: 100%;
+     width: 100px;
+    height: 70px; 
+    margin-right: 7px;
+     /* max-width: 120px; */
+    /* max-height: 60px;  */
     object-fit: cover;
     z-index: 2;
 }
@@ -362,6 +368,7 @@ circle {
 }
 
 .profile-h2Title {
+    width: 100%;
     margin-top: 10px;
     font-size: 1.8em;
     text-align: center;
@@ -663,6 +670,7 @@ circle {
 .profile-tournament-bx {
 
     display: flex;
+    flex-direction: column;
     width: 100%;
     position: relative;
     gap: 20px;
@@ -697,6 +705,7 @@ circle {
     padding: 10px;
     text-align: center;
     position: relative;
+    justify-content: center;
     /* background:url('acheivements/star1.profile-png')no-repeat; */
     background-size: cover;
     width: 100%;
@@ -707,12 +716,24 @@ circle {
 
 .profile-trophy-placeholder .profile-trophy-icon {
     position: relative;
-    width: 120px;
+    width: 140px;
+    border: 4px solid rgb(243, 236, 199);
+    margin: 0 -15px;
+    transform: rotate(-15deg);
+    height: 230px;
     align-items: center;
     display: flex;
+    justify-content: center;
     flex-direction: column;
+    border-radius: 10px;
+    transition: transform 0.9s ease, box-shadow 0.9s ease;
+    transform-style: preserve-3d;
+    z-index: 4;
 }
-
+.profile-trophy-icon:hover{
+    transform:   scale(1.1);
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 .profile-trophy-icon i {
     font-size: 60px;
     color: #8e9ca5;
@@ -722,12 +743,19 @@ circle {
     color: rgb(243, 236, 199);
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(0,0,0, 0.4);
+    
 }
 
 .profile-trophy-placeholder .profile-trophy-icon img {
     position: relative;
-    width: 100%;
-    height: 100%;
+    border-radius: 10px;
+     width: 100%;
+     height: 100%; 
 }
 
 .profile-trophy-placeholder .profile-no-acheiv {

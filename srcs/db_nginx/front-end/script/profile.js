@@ -6,15 +6,19 @@ import {Chat } from "/chat.js";
 // });
 
 export async function Profile() {
-
     {
+       
+        const params = new URLSearchParams(window.location.search)
+        const myuser = params.get('user');
+        console.log("url is : ",params);
+        console.log(myuser, "<_____--- is ");
         const ArryImag = ['url("/images/acheivements/firstServe.png")',
             'url("/images/acheivements/paddlemaster.jpeg")',
             'url("/images/acheivements/paddle.jpeg")',
             'url("/images/acheivements/rookie.jpg")']
 
         /**  Endpoint game**/
-        const response = await fetch('https://localhost:9090/gameprofile/', {
+        const response = await fetch('https://localhost:9090/gameprofile/'+myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -143,7 +147,7 @@ export async function Profile() {
 
     /***multigame History */
     {
-        const response = await fetch('https://localhost:9090/multigamehistory/', {
+        const response = await fetch('https://localhost:9090/multigamehistory/'+myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -183,7 +187,7 @@ export async function Profile() {
     }
 
     {
-        const response = await fetch('https://localhost:9090/tournaments/', {
+        const response = await fetch('https://localhost:9090/tournaments/'+myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
