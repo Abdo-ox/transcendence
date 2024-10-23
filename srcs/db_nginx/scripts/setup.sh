@@ -3,12 +3,14 @@
 chown -R postgres:postgres /var/lib/postgresql/15/main
 chown -R postgres:postgres /etc/postgresql/15/main
 chown -R postgres:postgres /var/log/postgresql
-service postgresql start 
+service postgresql start
+
 psql -U $DB_USER -c "create database $DB_NAME;"
-if [ $? -eq 0 ];then
-    echo "enter"
+if [ $? -eq 0 ]; then
     psql -U $DB_USER -c "alter user $DB_USER with password '${DB_PASS}'"
 fi
+
+# Generate Nginx configuration
 cat << EOF > /etc/nginx/nginx.conf
 user www-data;
 worker_processes auto;
@@ -59,6 +61,4 @@ http {
     }
 }
 EOF
-echo "database is ready"
-touch /is_ready/chat
 nginx -g "daemon off;"

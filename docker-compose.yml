@@ -1,6 +1,6 @@
+version: '3.8'
 
 services:
-
   user_management:
     build:
       context: ./srcs
@@ -12,11 +12,16 @@ services:
       - .env
     volumes:
       - ./srcs/user_management/app:/usr/src/app
-      - ./srcs/is_ready:/is_ready
     networks:
       - net
     depends_on:
-      - db_nginx
+      db_nginx:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f https://localhost:8000 || exit 1"]
+
+
+
 
   db_nginx:
     build: 
@@ -33,9 +38,16 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/is_ready:/is_ready
       - ./srcs/db_nginx/front-end:/usr/share/nginx/html
       - db_nginx:/var/lib/postgresql/15/main
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER -d $DB_NAME || exit 1"]  # Check Postgres readiness
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+
 
   redis:
     image: redis:latest
@@ -56,16 +68,16 @@ services:
       - .env
     networks:
       - net
-    volumes:
-      - ./srcs/is_ready:/is_ready
-      # - ./srcs/chat:/app/
-  
+    depends_on:
+      db_nginx:
+        condition: service_healthy  # Wait until db_nginx is healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f https://localhost:8000 || exit 1"]  # Customize based on app health
+
   game:
     build: 
       context: ./srcs
       dockerfile: game/Dockerfile
-    depends_on:
-      - redis
     ports:
       - "9090:8000"
     env_file:
@@ -73,16 +85,22 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/is_ready:/is_ready
       - ./srcs/game/pong_backend:/game
+    depends_on:
+      redis:
+        condition: service_started
+      db_nginx:
+        condition: service_healthy  # Wait until db_nginx is healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f https://localhost:8000 || exit 1"]  # Customize based on app health
 
 networks:
   net:
 
 volumes:
-        db_nginx:
-                driver: local
-                driver_opts:
-                          type: 'none'
-                          o: 'bind'
-                          device: './db'
+  db_nginx:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './db'
