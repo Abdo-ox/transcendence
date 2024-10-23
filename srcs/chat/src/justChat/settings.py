@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,7 +16,7 @@ SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'chat.User'
 
@@ -89,7 +90,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [("redis", 6379)],
         },
     },
 }
@@ -148,11 +149,13 @@ STATICFILES_DIRS = [
 ]
 
 # CORS configuration
-# CORS_ALLOWED_ORIGINS = [
-#     "https://localhost:8000",
-#     "https://127.0.0.1:8000",
-    # "http://10.14.53.111:8080",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+]
 
-# To allow all origins (for development only)
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS =  ['http://localhost', 'http://127.0.0.1']
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-csrftoken',
+]

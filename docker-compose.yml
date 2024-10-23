@@ -36,12 +36,22 @@ services:
       - ./srcs/is_ready:/is_ready
       - ./srcs/db_nginx/front-end:/usr/share/nginx/html
       - db_nginx:/var/lib/postgresql/15/main
-    
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - net
+
   chat:
-    build: ./srcs/chat
+    build: 
+      context: ./srcs
+      dockerfile: chat/Dockerfile
     container_name: chat
     ports:
       - "9000:8000"
+    depends_on:
+      - redis
     env_file:
       - .env
     networks:
@@ -51,7 +61,11 @@ services:
       # - ./srcs/chat:/app/
   
   game:
-    build: ./srcs/game
+    build: 
+      context: ./srcs
+      dockerfile: game/Dockerfile
+    depends_on:
+      - redis
     ports:
       - "9090:8000"
     env_file:
