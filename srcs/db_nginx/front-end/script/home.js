@@ -11,10 +11,16 @@ import { TournamentFr } from "./fr-tournament.js";
 function pieChart2(data) {
     console.log("------------------------------------------->", data);
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
-    let tournament = (data.tournament * 100) / total;
-    let ai = (data.ai_match * 100) / total;
-    let friend = (data.friend_match * 100) / total;
-    let unknown = (data.unkown_match * 100) / total;
+    let tournament = ((data.tournament * 100) / total);
+    let ai = ((data.ai_match * 100) / total);
+    let friend = ((data.friend_match * 100) / total);
+    let unknown = ((data.unkown_match * 100) / total);
+    if (isNaN(tournament)) {
+        tournament = 0;
+        ai = 0;
+        friend = 0;
+        unknown = 0;
+    }
     document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}"`);
     document.getElementById('home-ai').style.setProperty('--content', `"${ai}"`);
     document.getElementById('home-friend').style.setProperty('--content', `"${friend}"`);
@@ -72,6 +78,7 @@ function coalition(data) {
     const scr = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
     console.log(total);
+    src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
     document.getElementById("home-night-spin-percent").innerHTML = scr[0]  + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
