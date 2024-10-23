@@ -149,13 +149,15 @@ STATICFILES_DIRS = [
 ]
 
 # CORS configuration
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost",
-    "http://127.0.0.1",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost",
+#     "http://127.0.0.1",
+# ]
 
-CSRF_TRUSTED_ORIGINS =  ['http://localhost', 'http://127.0.0.1']
+# CSRF_TRUSTED_ORIGINS =  ['http://localhost', 'http://127.0.0.1']
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'x-csrftoken',
-]
+# CORS_ALLOW_HEADERS = list(default_headers) + [
+#     'x-csrftoken',
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
