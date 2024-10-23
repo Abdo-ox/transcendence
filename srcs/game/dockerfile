@@ -1,5 +1,6 @@
 FROM    python:3.10
 
+# RUN apt update && apt install -y curl
 COPY    game/requirements.txt .
 
 RUN     pip install -r requirements.txt

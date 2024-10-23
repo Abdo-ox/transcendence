@@ -1,9 +1,11 @@
 #!/bin/bash
-echo in runchat
-while [ ! -f "/is_ready/chat" ]; do
+while [ true ]; do
+    curl -k -H "Host: localhost" https://$US_HOST:8000/ > /dev/null 2>&1
+    if [ $? -eq 0 ];then
+        break
+    fi
     sleep 1
 done
-rm -f /is_ready/chat
 
 python manage.py makemigrations
 cat << EOF > chat/migrations/00002_create_coalitions.py
@@ -28,6 +30,7 @@ EOF
 
 python manage.py migrate
 
-touch /is_ready/user_management
+echo "start the chat service"
+
 python manage.py runserver 0.0.0.0:8000
 # hypercorn  justChat.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key

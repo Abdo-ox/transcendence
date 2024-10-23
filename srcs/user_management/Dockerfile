@@ -4,7 +4,7 @@ RUN apt update && apt-get install -y ca-certificates \
 	&& apt install -y libpq-dev && apt install -y gcc make  
 
 RUN apt update && apt install -y --no-install-recommends && \
-	apt install -y nginx
+	apt install -y nginx && apt update && apt install -y curl
 
 RUN	rm -rf /var/lib/apt/lists/*
 

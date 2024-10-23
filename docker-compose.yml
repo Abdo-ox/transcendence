@@ -12,7 +12,6 @@ services:
       - .env
     volumes:
       - ./srcs/user_management/app:/usr/src/app
-      - ./srcs/is_ready:/is_ready
     networks:
       - net
     depends_on:
@@ -33,7 +32,6 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/is_ready:/is_ready
       - ./srcs/db_nginx/front-end:/usr/share/nginx/html
       - db_nginx:/var/lib/postgresql/15/main
 
@@ -56,14 +54,12 @@ services:
       - .env
     networks:
       - net
-    volumes:
-      - ./srcs/is_ready:/is_ready
-      # - ./srcs/chat:/app/
   
   game:
     build: 
       context: ./srcs
       dockerfile: game/Dockerfile
+    container_name: game
     depends_on:
       - redis
     ports:
@@ -73,7 +69,6 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/is_ready:/is_ready
       - ./srcs/game/pong_backend:/game
 
 networks:
