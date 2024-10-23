@@ -230,7 +230,7 @@ export async function Home() {
     });
 
 
-    // let test = await tours.json();
+    let test = await tours.json();
     // console.log('tournament history', test)
     document.getElementById("tournament-title").innerText = test[0].name;
     document.getElementById("join").addEventListener('click', () => {
