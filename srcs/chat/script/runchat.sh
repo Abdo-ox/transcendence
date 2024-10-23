@@ -29,4 +29,5 @@ EOF
 python manage.py migrate
 
 touch /is_ready/user_management
-service redis-server start && python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000
+# hypercorn  justChat.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key

@@ -21,15 +21,17 @@ FROM python:3.10
 
 WORKDIR /app 
 
-COPY requirements.txt .
+COPY chat/requirements.txt .
 
 RUN pip install --upgrade pip --root-user-action=ignore && pip  install -r requirements.txt --root-user-action=ignore
 
-RUN apt-get update && apt-get install -y redis-server
+# RUN apt-get update && apt-get install -y redis-server
 
-COPY src /app/
+COPY chat/src /app/
 
-COPY script/runchat.sh .
+COPY    certs certs
+
+COPY chat/script/runchat.sh .
 
 RUN chmod 777 runchat.sh
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from . models import User, MultiGame, Game, Tournament
+from . models import User, MultiGame, Game, Tournament, Coalition
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,10 +32,16 @@ class WinStatSerializer(serializers.ModelSerializer):
         model = User
         fields = ['score']
 
+class CoalitionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coalition
+        fields = ['name', 'image']
+
 class GameProfileSerializer(serializers.ModelSerializer):
+    coalition = CoalitionSerializer()
     class Meta:
         model = User
-        fields = ['username','score','profile_image','wins', 'losses', 'totalGames']
+        fields = ['username','score','profile_image','wins', 'losses', 'totalGames', 'coalition']
 
 
 class AiGameHistorySerializer(serializers.ModelSerializer):
