@@ -527,7 +527,7 @@ class TournamentLogic:
                 }) 
         elif self.n == 2:
             channel_layer = get_channel_layer()
-            game = MultiGame.objects.create(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
+            game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
             await database_sync_to_async(game.players.add)(*self.winners)
             for username in self.state['winners']:
                 await channel_layer.group_send('notif', {
