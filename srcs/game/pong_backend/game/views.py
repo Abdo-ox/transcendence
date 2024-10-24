@@ -33,8 +33,11 @@ class MatchCountView(APIView):
 class GameProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
+    def get(self, request, username=None):
+        if not username:
+            user = request.user
+        else:
+            user = User.objects.get(username=username)
         serializer = GameProfileSerializer(user)
         data = serializer.data
 
@@ -45,8 +48,11 @@ class GameProfileView(APIView):
 class MultiGameHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
+    def get(self, request, username=None):
+        if not username:
+            user = request.user
+        else:
+            user = User.objects.get(username=username)
         serializer = MultiGameHistorySerializer(user.multiPlayerGames, many=True)
 
         return Response(serializer.data)
@@ -54,7 +60,11 @@ class MultiGameHistoryView(APIView):
 class AiGameHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, username=None):
+        if not username:
+            user = request.user
+        else:
+            user = User.objects.get(username=username)
         user = request.user
         serializer = AiGameHistorySerializer(user.games, many=True)
 
@@ -82,7 +92,7 @@ class TournamentHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        users = request.user
+        user = request.user
         serializer = TournamentHistorySerializer(user.tournaments, many=True)
 
         return Response(serializer.data)

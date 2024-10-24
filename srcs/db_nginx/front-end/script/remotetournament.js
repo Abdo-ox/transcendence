@@ -118,7 +118,13 @@ export const RemoteTournament = async () => {
 
         i = 1;
         tournamentState.winners.forEach(element => {
-            let box = document.getElementById(`winner${i}`);
+            let j = 3;
+            if (i < 3) {
+                j = 1;
+                if (tournamentState.players.indexOf(element) >= 2)
+                    j = 2;
+            }
+            let box = document.getElementById(`winner${j}`);
             box.textContent = element;
             i += 1;
         });

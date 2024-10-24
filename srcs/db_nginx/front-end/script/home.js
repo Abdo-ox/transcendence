@@ -223,19 +223,20 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`
-    //     }
-    // });
+    const tours = await fetch("https://localhost:9090/tournaments/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
 
-    // let test = await tours.json();
-    // document.getElementById("tournament-title").innerText = test[0].name;
-    // document.getElementById("join").addEventListener('click', () => {
-    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-    //     NewPage("/remotetournament", RemoteTournament);
-    // });
+    let test = await tours.json();
+    // console.log('tournament history', test)
+    document.getElementById("tournament-title").innerText = test[0].name;
+    document.getElementById("join").addEventListener('click', () => {
+        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+        NewPage("/remotetournament", RemoteTournament);
+    });
 
     // tournament cards end
 

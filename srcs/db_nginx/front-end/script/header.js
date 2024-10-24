@@ -202,6 +202,7 @@ const addheader = () => {
 }
 
 export async function header() {
+    let UserName;
     const access_token = await getJWT();
     if (!access_token)
         return;
@@ -221,6 +222,7 @@ export async function header() {
         if (!redirectTwoFactor(data, response.status))
             return (0);
         CurrentUser = data.username;
+        UserName=CurrentUser;
         document.getElementById("header-profile-image").src = data.profile_image;
         document.getElementById("header-username").innerHTML = data.username;
     }
@@ -230,8 +232,8 @@ export async function header() {
 
     if (GamePlaySocket)
         GamePlaySocket.close();
-    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
     UserStatusSock = new WebSocket(`ws://127.0.0.1:9000/ws/status/?token=${access_token}`);
+    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
     UserStatusSock.onopen = () => {
         console.log('UserStatusSock');
     }
@@ -319,7 +321,7 @@ export async function header() {
 
 
     document.getElementById("header-profile-box").addEventListener('click', () => {
-        NewPage("/profile", Profile);
+        NewPage("/profile", Profile,true,"?user="+UserName);
     });
 
     // Add click event listener to the notification icon

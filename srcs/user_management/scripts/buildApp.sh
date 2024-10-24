@@ -1,9 +1,11 @@
 #!/bin/bash
+while [ true ]; do
+    curl -k https://$DB_HOST/ > /dev/null 2>&1
+    if [ $? -eq 0 ];then
+        break
+    fi
+    sleep 1
+done
 
-echo "Starting User Management Service"
-
-# Wait until chat service is ready (healthcheck ensures it's healthy)
-echo "Starting the server..."
-
-# Use watchfiles to monitor changes and restart hypercorn automatically
-watchfiles --target-type command "hypercorn project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"
+echo "start user_management service"
+watchfiles --target-type command "hypercorn  project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"
