@@ -88,14 +88,14 @@ export const Multi = async () => {
     function scaleGameState() {
         if (!rev) {
             // scale x
-            gameState.paddle1.x *= canvas.width
-            gameState.paddle2.x *= canvas.width
-            gameState.ball.x    *= canvas.width
+            gameState.paddle1.x *= canvas.height
+            gameState.paddle2.x *= canvas.height
+            gameState.ball.x    *= canvas.height
         } else {
             // scale x
-            gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
-            gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
+            gameState.paddle1.x = (1.99 - gameState.paddle1.x) * canvas.height
+            gameState.paddle2.x = (1.99 - gameState.paddle2.x) * canvas.height
+            gameState.ball.x    = (1.99 - gameState.ball.x)    * canvas.height
         }
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height

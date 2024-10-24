@@ -61,14 +61,14 @@ class GameConsumer(AsyncWebsocketConsumer):
         
     def initialize_game(self):
         height = 1
-        width = 1
+        width = 1.99
         self.prediction = height / 2
         self.game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {

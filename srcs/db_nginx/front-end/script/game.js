@@ -63,9 +63,9 @@ export const Game = async () => {
 
     function scaleGameState() {
         // scale x
-        gameState.paddle1.x *= canvas.width
-        gameState.paddle2.x *= canvas.width
-        gameState.ball.x    *= canvas.width
+        gameState.paddle1.x *= canvas.height
+        gameState.paddle2.x *= canvas.height
+        gameState.ball.x    *= canvas.height // switching from width to height
 
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height
