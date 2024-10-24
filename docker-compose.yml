@@ -44,7 +44,7 @@ services:
   chat:
     build: 
       context: ./srcs
-      dockerfile: chat/Dockerfile
+      dockerfile: chat/dockerfile
     container_name: chat
     ports:
       - "9000:8000"
@@ -58,7 +58,7 @@ services:
   game:
     build: 
       context: ./srcs
-      dockerfile: game/Dockerfile
+      dockerfile: game/dockerfile
     container_name: game
     depends_on:
       - redis
