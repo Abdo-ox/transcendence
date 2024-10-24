@@ -232,11 +232,11 @@ export async function Home() {
 
     let test = await tours.json();
     // console.log('tournament history', test)
-    document.getElementById("tournament-title").innerText = test[0].name;
-    document.getElementById("join").addEventListener('click', () => {
-        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-        NewPage("/remotetournament", RemoteTournament);
-    });
+    // document.getElementById("tournament-title").innerText = test[0].name;
+    // document.getElementById("join").addEventListener('click', () => {
+    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+    //     NewPage("/remotetournament", RemoteTournament);
+    // });
 
     // tournament cards end
 

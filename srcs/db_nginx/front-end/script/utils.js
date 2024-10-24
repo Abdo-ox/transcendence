@@ -116,11 +116,11 @@ export const NewPage = async (url, func, addhistory = true,query='') => {
         }
         if (document.querySelector('header'))
             makePageActive(url.substring(1));
-        func();
         if (addhistory)
             history.pushState({}, '', url+query);
     } else
         console.log("error in fetch the new page '", url, "'.");
+        func();
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {
