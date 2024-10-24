@@ -170,10 +170,10 @@ export const RemoteTournament = async () => {
     }
 
     function scaleGameState() {
-        gameState.paddle1.x *= canvas.width
-        gameState.paddle2.x *= canvas.width
-        gameState.ball.x    *= canvas.width
-
+        gameState.paddle1.x *= canvas.height
+        gameState.paddle2.x *= canvas.height
+        gameState.ball.x    *= canvas.height
+        
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height
         gameState.paddle2.y = gameState.paddle2.y   * canvas.height
