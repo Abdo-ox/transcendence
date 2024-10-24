@@ -38,13 +38,13 @@ class GameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -72,7 +72,7 @@ class GameLogic:
 
     async def game_loop(self):
         channel_layer = get_channel_layer()
-        fps = 40
+        fps = 60
         
         # send game state to set off timer
         await channel_layer.group_send(self.room_name, {
@@ -227,13 +227,13 @@ class TournamentGameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
