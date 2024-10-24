@@ -24,6 +24,8 @@ export const RemoteTournament = async () => {
         else if (tournamentState.message) {
             document.getElementById('remotetournamentModalLabel').innerText = tournamentState.message;
             showModal();
+            if (tournamentState.message == "This tournament is over!")
+                sessionStorage.removeItem('tournament_name');
         } else if (tournamentState.users_data) {
             let player = document.getElementById("player1-name");
             player.innerHTML = tournamentState.user1;

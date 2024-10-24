@@ -83,7 +83,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 1,
+            'maxScore': 1000,
             'over': False,
             'started': False,
             'width': width,
@@ -128,8 +128,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                 vx *= -1
                 v *= -1
             v *= -1
-        # with open('/is_ready/predictions.csv', 'a+') as file:
-        #     file.write(f'{x},{y},{vx},{v},{r}\n') 
+        with open('/is_ready/predictions.csv', 'a+') as file:
+            file.write(f'{x},{y},{vx},{v},{r}\n') 
         self.prediction = r
             
     def handle_key(self, key):

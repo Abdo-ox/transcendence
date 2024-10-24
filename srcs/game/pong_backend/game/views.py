@@ -74,7 +74,7 @@ class TournamentsView(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = TournamentSerializer(Tournament.objects.all(), many=True)
+        serializer = TournamentSerializer(Tournament.objects.all().filter(Ongoing=False, isOver=False), many=True)
 
         return Response(serializer.data)
 

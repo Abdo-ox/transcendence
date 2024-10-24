@@ -519,10 +519,12 @@ class TournamentLogic:
                 await channel_layer.group_send('notif', {
                     'type': 'chat_message',
                     'message': {
-                        'message': f"{self.room_name}: It's your turn to play!",
+                        'message': f": It's your turn to play!",
                         'to': username,
-                        'from': 'test',
-                        'block': 'false'
+                        'from': self.room_name,
+                        'block': 'false',
+                        'flag': 'GameR',
+                        'tournament': self.room_name,
                     },
                 }) 
         elif self.n == 2:
@@ -533,10 +535,11 @@ class TournamentLogic:
                 await channel_layer.group_send('notif', {
                     'type': 'chat_message',
                     'message': {
-                        'message': f"{self.room_name}: It's your turn to play!",
+                        'message': f": It's your turn to play!",
                         'to': username,
-                        'from': 'test',
-                        'block': 'false'
+                        'from': self.room_name,
+                        'block': 'false',
+                        'tournament': self.room_name,
                     },
                 }) 
 
