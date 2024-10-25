@@ -75,7 +75,7 @@ function laederBoard(data) {
 
 function coalition(data) {
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
-    const scr = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
+    const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
     console.log(total);
     src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
