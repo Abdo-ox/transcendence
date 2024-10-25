@@ -141,7 +141,7 @@
     align-items: center;
     position: relative;
     flex: 1;
-    min-width: 190px;
+    min-width: 200px;
     border-radius: 20px;
 }
 
@@ -151,21 +151,71 @@
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
     font-size: 2vw;
+    font-weight: 500;
 }
 
 .home-tournament-local {
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 450px;
-    background-color: #1b2141;
     border-radius: 20px;
     gap: 10px;
-    justify-content: center;
-    align-items: center;
+    background-color: #1b2141;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+    justify-content: space-between;
+    align-items: center;
+}
+.home-tournament-local h2
+{
+    margin-top: 20px;
+   font-weight: 600;
+   
+}
+.local-glass
+{
+    z-index: 4;
+    position: absolute;
+    top: 21%;
+    justify-content: center;
+    width: 100%;
+    height: 100px; 
+    background:linear-gradient(#41578a,transparent);
+
+}
+.local-glass p{
+    align-self: center;
+    justify-self: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+    
 }
 
-.home-tournament-local p, strong {
+.home-tournament-local .Tour-Character
+{
+    border-radius: 10px;
+    width: 200px;
+    height:370px;
+    min-width: 200px;
+    object-fit: cover;
+    z-index: 2;
+}
+.Tour-Child
+{
+    top:10%;
+    transform: translate(-50%,-50%);
+    left: 20%;
+    transform: rotateZ(-40deg);
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+/* .home-tournament-local p, strong {
     text-align: center;
     color: rgb(118, 161, 213);
 }
@@ -175,7 +225,7 @@
     height: 50px;
     text-align: center;
     padding: 0;
-}
+} */
 
 /****flex2****/
 .home-flex2 {
@@ -269,7 +319,13 @@ section {
     border: 1 px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
-
+.local-glass button
+{
+    padding: 6px 30px;
+    margin-left: 25%;
+    width: 50%;
+    max-width: 120px;
+}
 .home-btn:hover,
 .home-btn:focus,
 .home-btn:active,
@@ -1416,131 +1472,6 @@ input:hover, .home-tournament-form-btn:hover {
       }
     }
   }
-/* @media(max-width:1090px) {
-    .home-t-content {
-        transform: scale(0.home-7);
-    }
-} */
-
-:root {
-    --card-height:350px;
-    --card-width:100%;
-    /* --card-width: calc(var(--card-height) / 1.5); */
-  }
-
-  .Local-card {
-    width: var(--card-width);
-    height: var(--card-height);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-   
-    perspective: 2500px;
-    /* margin: 0 50px; */
-  }
-  
-  .Local-cover-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .Local-wrapper {
-    transition: all 0.5s;
-    position: absolute;
-    width: 100%;
-    z-index: -1;
-  }
-  
-  .Local-card:hover .Local-wrapper {
-    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
-    box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
-  }
-  
-  .Local-wrapper::before,
-  .Local-wrapper::after {
-    content: "";
-    opacity: 0;
-    width: 100%;
-    height: 80px;
-    transition: all 0.5s;
-    position: absolute;
-    left: 0;
-  }
-  .Local-wrapper::before {
-    top: 0;
-    height: 100%;
-    background-image: linear-gradient(
-      to top,
-      transparent 46%,
-      rgba(12, 13, 19, 0.5) 68%,
-      rgba(12, 13, 19) 97%
-    );
-  }
-  .Local-wrapper::after {
-    bottom: 0;
-    opacity: 1;
-    background-image: linear-gradient(
-      to bottom,
-      transparent 46%,
-      rgba(12, 13, 19, 0.5) 68%,
-      rgba(12, 13, 19) 97%
-    );
-  }
-  
-  .Local-card:hover .Local-wrapper::before,
-  .Local-wrapper::after {
-    opacity: 1;
-  }
-  
-  .Local-card:hover .Local-::after {
-    height: 120px;
-  }
-  .Local-title {
-    width: 100%;
-    transition: transform 0.5s;
-  }
-  .Local-card:hover .Local-title {
-    transform: translate3d(0%, -50px, 100px);
-  }
-  
-  .Local-character {
-    width: 100%;
-    opacity: 0;
-    transition: all 0.5s;
-    position: absolute;
-    z-index: -1;
-  }
-  
-  .Local-card:hover .Local-character {
-    opacity: 1;
-    transform: translate3d(0%, -30%, 100px);
-  }
-  .Local-button {
-    position: absolute;
-    bottom: 50px; /* Adjust this value based on how far you want the button from the bottom */
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    background-color: #ff4500;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.5s;
-    z-index: 1;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .Local-card:hover .Local-button {
-    opacity: 1;
-  }
-
 
 
 @media (max-width: 850px) {
@@ -1593,7 +1524,10 @@ input:hover, .home-tournament-form-btn:hover {
         overflow: hidden;
         max-height: 110px;
     } */
-
+    .local-glass button
+    {
+        margin-left: auto;
+    }
     .home-card-content .home-btm {
         font-family: 'Courier New', Courier, 'monospace';
         font-size: 1em;
@@ -1637,7 +1571,20 @@ input:hover, .home-tournament-form-btn:hover {
         width: 100%;
         max-width: unset;
     }
-    
+    .home-tournament-local 
+    {
+        width: 100%;
+        height: auto;
+    }
+    .home-tournament-local .Tour-Character
+    {
+    width: 100%;
+    height: 100%;
+    }
+    .local-glass
+    {
+        top: 30%;
+    }
 
     .home-flex2 {
         order: 1;
@@ -1676,25 +1623,4 @@ input:hover, .home-tournament-form-btn:hover {
 }
 
   
-  @media (max-width:800px) {
-    :root {
-      --card-height: 250px; /* Adjust height for extra small devices */
-    }
-  
-    .Local-card {
-      height: var(--card-height);
-    }
-  
-    .Local-title {
-      font-size: 16px; /* Further reduce title size */
-    }
-  
-    .Local-button {
-      font-size: 12px; /* Further adjust button text size */
-      padding: 5px 10px; /* Further adjust button padding */
-    }
-  
-    .Local-cover-image {
-      object-fit: contain; /* Change image fit to contain for small screens */
-    }
-  }
+
