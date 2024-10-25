@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import WinStatSerializer, GameProfileSerializer, MultiGameHistorySerializer, AiGameHistorySerializer, TournamentSerializer, LeaderboardSerializer, TournamentHistorySerializer
 from .models import Game, MultiGame, Tournament, User
+from django.db.models import Q
 
 class WinStatsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -74,9 +75,14 @@ class TournamentsView(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = TournamentSerializer(Tournament.objects.all().filter(Ongoing=False, isOver=False), many=True)
+        serializer1 = TournamentSerializer(Tournament.objects.all().filter(players=user, isOver=False), many=True)
+        serializer = TournamentSerializer(Tournament.objects.all().filter(Ongoing=False, isOver=False).exclude(players=user), many=True)
+        data = {
+            'continue': serializer1.data,
+            'join': serializer.data,
+        }
 
-        return Response(serializer.data)
+        return Response(data)
 
 class LeaderboardView(APIView):
     permission_classes = [IsAuthenticated]

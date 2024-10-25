@@ -32,5 +32,5 @@ python manage.py migrate
 
 echo "start the chat service"
 
-python manage.py runserver 0.0.0.0:8000
-# hypercorn  justChat.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key
+# python manage.py runserver 0.0.0.0:8000
+hypercorn  justChat.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key
