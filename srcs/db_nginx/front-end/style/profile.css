@@ -1019,6 +1019,10 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         max-width: 30%;
         flex-wrap: wrap;
     }
+    .profile-flex-2
+    {
+        min-width: 180px;
+    }
 }
 
 @media screen and (max-width: 1100px) {
@@ -1044,12 +1048,20 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     .profile-level-bx {
         width: 50%;
     }
+    .profile-glass
+    {
+        width: 142px;
+    }
 }
 
 @media screen and (max-width: 990px) {
     .profile-game-entry {
         min-width: 100%;
         gap: 5px;
+    }
+    .profile-glass
+    {
+        width: 130px;
     }
 }
 
