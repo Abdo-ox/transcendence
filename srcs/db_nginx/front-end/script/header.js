@@ -238,8 +238,8 @@ export async function header() {
 
     if (GamePlaySocket)
         GamePlaySocket.close();
-    UserStatusSock = new WebSocket(`ws://127.0.0.1:9000/ws/status/?token=${access_token}`);
-    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
+    UserStatusSock = new WebSocket(`wss://localhost:9000/ws/status/?token=${access_token}`);
+    GamePlaySocket = new WebSocket(`wss://localhost:9000/ws/notif/?token=${access_token}`);
     UserStatusSock.onopen = () => {
         console.log('UserStatusSock');
     }

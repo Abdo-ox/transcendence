@@ -2,7 +2,7 @@
 # curl -k http://$CH_HOST:9000/
 
 while [ true ]; do
-    curl -k -H "Host: localhost" http://$CH_HOST:8000/ > /dev/null 2>&1
+    curl -k -H "Host: localhost" https://$CH_HOST:8000/ > /dev/null 2>&1
     if [ $? -eq 0 ];then
         break
     fi
