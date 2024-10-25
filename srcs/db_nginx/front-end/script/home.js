@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "/utils.js";
+import { NewPage, getJWT, printErrorInScreen} from "/utils.js";
 import { GamePlaySocket } from "/header.js";
 import { Login } from "/login.js";
 import { Tournament } from "./tournament.js";
@@ -11,10 +11,16 @@ import { TournamentFr } from "./fr-tournament.js";
 function pieChart2(data) {
     console.log("------------------------------------------->", data);
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
-    let tournament = (data.tournament * 100) / total;
-    let ai = (data.ai_match * 100) / total;
-    let friend = (data.friend_match * 100) / total;
-    let unknown = (data.unkown_match * 100) / total;
+    let tournament = ((data.tournament * 100) / total);
+    let ai = ((data.ai_match * 100) / total);
+    let friend = ((data.friend_match * 100) / total);
+    let unknown = ((data.unkown_match * 100) / total);
+    if (isNaN(tournament)) {
+        tournament = 0;
+        ai = 0;
+        friend = 0;
+        unknown = 0;
+    }
     document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}"`);
     document.getElementById('home-ai').style.setProperty('--content', `"${ai}"`);
     document.getElementById('home-friend').style.setProperty('--content', `"${friend}"`);
@@ -72,6 +78,7 @@ function coalition(data) {
     const scr = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
     console.log(total);
+    src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
     document.getElementById("home-night-spin-percent").innerHTML = scr[0]  + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
@@ -85,7 +92,6 @@ function coalition(data) {
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
-    console.log(`button:${button}`);
     const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
         headers: {
             Authorization: `Bearer ${await getJWT()}`
@@ -105,6 +111,10 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
         }
         button.style.display = 'none';
         button.parentElement.querySelector(`.home-${action[1]}-btn`).style.display = 'block';
+    }
+    else {
+        errors = await response.json();
+        printErrorInScreen(errors.errors);
     }
 }
 
@@ -164,8 +174,8 @@ export async function Home() {
             'Authorization': `Bearer ${access_token}`,
         }
     })
-    if (!response.ok) {
-        console.error('Failed to fetch suggest friends  :', response.status, response.statusText);
+    if (!response.status) {
+        console.error('Failed to fetch suggest friends.');
         return;
     }
     const data = await response.json();
@@ -223,20 +233,19 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    const tours = await fetch("https://localhost:9090/tournaments/", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
+    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // });
 
 
-    let test = await tours.json();
-    // console.log('tournament history', test)
-    document.getElementById("tournament-title").innerText = test[0].name;
-    document.getElementById("join").addEventListener('click', () => {
-        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-        NewPage("/remotetournament", RemoteTournament);
-    });
+    // let test = await tours.json();
+    // document.getElementById("tournament-title").innerText = test[0].name;
+    // document.getElementById("join").addEventListener('click', () => {
+    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+    //     NewPage("/remotetournament", RemoteTournament);
+    // });
 
     // tournament cards end
 
@@ -265,5 +274,4 @@ export async function Home() {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => coalition(data));
-    
 }

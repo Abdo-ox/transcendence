@@ -117,9 +117,9 @@ def userFriends(request):
             return JsonResponse({'error': 'pear username not send at the query string'})
         user = User.objects.get(username=username)
         context = {
-            'friends': FriendList.objects.get_or_create(user=user)[0].friends
+            'friends': FriendList.objects.get_or_create(user=request.user)[0].friends
         }
         friends = UserSerializer(FriendList.objects.get_or_create(user=user)[0].friends, many=True, context=context)       
-        return JsonResponse(freinds.data, safe=false)
+        return JsonResponse(friends.data, safe=False)
     except User.DoesNotExist:
         return JsonResponse({'error': f'there is no user ander username {username}'})
