@@ -274,5 +274,4 @@ export async function Home() {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => coalition(data));
-    
 }
