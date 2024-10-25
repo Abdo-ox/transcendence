@@ -232,11 +232,11 @@ export async function Home() {
 
     let test = await tours.json();
     // console.log('tournament history', test)
-    document.getElementById("tournament-title").innerText = test[0].name;
-    document.getElementById("join").addEventListener('click', () => {
-        sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-        NewPage("/remotetournament", RemoteTournament);
-    });
+    // document.getElementById("tournament-title").innerText = test[0].name;
+    // document.getElementById("join").addEventListener('click', () => {
+    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
+    //     NewPage("/remotetournament", RemoteTournament);
+    // });
 
     // tournament cards end
 
@@ -266,4 +266,16 @@ export async function Home() {
         }
     }).then(response => response.json()).then(data => coalition(data));
     
+    fetch("https://localhost:8000/friend/userFriends/?username=ajari", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        if (response.status)
+            return response.json();
+        throw "reponse not ok with status code: " + response.status;
+    }).then(data => console.log(data)
+    ).catch(error => {
+        console.log("error: ", error);
+    });
 }

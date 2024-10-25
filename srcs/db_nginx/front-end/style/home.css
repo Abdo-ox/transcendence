@@ -873,7 +873,9 @@ section {
     top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    margin: 0;
 }
+
 .home-pie-chart-1::before {
     content: '';
     position: absolute;
