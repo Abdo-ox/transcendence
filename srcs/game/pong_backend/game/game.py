@@ -38,13 +38,13 @@ class GameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -72,7 +72,7 @@ class GameLogic:
 
     async def game_loop(self):
         channel_layer = get_channel_layer()
-        fps = 40
+        fps = 60
         
         # send game state to set off timer
         await channel_layer.group_send(self.room_name, {
@@ -227,13 +227,13 @@ class TournamentGameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -519,10 +519,12 @@ class TournamentLogic:
                 await channel_layer.group_send('notif', {
                     'type': 'chat_message',
                     'message': {
-                        'message': f"{self.room_name}: It's your turn to play!",
+                        'message': f": It's your turn to play!",
                         'to': username,
-                        'from': 'test',
-                        'block': 'false'
+                        'from': self.room_name,
+                        'block': 'false',
+                        'flag': 'GameR',
+                        'tournament': self.room_name,
                     },
                 }) 
         elif self.n == 2:
@@ -533,10 +535,11 @@ class TournamentLogic:
                 await channel_layer.group_send('notif', {
                     'type': 'chat_message',
                     'message': {
-                        'message': f"{self.room_name}: It's your turn to play!",
+                        'message': f": It's your turn to play!",
                         'to': username,
-                        'from': 'test',
-                        'block': 'false'
+                        'from': self.room_name,
+                        'block': 'false',
+                        'tournament': self.room_name,
                     },
                 }) 
 

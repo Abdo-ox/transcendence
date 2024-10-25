@@ -24,6 +24,8 @@ export const RemoteTournament = async () => {
         else if (tournamentState.message) {
             document.getElementById('remotetournamentModalLabel').innerText = tournamentState.message;
             showModal();
+            if (tournamentState.message == "This tournament is over!")
+                sessionStorage.removeItem('tournament_name');
         } else if (tournamentState.users_data) {
             let player = document.getElementById("player1-name");
             player.innerHTML = tournamentState.user1;
@@ -170,10 +172,10 @@ export const RemoteTournament = async () => {
     }
 
     function scaleGameState() {
-        gameState.paddle1.x *= canvas.width
-        gameState.paddle2.x *= canvas.width
-        gameState.ball.x    *= canvas.width
-
+        gameState.paddle1.x *= canvas.height
+        gameState.paddle2.x *= canvas.height
+        gameState.ball.x    *= canvas.height
+        
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height
         gameState.paddle2.y = gameState.paddle2.y   * canvas.height

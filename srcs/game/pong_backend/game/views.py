@@ -65,7 +65,6 @@ class AiGameHistoryView(APIView):
             user = request.user
         else:
             user = User.objects.get(username=username)
-        user = request.user
         serializer = AiGameHistorySerializer(user.games, many=True)
 
         return Response(serializer.data)
@@ -75,7 +74,7 @@ class TournamentsView(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = TournamentSerializer(Tournament.objects.all(), many=True)
+        serializer = TournamentSerializer(Tournament.objects.all().filter(Ongoing=False, isOver=False), many=True)
 
         return Response(serializer.data)
 
@@ -91,8 +90,11 @@ class LeaderboardView(APIView):
 class TournamentHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
+    def get(self, request, username=None):
+        if not username:
+            user = request.user
+        else:
+            user = User.objects.get(username=username)
         serializer = TournamentHistorySerializer(user.tournaments, many=True)
 
         return Response(serializer.data)
