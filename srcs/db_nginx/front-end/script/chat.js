@@ -53,14 +53,14 @@ async function bodychat(UserData) {
     `;
     const frameElement = document.getElementById('frame');
 
-    if (frameElement) {
-      frameElement.remove();
-    }
+    // if (frameElement) {
+    //   frameElement.remove();
+    // }
     const newFrame = document.createElement('div');
     newFrame.id = 'frame';
     newFrame.innerHTML = htmlContent;
-
-    document.body.appendChild(newFrame);
+    frameElement.replaceWith(newFrame);
+    // document.body.appendChild(newFrame);
     fetchData();
     if (TargetUser && UserData.friends) {
       UserData.friends.forEach(friend => {
