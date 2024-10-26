@@ -214,43 +214,43 @@ export async function Profile() {
         }
         const data = await response.json();
         console.log("data friend :", data[0]);
-
-        data.forEach((element) => {
-            if (element.is_friend) {
-                document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
+        if (data.length) {
+            document.getElementById("profile-users-list").innerHTML += `<div class="profile-searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input type="text" placeholder="search">
+            </div>`
+            data.forEach((element) => {
+                if (element.is_friend) {
+                    // data.is_online = true;
+                    document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
                 <div class="profile-info-user">
                     <img id="imgID" class="profile-friendImg" src="${element.profile_image}">
+                     ${data.is_online ? '<div class="online-indicator"></div>' : '<div class="decline-indicator"></div>'}
                     <h3 class="friendUserName">${element.username}</h3>
                 </div>
                 <img class="profile-chat" src="/images/profile_images/chat1.png">
                 </div>`;
-                if(data.is_online)
-                {
-                    document.getElementById("imgID").style.border = `2px solid green`;
                 }
 
-                
-            }
-            
-        })
-
-
-        const friendsUserName = document.querySelectorAll(".friendUserName");
-        const ChatIcons = document.querySelectorAll(".profile-chat");
-        ChatIcons.forEach((icon, index) => {
-            icon.addEventListener("click", async () => {
-                let query = friendsUserName[index].textContent;
-                console.log("query: ", query);
-                NewPage("/chat", Chat, 1, "?user=" + query);
-            });
-
-        });
-        const profileFriendImg = document.querySelectorAll(".profile-friendImg");
-        profileFriendImg.forEach((friend, j) => {
-            friend.addEventListener("click", async () => {
-                NewPage("/profile", Profile, 1, "?user=" + friendsUserName[j].textContent);
             })
-        })
+
+            const friendsUserName = document.querySelectorAll(".friendUserName");
+            const ChatIcons = document.querySelectorAll(".profile-chat");
+            ChatIcons.forEach((icon, index) => {
+                icon.addEventListener("click", async () => {
+                    let query = friendsUserName[index].textContent;
+                    console.log("query: ", query);
+                    NewPage("/chat", Chat, 1, "?user=" + query);
+                });
+
+            });
+            const profileFriendImg = document.querySelectorAll(".profile-friendImg");
+            profileFriendImg.forEach((friend, j) => {
+                friend.addEventListener("click", async () => {
+                    NewPage("/profile", Profile, 1, "?user=" + friendsUserName[j].textContent);
+                })
+            })
+        }
 
     }
     // {

@@ -392,6 +392,26 @@ circle {
     flex-wrap: wrap;
     ;
 }
+.online-indicator {
+    position: absolute;
+    top: 12%; 
+    left: 20%; 
+    width: 12px; 
+    height: 12px; 
+    background-color: green; 
+    border-radius: 50%; 
+    border: 2px solid white; 
+}
+.decline-indicator {
+    position: absolute;
+    top: 12%; 
+    left: 20%; 
+    width: 12px; 
+    height: 12px; 
+    background-color: red; 
+    border-radius: 50%; 
+    border: 2px solid white; 
+}
 .profile-glass
 {
     position: relative;

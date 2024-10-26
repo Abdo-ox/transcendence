@@ -19,6 +19,7 @@ export async function Settings() {
             // document.getElementById("settings-name").innerHTML = data.current.username;
             // document.getElementById("settings-profile-image").src = data.current.profile_image;
             document.getElementById("settings-profile-image1").src = data.current.profile_image;
+            document.getElementById("setting-nameID").innerHTML = data.current.username;
             document.getElementById("settings-username").value = data.current.username;
             document.getElementById("settings-first_name").value = data.current.first_name;
             document.getElementById("settings-last_name").value = data.current.last_name;

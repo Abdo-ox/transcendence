@@ -7,6 +7,7 @@ import { Game } from "./game.js";
 import { Local } from "./local.js";
 import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
+import {Profile} from "./profile.js"
 
 function pieChart2(data) {
     console.log("------------------------------------------->", data);
@@ -182,20 +183,33 @@ export async function Home() {
 
     const suggestionscontainer = document.getElementById("home-suggestions-items");
     suggestionscontainer.innerHTML = '';
+    if(data.suggestions.length)
+        suggestionscontainer.innerHTML += `<div class="profile-searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input type="text" placeholder="search">
+            </div>`;
+    let FriendArray =[];
     data.suggestions.forEach(user => {
         suggestionscontainer.innerHTML += `
             <div class="home-user" id="home-user-${user.username}">
                     <div class="home-info-user">
                         <div class="home-suggestion-img">
-                            <img src="${user.profile_image}">
+                            <img class="home-ImgID" src="${user.profile_image}">
                         </div>
                         <h3>${user.username}</h3>
                     </div>
                     <button class="home-send-btn" username="${user.username}">send</button>
                     <button class="home-cancel-btn" username="${user.username}">cancel</button>
             </div>`;
+            FriendArray.push(user.username);
     });
+    let  SuggeSTfriendID= document.querySelectorAll(".home-ImgID");
+    SuggeSTfriendID.forEach((elt,index)=>{
+        elt.addEventListener("click",async() =>{
+            NewPage("/profile", Profile,true,"?user="+FriendArray[index]);
+        });
 
+    });
     document.querySelectorAll('.home-send-btn').forEach(button => {
         button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['send', 'cancel'], data.currentUser));
     });
