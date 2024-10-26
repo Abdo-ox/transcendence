@@ -140,12 +140,14 @@ export const NewPage = async (url, func, addhistory = true,query='') => {
                     return;
             }
         }
-        if (document.querySelector('header'))
+        if (document.querySelector('header')){
+            console.log("hello clear");
             makePageActive(url.substring(1));
+        }
         func();
         addErrorDiv();
         if (addhistory)
-            history.pushState({}, '', url+query);
+            history.pushState({}, '', url + query);
     } else
         console.log("error in fetch the new page '", url, "'.");
         func();
@@ -195,7 +197,7 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
 }
 
 const func = {
-    "header-home-btn": () => { NewPage('/home', Home) },
+    "header-home-btn": () => {console.log("home"); NewPage('/home', Home) },
     "header-chat-btn": () => { NewPage('/chat', Chat) },
     "header-settings-btn": () => { NewPage('/settings', Settings) },
     "header-small-home-btn": () => { NewPage('/home', Home) },
@@ -205,13 +207,16 @@ const func = {
 }
 
 export const makePageActive = (page) => {
+    console.log("page", page);
     //remove all event listener for home chat settings in the header
     for (const key in func)
         document.getElementById(key).removeEventListener('click', func[key]);
     //add event listener for non active pages
     for (const key in func) {
-        if (!key.includes(page))
+        if (!key.includes(page)){
+            console.log("add event listener");
             document.getElementById(key).addEventListener('click', func[key]);
+        }
     }
     //the default styling for all header li a
     document.querySelectorAll('.header-li-a-style').forEach(element => {
