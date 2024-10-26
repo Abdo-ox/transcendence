@@ -202,7 +202,7 @@ export async function Profile() {
     //     console.log("data tournament :", data);
     // }
     {
-        const response = await fetch('https://localhost:8000/api/user/data/', {
+        const response = await fetch('https://localhost:8000/friend/userFriends?username='+ myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -214,31 +214,31 @@ export async function Profile() {
         }
         const data = await response.json();
         console.log("data friend :", data);
-        data.friends.forEach((element) => {
-            document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
-            <div class="profile-info-user">
-                <img class="profile-friendImg" src="${element.profile_image}">
-                <h3 class="friendUserName">${element.username}</h3>
-            </div>
-            <img class="profile-chat" src="/images/profile_images/chat1.png">
-            </div>`;
-        })
-        const friendsUserName = document.querySelectorAll(".friendUserName");
-        const ChatIcons = document.querySelectorAll(".profile-chat");
-        ChatIcons.forEach((icon, index) => {
-            icon.addEventListener("click", async () => {
-                let query = friendsUserName[index].textContent;
-                console.log("query: ", query);
-                NewPage("/chat", Chat,1,"?user="+query);
-            });
+        // data.friends.forEach((element) => {
+        //     document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
+        //     <div class="profile-info-user">
+        //         <img class="profile-friendImg" src="${element.profile_image}">
+        //         <h3 class="friendUserName">${element.username}</h3>
+        //     </div>
+        //     <img class="profile-chat" src="/images/profile_images/chat1.png">
+        //     </div>`;
+        // })
+        // const friendsUserName = document.querySelectorAll(".friendUserName");
+        // const ChatIcons = document.querySelectorAll(".profile-chat");
+        // ChatIcons.forEach((icon, index) => {
+        //     icon.addEventListener("click", async () => {
+        //         let query = friendsUserName[index].textContent;
+        //         console.log("query: ", query);
+        //         NewPage("/chat", Chat,1,"?user="+query);
+        //     });
 
-        });
-        const profileFriendImg = document.querySelectorAll(".profile-friendImg");
-        profileFriendImg.forEach((friend,j) =>{
-            friend.addEventListener("click",async()=>{
-                NewPage("/profile",Profile,1,"?user="+friendsUserName[j].textContent);
-            })
-        })
+        // });
+        // const profileFriendImg = document.querySelectorAll(".profile-friendImg");
+        // profileFriendImg.forEach((friend,j) =>{
+        //     friend.addEventListener("click",async()=>{
+        //         NewPage("/profile",Profile,1,"?user="+friendsUserName[j].textContent);
+        //     })
+        // })
 
     }
     // {
