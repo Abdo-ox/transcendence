@@ -127,14 +127,14 @@ class GameLogic:
 
         if ball['vx'] > 0:
             if ball['x'] + ball['r'] >= paddle2['x'] and ball['x'] + ball['r'] <= paddle2['x'] + ball['r']\
-                    and paddle2['y'] <= ball['y'] <= paddle2['y'] + self.game_state['len']:
+                    and paddle2['y'] - ball['r'] <= ball['y'] <= paddle2['y'] + self.game_state['len'] + ball['r']:
                 ball['vx'] *= -1
             elif ball['x'] >= width:
                 paddle1['score'] += 1
                 self.reset_ball(2)
         elif ball['vx'] < 0:
             if ball['x'] - ball['r'] <= paddle1['x'] + ball['r'] and ball['x'] - ball['r'] >= paddle1['x']\
-                    and paddle1['y'] <= ball['y'] <= paddle1['y'] + self.game_state['len']:
+                    and paddle1['y'] - ball['r'] <= ball['y'] <= paddle1['y'] + self.game_state['len'] + ball['r']:
                 ball['vx'] *= -1
             elif ball['x'] <= 0:
                 paddle2['score'] += 1
@@ -326,14 +326,14 @@ class TournamentGameLogic:
 
         if ball['vx'] > 0:
             if ball['x'] + ball['r'] >= paddle2['x'] and ball['x'] + ball['r'] <= paddle2['x'] + ball['r']\
-                    and paddle2['y'] <= ball['y'] <= paddle2['y'] + self.game_state['len']:
+                    and paddle2['y'] - ball['r'] <= ball['y'] <= paddle2['y'] + self.game_state['len'] + ball['r']:
                 ball['vx'] *= -1
             elif ball['x'] >= width:
                 paddle1['score'] += 1
                 self.reset_ball(2)
         elif ball['vx'] < 0:
             if ball['x'] - ball['r'] <= paddle1['x'] + ball['r'] and ball['x'] - ball['r'] >= paddle1['x']\
-                    and paddle1['y'] <= ball['y'] <= paddle1['y'] + self.game_state['len']:
+                    and paddle1['y'] - ball['r'] <= ball['y'] <= paddle1['y'] + self.game_state['len'] + ball['r']:
                 ball['vx'] *= -1
             elif ball['x'] <= 0:
                 paddle2['score'] += 1

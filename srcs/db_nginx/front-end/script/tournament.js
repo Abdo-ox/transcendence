@@ -154,6 +154,7 @@ export const Tournament = async () => {
                 this.over = false;
                 this.started = false;
                 this.v = 0.015 * canvas.height;
+                this.vy = 0.01 * canvas.height;
                 this.len = 0.25 * canvas.height; // paddles len
                 this.r = 0.015 * canvas.height; // radius of ball and width of paddles
                 this.max = 7; // max score
@@ -210,12 +211,12 @@ export const Tournament = async () => {
                     this.ball.x = canvas.width * 0.75;
                     this.ball.y = Math.random() * canvas.height;
                 }
-                else if (this.ball.x_d == -1 && this.ball.x - this.r <= this.player1.x + this.r && this.ball.x - this.r >= this.player1.x && this.ball.y >= this.player1.y && this.ball.y <= this.player1.y + this.len)
+                else if (this.ball.x_d == -1 && this.ball.x - this.r <= this.player1.x + this.r && this.ball.x - this.r >= this.player1.x && this.ball.y >= this.player1.y - this.r && this.ball.y <= this.player1.y + this.len + this.r)
                     this.ball.x_d *= -1;
-                else if (this.ball.x_d == 1 && this.ball.x + this.r >= this.player2.x && this.ball.x + this.r <= this.player2.x + this.r && this.ball.y >= this.player2.y && this.ball.y <= this.player2.y + this.len)
+                else if (this.ball.x_d == 1 && this.ball.x + this.r >= this.player2.x && this.ball.x + this.r <= this.player2.x + this.r && this.ball.y >= this.player2.y - this.r && this.ball.y <= this.player2.y + this.len + this.r)
                     this.ball.x_d *= -1;
                 this.ball.x += this.v * this.ball.x_d;
-                this.ball.y += this.v * this.ball.y_d;
+                this.ball.y += this.vy * this.ball.y_d;
                 if (this.player1.score == this.max || this.player2.score == this.max)
                     this.over = 1;
             }

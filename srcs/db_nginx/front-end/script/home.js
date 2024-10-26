@@ -75,20 +75,20 @@ function laederBoard(data) {
 
 function coalition(data) {
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
-    const scr = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
+    const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
     console.log(total);
     src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = scr[0]  + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = src[0]  + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = scr[1]  + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1]  + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = scr[2]  + '%';
+    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2]  + '%';
     document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
-            #3CB371  ${scr[0]}deg,
-            #FFD700  ${scr[0]}deg ${scr[1]}deg,
-            #4682B4  ${scr[1]}deg ${scr[2]}deg)`);
+            #3CB371  ${src[0]}deg,
+            #FFD700  ${src[0]}deg ${src[1]}deg,
+            #4682B4  ${src[1]}deg ${src[2]}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -233,15 +233,14 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    const tours = await fetch("https://localhost:9090/tournaments/", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
+    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // });
 
 
-    let test = await tours.json();
-    // console.log('tournament history', test)
+    // let test = await tours.json();
     // document.getElementById("tournament-title").innerText = test[0].name;
     // document.getElementById("join").addEventListener('click', () => {
     //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
@@ -275,5 +274,4 @@ export async function Home() {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => coalition(data));
-    
 }
