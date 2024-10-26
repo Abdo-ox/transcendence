@@ -93,12 +93,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://localhost",
-#     "https://127.0.0.1",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://localhost",
+    "https://127.0.0.1",
+]
 
-CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+SECURE_SSL_REDIRECT = True
+# CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 
 CORS_ALLOW_METHODS = [
     "GET",
