@@ -1,24 +1,25 @@
-import {NewPage, getJWT } from "/utils.js";
-import {Chat } from "/chat.js";
+import { NewPage, getJWT } from "/utils.js";
+import { Chat } from "/chat.js";
 // window.addEventListener('scroll', function () {
 //     var header = document.querySelector('header');
 //     header.classList.toggle('sticky', window.scrollY > 0);
 // });
 
 export async function Profile() {
+    const params = new URLSearchParams(window.location.search)
+   let myuser = params.get('user');
+    if(!myuser)
+        myuser = '';
+    console.log(myuser, "<_____--- is ");
+    
     {
-       
-        const params = new URLSearchParams(window.location.search)
-        const myuser = params.get('user');
-        console.log("url is : ",params);
-        console.log(myuser, "<_____--- is ");
         const ArryImag = ['url("/images/acheivements/firstServe.png")',
             'url("/images/acheivements/paddlemaster.jpeg")',
             'url("/images/acheivements/paddle.jpeg")',
             'url("/images/acheivements/rookie.jpg")']
 
         /**  Endpoint game**/
-        const response = await fetch('https://localhost:9090/gameprofile/'+myuser, {
+        const response = await fetch('https://localhost:9090/gameprofile/' + myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -147,7 +148,7 @@ export async function Profile() {
 
     /***multigame History */
     {
-        const response = await fetch('https://localhost:9090/multigamehistory/'+myuser, {
+        const response = await fetch('https://localhost:9090/multigamehistory/' + myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -186,22 +187,22 @@ export async function Profile() {
         // document.getElementById("profile-arrayHistory")
     }
 
-    {
-        const response = await fetch('https://localhost:9090/tournaments/'+myuser, {
-            headers: {
-                'Authorization': `Bearer ${await getJWT()}`,
+    // {
+    //     const response = await fetch('https://localhost:9090/tournaments/' + myuser, {
+    //         headers: {
+    //             'Authorization': `Bearer ${await getJWT()}`,
 
-            }
-        })
-        if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
-            return;
-        }
-        const data = await response.json();
-        console.log("data tournament :", data);
-    }
+    //         }
+    //     })
+    //     if (!response.ok) {
+    //         console.error('Failed to fetch current user:', response.status, response.statusText);
+    //         return;
+    //     }
+    //     const data = await response.json();
+    //     console.log("data tournament :", data);
+    // }
     {
-        const response = await fetch('https://localhost:8000/api/user/data/', {
+        const response = await fetch('https://localhost:8000/friend/userFriends?username='+ myuser, {
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -213,26 +214,32 @@ export async function Profile() {
         }
         const data = await response.json();
         console.log("data friend :", data);
-        data.friends.forEach((element) =>{
-            document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
-            <div class="profile-info-user">
-                <img class="profile-friendImg" src="${element.profile_image}">
-                <h3 class="friendUserName">${element.username}</h3>
-            </div>
-            <img class="profile-chat" src="/images/profile_images/chat1.png">
-            </div>`;
-        })
-        const friendsUserName = document.querySelectorAll(".friendUserName");
-        const ChatIcons = document.querySelectorAll(".profile-chat");
-        let i = 0;
-        ChatIcons.forEach((icon, index) => {
-            icon.addEventListener("click", async () => {
-                let query = friendsUserName[index].textContent;
-                console.log("query: ", query);
-                NewPage("/chat?user=" + query, Chat);
-            });
-        });
-       
+        // data.friends.forEach((element) => {
+        //     document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
+        //     <div class="profile-info-user">
+        //         <img class="profile-friendImg" src="${element.profile_image}">
+        //         <h3 class="friendUserName">${element.username}</h3>
+        //     </div>
+        //     <img class="profile-chat" src="/images/profile_images/chat1.png">
+        //     </div>`;
+        // })
+        // const friendsUserName = document.querySelectorAll(".friendUserName");
+        // const ChatIcons = document.querySelectorAll(".profile-chat");
+        // ChatIcons.forEach((icon, index) => {
+        //     icon.addEventListener("click", async () => {
+        //         let query = friendsUserName[index].textContent;
+        //         console.log("query: ", query);
+        //         NewPage("/chat", Chat,1,"?user="+query);
+        //     });
+
+        // });
+        // const profileFriendImg = document.querySelectorAll(".profile-friendImg");
+        // profileFriendImg.forEach((friend,j) =>{
+        //     friend.addEventListener("click",async()=>{
+        //         NewPage("/profile",Profile,1,"?user="+friendsUserName[j].textContent);
+        //     })
+        // })
+
     }
     // {
     //     const response = await fetch('https://localhost:9090/tournamenthistory/', {
@@ -247,6 +254,6 @@ export async function Profile() {
     //     }
     //     const data = await response.json();
     //     console.log("data tourn:", data);
-        
+
     // }
 }

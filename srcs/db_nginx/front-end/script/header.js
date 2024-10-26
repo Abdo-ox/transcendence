@@ -205,6 +205,7 @@ const addheader = () => {
         header.classList.toggle('header-sticky', window.scrollY > 0);
     });
     document.getElementById("header-notif-div").addEventListener('click', (event) => event.stopPropagation());
+    document.getElementById("header-logo").addEventListener('click', () => NewPage('/home', Home));
 }
 
 export async function header() {

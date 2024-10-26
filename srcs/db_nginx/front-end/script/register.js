@@ -1,4 +1,4 @@
-import { getCsrfToken, NewPage, submitForm } from "/utils.js";
+import { getCsrfToken, NewPage, submitForm, printErrorInScreen} from "/utils.js";
 import { Login } from "/login.js"
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
 import { is_authenticated } from "./utils.js";
@@ -9,6 +9,8 @@ const handle_data = (data_status) => {
     console.log("daata registred is ", data);
     if (data.state === 'registered')
         NewPage('/login',Login, false);
+    else 
+        printErrorInScreen(data.errors);
 }
 
 export async function Register() {
@@ -27,14 +29,15 @@ export async function Register() {
     document.getElementById('register-password1').value = pass;                                       //to remove 
     document.getElementById('register-password2').value = pass;                                       //to remove 
 
-    document.getElementById('register-submit-btn').addEventListener('click', (event) => {
+    const registerButton = document.getElementById('register-submit-btn');
+    registerButton.addEventListener('click', async (event) => {
         event.preventDefault();
-        submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
-    });
-
-    document.body.addEventListener('keydown', (event) => {
-        if (event.key == 'Enter')
-            submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
+        console.log("hello");
+        event.target.style.pointerEvents = 'none';
+        registerButton.classList.add('non-active');
+        await submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
+        registerButton.style.pointerEvents = 'auto';
+        registerButton.classList.remove('non-active');
     });
 }
 

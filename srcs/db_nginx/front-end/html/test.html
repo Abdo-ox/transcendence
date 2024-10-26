@@ -1,56 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    .scroll-container {
-      width: 300px;
-      height: 200px;
-      overflow: hidden;
-      position: relative;
-      background-color: #f0f0f0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide In and Out</title>
+    <style>
+        #sliding-element {
+            position: fixed; /* Keep the element fixed */
+            top: 50%; /* Vertically center */
+            right: -300px; /* Initially off-screen */
+            width: 200px;
+            padding: 20px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            transition: transform 0.5s ease-in-out;
+        }
 
-    .scroll-container:hover {
-      overflow: auto; /* Show scroll on hover */
-    }
+        /* Add a class for sliding in */
+        .slide-in {
+            transform: translateX(-300px); /* Slide in */
+        }
 
-    /* Style the scrollbar for WebKit browsers */
-    .scroll-container::-webkit-scrollbar {
-      width: 10px;
-      background: transparent;
-    }
-
-    .scroll-container:hover::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.4); /* Dark thumb on hover */
-      border-radius: 5px;
-    }
-
-    /* For Firefox */
-    .scroll-container {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
-    }
-
-    .content {
-      padding: 10px;
-      height: 400px; /* To make the content overflow */
-    }
-  </style>
+        /* Add a class for sliding out */
+        .slide-out {
+            transform: translateX(0); /* Back to initial position */
+        }
+    </style>
 </head>
 <body>
 
-<div class="scroll-container">
-  <div class="content">
-    <p>This is some content that overflows.</p>
-    <p>Scrollbars will only appear when you hover over the container.</p>
-    <p>Try moving your mouse over the container to see the effect.</p>
-    <p>More content to ensure it overflows...</p>
-    <p>More content to ensure it overflows...</p>
-    <p>More content to ensure it overflows...</p>
-  </div>
-</div>
+<div id="sliding-element">Hello, I am sliding in!</div>
+<button id="toggle-button">Toggle Slide</button>
+
+<script>
+    const element = document.getElementById('sliding-element');
+    const button = document.getElementById('toggle-button');
+    let isVisible = false;
+
+    button.addEventListener('click', () => {
+        if (isVisible) {
+            element.classList.remove('slide-in');
+            element.classList.add('slide-out');
+        } else {
+            element.classList.remove('slide-out');
+            element.classList.add('slide-in');
+        }
+        isVisible = !isVisible;
+    });
+</script>
 
 </body>
 </html>

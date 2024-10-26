@@ -83,7 +83,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 1000,
+            'maxScore': 7,
             'over': False,
             'started': False,
             'width': width,
