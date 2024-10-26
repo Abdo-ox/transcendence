@@ -121,29 +121,30 @@
 }
 
 .home-content {
-    position: relative;
+    /* position: relative; */
     display: flex;
     flex-direction: row;
     margin-top: 80px;
-    margin-left: auto;
-    margin-right: auto;
+    bottom: 20px;
     width: 100%;
     padding: 10px 0px 10px 5px;
     gap: 10px;
     overflow: hidden auto;
+    flex: 1;
 }
 
 /* Specific flex settings */
+.home-flex2 , .home-flex1, .home-flex3 {
+    height: 1370px !important;
+}
 .home-flex1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-items: stretch;
     position: relative;
     flex: 1;
     min-width: 200px;
     border-radius: 20px;
-    /* height: 100%; */
 }
 
 .home-flex1 h2 {
