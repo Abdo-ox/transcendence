@@ -1,8 +1,7 @@
-import { getCsrfToken, NewPage, submitForm, getJWT } from "/utils.js";
+import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "/utils.js";
 import { Home } from "/home.js";
 import { Register } from "/register.js";
 import { ResetPassword } from "/resetpassword.js";
-import { is_authenticated } from "./utils.js";
 console.log("the login.js called");
 
 const handle_data = async (data_status) => {
@@ -27,11 +26,12 @@ const handle_data = async (data_status) => {
                 NewPage("/home", Home);
             })
             .catch((error) => {
+                document.getElementById("error-container").innerHTML = `hello world again and again`;
                 console.log("error in login :", error);
             });
     } else {
-        // handle error of login 
         console.log("error:", data_status);
+        printErrorInScreen([data_status.data.detail]);
     }
 }
 
@@ -49,8 +49,8 @@ async function oAuthHandler(ancor, loginButton, event) {
         const data = await response.json();
         handle_data({ data, status: response.status });
     } else {
-
         console.error("response not ok in log with intra");
+        printErrorInScreen(['response not ok in log with intra']);
     }
     loginButton.style.pointerEvents = 'auto';
     loginButton.classList.remove("non-active");
@@ -59,10 +59,8 @@ async function oAuthHandler(ancor, loginButton, event) {
 }
 
 export async function Login() {
-    console.log("hello");
     if (await is_authenticated())
         return;
-    console.log("hello");
     const csrf_token = await getCsrfToken();
     const ids = ['login-username', 'login-password'];
 
@@ -86,9 +84,9 @@ export async function Login() {
     });
 
     ancor.addEventListener('click', async () => {
-        loginButton.style.pointerEvents = 'auto';
+        loginButton.style.pointerEvents = 'none';
         loginButton.classList.remove("non-active");
-        ancor.style.pointerEvents = 'auto';
+        ancor.style.pointerEvents = 'none';
         ancor.classList.remove("non-active");
         const response = await fetch("https://localhost:8000/api/42/data/");
         if (response.ok) {
@@ -103,5 +101,4 @@ export async function Login() {
         console.log("i am here ****************");
         NewPage("/resetpassword", ResetPassword, false);
     });
-
-}
+}   

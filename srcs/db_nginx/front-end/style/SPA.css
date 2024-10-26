@@ -6,6 +6,9 @@
     font-family: Arial;
 }
 
+html{
+    height: 100%;
+}
 body {
 
     --c1: #3CB371;
@@ -24,6 +27,7 @@ body {
     background: #050e2d;
     display: flex;
     width: 100%;
+    height: 100%;
     flex-direction: column;
     overflow-y: auto;
     visibility: hidden;
@@ -103,4 +107,25 @@ form {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: inherit;
+}
+
+.error-div {
+    align-items: center;
+    padding: 5px;
+    position: fixed;
+    right: 0;
+    width: 300px;
+    bottom: 10px;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out; 
+}
+.error-div p {
+    margin: 0;
+    background-color: rgba(255, 0, 0, 0.253);
+}
+.error-div div{
+    gap: 5px;
+}
+.show {
+    transform: translateX(0);
 }
