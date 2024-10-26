@@ -1,7 +1,7 @@
 import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
 import { Profile } from "/profile.js"
 import { Multi } from "./multi.js";
-
+import {RemoteTournament} from "./remotetournament.js"
 let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
@@ -35,15 +35,21 @@ async function FriendRqEvent(notifItem, endpoint, data) {
 
 async function GameRqEvent(data, notiItem) {
     notiItem.remove()
-    GamePlaySocket.send(JSON.stringify({
-        'playwith': data['from'],
-        'room_name': data['to'] + '_' + data['from'],
-        'block': 'false'
-    }))
-    console.log(`inside Friend event handler`)
-    localStorage.setItem('room_name', data['to'] + '_' + data['from']);
-    console.log(`from target ${localStorage.getItem('room_name')}`)
-    NewPage("/multi", Multi);
+    if (data['tournament']){
+        sessionStorage.setItem('tournament_name', data['tournament'])
+        NewPage("/remotetournament", RemoteTournament)
+    }
+    else {
+        GamePlaySocket.send(JSON.stringify({
+            'playwith': data['from'],
+            'room_name': data['to'] + '_' + data['from'],
+            'block': 'false'
+        }))
+        console.log(`inside Friend event handler`)
+        sessionStorage.setItem('room_name', data['to'] + '_' + data['from']);
+        console.log(`from target ${sessionStorage.getItem('room_name')}`)
+        NewPage("/multi", Multi);
+    }
     ////
 }
 
@@ -202,6 +208,7 @@ const addheader = () => {
 }
 
 export async function header() {
+    let UserName;
     const access_token = await getJWT();
     if (!access_token)
         return;
@@ -221,6 +228,7 @@ export async function header() {
         if (!redirectTwoFactor(data, response.status))
             return (0);
         CurrentUser = data.username;
+        UserName=CurrentUser;
         document.getElementById("header-profile-image").src = data.profile_image;
         document.getElementById("header-username").innerHTML = data.username;
     }
@@ -230,8 +238,8 @@ export async function header() {
 
     if (GamePlaySocket)
         GamePlaySocket.close();
-    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
     UserStatusSock = new WebSocket(`ws://127.0.0.1:9000/ws/status/?token=${access_token}`);
+    GamePlaySocket = new WebSocket(`ws://127.0.0.1:9000/ws/notif/?token=${access_token}`);
     UserStatusSock.onopen = () => {
         console.log('UserStatusSock');
     }
@@ -263,8 +271,8 @@ export async function header() {
         }
         else if (data.block == 'false' && data['playwith'] === CurrentUser) {
             console.log(`--------- inside 4`)
-            localStorage.setItem('room_name', data['room_name']);
-            console.log(`from the sender ${localStorage.getItem('room_name')}`)
+            sessionStorage.setItem('room_name', data['room_name']);
+            console.log(`from the sender ${sessionStorage.getItem('room_name')}`)
             NewPage("/multi", Multi);
         }
         else if (data.block === 'True' && data['block_target'] === CurrentUser) {
@@ -319,7 +327,7 @@ export async function header() {
 
 
     document.getElementById("header-profile-box").addEventListener('click', () => {
-        NewPage("/profile", Profile);
+        NewPage("/profile", Profile,true,"?user="+UserName);
     });
 
     // Add click event listener to the notification icon

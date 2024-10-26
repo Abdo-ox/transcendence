@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from user.models import User
 from user.serializers import CurrentSerializer
 from django.core.exceptions import ValidationError
+from .serializers import UserSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -103,7 +104,22 @@ def unFriend(request):
         if request.user not in friend_list.friends.all():
             return JsonResponse({'error': '${request.user}, {username} are not friends'})
         friend_list.unfriend(request.user)
-        # freind_list.save()
         return JsonResponse({})
+    except User.DoesNotExist:
+        return JsonResponse({'error': f'there is no user ander username {username}'})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def userFriends(request):
+    try:
+        username = request.GET.get('username')
+        if not username:
+            return JsonResponse({'error': 'pear username not send at the query string'})
+        user = User.objects.get(username=username)
+        context = {
+            'friends': FriendList.objects.get_or_create(user=user)[0].friends
+        }
+        friends = UserSerializer(FriendList.objects.get_or_create(user=user)[0].friends, many=True, context=context)       
+        return JsonResponse(freinds.data, safe=false)
     except User.DoesNotExist:
         return JsonResponse({'error': f'there is no user ander username {username}'})

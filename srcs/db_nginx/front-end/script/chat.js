@@ -67,7 +67,7 @@ async function bodychat(UserData) {
         if (friend.username === TargetUser) {
           createHtmlPrf();
           updateProfile(friend);
-          chatListview(TargetUser, 'createWebSocket');
+          chatListview(TargetUser);
           const newUrl = `https://localhost/chat?user=${TargetUser}`
           console.log(`new query --------------- ${newUrl}`)
           history.pushState(null, '', newUrl);
@@ -87,7 +87,7 @@ async function bodychat(UserData) {
         console.log('contact exests')
         createHtmlPrf();
         updateProfile(user);
-        chatListview(contact.id, 'createWebSocket');
+        chatListview(contact.id);
       }
       else
         console.log(`conctact doesn't exests`)
@@ -276,7 +276,7 @@ async function bodychat(UserData) {
     document.getElementById('contacts-list').appendChild(li);
   }
 
-  async function chatListview(user, FunctionTarget) {
+  async function chatListview(user) {
     let access_token = await getJWT();
     console.log(`chatlistview called user is ${user}`)
     const data = await fetch(`http://127.0.0.1:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
@@ -289,10 +289,7 @@ async function bodychat(UserData) {
       .then(response => response.json()) // Call json() to parse the response
       .then(data => {
         console.log('request send ....', data.ChatID)
-        if (FunctionTarget === 'createWebSocket') {
           createWebSocket(data.ChatID, user);
-          // GamePlaySocketEngine(response.data.ChatID, username, user);
-        }
       })
       .catch(handleError);
   }

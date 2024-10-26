@@ -22,13 +22,13 @@ export const Multi = async () => {
 
 
     /* ---->  game logic  <---- */
-    let room_name = localStorage.getItem('room_name');
+    let room_name = sessionStorage.getItem('room_name');
     const canvas = document.getElementById("canvas");
     const keys = [];
     let socket = undefined
     if (room_name) {
         socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/${room_name}/?token=${token}`);
-        localStorage.removeItem('room_name');
+        sessionStorage.removeItem('room_name');
     } else
         socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/?token=${token}`);
     webSockets.push(socket);
@@ -88,14 +88,14 @@ export const Multi = async () => {
     function scaleGameState() {
         if (!rev) {
             // scale x
-            gameState.paddle1.x *= canvas.width
-            gameState.paddle2.x *= canvas.width
-            gameState.ball.x    *= canvas.width
+            gameState.paddle1.x *= canvas.height
+            gameState.paddle2.x *= canvas.height
+            gameState.ball.x    *= canvas.height
         } else {
             // scale x
-            gameState.paddle1.x = (1 - gameState.paddle1.x) * canvas.width
-            gameState.paddle2.x = (1 - gameState.paddle2.x) * canvas.width
-            gameState.ball.x    = (1 - gameState.ball.x)    * canvas.width
+            gameState.paddle1.x = (1.99 - gameState.paddle1.x) * canvas.height
+            gameState.paddle2.x = (1.99 - gameState.paddle2.x) * canvas.height
+            gameState.ball.x    = (1.99 - gameState.ball.x)    * canvas.height
         }
         // scale y
         gameState.paddle1.y = gameState.paddle1.y   * canvas.height

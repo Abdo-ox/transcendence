@@ -116,9 +116,9 @@ export function printErrorInScreen(errors) {
     } ,1500);
 }
 
-export const NewPage = async (url, func, addhistory = true) => {
-    console.log(" new page called for the url ", url);
-    const response = await fetch(url + ".html");
+export const NewPage = async (url, func, addhistory = true,query='') => {
+    console.log(" new page called for the url ", url ,query);
+    const response = await fetch(url + ".html"+query);
     if (response.ok) {
         const data = await response.text();
         const doc = (new DOMParser()).parseFromString(data, 'text/html');
@@ -142,12 +142,16 @@ export const NewPage = async (url, func, addhistory = true) => {
         }
         if (document.querySelector('header'))
             makePageActive(url.substring(1));
+<<<<<<< HEAD
         func();
         addErrorDiv();
+=======
+>>>>>>> 9bfdebad8d4832a195f15068d16de2c44f652c33
         if (addhistory)
-            history.pushState({}, '', url);
+            history.pushState({}, '', url+query);
     } else
         console.log("error in fetch the new page '", url, "'.");
+        func();
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {

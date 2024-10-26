@@ -38,13 +38,13 @@ class GameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -72,7 +72,7 @@ class GameLogic:
 
     async def game_loop(self):
         channel_layer = get_channel_layer()
-        fps = 40
+        fps = 60
         
         # send game state to set off timer
         await channel_layer.group_send(self.room_name, {
@@ -227,13 +227,13 @@ class TournamentGameLogic:
 
     @staticmethod
     def initialize_game():
-        width, height = 1, 1
+        width, height = 1.99, 1
         game_state = {
             'ball': {
                 'x': width / 4,
                 'y': height / 3,
                 'vx': 0.015 * height,
-                'vy': 0.015 * height,
+                'vy': 0.01 * height,
                 'r': 0.015 * height,
             },
             'paddle1': {
@@ -429,7 +429,7 @@ class TournamentLogic:
         if len(self.players) == 4:
             self.tournament.Ongoing = True
             await self.tournament.asave()
-            await sync_to_async(self.init_games)()
+            await self.init_games()
 
     async def update_state(self, winner):
         idx = -1
@@ -444,7 +444,7 @@ class TournamentLogic:
         if self.n == 3:
             await self.save_tournament()
         state = self.get_state()
-        await sync_to_async(self.init_games)()
+        await self.init_games()
         await self.channel_layer.group_send(self.room_name, {
             'type': 'send.tournament.state',
             'state': state,
@@ -508,15 +508,40 @@ class TournamentLogic:
         self.set_state()
         return self.state
 
-    def init_games(self):
+    async def init_games(self):
         if not self.n:
-            game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][0:2]), player1=self.players[0], player2=self.players[1])
-            game.players.add(*self.players[0:2])
-            game = MultiGame.objects.create(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
-            game.players.add(*self.players[2:])            
+            channel_layer = get_channel_layer()
+            game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['players'][0:2]), player1=self.players[0], player2=self.players[1])
+            await database_sync_to_async(game.players.add)(*self.players[0:2])
+            game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
+            await database_sync_to_async(game.players.add)(*self.players[2:])
+            for username in self.state['players']:
+                await channel_layer.group_send('notif', {
+                    'type': 'chat_message',
+                    'message': {
+                        'message': f": It's your turn to play!",
+                        'to': username,
+                        'from': self.room_name,
+                        'block': 'false',
+                        'flag': 'GameR',
+                        'tournament': self.room_name,
+                    },
+                }) 
         elif self.n == 2:
-            game = MultiGame.objects.create(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
-            game.players.add(*self.winners)
+            channel_layer = get_channel_layer()
+            game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
+            await database_sync_to_async(game.players.add)(*self.winners)
+            for username in self.state['winners']:
+                await channel_layer.group_send('notif', {
+                    'type': 'chat_message',
+                    'message': {
+                        'message': f": It's your turn to play!",
+                        'to': username,
+                        'from': self.room_name,
+                        'block': 'false',
+                        'tournament': self.room_name,
+                    },
+                }) 
 
     def generate_names(self, players):
         return f'{players[0]}-{players[1]}-{self.room_name}'

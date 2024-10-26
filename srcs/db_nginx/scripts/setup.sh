@@ -59,6 +59,5 @@ http {
     }
 }
 EOF
-echo "database is ready"
-touch /is_ready/chat
+
 nginx -g "daemon off;"

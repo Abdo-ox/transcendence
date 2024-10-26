@@ -4,12 +4,11 @@ from channels.generic.websocket import WebsocketConsumer
 from .models import Message
 from django.contrib.auth.models import AnonymousUser
 from .views import get_messages, get_user_contact, get_current_ChatID, get_participants
-import time
 
 # consumer for handling warm notif and status
 
 class UserStatusConsumer(WebsocketConsumer):
-    
+
     def connect(self):
         self.room_group_name = 'online_users'
         
@@ -63,6 +62,7 @@ class UserStatusConsumer(WebsocketConsumer):
             "is_online": is_online,
             "username": username
         }))
+
 
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
