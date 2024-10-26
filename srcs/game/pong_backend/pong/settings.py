@@ -101,6 +101,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_METHODS = [
     "GET",
 ]
+SECURE_SSL_REDIRECT = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',
