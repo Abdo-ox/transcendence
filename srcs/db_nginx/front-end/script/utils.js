@@ -144,13 +144,12 @@ export const NewPage = async (url, func, addhistory = true,query='') => {
             console.log("hello clear");
             makePageActive(url.substring(1));
         }
-        func();
-        addErrorDiv();
         if (addhistory)
             history.pushState({}, '', url + query);
+        // addErrorDiv();
+        func();
     } else
         console.log("error in fetch the new page '", url, "'.");
-        func();
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {
@@ -214,7 +213,7 @@ export const makePageActive = (page) => {
     //add event listener for non active pages
     for (const key in func) {
         if (!key.includes(page)){
-            console.log("add event listener");
+            console.log("add event listener", document.getElementById(key));
             document.getElementById(key).addEventListener('click', func[key]);
         }
     }
