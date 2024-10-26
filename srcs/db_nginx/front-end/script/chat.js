@@ -53,14 +53,14 @@ async function bodychat(UserData) {
     `;
     const frameElement = document.getElementById('frame');
 
-    if (frameElement) {
-      frameElement.remove();
-    }
+    // if (frameElement) {
+    //   frameElement.remove();
+    // }
     const newFrame = document.createElement('div');
     newFrame.id = 'frame';
     newFrame.innerHTML = htmlContent;
-
-    document.body.appendChild(newFrame);
+    frameElement.replaceWith(newFrame);
+    // document.body.appendChild(newFrame);
     fetchData();
     if (TargetUser && UserData.friends) {
       UserData.friends.forEach(friend => {
@@ -279,7 +279,7 @@ async function bodychat(UserData) {
   async function chatListview(user) {
     let access_token = await getJWT();
     console.log(`chatlistview called user is ${user}`)
-    const data = await fetch(`https://127.0.0.1:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
+    const data = await fetch(`https://localhost:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${access_token}`,
