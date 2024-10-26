@@ -90,11 +90,8 @@ export const getJWT = async () => {
     return is_valid(access, refresh);
 }
 function addErrorDiv() {
-    if (document.getElementById('error-container')){
-        console.log("hello===================================================================================>", document.getElementById('error-container'));
+    if (document.getElementById('error-container'))
         return ;
-
-    }
     const div = document.createElement('div');
     div.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
