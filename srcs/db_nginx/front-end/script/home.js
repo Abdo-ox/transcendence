@@ -8,23 +8,48 @@ import { Local } from "./local.js";
 import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
 
+function tournaments(data) {
+    const homeCard = document.getElementById("home-card-stack");
+
+    data.continue.forEach(tournament => {
+        homeCard.innerHTML += `
+        <div class="homeCard-card">
+            <img src="/images/fourtnite4k/back.jpeg" alt="">
+            <div class="homeCard-tr-name">
+                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
+                <button class="home-btn" id="join">Continue</button>
+            </div>
+        </div>`;
+    });
+    data.join.forEach(tournament => {
+        homeCard.innerHTML += `
+        <div class="homeCard-card">
+            <img src="/images/fourtnite4k/back.jpeg" alt="">
+            <div class="homeCard-tr-name">
+                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
+                <button class="home-btn" id="continue">Join</button>
+            </div>
+        </div>`;
+    });
+}
+
 function pieChart2(data) {
-    console.log("------------------------------------------->", data);
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
     let tournament = ((data.tournament * 100) / total);
     let ai = ((data.ai_match * 100) / total);
     let friend = ((data.friend_match * 100) / total);
     let unknown = ((data.unkown_match * 100) / total);
-    if (isNaN(tournament)) {
+    if (!total) {
         tournament = 0;
         ai = 0;
         friend = 0;
         unknown = 0;
-    }
-    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}"`);
-    document.getElementById('home-ai').style.setProperty('--content', `"${ai}"`);
-    document.getElementById('home-friend').style.setProperty('--content', `"${friend}"`);
-    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}"`);
+    } else
+        document.getElementById("home-nothing-chart-2")?.remove();
+    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}%"`);
+    document.getElementById('home-ai').style.setProperty('--content', `"${ai}%"`);
+    document.getElementById('home-friend').style.setProperty('--content', `"${friend}%"`);
+    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}%"`);
     tournament = (data.tournament * 360) / total;
     ai = (data.ai_match * 360) / total;
     friend = (data.friend_match * 360) / total;
@@ -73,11 +98,13 @@ function laederBoard(data) {
     });
 }
 
-function coalition(data) {
+function pieChart1(data) {
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
     console.log(total);
+    if (total)
+        document.getElementById("home-nothing-chart-1")?.remove();
     src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
     document.getElementById("home-night-spin-percent").innerHTML = src[0]  + '%';
@@ -86,9 +113,9 @@ function coalition(data) {
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
     document.getElementById("home-eclipse-pong-percent").innerHTML = src[2]  + '%';
     document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
-            #3CB371  ${src[0]}deg,
-            #FFD700  ${src[0]}deg ${src[1]}deg,
-            #4682B4  ${src[1]}deg ${src[2]}deg)`);
+            #3CB371  ${src[0]* 3.6}deg,
+            #FFD700  ${src[0]* 3.6}deg ${src[1]* 3.6}deg,
+            #4682B4  ${src[1]* 3.6}deg ${src[2]* 3.6}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -233,19 +260,15 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`
-    //     }
-    // });
-
-
-    // let test = await tours.json();
-    // document.getElementById("tournament-title").innerText = test[0].name;
-    // document.getElementById("join").addEventListener('click', () => {
-    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-    //     NewPage("/remotetournament", RemoteTournament);
-    // });
+    fetch("https://localhost:9090/tournaments/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        if (response.status == 200)
+            return response.json();
+    }).then(data => tournaments(data)
+    ).catch(error => printErrorInScreen(error));
 
     // tournament cards end
 
@@ -273,7 +296,7 @@ export async function Home() {
         headers:{
             Authorization: `Bearer ${token}`
         }
-    }).then(response => response.json()).then(data => coalition(data));
+    }).then(response => response.json()).then(data => pieChart1(data));
     fetch("https://localhost:8000/friend/userFriends?ajari", {
         headers:{
             Authorization: `Bearer ${token}`
