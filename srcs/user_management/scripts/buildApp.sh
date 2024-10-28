@@ -1,10 +1,11 @@
 #!/bin/bash
-while [ ! -f "/is_ready/user_management" ]; do
+while [ true ]; do
+    curl -k https://$DB_HOST/ > /dev/null 2>&1
+    if [ $? -eq 0 ];then
+        break
+    fi
     sleep 1
 done
-rm -f /is_ready/user_management
 
-
-echo "RUN SERVER"
-touch /is_ready/game
+echo "start user_management service"
 watchfiles --target-type command "hypercorn  project.asgi:application --bind 0.0.0.0:8000 --certfile certs/crt.crt --keyfile certs/crt.key"

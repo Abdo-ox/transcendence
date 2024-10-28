@@ -21,48 +21,32 @@ http {
     server {
         listen 443 ssl;
         server_name localhost;
+        
+        root /usr/share/nginx/html/;
+        try_files /html/SPA.html =404;
 
-        ssl_certificate $PATH_CRT/my.crt;
-        ssl_certificate_key $PATH_CRT/my.key;
-        location / {
-            alias  /usr/share/nginx/html/user;
-            index home.html;
+        ssl_certificate $PATH_CRT/crt.crt;
+        ssl_certificate_key $PATH_CRT/crt.key;
+
+        location ~* ^/(landingpage|register|login|home|confirmationMail|profile|settings|2faa|resetpassword|reset|chat|game|multi|local|tournament|remotetournament|fr-tournament)$ {
+            root /usr/share/nginx/html/;
+            try_files /html/SPA.html =404;
         }
-        location /home {
-            alias  /usr/share/nginx/html/user;
-            index home.html;
+        location ~ \.html$ {
+            root  /usr/share/nginx/html/html;
         }
-        location /login {
-            alias  /usr/share/nginx/html/user;
-            index login.html;
+        location ~ \.css$ {
+            root  /usr/share/nginx/html/style;
         }
-        location /register {
-            alias  /usr/share/nginx/html/user;
-            index register.html;
+        location ~ \.js$ {
+            root  /usr/share/nginx/html/script;
         }
-        location /settings {
-            alias  /usr/share/nginx/html/user;
-            index settings.html;
+        location /images {
+            alias  /usr/share/nginx/html/images;
         }
-        location /chat {
-            alias /usr/share/nginx/html/chat/;
-            index index.html;
-        }
-        location /game {
-            alias /usr/share/nginx/html/game;
-            index game.html;
-        }
-        location /multi {
-            alias /usr/share/nginx/html/game;
-            index multi.html;
-        }
-        location /local {
-            alias /usr/share/nginx/html/game;
-            index local.html;
-        }
-        location /profile {
-            alias /usr/share/nginx/html/user;
-            index profile.html;
+        location /loading {
+            alias  /usr/share/nginx/html/html;
+            index loading.html;
         }
     }
     server {
@@ -75,6 +59,5 @@ http {
     }
 }
 EOF
-echo "database is ready"
-touch /is_ready/user_management
+
 nginx -g "daemon off;"

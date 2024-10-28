@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from project.settings import C as c
 
 class UserManager(BaseUserManager):
     def create_user(self,username, intra=False, password=None, **data):
@@ -8,14 +9,21 @@ class UserManager(BaseUserManager):
             raise ValueError('User must have username')
         if not data or 'email' not in data:
             raise ValueError('User must have email address')
+        number, yes = AddCoalition.objects.get_or_create(id=1)
+        print(c.r, "number", Coalition.objects.get(id=number.add).name, flush=True)
         user = self.model(
             email = self.normalize_email(data['email']),
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost/home/profile_images/unkown.jpg'),
-            intraNet = intra
+            profile_image = data.get('profile_image', 'https://localhost/images/profile_images/unkown.jpg'),
+            intraNet = intra,
+            coalition = Coalition.objects.get(id=number.add)
         )
+        number.add = number.add + 1
+        if number.add > 3:
+            number.add = 1
+        number.save()
         if password:
             user.set_password(password)
         user.save(using=self._db)
@@ -48,9 +56,22 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/home/profile_images/unkown.jpg')
+    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/images/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField(default=0)
+    enable2fa     = models.BooleanField(default=False)
+    reset_Code    = models.BigIntegerField(default=0)
+    MailConfirmation = models.BigIntegerField(default=0)
+    coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
+    score         = models.IntegerField(default=0)
+    totalGames    = models.IntegerField(default=0)
+    wins          = models.IntegerField(default=0)
+    losses        = models.IntegerField(default=0)
+    is_online     = models.BooleanField(default=False)
+    last_score    = models.IntegerField(default=0)
+
     class Meta:
         db_table = 'user'
 
@@ -98,3 +119,17 @@ class Chat(models.Model):
 
     def __str__(self): 
         return "{}".format(self.pk)
+
+class Coalition(models.Model):
+    name = models.TextField(default='')
+    score = models.PositiveIntegerField(default=0)
+    image = models.TextField(default='')
+
+    class Meta:
+        db_table = 'coalition'
+
+class AddCoalition(models.Model):
+    add = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        db_table = 'addcoalition'

@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'game.User'
 
@@ -36,8 +36,6 @@ AUTHENTICATION_BACKENDS = [
     'user.auth.MyBackend',  
     'django.contrib.auth.backends.ModelBackend',
 ]
-
-ASGI_APPLICATION = 'myproject.asgi.application'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
@@ -53,7 +51,6 @@ SIMPLE_JWT = {
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +68,17 @@ ASGI_APPLICATION = 'pong.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': None,
     }
 }
 
@@ -91,16 +98,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://127.0.0.1",
 ]
 
-# CORS_ALLOW_METHODS = [
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "PATCH",
-#     "POST",
-#     "PUT",
-# ]
-
-CSRF_TRUSTED_ORIGINS =  ['https://localhost', 'https://127.0.0.1']
+CORS_ALLOW_METHODS = [
+    "GET",
+]
+SECURE_SSL_REDIRECT = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',

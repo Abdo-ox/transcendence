@@ -39,6 +39,9 @@ class FriendRequest(models.Model):
     receiver            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
     is_active           = models.BooleanField(blank=True, null=False,default=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'friendrequest'
 
     def __str__(self):
         return self.sender.username
@@ -73,7 +76,7 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost:8000/home/unkown.jpj'),
+            profile_image = data.get('profile_image', 'https://localhost/images/profile_images/unkown.jpg'),
             intraNet = intra
         )
         if password:
@@ -108,9 +111,21 @@ class User(AbstractBaseUser):
     is_active     = models.BooleanField(default=True)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
-    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost:8000/home/unkown.jpj')
+    profile_image = models.TextField(max_length=255, blank=True, default='https://localhost/images/profile_images/unkown.jpg')
     hide_email    = models.BooleanField(default=True)
     intraNet      = models.BooleanField(default=False)
+    is_2fa_passed = models.BooleanField(default=False)
+    Twofa_Code    = models.BigIntegerField(default=0)
+    enable2fa     = models.BooleanField(default=False)
+    reset_Code    = models.BigIntegerField(default=0)
+    MailConfirmation = models.BigIntegerField(default=0)
+    coalition     = models.ForeignKey('Coalition', related_name='users', on_delete=models.CASCADE)
+    score         = models.IntegerField(default=0)
+    totalGames    = models.IntegerField(default=0)
+    wins          = models.IntegerField(default=0)
+    losses        = models.IntegerField(default=0)
+    is_online     = models.BooleanField(default=False)
+    last_score    = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'user'
@@ -176,25 +191,44 @@ class Game(models.Model):
         db_table='game'
     
 class Tournament(models.Model):
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='', unique=True, blank=False)
     players = models.ManyToManyField(User, related_name='tournaments')
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
-    
+    Ongoing = models.BooleanField(default=False)
+    isOver = models.BooleanField(default=False)
+    image = models.TextField(max_length=255)
+
     class Meta:
         db_table='tournament'
 
 class MultiGame(models.Model):
-    # fix related name
     players = models.ManyToManyField(User, related_name='multiPlayerGames')
+    player1 = models.ForeignKey(User, related_name='player1', on_delete=models.DO_NOTHING)
+    player2 = models.ForeignKey(User, related_name='player2', on_delete=models.DO_NOTHING)
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
-    # to change to charfield later
     room_name = models.CharField(max_length=255, default='')
-    tournaments = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
+    tournament = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
+    friendMatch = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
         
     class Meta:
         db_table='multigame'
+
+
+class Coalition(models.Model):
+    name = models.TextField(default='')
+    score = models.PositiveIntegerField(default=0)
+    image = models.TextField(default='')
+
+    class Meta:
+        db_table = 'coalition'
+
+class AddCoalition(models.Model):
+    add = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        db_table = 'addcoalition'

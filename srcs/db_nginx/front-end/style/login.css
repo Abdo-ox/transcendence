@@ -1,0 +1,187 @@
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+
+
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins",sans-serif;
+} */
+
+.login-background {
+    width: 95%;
+    height: 95vh;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    margin: 30px auto 0;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background: url('/images/fourtnite4k/back-Photoroom.png')no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.login-header {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-logo {
+    width: 300px;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    line-height: 1.login-3rem;
+}
+
+.login-neon {
+    padding-top: 30px;
+    width: 100%;
+    height: auto;
+}
+
+.login-wrapper {
+    border-radius: 10px;
+    max-width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    color: #fff;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 30px 40px;
+    margin: 20px auto 0;
+    overflow-y: auto;
+}
+
+.login-wrapper:hover {
+    border-radius: 10px;
+    max-width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    color: #fff;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 30px 40px;
+    margin: 20px auto 0;
+}
+
+.login-wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+}
+
+.login-wrapper .login-input-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* background: salmon; */
+    margin: 30px 0;
+}
+
+.login-input-box input {
+    width: calc(100% - 40px);
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+
+}
+
+.login-input-box input::placeholder {
+    color: #fff;
+}
+
+.login-input-box i {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 25px;
+    font-size: 20px;
+}
+
+.login-wrapper .login-remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.login-remember-forgot label input {
+    accent-color: #fff;
+    margin-right: 3px
+}
+
+.login-remember-forgot a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.login-remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.login-wrapper .login-btn {
+    position: relative;
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #75C5A8;
+    font-weight: 600;
+}
+
+.login-wrapper .login-register-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14.5px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-register-link .login-intra {
+    display: flex;
+    position: relative;
+    background-color: transparent;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+}
+
+.login-register-link .login-intra svg {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+}
+
+.login-register-link a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-register-link a:hover {
+    text-decoration: underline;
+}

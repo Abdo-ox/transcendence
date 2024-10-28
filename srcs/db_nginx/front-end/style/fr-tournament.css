@@ -1,0 +1,193 @@
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.fr-tournament-container {
+    position: relative;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    /* flex: 1; */
+    margin: 80px 10px 10px 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #1b2141;
+    height: calc(100vh - 100px);
+    width: calc(100vw - 20px);
+    border-radius: 20px;
+    /* padding: 0 10px; */
+    overflow: hidden;
+}
+.fr-tournament-container img{
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    /* object-fit: contain; */
+}
+.fr-tournament-part {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    flex: 1;
+    height: 60%;
+    min-height: 120px;
+}
+
+.fr-tournament-part1,
+.fr-tournament-part5 {
+    justify-content: space-between;
+}
+
+.fr-tournament-part3 {
+    justify-content: flex-end;
+    padding: 0;
+}
+
+.fr-tournament-player {
+    flex: 1;
+    width: 100%;
+    max-height: 60px;
+    min-height: 60px;
+    border-radius: 20px;
+    border: #4a0dac 2px solid;
+    background-color: #1b2141;
+    box-shadow: #b1c0ff 0px 0px 0px 0px;
+    z-index: 999;
+}
+
+.fr-tournament-player h5 {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    font-size: 2vw;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.fr-tournament-img img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110%;
+    object-fit: cover;
+}
+
+.fr-tournament-img {
+    /* min-width: 60px; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: max-content;
+    transform: translate(-50%, -50%);
+}
+
+.fr-tournament-player3 {
+    position: relative;
+}
+
+.fr-tournament-flech1,
+.fr-tournament-flech2,
+.fr-tournament-flech3,
+.fr-tournament-flech4 {
+    content: '';
+    position: absolute;
+    right: 70%;
+    top: 30px;
+    bottom: 30px;
+    width: calc(30% + 20px);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-right: 2px solid grey;
+    border-top: 2px solid grey;
+    border-bottom: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-flech2 {
+    left: 70%;
+    top: 50%;
+    bottom: 30px;
+    border-radius: unset;
+    border: unset;
+    border-bottom-left-radius: 20px;
+    border-left: 2px solid grey;
+    border-bottom: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-flech3 {
+    right: 70%;
+    top: 50%;
+    bottom: 30px;
+    border-radius: unset;
+    border-bottom-right-radius: 20px;
+    border-top: unset;
+}
+
+.fr-tournament-flech4 {
+    left: 70%;
+    top: 30px;
+    bottom: 30px;
+    border-radius: unset;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    border-right: unset;
+    border-left: 2px solid grey;
+    /* z-index: -1 !important; */
+}
+
+.fr-tournament-container-input-btn {
+    position: absolute;
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+}
+
+.fr-tournament-container-input-btn input {
+    display: inline;
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 1;
+    border-style: none;
+    outline: none;
+    height: calc(1em + 1.6em + 0.2em);
+    width: 100%;
+    padding: 0.8em 1em;
+    border: 0.25em solid transparent;
+    background-image: linear-gradient(#050e2d, #1b2141), linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: 0.8s ease-out;
+}
+
+.fr-tournament-container-input-btn button {
+    position: absolute;
+    right: 0.25em;
+    top: 0.25em;
+    bottom: 0.25em;
+    aspect-ratio: 1/1;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    outline: none;
+    text-decoration: none;
+    color: #784ba0;
+    background-color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.fr-tournament-container-input-btn button:hover{
+    transition-timing-function: cubic-bezier(0.6, 4, 0.3, 0.8);
+    animation: gelatine 0.5s 1;
+}

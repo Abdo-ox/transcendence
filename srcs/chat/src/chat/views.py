@@ -4,7 +4,7 @@ from .models import Chat, Contact, User
 from django.http import Http404
 
 
-def get_last_10_messages(chatID): 
+def get_messages(chatID): 
     chat = get_object_or_404(Chat, id=chatID)
     return chat.messages.order_by('-timestamp').all()
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide In and Out</title>
+    <style>
+        #sliding-element {
+            position: fixed; /* Keep the element fixed */
+            top: 50%; /* Vertically center */
+            right: -300px; /* Initially off-screen */
+            width: 200px;
+            padding: 20px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Add a class for sliding in */
+        .slide-in {
+            transform: translateX(-300px); /* Slide in */
+        }
+
+        /* Add a class for sliding out */
+        .slide-out {
+            transform: translateX(0); /* Back to initial position */
+        }
+    </style>
+</head>
+<body>
+
+<div id="sliding-element">Hello, I am sliding in!</div>
+<button id="toggle-button">Toggle Slide</button>
+
+<script>
+    const element = document.getElementById('sliding-element');
+    const button = document.getElementById('toggle-button');
+    let isVisible = false;
+
+    button.addEventListener('click', () => {
+        if (isVisible) {
+            element.classList.remove('slide-in');
+            element.classList.add('slide-out');
+        } else {
+            element.classList.remove('slide-out');
+            element.classList.add('slide-in');
+        }
+        isVisible = !isVisible;
+    });
+</script>
+
+</body>
+</html>

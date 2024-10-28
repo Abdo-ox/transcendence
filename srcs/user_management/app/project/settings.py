@@ -24,7 +24,7 @@ AUTHENTICATION_BACKENDS = [
 ASGI_APPLICATION = 'myproject.asgi.application'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', 
     'corsheaders',
+    # 'django_otp',
+    # 'django_otp.plugins.otp_totp',  
+    # 'two_factor', 
+    # 'qrcode',  
 ]
 
 REST_FRAMEWORK = {
@@ -58,12 +62,14 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    # 'project.debug.CsrfDebugMiddlewar e',
 ]
 
 
@@ -139,8 +145,8 @@ AUTH_PASSWORD_VALIDATORS = [
 OAUTH_CONFIG = {
     '42': {
         'client_id': 'u-s4t2ud-589237e6394550420d14a9a59740b48214effbb5b50d9943c952f85a1e639e46',
-        'client_secret': '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',
-        'redirect_uri': 'https://localhost/login/loading.html',
+        'client_secret': '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',
+        'redirect_uri': 'https://localhost/loading.html',
         'base_url': 'https://api.intra.42.fr/oauth/authorize',
         'token_url': 'https://api.intra.42.fr/oauth/token',
         'info_url': ' https://api.intra.42.fr/v2/me',
@@ -170,3 +176,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'trencenteam@gmail.com' 
+EMAIL_HOST_PASSWORD = 'jprx jsfw vamr vdys'  # your email password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

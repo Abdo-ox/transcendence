@@ -1,0 +1,247 @@
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.img-bx {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
+.img-bx img {
+    position: relative;
+    width: 100%;
+    border-radius: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.player-name {
+    font-size: 14px;
+}
+
+canvas {
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 60%;
+    max-width: 1000px;
+    background-color: #1b2141;
+}
+
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 80px);
+    height: calc(100vh - 100px);
+    border-radius: 20px;
+    /* height: 100%; */
+    gap: 8px;
+    margin: 80px 40px 0 40px;
+    padding: 20px 0 40px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 16px rgba(255, 29, 29, 0.8);
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    height: 100%;
+}
+
+.players-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Modal style */
+.modal-content {
+    background-color: #050e2d;
+}
+
+.modal-header {
+    background-color: #050e2d;
+}
+
+.modal-footer {
+    background-color: #050e2d;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-title {
+    margin: 0;
+}
+.btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+/* start of tournament css */
+
+/* Tournament Bracket Styles */
+.tournament-bracket {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 0px;
+}
+
+.trophy-container {
+    font-size: 48px;
+    color: gold;
+}
+
+.winner-box {
+    width: 180px;
+    height: 80px;
+    background-color: #1b2141;
+    border: 2px solid gold;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    /* margin-bottom: 40px; */
+}
+
+.bracket-columns {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    height: 100%;
+}
+
+.bracket-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 40%;
+    height: 100%;
+}
+
+.bracket-box {
+    width: 150px;
+    height: 60px;
+    background-color: #1b2141;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+}
+
+.left-column {
+    align-items: flex-start;
+}
+
+.right-column {
+    align-items: flex-end;
+}
+
+
+.left-column .bracket-box:nth-child(2) {
+    align-self: flex-end;
+}
+
+
+.right-column .bracket-box:nth-child(2) {
+    align-self: flex-start;
+}
+
+.right-column .bracket-box:nth-child(1)::before, .right-column .bracket-box:nth-child(3)::before {
+    position: absolute;
+    content: "";
+    width: 75%;
+    height: 4px;
+    background: #fff;
+    right: 100%;
+}
+
+/* Styles for the nickname input */
+/* .tournament-input .input-group {
+    max-width: 350px;
+} */
+
+/* .tournament-input .input-group .form-control {
+    margin-right: 8px;
+} */
+
+/* .tournament-input .form-control {
+    background-color: #1b2141;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    color: #fff;
+} */
+
+/* .tournament-input .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+} */
+
+/* .tournament-input .btn-primary {
+    background-color: #0091ad;
+    border-radius: 15px;
+    border: none;
+} */
+
+/* .tournament-input .btn-primary:hover {
+    background-color: #007a90;
+} */
+
+/* end of tournament css */
+
+/* Make sure the layout is responsive */
+@media (max-width: 600px) {
+    .profile img {
+        width: 40px;
+        height: 40px;
+    }
+    .profile {
+        margin-bottom: 10px;
+    }
+    canvas {
+        width: 90%;
+    }
+}
+
+@media (max-width: 450px) {
+    .profile {
+        display: none;
+    }
+    canvas {
+        transform: rotate(-90deg);
+        width: 120%;
+    }
+}

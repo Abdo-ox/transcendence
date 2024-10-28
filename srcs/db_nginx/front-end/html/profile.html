@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Color Slider</title>
+    <!-- <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> -->
+</head>
+
+<body>
+    <header id="header">
+    </header>
+    <div class="profile-content">
+        <div class="profile-flex-1">
+            <div class="profile-profile-items">
+                <div class="profile-half">
+                    <div class="profile-coalition-box">
+                        <img class="profile-background" src="/images/coalition/sheilddark.png" alt="">
+                        <img class="profile-coalition" src="/images/whitwill/coalition4.png" alt="">
+                    </div>
+                    <div class="profile-clip">
+                        <div class="profile-flip">
+                            <img  id="profile-profileimage" src="/images/fourtnite4k/images.jpeg" alt="">
+                        </div>
+                        <div class="profile-title-box">
+                            <div class="profile-sub-title">
+                                <h4 id="profile-username">username</h4>
+                                <div class="profile-setting-box">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </div>
+                            </div>
+                            <div class="profile-rank-box">
+                                <h4>Rank</h4>
+                                <h4 id="profile-rank">89</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-level-bx">
+                        <div class="profile-level-name">
+                            <h4>level <span id="current-level">5</span></h4>
+                            <h4><span id="current-points">30</span> Points</h4>
+                        </div>
+                        <div class="profile-level-line">
+                            <div  id="profile-level-progress" class="profile-level-progress"></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="profile-dashbord">
+                    <div class="profile-box">
+                        <h4>winrate</h4>
+                        <div class="profile-skill">
+                            <div class="profile-outer">
+                                <div class="profile-inner">
+                                    <div id="profile-number">0%
+                                    </div>
+                                </div>
+                            </div>
+                            <svg class="profile-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
+                                <defs>
+                                    <linearGradient id="MorningDewGradient">
+                                        <stop offset="0%" stop-color="#a8c0ff" />
+                                        <stop offset="100%" stop-color="#3f2b96" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="45" cy="45" r="40" stroke="url(#GradientColor)" stroke-width="10"
+                                    fill="none" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="profile-box">
+                        <h4>Loss rate</h4>
+                        <div class="profile-skill">
+                            <div class="profile-outer">
+                                <div class="profile-inner">
+                                    <div id="profile-lose">
+                                        0%
+                                    </div>
+                                </div>
+                            </div>
+                            <svg class="profile-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="90px" height="90px">
+                                <defs>
+                                    <linearGradient id="OceanBlueGradient">
+                                        <stop offset="0%" stop-color="#00c6ff" />
+                                        <stop offset="100%" stop-color="#0072ff" />
+                                    </linearGradient>
+                                </defs>
+                                <circle id="profile-LossRate" cx="45" cy="45" r="40" stroke="url(#GradientColor)"
+                                    stroke-width="10" fill="none" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="profile-match">
+                        <h4>Total Matchs played</h4>
+                        <h3 id="profile-matchScore">20</h3>
+                    </div>
+                    <div class="profile-match">
+                        <h4>Tournaments Played</h4>
+                        <h3 id="profile-tournamentsScore">5</h3>
+                    </div> 
+
+                </div>
+            </div>
+            <div class="profile-activity">
+                <div class="profile-acheivements">
+                    <h2 class="profile-h2Title">Acheivements</h2>
+                    <div class="profile-acheiv-Box">
+                        <div class="profile-glass" style="--r:-15" data-text="First Serve">
+                            <div class="profile-progress" style=" --clr:#43f94a;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
+                            </div>
+                        </div>
+                         <div class="profile-glass" style="--r:5"data-text="Matchmaker" >
+                            <div class="profile-progress"  style="--clr:#2ccde9;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
+                            </div>
+                         </div>
+                         <div class="profile-glass" style="--r:25"data-text="Paddle Master"> 
+                            <div class="profile-progress"  style="--clr:#fb297b;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
+                            </div>
+                         </div>
+                         <div class="profile-glass" style="--r:-15"data-text="Rockie Score">
+                            <div class="profile-progress" style="--clr:#ffe047;">
+                                <h4 class="ProgressPercent">0<span>%</span></h4>
+                                <h5>Locked</h5>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="profile-history">
+                    <h2 class="profile-h2Title">Match History</h2>
+                    <div id="profile-arrayHistory" class="profile-matchhISTORY">
+                        <p  id="history-para" class="history-para">No matches yet! Dive in and start your adventure!</p>
+                    </div>    
+                </div>
+            </div>
+            <div class="profile-tournament-bx">
+                <div class="profile-tournament">
+                    <h2 class="profile-h2Title"> Tournaments Trophy</h2>
+                    <div class="profile-trophy-bx">
+                        <!-- <div class="profile-trophy-placeholder">
+                            <div class="profile-trophy-icon">
+                                <i class="profile-fas fa-trophy"></i>
+                              /* <img src="acheivements/gold-cup.png" alt="">*/
+                            </div>
+                            <h4 class="profile-no-acheiv">Awaits Your Tournament Victory!</h4>
+                        </div> -->
+                        <div class="profile-trophy-placeholder">
+                            <div class="profile-trophy-icon">
+                                <img src="/images/fourtnite4k/back.jpeg" alt="" srcset="">
+                                <h4 class="profile-tour-name">tournament name</h4>
+                            </div>
+                            <div class="profile-trophy-icon">
+                                <img src="/images/fourtnite4k/div.png" alt="" srcset="">
+                                <h4 class="profile-tour-name">tournament name</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="profile-tournamentHistory">
+                    <h2 class="profile-h2Title">tournaments History</h2>
+                    <div class="profile-history-list">
+                        <div class="profile-tournament-item">
+                           <img src="/images/fourtnite4k/fk-removebg-preview.png" alt="">
+                            <div class="profile-card-body">
+                                <h4 class="profile-card-title">Tournament Name</h4>
+                                <div class="profile-para">
+                                    <p class="profile-card-info">Position: <span>3rd</span></p>
+                                <p class="profile-card-info">Points :  <span>75</span></p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="profile-tournament-item">
+                            <img src="/images/fourtnite4k/tou2.jpeg" alt="">
+                             <div class="profile-card-body">
+                                 <h4 class="profile-card-title">Tournament Name</h4>
+                                 <div class="profile-para">
+                                     <p class="profile-card-info">Position: <span>3rd</span></p>
+                                 <p class="profile-card-info">Points :  <span>75</span></p>
+                                 </div>
+                                 
+                             </div>
+                         </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="profile-flex-2">
+            <div class="profile-searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input type="text" placeholder="search">
+            </div>
+            <div id="profile-users-list" class="profile-users-list">
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
