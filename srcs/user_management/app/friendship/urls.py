@@ -6,7 +6,8 @@ cancelFriendRequest,
 declineFriendRequest,
 sendFriendRequests,
 unFriend,
-userFriends)
+userFriends,
+makeFreindRequestReaded)
 
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path('unfriend/', unFriend),
     path('friendRequests/', sendFriendRequests),
     path('userFriends/', userFriends),
+    path('friendRequest/readed/', makeFreindRequestReaded),
 ]

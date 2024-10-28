@@ -334,8 +334,15 @@ export async function header() {
     });
 
     // Add click event listener to the notification icon
-    document.getElementById('header-notification-icon')?.addEventListener('click', event => {
+    document.getElementById('header-notification-icon')?.addEventListener('click', async event => {
         event.stopPropagation(); // Prevent the event from bubbling up
+        document.body.style.setProperty('--count-notification', 'none');
+        const token = await getJWT();
+        fetch("https://localhost:8000/friend/friendRequest/readed/", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         const notif = document.getElementById('header-notif-div');
         if (notif.style.display == 'block')
             notif.style.display = 'none';
@@ -366,6 +373,9 @@ export async function header() {
             declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
             document.getElementById("header-notif-div").appendChild(notiItem);
         });
+        const number = data.filter(item => item.is_read === false).length;
+        if (number)
+            document.body.style.setProperty('--count-notification', `"${number}"`)
     }).catch(error => {
         console.log("can't fetch friend requests error accured ", error);
     });

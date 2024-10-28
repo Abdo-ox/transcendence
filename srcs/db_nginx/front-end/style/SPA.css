@@ -17,6 +17,8 @@ body {
 
     --percent: "";
     --percent-color: transparent;
+
+    --count-notification: none;
     color: #fff;
     background: #050e2d;
     display: flex;

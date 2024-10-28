@@ -228,7 +228,7 @@ header .header-action .header-searchBx input {
 }
 
 .header-notification-icon-container::after {
-    content: '10';
+    content: var(--count-notification);
     position: absolute;
     left: 0;
     top: 3px;

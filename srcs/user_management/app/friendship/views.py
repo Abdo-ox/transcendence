@@ -6,7 +6,7 @@ from project.settings import C as c
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from user.models import User
-from user.serializers import CurrentSerializer
+from .serializers import FriendRequestSerializer
 from django.core.exceptions import ValidationError
 from .serializers import UserSerializer
 
@@ -88,7 +88,7 @@ def sendFriendRequests(request):
     ids = FriendRequest.objects.filter(receiver=request.user, is_active=True).values_list('sender', flat=True)
     senders = User.objects.filter(id__in=ids)
     if senders.exists():
-        data = CurrentSerializer(senders, many=True)
+        data = FriendRequestSerializer(senders, many=True, context={'user': request.user})
         return JsonResponse(data.data, safe=False)
     return JsonResponse([], safe=False)
 
@@ -123,3 +123,12 @@ def userFriends(request):
         return JsonResponse(friends.data, safe=False)
     except User.DoesNotExist:
         return JsonResponse({'error': f'there is no user ander username {username}'})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def makeFreindRequestReaded(request):
+    friend_requests = FriendRequest.objects.filter(receiver=request.user, is_active=True)
+    for friend_request in friend_requests:
+        friend_request.is_read = True
+        friend_request.save()
+    return JsonResponse({})
