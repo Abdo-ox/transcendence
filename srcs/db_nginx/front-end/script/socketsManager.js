@@ -7,7 +7,7 @@ export async function createWebSocket(ChatID, username)
   if (chatSocket && chatSocket.readyState === WebSocket.OPEN)
     chatSocket.close();
   let token = await getJWT();
-  chatSocket = new WebSocket('ws://127.0.0.1:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
+  chatSocket = new WebSocket('wss://localhost:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
   chatSocket.onopen = () => {
     console.log('WebSocket is open now.');
     
