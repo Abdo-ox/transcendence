@@ -8,12 +8,15 @@
 html{
     overflow: hidden;
 }
+
 body {
 
     --c1: #3CB371;
     --c4: #4682B4;
     --c3: #FFD700;
 
+    --percent: "";
+    --percent-color: transparent;
     color: #fff;
     background: #050e2d;
     display: flex;
