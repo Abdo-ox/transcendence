@@ -20,6 +20,7 @@ function tournaments(data) {
                 <button class="home-btn" id="join">Continue</button>
             </div>
         </div>`;
+        return ;
     });
     data.join.forEach(tournament => {
         homeCard.innerHTML += `
@@ -81,8 +82,10 @@ function laederBoard(data) {
         fillPhase('third', data[2]);
     for (let i = 0; i < 3 && data.length; i++)
         data.shift();
+    let i = 4;
     data.forEach(user => {
         leaderboardcontainer.innerHTML += `<div class="home-user-class">
+            <p class="home-rank-user">${i++}</p>
             <h3>${user.username}</h3>
             <div class="home-up-down">
                 <p>+${user.last_score}</p>

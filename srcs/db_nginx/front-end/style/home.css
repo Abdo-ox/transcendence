@@ -56,6 +56,9 @@
     /* bottom: 80px; */
 }
 
+.home-rank-user{
+    color:#0ff;
+}
 .home-user button {
     line-height: 1;
     height: 30px;
@@ -126,22 +129,25 @@
 }
 
 .home-main {
-    /* position: relative; */
-    margin-top: 80px;
+    position: absolute;
+    top: 80px;
     right: 0;
     left: 0;
     bottom: 0;
+    padding-right: 12px;
     overflow: hidden auto;
 }
 
 .home-content {
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: row;
-    /* margin-top: 80px; */
-    width: 100%;
-    padding: 10px 0px 10px 5px;
+    right: 30px;
+    left: 10px;
+    top: 10px;
+    padding-bottom: 10px;
     gap: 10px;
-    flex: 1;
 }
 
 /* Specific flex settings */
@@ -757,7 +763,9 @@ section {
     align-items: end;
     justify-content: center;
 }
-
+.home-st1, .home-st2, .home-st3{
+    position: relative;
+}
 .home-st2 {
     width: 30%;
     display: flex;
@@ -780,8 +788,8 @@ section {
 }
 #home-coalition-winner
 {
- position: absolute;
-    left: 37%;
+ /* position: absolute; */
+    /* left: 37%; */
     color: #FFD700;
     box-shadow: #FFD700 0px 10px 20px -10px;
     
@@ -829,20 +837,22 @@ section {
 
 .home-coali-bx1 {
     /* background: url(whitwill/___4_-removebg-preview.home-png)no-repeat; */
+    display: flex;
+    flex-direction: column;
     background-size: 100%;
     width: 170px;
     height: 80%;
-    justify-content: center;
+    align-items: center;
 }
 
 .home-coali-bx1 img {
-    margin-right: 10px;
-    margin-top: 25px;
     width: 80%;
     height: 80%;
     object-fit: cover;
 }
-
+.home-coalition h2 {
+    margin: 0;
+}
 .home-st3 .home-number3 {
     width: 60%;
     height: 80px;
