@@ -108,9 +108,9 @@ const colors = ["#3CB371", "#FFD700", "#4682B4"];
 function coalitionRank(data) {
     data.sort((a,b) => b - a);
     document.getElementById("home-coalition-winner").innerHTML = data[0].name;
-    // document.getElementById("home-coalFirst").innerHTML = data[0].image;
-    // document.getElementById("home-coalSecond").innerHTML = data[0].image;
-    // document.getElementById("home-coalThird").innerHTML = data[0].image;
+    document.getElementById("home-coalFirst").src = data[0].image;
+    document.getElementById("home-coalSecond").src = data[1].image;
+    document.getElementById("home-coalThird").src = data[2].image;
 }
 
 function pieChart1(data) {
@@ -136,9 +136,9 @@ function pieChart1(data) {
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
     document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1)  + '%';
     document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
-        ${colors[0]}  ${src[0]* 3.6}deg,
-        ${colors[1]}  ${src[0]* 3.6}deg ${src[1]* 3.6}deg,
-        ${colors[2]}  ${src[1]* 3.6}deg ${src[2]* 3.6}deg)`);
+        ${colors[0]}  ${Math.round(src[0]* 3.6)}deg,
+        ${colors[1]}  ${Math.round(src[0]* 3.6)}deg ${Math.round(src[1]* 3.6)}deg,
+        ${colors[2]}  ${Math.round(src[1]* 3.6)}deg ${Math.round(src[2]* 3.6)}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
