@@ -188,37 +188,37 @@ canvas {
     height: 4px;
     background: #fff;
     right: 100%;
-} */
+}
 
 /* Styles for the nickname input */
-#nickname-input .input-group {
+/* .tournament-input .input-group {
     max-width: 350px;
-}
+} */
 
-#nickname-input .input-group .form-control {
+/* .tournament-input .input-group .form-control {
     margin-right: 8px;
-}
+} */
 
-#nickname-input .form-control {
+/* .tournament-input .form-control {
     background-color: #1b2141;
     border: 1px solid #fff;
     border-radius: 15px;
     color: #fff;
-}
+} */
 
-#nickname-input .form-control::placeholder {
+/* .tournament-input .form-control::placeholder {
     color: rgba(255, 255, 255, 0.5);
-}
+} */
 
-#nickname-input .btn-primary {
+/* .tournament-input .btn-primary {
     background-color: #0091ad;
     border-radius: 15px;
     border: none;
-}
+} */
 
-#nickname-input .btn-primary:hover {
+/* .tournament-input .btn-primary:hover {
     background-color: #007a90;
-}
+} */
 
 /* end of tournament css */
 

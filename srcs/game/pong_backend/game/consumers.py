@@ -3,6 +3,7 @@ import asyncio
 import random
 import time
 import csv
+import torch
 from copy import deepcopy
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,6 +13,7 @@ from asgiref.sync import sync_to_async
 from django.db import IntegrityError
 from . models import Game, Tournament
 from . game import GameLogic, TournamentLogic, TournamentLogicInstances
+from . aimodel import init_model
 
 # protect from anonymous user
 
@@ -21,6 +23,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         self.game_state = {}
         self.keys = {}
+        # self.ai = init_model()
         self.game = Game(player=self.user)
         self.prediction = 0
         await self.accept()
@@ -83,7 +86,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 7,
+            'maxScore': 1000,
             'over': False,
             'started': False,
             'width': width,
@@ -108,6 +111,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         vx = self.game_state['ball']['vx']
         y = self.game_state['ball']['y']
         x = self.game_state['ball']['x']
+        features = f'{x},{y},{vx},{v}'
         r = -1
         while r < 0:
             pre_x = x
@@ -128,8 +132,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 vx *= -1
                 v *= -1
             v *= -1
-        # with open('/is_ready/predictions.csv', 'a+') as file:
-        #     file.write(f'{x},{y},{vx},{v},{r}\n') 
+        with open('/is_ready/predictions.csv', 'a+') as file:
+            file.write(f'{features},{r}\n')
+        # with torch.no_grad():
+        #     self.prediction = self.ai(torch.tensor([x, y, vx, v]))[0]
         self.prediction = r
             
     def handle_key(self, key):
