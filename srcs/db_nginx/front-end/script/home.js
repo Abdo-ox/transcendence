@@ -102,28 +102,39 @@ function laederBoard(data) {
         </div>`
     });
 }
+
 const colors = ["#3CB371", "#FFD700", "#4682B4"];
+
+function coalitionRank(data) {
+    data.sort((a,b) => b - a);
+    document.getElementById("home-coalition-winner").innerHTML = data[0].name;
+    // document.getElementById("home-coalFirst").innerHTML = data[0].image;
+    // document.getElementById("home-coalSecond").innerHTML = data[0].image;
+    // document.getElementById("home-coalThird").innerHTML = data[0].image;
+}
+
 function pieChart1(data) {
+    console.log(data);
     const piechart1 = document.getElementById("home-pie-chart-1");
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
-    console.log(src);
     if (total){
         document.getElementById("home-nothing-chart-1")?.remove();
         const max = Math.max(...src);
         console.log(max);
         const index_max = src.indexOf(max);
-        piechart1.style.setProperty('--percent', `"${max}%"`);
+        piechart1.style.setProperty('--percent', `"${max.toFixed(1)}%"`);
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
-    }
-    src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
+        coalitionRank(data);
+    } else
+        src.forEach((coalition, i) => src[i] = (isNaN(coalition)? 0 : coalition));
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = src[0]  + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = src[0].toFixed(1)  + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1]  + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1].toFixed(1)  + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2]  + '%';
+    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1)  + '%';
     document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
         ${colors[0]}  ${src[0]* 3.6}deg,
         ${colors[1]}  ${src[0]* 3.6}deg ${src[1]* 3.6}deg,
@@ -309,9 +320,9 @@ export async function Home() {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));
-    fetch("https://localhost:8000/friend/userFriends?ajari", {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }).then(response => response.json()).then(data => console.log("data", data));
+    // fetch("https://localhost:8000/friend/userFriends?ajari", {
+    //     headers:{
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // }).then(response => response.json()).then(data => console.log("data", data));
 }
