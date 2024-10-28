@@ -196,6 +196,7 @@ class Tournament(models.Model):
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
     Ongoing = models.BooleanField(default=False)
     isOver = models.BooleanField(default=False)
+    image = models.TextField(max_length=255)
 
     class Meta:
         db_table='tournament'

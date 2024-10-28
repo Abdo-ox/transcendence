@@ -86,7 +86,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             },
             'v': 0.015 * height,
             'len': 0.25 * height,
-            'maxScore': 1000,
+            'maxScore': 7,
             'over': False,
             'started': False,
             'width': width,
@@ -371,7 +371,7 @@ class RemoteTournamentConsumer(AsyncWebsocketConsumer):
                 await self.send(text_data=json.dumps({'error':True, 'message': 'Name can only contain Alphanumerics.'}))
                 return
             try:
-                self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name)
+                self.instance = await database_sync_to_async(Tournament.objects.create)(name=self.room_name, image=f'{random.randint(1, 7)}.png')
             except IntegrityError:
                 await self.send(text_data=json.dumps({'error':True, 'message': 'Name has already been used.'}))
                 return

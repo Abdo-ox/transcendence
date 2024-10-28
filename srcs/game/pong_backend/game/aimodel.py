@@ -4,7 +4,7 @@ from torch.utils.data import TensorDataset, DataLoader
 import torch.optim as optim
 import os
 
-ai_mod = []
+ai_mod = None
 
 class NeuralNetwork(nn.Module):
     def __init__(self):
@@ -23,9 +23,9 @@ class NeuralNetwork(nn.Module):
         return logits
 
 def init_model():
-    if not len(ai_mod):
+    if not ai_mod:
         mod = NeuralNetwork()
         mod.load_state_dict(torch.load("/game/game/model.pth", weights_only=True))
         mod.eval()
-        ai_mod.append(mod)
-    return ai_mod[0]
+        ai_mod = mod
+    return mod
