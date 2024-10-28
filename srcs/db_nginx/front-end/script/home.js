@@ -222,7 +222,7 @@ export async function Home() {
 
     document.getElementById("home-add").addEventListener('click', event => {
         sessionStorage.removeItem('tournament_name');
-        NewPage("/remotetournament", RemoteTournament);
+        NewPage("/fr-tournament", TournamentFr);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
