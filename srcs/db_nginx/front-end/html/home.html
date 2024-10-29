@@ -11,36 +11,35 @@
 <body>
     <header id="header">
     </header>
+    <div class="home-main">
         <main class="home-content">
-            <div>
-
-            </div>
             <div class="home-flex1">
                 <div class="home-tournament-local">
-                   <h2>Neighborly Paddle Showdown</h2>
-                   <div class="local-glass">
-                    <p>Try for more fun!</p>
-                    <button  id="home-local-button" class="home-btn">start</button>
-                   </div>
-                   
-                   <img class="Tour-Character"     src="/images/fourtnite4k/What2.png" alt="">
+                    <h2>Neighborly Paddle Showdown</h2>
+                    <div class="local-glass">
+                        <p>Try for more fun!</p>
+                        <button id="home-local-button" class="home-btn">start</button>
+                    </div>
+
+                    <img class="Tour-Character" src="/images/fourtnite4k/What2.png" alt="">
                 </div>
                 <div class="home-suggestion-container">
                     <h2>Suggestions</h2>
                     <div id="home-suggestions-items" class="home-users-list"></div>
-                </div>
-                <div class="home-logout-container" id="home-logout-container">
-                    <svg class="home-logout-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
-                        height="42px" viewBox="0 0 24 24" width="35px" fill="#BD1414BE">
-                        <g>console.log("the login.js called");
-                            <path d="M0,0h24v24H0V0z" fill="none" />
-                        </g>
-                        <g>
-                            <path
-                                d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
-                        </g>
-                    </svg>
-                    <h4>Logout</h4>
+                    <div class="home-logout-container" id="home-logout-container">
+                        <svg class="home-logout-icon" xmlns="http://www.w3.org/2000/svg"
+                            enable-background="new 0 0 24 24" height="42px" viewBox="0 0 24 24" width="35px"
+                            fill="#BD1414BE">
+                            <g>console.log("the login.js called");
+                                <path d="M0,0h24v24H0V0z" fill="none" />
+                            </g>
+                            <g>
+                                <path
+                                    d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
+                            </g>
+                        </svg>
+                        <h4>Logout</h4>
+                    </div>
                 </div>
             </div>
             <div class="home-flex2">
@@ -53,22 +52,7 @@
                         </p>
                         <button class="home-btn" id="home-add">Add</button>
                     </div>
-                    <div class="homeCard-stack">
-                        <div class="homeCard-card">
-                            <img src="/images/fourtnite4k/back.jpeg" alt="">
-                            <div class="homeCard-tr-name">
-                                <h2 class="homeCard-title" id="tournament-title">Tournament name</h2>
-                                <button class="home-btn" id="join">Join</button>
-                            </div>
-                        </div>
-                        <div class="homeCard-card">
-                            <img src="/images/fourtnite4k/div.png" alt="">
-                            <div class="homeCard-tr-name">
-                                <h2 class="homeCard-title">Tournament name</h2>
-                                <button class="home-btn">Join</button>
-                            </div>
-
-                        </div>
+                    <div class="homeCard-stack" id="home-card-stack">
                     </div>
                 </div>
                 <div class="home-game-bx">
@@ -133,7 +117,7 @@
                     <div class="home-stairs">
                         <div class="home-st2">
                             <div class="home-coali-bx">
-                                <img id="home-coalSecond" src="/images/whitwill/coalition5.png" alt="">
+                                <img id="home-coalSecond" src="/images/un.png" alt="">
                             </div>
                             <div class="home-number2">
                                 <h1>2</h1>
@@ -141,8 +125,8 @@
                         </div>
                         <div class="home-st1">
                             <div id="home-gold-background" class="home-coali-bx1">
-                                <h4 id="home-coalition-winner">name</h4>
-                                <img id="home-coalFirst" src="/images/whitwill/coalition4.png" alt="">
+                                <h4 id="home-coalition-winner">unknown</h4>
+                                <img id="home-coalFirst" src="/images/un.png" alt="">
                             </div>
                             <div class="home-number1">
                                 <h1>1</h1>
@@ -150,7 +134,7 @@
                         </div>
                         <div class="home-st3">
                             <div class="home-coali-bx">
-                                <img id="home-coalThird" src="/images/whitwill/coalichin3.png" alt="">
+                                <img id="home-coalThird" src="/images/un.png" alt="">
                             </div>
                             <div class="home-number3">
                                 <h3 style="color: #fff; ;">3</h3>
@@ -176,14 +160,14 @@
                     </div>
                     <div class="home-pie-chart-1" id="home-pie-chart-1">
                         <p class="home-greatest-percentage" id="home-greatest-percentage"></p>
-                        <p class="home-noting">Noting yet</p>
+                        <p class="home-nothing" id="home-nothing-chart-1">Nothing yet</p>
                     </div>
                 </div>
                 <div class="home-Chart">
                     <h2> Match Statistics Overview</h2>
                     <div class="home-container-chart">
                         <div class="home-pie-chart-2" id="home-pie-chart-2">
-                            <p class="home-noting">Noting yet</p>
+                            <p class="home-nothing" id="home-nothing-chart-2">Nothing yet</p>
                         </div>
                         <figcaption class="home-legend">
                             <span class="home-tournament home-span" id="home-tournament">Tournament</span>
@@ -194,25 +178,25 @@
                     </div>
                 </div>
             </div>
-        </main>
-        <div class="home-tournamet-form" id="home-tournamet-form">
-            <div class="home-form-input">
-                <div class="home-input-label-container">
-                    <label class="home-input-label" for="tournament-name">Tournament Name:</label>
-                    <input type="text" class="tournament-Name" id="tournament-name" name="tournament-name">
+            <div class="home-tournamet-form" id="home-tournamet-form">
+                <div class="home-form-input">
+                    <div class="home-input-label-container">
+                        <label class="home-input-label" for="tournament-name">Tournament Name:</label>
+                        <input type="text" class="tournament-Name" id="tournament-name" name="tournament-name">
+                    </div>
+                    <div class="home-input-label-container">
+                        <label class="home-input-label" for="nick-name">Nick Name:</label>
+                        <input type="text" class="tournament-nickname" id="nick-name" name="nick-name">
+                    </div>
+                    <div class="home-input-label-container">
+                        <label class="home-input-label" for="tournament-picture">Tournament Picture:</label>
+                        <input type="file" class="tournament-picture" id="tournament-picture" name="tournament-picture">
+                    </div>
+                    <button class="home-btn">SAVE</button>
                 </div>
-                <div class="home-input-label-container">
-                    <label class="home-input-label" for="nick-name">Nick Name:</label>
-                    <input type="text" class="tournament-nickname" id="nick-name" name="nick-name">
-                </div>
-                <div class="home-input-label-container">
-                    <label class="home-input-label" for="tournament-picture">Tournament Picture:</label>
-                    <input type="file" class="tournament-picture" id="tournament-picture" name="tournament-picture">
-                </div>
-                <button class="home-btn">SAVE</button>
             </div>
-        </div>
-
+        </main>
+    </div>
 </body>
 
 </html>

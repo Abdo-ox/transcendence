@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from user.models import User
+from user.serializers import CurrentSerializer
 from project.settings import C as c
+from .models import FriendRequest
+
 class UserSerializer(serializers.ModelSerializer):
     is_friend = serializers.SerializerMethodField()
     
@@ -18,3 +21,16 @@ class UserSerializer(serializers.ModelSerializer):
         if representation['is_friend']:
             representation['is_online'] = instance.is_online
         return representation
+
+class FriendRequestSerializer(CurrentSerializer):
+    is_read = serializers.SerializerMethodField()
+    
+    class Meta(CurrentSerializer.Meta):
+        fields = CurrentSerializer.Meta.fields + ['is_read']
+        
+    def get_is_read(self, obj):
+        user = self.context['user']
+        friendrequest = FriendRequest.objects.get(receiver=user, sender=obj)
+        print(c.y, "user:", flush=True)
+        
+        return friendrequest.is_read

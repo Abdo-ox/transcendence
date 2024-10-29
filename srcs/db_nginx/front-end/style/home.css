@@ -43,14 +43,31 @@
 }
 
 .home-suggestion-container {
+    position: relative;
     padding-top: 20px;
-   background-color: #1b2141;
-   flex:1;
-   border-radius: 20px;
-   width: 100%;
-   box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+    background-color: #1b2141;
+    flex:1;
+    border-radius: 20px;
+    width: 100%;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* bottom: 80px; */
 }
 
+.home-rank-user{
+    display: inline;
+    color:rgb(110, 5, 230);
+    background-color:white;
+    border-radius: 50%;
+    width: auto;
+    aspect-ratio: 1/1;
+    width: 30px;
+    text-align: center;
+    text-justify: center;
+    line-height: 2;
+}
 .home-user button {
     line-height: 1;
     height: 30px;
@@ -120,30 +137,36 @@
     overflow-y: auto;
 }
 
+.home-main {
+    position: absolute;
+    top: 80px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-right: 12px;
+    overflow: hidden auto;
+}
+
 .home-content {
-    /* position: relative; */
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: row;
-    margin-top: 80px;
-    bottom: 20px;
-    width: 100%;
-    padding: 10px 0px 10px 5px;
+    right: 30px;
+    left: 10px;
+    top: 10px;
+    padding-bottom: 10px;
     gap: 10px;
-    overflow: hidden auto;
-    flex: 1;
 }
 
 /* Specific flex settings */
-.home-flex2 , .home-flex1, .home-flex3 {
-    height: 1370px !important;
-}
 .home-flex1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
     position: relative;
     flex: 1;
-    min-width: 200px;
+    min-width: 190px;
     border-radius: 20px;
 }
 
@@ -200,9 +223,8 @@
 .home-tournament-local .Tour-Character
 {
     border-radius: 10px;
-    width: 200px;
+    width: 100%;
     height:370px;
-    min-width: 200px;
     object-fit: cover;
     z-index: 2;
 }
@@ -657,7 +679,13 @@ section {
 
 .home-user-class h3{
     font-size: 20px;
+}
+
+.home-rank-username {
+    display: flex;
     width: 120px;
+    align-items: center;
+    gap:5px
 }
 
 .home-score {
@@ -732,6 +760,7 @@ section {
     justify-content: flex-start;
     align-items: center;
     max-width: 250px;
+    min-width: 200px;
     gap: 10px;
 }
 
@@ -749,7 +778,9 @@ section {
     align-items: end;
     justify-content: center;
 }
-
+.home-st1, .home-st2, .home-st3{
+    position: relative;
+}
 .home-st2 {
     width: 30%;
     display: flex;
@@ -772,8 +803,8 @@ section {
 }
 #home-coalition-winner
 {
- position: absolute;
-    left: 37%;
+ /* position: absolute; */
+    /* left: 37%; */
     color: #FFD700;
     box-shadow: #FFD700 0px 10px 20px -10px;
     
@@ -821,20 +852,22 @@ section {
 
 .home-coali-bx1 {
     /* background: url(whitwill/___4_-removebg-preview.home-png)no-repeat; */
+    display: flex;
+    flex-direction: column;
     background-size: 100%;
     width: 170px;
     height: 80%;
-    justify-content: center;
+    align-items: center;
 }
 
 .home-coali-bx1 img {
-    margin-right: 10px;
-    margin-top: 25px;
     width: 80%;
     height: 80%;
     object-fit: cover;
 }
-
+.home-coalition h2 {
+    margin: 0;
+}
 .home-st3 .home-number3 {
     width: 60%;
     height: 80px;
@@ -925,7 +958,7 @@ section {
     margin-right: auto;
     /* border: solid 4px burly/images/wood; */
 }
-.home-noting{
+.home-nothing{
     position: relative;
     left: 50%;
     top: 50%;
@@ -935,7 +968,7 @@ section {
 }
 
 .home-pie-chart-1::before {
-    content: '';
+    content: var(--percent);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -943,9 +976,11 @@ section {
     width: 40px;
     height: 40px;
     border-radius: 50%; 
-    background-color:var(--c2);
-    border: 1px groove var(--c2);
+    background-color: var(--percent-color);
+    border: 1px groove var(--percent-color);
     font-weight: bold;
+    text-align: center;
+    line-height: 2.5;
 }
 
 .home-greatest-percentage{
@@ -1332,7 +1367,7 @@ input:hover, .home-tournament-form-btn:hover {
   background-color: white;
 } */
 
-@keyframes animate {
+@keyframes home-animate {
     0% {
         transform: translateY(0) rotate(0deg);
         opacity: 1;
@@ -1345,11 +1380,13 @@ input:hover, .home-tournament-form-btn:hover {
         border-radius: 50%;
     }
 }
+
 .homeCard-stack {
-    min-width: 50%;
     position: relative;
-  }
-  .homeCard-tr-name
+    min-width: 50%;
+}
+
+.homeCard-tr-name
 {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -1477,28 +1514,36 @@ input:hover, .home-tournament-form-btn:hover {
 
 
 @media (max-width: 850px) {
+    .home-flex1, .home-flex2, .home-flex3{
+        flex: 1;
+    }
     .home-form-input{
         width: 50%;
     }
 
     .home-t-content {
+        align-items: flex-start;
         max-width: 100%;
         /* transform: scale(1); */
         flex-wrap: wrap;
-     
-        height: 700px;
-        gap: 20px;
+        
+        /* height: 700px; */
+        gap: 10px;
+        height: auto;
+        padding: 10px;
         
     }
+
     .homeCard-stack{
         width: 100%;
+        flex: 1;
         height: 400px;
     }
     .homeCard-card {
         /* position: relative; */
         min-width: 180px;
         max-width: 280px;
-        height: 350px;
+        height: 370px;
     }
     .home-content {
         /* width: 100vw; */
@@ -1563,9 +1608,12 @@ input:hover, .home-tournament-form-btn:hover {
     .home-Info {
         justify-content: space-around;
         max-width: 90%;
-        max-height: 40%;
+        height: 200px;
+        gap: 10px;
     }
-
+    .home-Info p, .home-Info h2{
+        margin: 0;
+    }
     .home-flex1 {
         order: 3;
         height: 800px;

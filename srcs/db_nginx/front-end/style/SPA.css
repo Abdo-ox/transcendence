@@ -8,12 +8,17 @@
 html{
     overflow: hidden;
 }
+
 body {
 
     --c1: #3CB371;
     --c4: #4682B4;
     --c3: #FFD700;
 
+    --percent: "";
+    --percent-color: transparent;
+
+    --count-notification: none;
     color: #fff;
     background: #050e2d;
     display: flex;
@@ -40,7 +45,7 @@ form {
 
 ::-webkit-scrollbar {
     position: absolute;
-    width: 12px;
+    width: 10px;
     background-color: transparent;
 }
 

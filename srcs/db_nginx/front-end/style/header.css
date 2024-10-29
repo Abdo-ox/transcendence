@@ -223,11 +223,28 @@ header .header-action .header-searchBx input {
     object-fit: cover !important;
 }
 
-.header-action svg {
-    /* display: none !important; */
-    cursor: pointer !important;
+.header-notification-icon-container{
+    position: relative;
 }
 
+.header-notification-icon-container::after {
+    content: var(--count-notification);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: rgb(153, 1, 1);
+    text-align: center;
+    line-height: 1.5;
+    text-justify: center;
+    font-size: small;
+}
+
+.header-notification-icon {
+    cursor: pointer !important;
+}
 /* .header-nav li a.header-active {
     color: #1aeeef !important;
     font-weight: bold !important;
