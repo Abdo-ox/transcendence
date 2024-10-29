@@ -1,10 +1,10 @@
-import { removeEvent, header } from "/header.js";
-import { Twofactor } from "/2faa.js";
-import { Login } from "/login.js";
-import { Home } from "/home.js";
-import { Settings } from "/settings.js";
-import { Chat } from "/chat.js";
-import { Profile } from "/profile.js";
+import { removeEvent, header } from "https://localhost/header.js";
+import { Twofactor } from "https://localhost/2faa.js";
+import { Login } from "https://localhost/login.js";
+import { Home } from "https://localhost/home.js";
+import { Settings } from "https://localhost/settings.js";
+import { Chat } from "https://localhost/chat.js";
+import { Profile } from "https://localhost/profile.js";
 
 export let webSockets = [];
 

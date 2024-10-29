@@ -1,22 +1,22 @@
-import { Landing } from "/landingpage.js"
-import { Login } from "/login.js"
-import { Register } from "/register.js"
-import { Home } from "/home.js"
-import { Settings } from "/settings.js"
-import { Profile } from "/profile.js"
-import { ResetPassword } from "/resetpassword.js"
-import { Reset } from "/reset.js"
-import { Tournament } from "/tournament.js"
-import { RemoteTournament } from "/remotetournament.js"
-import { Local } from "/local.js"
-import { Multi } from "/multi.js"
-import { Game } from "/game.js"
-import { NewPage } from "/utils.js"
-import { Chat } from "/chat.js"
-import { Twofactor } from "/2faa.js"
-import { ConfirmationMail } from "/confirmationMail.js"
-import { TournamentFr } from "./fr-tournament.js"
-import { NotFound } from "./notfound.js"
+import { Landing } from "https://localhost/landingpage.js"
+import { Login } from "https://localhost/login.js"
+import { Register } from "https://localhost/register.js"
+import { Home } from "https://localhost/home.js"
+import { Settings } from "https://localhost/settings.js"
+import { Profile } from "https://localhost/profile.js"
+import { ResetPassword } from "https://localhost/resetpassword.js"
+import { Reset } from "https://localhost/reset.js"
+import { Tournament } from "https://localhost/tournament.js"
+import { RemoteTournament } from "https://localhost/remotetournament.js"
+import { Local } from "https://localhost/local.js"
+import { Multi } from "https://localhost/multi.js"
+import { Game } from "https://localhost/game.js"
+import { NewPage } from "https://localhost/utils.js"
+import { Chat } from "https://localhost/chat.js"
+import { Twofactor } from "https://localhost/2faa.js"
+import { ConfirmationMail } from "https://localhost/confirmationMail.js"
+import { TournamentFr } from "https://localhost/fr-tournament.js"
+import { NotFound } from "https://localhost/notfound.js"
 
 const func = {
     "/home": Home,
@@ -27,13 +27,16 @@ const func = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const pathname = window.location.pathname;
+    const pathname = window.location.pathname.replace(/(?!^\/)\/$/, "");
     window.addEventListener('popstate', (event) => {
         event.preventDefault();
-        const name = window.location.pathname;
-        console.log(`name:${name} func:${func[name]}`);
-        NewPage(name, func[name], false);
+        const name = window.location.pathname.replace(/(?!^\/)\/$/, "");
+        if (name in func)
+            NewPage(name, func[name], false);
+        else 
+            NewPage("/notfound", NotFound, false);
     });
+    console.log(pathname)
     switch (pathname) {
         case "/":
             NewPage("/landingpage", Landing, false);

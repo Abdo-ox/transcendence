@@ -1,4 +1,4 @@
-import { NewPage, getJWT, webSockets } from "/utils.js";
+import { NewPage, getJWT, webSockets } from "https://localhost/utils.js";
 
 export const Game = async () => {
     let token = await getJWT();

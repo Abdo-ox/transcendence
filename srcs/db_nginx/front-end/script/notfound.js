@@ -1,5 +1,5 @@
-import { NewPage } from "/utils.js"
-import { Home } from "/home.js"
+import { NewPage } from "https://localhost/utils.js"
+import { Home } from "https://localhost/home.js"
 
 export const NotFound = () => {
     document.body.style.visibility = 'visible';

@@ -1,7 +1,6 @@
-import { getCsrfToken, NewPage, submitForm, printErrorInScreen} from "/utils.js";
-import { Login } from "/login.js"
+import { getCsrfToken, NewPage, submitForm, printErrorInScreen, is_authenticated} from "https://localhost/utils.js";
+import { Login } from "https://localhost/login.js"
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
-import { is_authenticated } from "./utils.js";
 
 const handle_data = (data_status) => {
     const data = data_status.data;

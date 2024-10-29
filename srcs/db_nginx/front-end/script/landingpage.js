@@ -1,5 +1,5 @@
-import { is_authenticated, NewPage } from "./utils.js";
-import { Login } from "/login.js";
+import { is_authenticated, NewPage } from "https://localhost/utils.js";
+import { Login } from "https://localhost/login.js";
 
 
 export  async function Landing()

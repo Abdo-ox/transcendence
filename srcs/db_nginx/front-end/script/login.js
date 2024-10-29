@@ -1,7 +1,7 @@
-import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "/utils.js";
-import { Home } from "/home.js";
-import { Register } from "/register.js";
-import { ResetPassword } from "/resetpassword.js";
+import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "https://localhost/utils.js";
+import { Home } from "https://localhost/home.js";
+import { Register } from "https://localhost/register.js";
+import { ResetPassword } from "https://localhost/resetpassword.js";
 console.log("the login.js called");
 
 const handle_data = async (data_status) => {

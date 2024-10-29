@@ -1,5 +1,5 @@
-import { NewPage, getCsrfToken } from "/utils.js";
-import { Login } from "/login.js"
+import { NewPage, getCsrfToken } from "https://localhost/utils.js";
+import { Login } from "https://localhost/login.js"
 
 export async function Reset() {
 

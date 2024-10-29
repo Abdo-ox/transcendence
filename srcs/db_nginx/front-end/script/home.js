@@ -1,12 +1,12 @@
-import { NewPage, getJWT, printErrorInScreen} from "/utils.js";
-import { GamePlaySocket } from "/header.js";
-import { Login } from "/login.js";
-import { Tournament } from "./tournament.js";
-import { RemoteTournament } from "./remotetournament.js";
-import { Game } from "./game.js";
-import { Local } from "./local.js";
-import { Multi } from "./multi.js";
-import { TournamentFr } from "./fr-tournament.js";
+import { NewPage, getJWT, printErrorInScreen} from "https://localhost/utils.js";
+import { GamePlaySocket } from "https://localhost/header.js";
+import { Login } from "https://localhost/login.js";
+import { Tournament } from "https://localhost/tournament.js";
+import { RemoteTournament } from "https://localhost/remotetournament.js";
+import { Game } from "https://localhost/game.js";
+import { Local } from "https://localhost/local.js";
+import { Multi } from "https://localhost/multi.js";
+import { TournamentFr } from "https://localhost/fr-tournament.js";
 
 function tournaments(data) {
     console.log("tournament:", data);
