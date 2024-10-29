@@ -1492,11 +1492,11 @@ input:hover, .home-tournament-form-btn:hover {
     }
     .homeCard-stack{
         width: 100%;
-        /* background-color: #0091ad; */
-        height: 60%;
+        height: 400px;
     }
-    .homeCard-card
-    {    min-width: 180px;
+    .homeCard-card {
+        /* position: relative; */
+        min-width: 180px;
         max-width: 280px;
         height: 350px;
     }

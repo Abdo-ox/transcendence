@@ -212,10 +212,8 @@ export const makePageActive = (page) => {
         document.getElementById(key).removeEventListener('click', func[key]);
     //add event listener for non active pages
     for (const key in func) {
-        if (!key.includes(page)){
-            console.log("add event listener", document.getElementById(key));
+        if (!key.includes(page))
             document.getElementById(key).addEventListener('click', func[key]);
-        }
     }
     //the default styling for all header li a
     document.querySelectorAll('.header-li-a-style').forEach(element => {
