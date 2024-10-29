@@ -58,7 +58,7 @@
     border: #4a0dac 2px solid;
     background-color: #1b2141;
     box-shadow: #b1c0ff 0px 0px 0px 0px;
-    z-index: 999;
+    z-index: 2;
 }
 
 .fr-tournament-player h5 {

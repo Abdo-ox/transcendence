@@ -9,23 +9,24 @@ import { Multi } from "./multi.js";
 import { TournamentFr } from "./fr-tournament.js";
 
 function tournaments(data) {
+    console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
 
     data.continue.forEach(tournament => {
-        homeCard.innerHTML += `
-        <div class="homeCard-card">
-            <img src="/images/fourtnite4k/back.jpeg" alt="">
+        const divTournament = document.createElement('div');
+        divTournament.classList.add('homeCard-card');
+        divTournament.innerHTML += `
+            <img src="${tournament.image}" alt="">
             <div class="homeCard-tr-name">
                 <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
                 <button class="home-btn" id="join">Continue</button>
-            </div>
-        </div>`;
-        return ;
+            </div>`;
+        divTournament.querySelector('button').addEventListener('click')
     });
     data.join.forEach(tournament => {
         homeCard.innerHTML += `
         <div class="homeCard-card">
-            <img src="/images/fourtnite4k/back.jpeg" alt="">
+            <img src="${tournament.image}" alt="">
             <div class="homeCard-tr-name">
                 <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
                 <button class="home-btn" id="continue">Join</button>

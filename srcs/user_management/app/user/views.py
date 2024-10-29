@@ -103,7 +103,6 @@ def Oauth_42_callback(request):
                 user = User.objects.get(username=data['login'])
                 return(JsonResponse(create_jwt_for_Oauth(user)))
             except User.DoesNotExist:
-                print(c.y, data['image'], flush=True)
                 info_usr = {
                     'email': data['email'],
                     'first_name': data['first_name'],
