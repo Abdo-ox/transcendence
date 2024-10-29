@@ -1,4 +1,4 @@
-import { NewPage, getJWT, printErrorInScreen} from "https://localhost/utils.js";
+import { NewPage, getJWT, printErrorInScreen } from "https://localhost/utils.js";
 import { GamePlaySocket } from "https://localhost/header.js";
 import { Login } from "https://localhost/login.js";
 import { Tournament } from "https://localhost/tournament.js";
@@ -21,17 +21,19 @@ function tournaments(data) {
                 <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
                 <button class="home-btn" id="join">Continue</button>
             </div>`;
-        divTournament.querySelector('button').addEventListener('click')
+        divTournament.querySelector('button').addEventListener('click', () => { });
+        homeCard.appendChild(divTournament);
     });
     data.join.forEach(tournament => {
-        homeCard.innerHTML += `
-        <div class="homeCard-card">
+        const divTournament = document.createElement('div');
+        divTournament.classList.add('homeCard-card');
+        divTournament.innerHTML += `
             <img src="${tournament.image}" alt="">
             <div class="homeCard-tr-name">
                 <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
                 <button class="home-btn" id="continue">Join</button>
-            </div>
-        </div>`;
+                </div>`;
+        homeCard.appendChild(divTournament);
     });
 }
 
@@ -107,7 +109,7 @@ function laederBoard(data) {
 const colors = ["#3CB371", "#FFD700", "#4682B4"];
 
 function coalitionRank(data) {
-    data.sort((a,b) => b - a);
+    data.sort((a, b) => b - a);
     document.getElementById("home-coalition-winner").innerHTML = data[0].name;
     document.getElementById("home-coalFirst").src = data[0].image;
     document.getElementById("home-coalSecond").src = data[1].image;
@@ -120,7 +122,7 @@ function pieChart1(data) {
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
-    if (total){
+    if (total) {
         document.getElementById("home-nothing-chart-1")?.remove();
         const max = Math.max(...src);
         console.log(max);
@@ -129,17 +131,17 @@ function pieChart1(data) {
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
         coalitionRank(data);
     } else
-        src.forEach((coalition, i) => src[i] = (isNaN(coalition)? 0 : coalition));
+        src.forEach((coalition, i) => src[i] = (isNaN(coalition) ? 0 : coalition));
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = src[0].toFixed(1)  + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = src[0].toFixed(1) + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1].toFixed(1)  + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1].toFixed(1) + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1)  + '%';
-    document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
-        ${colors[0]}  ${Math.round(src[0]* 3.6)}deg,
-        ${colors[1]}  ${Math.round(src[0]* 3.6)}deg ${Math.round(src[1]* 3.6)}deg,
-        ${colors[2]}  ${Math.round(src[1]* 3.6)}deg ${Math.round(src[2]* 3.6)}deg)`);
+    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1) + '%';
+    document.getElementById("home-pie-chart-1").style.setProperty('background', `conic-gradient(from 30deg,
+        ${colors[0]}  ${Math.round(src[0] * 3.6)}deg,
+        ${colors[1]}  ${Math.round(src[0] * 3.6)}deg ${Math.round(src[1] * 3.6)}deg,
+        ${colors[2]}  ${Math.round(src[1] * 3.6)}deg ${Math.round(src[2] * 3.6)}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -184,7 +186,7 @@ export async function Home() {
         console.log("second place", scores[1]);
         console.log("3 place", scores[2]);
     }
-   
+
     /*****js of card tournaments***** */
     const stack = document.querySelector(".homeCard-stack");
     const cards = Array.from(stack.children)
@@ -317,7 +319,7 @@ export async function Home() {
     ).catch(error => console.log("error in fetch matchcount :", error));
 
     fetch("https://localhost:8000/api/coalitions/", {
-        headers:{
+        headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));

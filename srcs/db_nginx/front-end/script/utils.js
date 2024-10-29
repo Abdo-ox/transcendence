@@ -111,6 +111,8 @@ function addErrorDiv() {
 }
 
 export function printErrorInScreen(errors) {
+    if (!Array.isArray(errors))
+        errors = [errors]
     const diverror = document.getElementById("error-container");
     diverror.innerHTML = '';
     diverror.parentElement.classList.add('show');
