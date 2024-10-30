@@ -8,33 +8,29 @@ import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";
 import { TournamentFr } from "https://localhost/fr-tournament.js";
 
+function joinOrContinue(array, action, homeCard) {
+    array.forEach(tournament => {
+        const divTournament = document.createElement('div');
+        divTournament.classList.add('homeCard-card');
+        divTournament.innerHTML += `
+            <img src="${tournament.image}" alt="">
+            <div class="homeCard-tr-name">
+                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
+                <button class="home-btn">${action}</button>
+            </div>`;
+        divTournament.querySelector('button').addEventListener('click', (event) => {
+            sessionStorage.setItem("tournament_name", tournament.name);
+            NewPage("/fr-tournament", TournamentFr);
+        });
+        homeCard.appendChild(divTournament);
+    });
+}
+
 function tournaments(data) {
     console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
-
-    data.continue.forEach(tournament => {
-        const divTournament = document.createElement('div');
-        divTournament.classList.add('homeCard-card');
-        divTournament.innerHTML += `
-            <img src="${tournament.image}" alt="">
-            <div class="homeCard-tr-name">
-                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
-                <button class="home-btn" id="join">Continue</button>
-            </div>`;
-        divTournament.querySelector('button').addEventListener('click', () => { });
-        homeCard.appendChild(divTournament);
-    });
-    data.join.forEach(tournament => {
-        const divTournament = document.createElement('div');
-        divTournament.classList.add('homeCard-card');
-        divTournament.innerHTML += `
-            <img src="${tournament.image}" alt="">
-            <div class="homeCard-tr-name">
-                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
-                <button class="home-btn" id="continue">Join</button>
-                </div>`;
-        homeCard.appendChild(divTournament);
-    });
+    joinOrContinue(data.continue, 'Continue', homeCard);
+    joinOrContinue(data.join, 'Join', homeCard);
 }
 
 function pieChart2(data) {
