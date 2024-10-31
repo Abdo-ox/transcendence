@@ -965,6 +965,8 @@ section {
     transform: translate(-50%, -50%);
     text-align: center;
     margin: 0;
+    font-weight: 800;
+    font-family: monospace;
 }
 
 .home-pie-chart-1::before {

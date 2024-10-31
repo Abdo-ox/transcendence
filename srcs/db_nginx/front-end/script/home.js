@@ -8,6 +8,13 @@ import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";
 import { TournamentFr } from "https://localhost/fr-tournament.js";
 
+function formatNumber(num) {
+    let formatted = num.toFixed(1);
+    if (formatted.endsWith(".0"))
+        return parseInt(formatted);
+    return formatted;
+}
+
 function joinOrContinue(array, action, homeCard) {
     array.forEach(tournament => {
         const divTournament = document.createElement('div');
@@ -30,6 +37,8 @@ function joinOrContinue(array, action, homeCard) {
 function tournaments(data) {
     console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
+    if (data.continue.length || data.join.length)
+        homeCard.innerHTML = '';
     joinOrContinue(data.continue, 'Continue', homeCard);
     joinOrContinue(data.join, 'Join', homeCard);
 }
@@ -124,17 +133,17 @@ function pieChart1(data) {
         const max = Math.max(...src);
         console.log(max);
         const index_max = src.indexOf(max);
-        piechart1.style.setProperty('--percent', `"${max.toFixed(1)}%"`);
+        piechart1.style.setProperty('--percent', `"${formatNumber(max)}%"`);
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
         coalitionRank(data);
     } else
-        src.forEach((coalition, i) => src[i] = (isNaN(coalition) ? 0 : coalition));
+        return
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = src[0].toFixed(1) + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = formatNumber(src[0]) + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1].toFixed(1) + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = formatNumber(src[1]) + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1) + '%';
+    document.getElementById("home-eclipse-pong-percent").innerHTML = formatNumber(src[2]) + '%';
     document.getElementById("home-pie-chart-1").style.setProperty('background', `conic-gradient(from 30deg,
         ${colors[0]}  ${Math.round(src[0] * 3.6)}deg,
         ${colors[1]}  ${Math.round(src[0] * 3.6)}deg ${Math.round(src[1] * 3.6)}deg,
@@ -172,18 +181,6 @@ export async function Home() {
     let access_token = await getJWT();
     if (!access_token)
         return;
-    /**** coalition rank** */
-    let t1 = document.getElementById("home-coalFirst");
-    let t2 = document.getElementById("home-coalSecond");
-    let t3 = document.getElementById("home-coalThird");
-    function CompareScore(score1, score2, score3) {
-        let scores = [score1, score2, score3];
-        scores.sort((a, b) => b - a);
-        console.log("first place", scores[0]);
-        console.log("second place", scores[1]);
-        console.log("3 place", scores[2]);
-    }
-
     /*****js of card tournaments***** */
     const stack = document.querySelector(".homeCard-stack");
     const cards = Array.from(stack.children)
