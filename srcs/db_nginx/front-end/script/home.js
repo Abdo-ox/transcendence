@@ -56,10 +56,10 @@ function pieChart2(data) {
         unknown = 0;
     } else
         document.getElementById("home-nothing-chart-2")?.remove();
-    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}%"`);
-    document.getElementById('home-ai').style.setProperty('--content', `"${ai}%"`);
-    document.getElementById('home-friend').style.setProperty('--content', `"${friend}%"`);
-    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}%"`);
+    document.getElementById('home-tournament').style.setProperty('--content', `"${formatNumber(tournament)}%"`);
+    document.getElementById('home-ai').style.setProperty('--content', `"${formatNumber(ai)}%"`);
+    document.getElementById('home-friend').style.setProperty('--content', `"${formatNumber(friend)}%"`);
+    document.getElementById('home-unknown').style.setProperty('--content', `"${formatNumber(unknown)}%"`);
     tournament = (data.tournament * 360) / total;
     ai = (data.ai_match * 360) / total;
     friend = (data.friend_match * 360) / total;
@@ -123,7 +123,6 @@ function coalitionRank(data) {
 }
 
 function pieChart1(data) {
-    console.log(data);
     const piechart1 = document.getElementById("home-pie-chart-1");
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
@@ -144,10 +143,11 @@ function pieChart1(data) {
     document.getElementById("home-ghost-paddle-percent").innerHTML = formatNumber(src[1]) + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
     document.getElementById("home-eclipse-pong-percent").innerHTML = formatNumber(src[2]) + '%';
+    src.forEach((element, i) => src[i] = Math.round(element * 3.6));
     document.getElementById("home-pie-chart-1").style.setProperty('background', `conic-gradient(from 30deg,
-        ${colors[0]}  ${Math.round(src[0] * 3.6)}deg,
-        ${colors[1]}  ${Math.round(src[0] * 3.6)}deg ${Math.round(src[1] * 3.6)}deg,
-        ${colors[2]}  ${Math.round(src[1] * 3.6)}deg ${Math.round(src[2] * 3.6)}deg)`);
+        ${colors[0]}  0 ${src[0]}deg,
+        ${colors[1]}  0 ${src[0] + src[1]}deg,
+        ${colors[2]}  0 ${src[0] + src[1] + src[2]}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
