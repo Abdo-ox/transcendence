@@ -241,7 +241,7 @@ canvas {
         display: none;
     }
     canvas {
-        transform: rotate(-90deg);
+        /* transform: rotate(-90deg); */
         width: 120%;
     }
 }

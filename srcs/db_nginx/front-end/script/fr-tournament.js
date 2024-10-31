@@ -113,7 +113,7 @@ export const TournamentFr = async () => {
         const img = document.getElementById('tournament-img');
 
         img.src = tournamentState.image;
-
+        console.log(tournamentState.image);
         let i = 1;
         tournamentState.players.forEach(element => {
             let box = document.getElementById(`player${i}`);

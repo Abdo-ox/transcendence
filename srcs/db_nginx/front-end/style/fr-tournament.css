@@ -151,6 +151,13 @@
     transform: translate(50%, 50%);
 }
 
+.fr-tournament-btn {
+    position: absolute;
+    bottom: 10%;
+    right: 50%;
+    transform: translate(50%, 50%);
+}
+
 .fr-tournament-container-input-btn input {
     display: inline;
     color: #fff;
