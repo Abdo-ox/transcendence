@@ -1093,7 +1093,7 @@ section {
             #ff3cac 0%,
             #784ba0 50%,
             #2b86c5 100%);
-    animation: animate 25s linear infinite;
+    animation: home-animate 25s linear infinite;
     bottom: -150px;
 }
 

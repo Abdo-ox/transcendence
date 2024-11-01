@@ -172,12 +172,9 @@ export async function Settings() {
 
     document.getElementById("settings-save-btn").addEventListener("click", async () => {
         let edited = false;
-        let emailedited = false;
         let editedData = {};
         try {
             fields.forEach(field => {
-
-
                 console.log(" feild 2 : ", field);
                 const element = document.getElementById("settings-" + field);
                 if ((element.value).trim() == '') {
@@ -185,11 +182,12 @@ export async function Settings() {
                     throw "empty field";
                 }
                 if (element.value != userdata[field])
-                    edited = true;
-                editedData[field] = element.value;
+                    {
+                        edited = true;
+                    editedData[field] = element.value;
+                    }
             });
             if (edited) {
-
                 console.log("edited Data : ", editedData);
                 const response = await fetch('https://localhost:8000/api/update/', {
                     method: 'POST',
@@ -214,11 +212,10 @@ export async function Settings() {
 
                 }
                 else
-                   {
+                {
                     document.getElementById("resetmail-user-errorMessage").textContent = "username is already in use ";
                     console.log("Failed to update ", response.statusText);
-                   } 
-
+                } 
             }
         }
         catch (error) {
@@ -277,7 +274,7 @@ export async function Settings() {
                 })
                     .then(response => {
                         if (response.ok) {
-                            document.getElementById("settings-profile-image").src = canvas.toDataURL();
+                            document.getElementById("settings-profile-image1").src = canvas.toDataURL();
                             document.getElementById("settings-SaveImg").style.display = "none";
                         }
 

@@ -32,6 +32,7 @@ export async function Profile() {
         const data = await response.json();
         console.log("data is :", data);
         document.getElementById("profile-username").innerHTML = data.username;
+        document.getElementById("profile-coalition").src = data.coalition.image;
         document.getElementById("profile-profileimage").src = data.profile_image;
         document.getElementById("profile-matchScore").innerHTML = data.totalGames;
         document.getElementById("profile-tournamentsScore").innerHTML = data.tournaments;
