@@ -51,7 +51,7 @@ canvas {
     margin: 80px 40px 0 40px;
     padding: 20px 0 40px;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 16px rgba(255, 29, 29, 0.8);
+    box-shadow: 0 0 16px rgba(73, 76, 247, 0.8);
 }
 
 .game-container {
@@ -189,38 +189,6 @@ canvas {
     background: #fff;
     right: 100%;
 }
-
-/* Styles for the nickname input */
-/* .tournament-input .input-group {
-    max-width: 350px;
-} */
-
-/* .tournament-input .input-group .form-control {
-    margin-right: 8px;
-} */
-
-/* .tournament-input .form-control {
-    background-color: #1b2141;
-    border: 1px solid #fff;
-    border-radius: 15px;
-    color: #fff;
-} */
-
-/* .tournament-input .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-} */
-
-/* .tournament-input .btn-primary {
-    background-color: #0091ad;
-    border-radius: 15px;
-    border: none;
-} */
-
-/* .tournament-input .btn-primary:hover {
-    background-color: #007a90;
-} */
-
-/* end of tournament css */
 
 /* Make sure the layout is responsive */
 @media (max-width: 600px) {
