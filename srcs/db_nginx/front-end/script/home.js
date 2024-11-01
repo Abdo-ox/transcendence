@@ -1,31 +1,65 @@
-import { NewPage, getJWT, printErrorInScreen} from "/utils.js";
-import { GamePlaySocket } from "/header.js";
-import { Login } from "/login.js";
-import { Tournament } from "./tournament.js";
-import { RemoteTournament } from "./remotetournament.js";
-import { Game } from "./game.js";
-import { Local } from "./local.js";
-import { Multi } from "./multi.js";
-import { TournamentFr } from "./fr-tournament.js";
-import {Profile} from "./profile.js"
+import { NewPage, getJWT, printErrorInScreen } from "https://localhost/utils.js";
+import { GamePlaySocket } from "https://localhost/header.js";
+import { Login } from "https://localhost/login.js";
+import { Tournament } from "https://localhost/tournament.js";
+import { RemoteTournament } from "https://localhost/remotetournament.js";
+import { Game } from "https://localhost/game.js";
+import { Local } from "https://localhost/local.js";
+import { Multi } from "https://localhost/multi.js";
+import { TournamentFr } from "https://localhost/fr-tournament.js";
+
+function formatNumber(num) {
+    let formatted = num.toFixed(1);
+    if (formatted.endsWith(".0"))
+        return parseInt(formatted);
+    return formatted;
+}
+
+function joinOrContinue(array, action, homeCard) {
+    array.forEach(tournament => {
+        const divTournament = document.createElement('div');
+        divTournament.classList.add('homeCard-card');
+        divTournament.innerHTML += `
+            <img src="${tournament.image}" alt="">
+            <div class="homeCard-tr-name">
+                <h2 class="homeCard-title" id="tournament-title">${tournament.name}</h2>
+                <button class="home-btn">${action}</button>
+            </div>`;
+        divTournament.querySelector('button').addEventListener('click', (event) => {
+            event.stopPropagation();
+            sessionStorage.setItem("tournament_name", tournament.name);
+            NewPage("/fr-tournament", TournamentFr);
+        });
+        homeCard.appendChild(divTournament);
+    });
+}
+
+function tournaments(data) {
+    console.log("tournament:", data);
+    const homeCard = document.getElementById("home-card-stack");
+    if (data.continue.length || data.join.length)
+        homeCard.innerHTML = '';
+    joinOrContinue(data.continue, 'Continue', homeCard);
+    joinOrContinue(data.join, 'Join', homeCard);
+}
 
 function pieChart2(data) {
-    console.log("------------------------------------------->", data);
     const total = data.tournament + data.ai_match + data.friend_match + data.unkown_match;
     let tournament = ((data.tournament * 100) / total);
     let ai = ((data.ai_match * 100) / total);
     let friend = ((data.friend_match * 100) / total);
     let unknown = ((data.unkown_match * 100) / total);
-    if (isNaN(tournament)) {
+    if (!total) {
         tournament = 0;
         ai = 0;
         friend = 0;
         unknown = 0;
-    }
-    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}"`);
-    document.getElementById('home-ai').style.setProperty('--content', `"${ai}"`);
-    document.getElementById('home-friend').style.setProperty('--content', `"${friend}"`);
-    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}"`);
+    } else
+        document.getElementById("home-nothing-chart-2")?.remove();
+    document.getElementById('home-tournament').style.setProperty('--content', `"${formatNumber(tournament)}%"`);
+    document.getElementById('home-ai').style.setProperty('--content', `"${formatNumber(ai)}%"`);
+    document.getElementById('home-friend').style.setProperty('--content', `"${formatNumber(friend)}%"`);
+    document.getElementById('home-unknown').style.setProperty('--content', `"${formatNumber(unknown)}%"`);
     tournament = (data.tournament * 360) / total;
     ai = (data.ai_match * 360) / total;
     friend = (data.friend_match * 360) / total;
@@ -57,9 +91,13 @@ function laederBoard(data) {
         fillPhase('third', data[2]);
     for (let i = 0; i < 3 && data.length; i++)
         data.shift();
+    let i = 4;
     data.forEach(user => {
         leaderboardcontainer.innerHTML += `<div class="home-user-class">
-            <h3>${user.username}</h3>
+            <div class="home-rank-username">
+                <p class="home-rank-user">${i++}</p>
+                <h3>${user.username}</h3>
+            </div>
             <div class="home-up-down">
                 <p>+${user.last_score}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960"
@@ -74,22 +112,42 @@ function laederBoard(data) {
     });
 }
 
-function coalition(data) {
+const colors = ["#3CB371", "#FFD700", "#4682B4"];
+
+function coalitionRank(data) {
+    data.sort((a, b) => b - a);
+    document.getElementById("home-coalition-winner").innerHTML = data[0].name;
+    document.getElementById("home-coalFirst").src = data[0].image;
+    document.getElementById("home-coalSecond").src = data[1].image;
+    document.getElementById("home-coalThird").src = data[2].image;
+}
+
+function pieChart1(data) {
+    const piechart1 = document.getElementById("home-pie-chart-1");
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
 
-    console.log(total);
-    src.forEach(coalition => coalition = isNaN(coalition)? 0 : coalition);
+    if (total) {
+        document.getElementById("home-nothing-chart-1")?.remove();
+        const max = Math.max(...src);
+        console.log(max);
+        const index_max = src.indexOf(max);
+        piechart1.style.setProperty('--percent', `"${formatNumber(max)}%"`);
+        piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
+        coalitionRank(data);
+    } else
+        return
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = src[0]  + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = formatNumber(src[0]) + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1]  + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = formatNumber(src[1]) + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2]  + '%';
-    document.getElementById("home-pie-chart-1").style.setProperty('background' ,`conic-gradient(from 30deg,
-            #3CB371  ${src[0]}deg,
-            #FFD700  ${src[0]}deg ${src[1]}deg,
-            #4682B4  ${src[1]}deg ${src[2]}deg)`);
+    document.getElementById("home-eclipse-pong-percent").innerHTML = formatNumber(src[2]) + '%';
+    src.forEach((element, i) => src[i] = Math.round(element * 3.6));
+    document.getElementById("home-pie-chart-1").style.setProperty('background', `conic-gradient(from 30deg,
+        ${colors[0]}  0 ${src[0]}deg,
+        ${colors[1]}  0 ${src[0] + src[1]}deg,
+        ${colors[2]}  0 ${src[0] + src[1] + src[2]}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -123,18 +181,6 @@ export async function Home() {
     let access_token = await getJWT();
     if (!access_token)
         return;
-    /**** coalition rank** */
-    let t1 = document.getElementById("home-coalFirst");
-    let t2 = document.getElementById("home-coalSecond");
-    let t3 = document.getElementById("home-coalThird");
-    function CompareScore(score1, score2, score3) {
-        let scores = [score1, score2, score3];
-        scores.sort((a, b) => b - a);
-        console.log("first place", scores[0]);
-        console.log("second place", scores[1]);
-        console.log("3 place", scores[2]);
-    }
-   
     /*****js of card tournaments***** */
     const stack = document.querySelector(".homeCard-stack");
     const cards = Array.from(stack.children)
@@ -236,7 +282,7 @@ export async function Home() {
 
     document.getElementById("home-add").addEventListener('click', event => {
         sessionStorage.removeItem('tournament_name');
-        NewPage("/remotetournament", RemoteTournament);
+        NewPage("/fr-tournament", TournamentFr);
     });
 
     document.getElementById("home-logout-container").addEventListener('click', () => {
@@ -247,19 +293,15 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    // const tours = await fetch("https://localhost:9090/multigamehistory/", {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`
-    //     }
-    // });
-
-
-    // let test = await tours.json();
-    // document.getElementById("tournament-title").innerText = test[0].name;
-    // document.getElementById("join").addEventListener('click', () => {
-    //     sessionStorage.setItem('tournament_name', document.getElementById("tournament-title").innerText);
-    //     NewPage("/remotetournament", RemoteTournament);
-    // });
+    fetch("https://localhost:9090/tournaments/", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        if (response.status == 200)
+            return response.json();
+    }).then(data => tournaments(data)
+    ).catch(error => printErrorInScreen(error));
 
     // tournament cards end
 
@@ -284,13 +326,13 @@ export async function Home() {
     ).catch(error => console.log("error in fetch matchcount :", error));
 
     fetch("https://localhost:8000/api/coalitions/", {
-        headers:{
+        headers: {
             Authorization: `Bearer ${token}`
         }
-    }).then(response => response.json()).then(data => coalition(data));
-    fetch("https://localhost:8000/friend/userFriends?ajari", {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }).then(response => response.json()).then(data => console.log("data", data));
+    }).then(response => response.json()).then(data => pieChart1(data));
+    // fetch("https://localhost:8000/friend/userFriends?ajari", {
+    //     headers:{
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // }).then(response => response.json()).then(data => console.log("data", data));
 }

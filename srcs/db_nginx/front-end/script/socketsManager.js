@@ -1,4 +1,4 @@
-import { getJWT } from '/utils.js';
+import { getJWT } from 'https://localhost/utils.js';
 let chatSocket = null
 
 export async function createWebSocket(ChatID, username)

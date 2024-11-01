@@ -1,5 +1,5 @@
-import { NewPage,getJWT } from "/utils.js";
-import { Settings } from "./settings.js";
+import { NewPage,getJWT } from "https://localhost/utils.js";
+import { Settings } from "https://localhost/settings.js";
 
 export async function ConfirmationMail() {
 

@@ -1,5 +1,5 @@
-import { NewPage } from "/utils.js";
-import { Reset } from "/reset.js"
+import { NewPage } from "https://localhost/utils.js";
+import { Reset } from "https://localhost/reset.js"
 
 export async function ResetPassword() {
 

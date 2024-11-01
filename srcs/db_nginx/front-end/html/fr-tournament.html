@@ -11,49 +11,102 @@
 <body>
     <header id="header">
     </header>
-    <div class="fr-tournament-container">
-        <img src="/images/fourtnite4k/div.png">
-        <div class="fr-tournament-part fr-tournament-part1">
-            <div class="fr-tournament-player fr-tournament-player1">
-                <h5>username</h5>
+    <div>
+        <div id="tournament-name-input" class="mb-4" style="display: none;">
+            <div class="fr-tournament-container-input-btn">
+                <input type="text" id="tournament-name" placeholder="Enter Tournament Name:">
+                <button id="add-tournament-name">add</button>
             </div>
-            <div class="fr-tournament-player fr-tournament-player2">
-                <h5>username</h5>
-            </div>
+            <div id="tournament-name-error" class="text-danger" style="display: none;"></div>
         </div>
-        <div class="fr-tournament-part fr-tournament-part2">
-            <div class="fr-tournament-flech1"></div>
-            <div class="fr-tournament-flech2"></div>
-            <div class="fr-tournament-player fr-tournament-player3">
-                <h5>username</h5>
+        <div class="fr-tournament-container" style="display: none;" id="tournament-bracket">
+            <img src="" id="tournament-img">
+            <div class="fr-tournament-part fr-tournament-part1">
+                <div class="fr-tournament-player fr-tournament-player1">
+                    <h5 id="player1">?</h5>
+                </div>
+                <div class="fr-tournament-player fr-tournament-player2">
+                    <h5 id="player2">?</h5>
+                </div>
             </div>
+            <div class="fr-tournament-part fr-tournament-part2">
+                <div class="fr-tournament-flech1"></div>
+                <div class="fr-tournament-flech2"></div>
+                <div class="fr-tournament-player fr-tournament-player3">
+                    <h5 id="player3">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part3">
+                <div class="fr-tournament-img">
+                    <img src="/images/acheivements/gold-cup.png">
+                </div>
+                <div class="fr-tournament-player fr-tournament-player4">
+                    <h5 id="player4">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part4">
+                <div class="fr-tournament-flech3"></div>
+                <div class="fr-tournament-flech4"></div>
+                <div class="fr-tournament-player fr-tournament-player5">
+                    <h5 id="winner1">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part5">
+                <div class="fr-tournament-player fr-tournament-player6">
+                    <h5 id="winner2">?</h5>
+                </div>
+                <div class="fr-tournament-player fr-tournament-player7">
+                    <h5 id="winner3">?</h5>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="play" style="display: none;">Play</button>
         </div>
-        <div class="fr-tournament-part fr-tournament-part3">
-            <div class="fr-tournament-img">
-                <img src="/images/acheivements/gold-cup.png">
+        <!-- game -->
+        <div class="game-container" style="display: none;" id="game-container">
+            <div class="players-container">
+                <div class="profile">
+                    <div class="img-bx">
+                        <img id="player1-img" src="" alt="Player 1">
+                    </div>
+                    <span class="player-name" id="player1-name"></span>
+                </div>
+                <div class="profile">
+                    <div class="img-bx">
+                        <img id="player2-img" src="" alt="Player 2">
+                    </div>
+                    <span class="player-name" id="player2-name"></span>
+                </div>
             </div>
-            <div class="fr-tournament-player fr-tournament-player4">
-                <h5>username</h5>
+            
+            <canvas id="canvas"></canvas>
+            
+            <!-- The Modal -->
+            <div class="modal fade" id="remoteGameModal" tabindex="-1" aria-labelledby="remoteGameModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="remoteGameModalLabel"></h5>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary" id="game-okay-btn">Okay</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- end of modal -->
         </div>
-        <div class="fr-tournament-part fr-tournament-part4">
-            <div class="fr-tournament-flech3"></div>
-            <div class="fr-tournament-flech4"></div>
-            <div class="fr-tournament-player fr-tournament-player5">
-                <h5>username</h5>
+        <!-- Modal -->
+        <div class="modal fade" id="remotetournamentModal" tabindex="-1" aria-labelledby="remotetournamentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="remotetournamentModalLabel"></h5>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" id="okay-btn">Okay</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="fr-tournament-part fr-tournament-part5">
-            <div class="fr-tournament-player fr-tournament-player6">
-                <h5>username</h5>
-            </div>
-            <div class="fr-tournament-player fr-tournament-player7">
-                <h5>username</h5>
-            </div>
-        </div>
-        <div class="fr-tournament-container-input-btn">
-            <input type="text">
-            <button>add</button>
         </div>
     </div>
 </body>

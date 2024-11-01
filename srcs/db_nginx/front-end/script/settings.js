@@ -1,5 +1,5 @@
-import { getJWT, getCsrfToken, NewPage} from "/utils.js"
-import {ConfirmationMail} from "/confirmationMail.js"
+import { getJWT, getCsrfToken, NewPage} from "https://localhost/utils.js"
+import {ConfirmationMail} from "https://localhost/confirmationMail.js"
 
 export async function Settings() {
 

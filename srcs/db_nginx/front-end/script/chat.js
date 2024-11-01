@@ -1,6 +1,6 @@
-import { createWebSocket } from '/socketsManager.js';
-import { getJWT } from '/utils.js';
-import { GamePlaySocket } from '/header.js';
+import { createWebSocket } from 'https://localhost/socketsManager.js';
+import { getJWT } from 'https://localhost/utils.js';
+import { GamePlaySocket } from 'https://localhost/header.js';
 let TargetUser = null; // make this variable local
 export async function Chat() {
   const url = new URL(window.location.href);

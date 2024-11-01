@@ -32,6 +32,7 @@ class FriendRequest(models.Model):
     receiver            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
     is_active           = models.BooleanField(blank=True, null=False,default=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
+    is_read             = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'friendrequest'
@@ -56,8 +57,10 @@ class FriendRequest(models.Model):
     
     def decline(self):
         self.is_active = False
+        self.is_read = False
         self.save()
 
     def cancel(self):
         self.is_active = False
+        self.is_read = False
         self.save()  

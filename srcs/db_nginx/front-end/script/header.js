@@ -1,7 +1,7 @@
-import { NewPage, getJWT, redirectTwoFactor } from "/utils.js";
-import { Profile } from "/profile.js"
-import { Multi } from "./multi.js";
-import {RemoteTournament} from "./remotetournament.js"
+import { NewPage, getJWT, redirectTwoFactor } from "https://localhost/utils.js";
+import { Profile } from "https://localhost/profile.js"
+import { Multi } from "https://localhost/multi.js";
+import {RemoteTournament} from "https://localhost/remotetournament.js"
 let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
@@ -167,12 +167,14 @@ const addheader = () => {
             <li id="header-settings-btn"><a class="header-li-a-style">settings</a></li>
         </ul>
         <div class="header-action">
-            <svg class="header-notification-icon bel header-hide-in-small-size" id="header-notification-icon"
-                xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
-                <path d="M0 0h24v24H0V0z" fill="none" />
-                <path
-                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
-            </svg>
+            <div class="header-notification-icon-container">
+                <svg class="header-notification-icon bel header-hide-in-small-size" id="header-notification-icon"
+                    xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 0 24 24" width="35px" fill="#e8eaed">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
+                </svg>
+            </div>
             <div id="header-profile-box" class="header-profile-box header-hide-in-small-size">
                 <div class="header-img-bx">
                     <img id="header-profile-image" src="" alt="">
@@ -332,8 +334,15 @@ export async function header() {
     });
 
     // Add click event listener to the notification icon
-    document.getElementById('header-notification-icon')?.addEventListener('click', event => {
+    document.getElementById('header-notification-icon')?.addEventListener('click', async event => {
         event.stopPropagation(); // Prevent the event from bubbling up
+        document.body.style.setProperty('--count-notification', 'none');
+        const token = await getJWT();
+        fetch("https://localhost:8000/friend/friendRequest/readed/", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         const notif = document.getElementById('header-notif-div');
         if (notif.style.display == 'block')
             notif.style.display = 'none';
@@ -364,6 +373,9 @@ export async function header() {
             declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
             document.getElementById("header-notif-div").appendChild(notiItem);
         });
+        const number = data.filter(item => item.is_read === false).length;
+        if (number)
+            document.body.style.setProperty('--count-notification', `"${number}"`)
     }).catch(error => {
         console.log("can't fetch friend requests error accured ", error);
     });

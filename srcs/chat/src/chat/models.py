@@ -39,30 +39,38 @@ class FriendRequest(models.Model):
     receiver            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
     is_active           = models.BooleanField(blank=True, null=False,default=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
+    is_read             = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'friendrequest'
 
     def __str__(self):
         return self.sender.username
+    
+    def save(self, *args, **kwargs):
+        if self.sender == self.receiver:
+            raise ValidationError("sender could not be the receiver at the same time.")
+        super().save(*args, **kwargs)
 
     def accept(self):
-        recieverList = friendlist.objects.get(user=self.receiver)
+        recieverList, yes = FriendList.objects.get_or_create(user=self.receiver)
         if recieverList:
-            recieverList.addFreind(self.sender)
-            senderList = friendlist.objects.get(user=self.sender)
+            recieverList.addFriend(self.sender)
+            senderList = FriendList.objects.get(user=self.sender)
             if senderList:
-                senderList.addFreind(self.receiver)
+                senderList.addFriend(self.receiver)
                 self.is_active = False
                 self.save()
     
     def decline(self):
         self.is_active = False
+        self.is_read = False
         self.save()
 
     def cancel(self):
         self.is_active = False
-        self.save()  
+        self.is_read = False
+        self.save()    
 
 class UserManager(BaseUserManager):
     def create_user(self,username,intra=False, password=None, **data):
@@ -196,6 +204,7 @@ class Tournament(models.Model):
     winner = models.ForeignKey(User, related_name='wonTournaments', null=True, blank=True, on_delete=models.DO_NOTHING)
     Ongoing = models.BooleanField(default=False)
     isOver = models.BooleanField(default=False)
+    image = models.TextField(max_length=255)
 
     class Meta:
         db_table='tournament'

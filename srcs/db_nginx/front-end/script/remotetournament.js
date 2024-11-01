@@ -1,5 +1,5 @@
-import { NewPage, getJWT, webSockets } from "/utils.js";
-import { Home } from "./home.js";
+import { NewPage, getJWT, webSockets } from "https://localhost/utils.js";
+import { Home } from "https://localhost/home.js";
 
 export const RemoteTournament = async () => {
     let token = await getJWT();

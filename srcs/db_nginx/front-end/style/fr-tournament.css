@@ -18,7 +18,7 @@
     height: calc(100vh - 100px);
     width: calc(100vw - 20px);
     border-radius: 20px;
-    padding: 0 10px;
+    /* padding: 0 10px; */
     overflow: hidden;
 }
 .fr-tournament-container img{
@@ -58,7 +58,7 @@
     border: #4a0dac 2px solid;
     background-color: #1b2141;
     box-shadow: #b1c0ff 0px 0px 0px 0px;
-    z-index: 999;
+    z-index: 2;
 }
 
 .fr-tournament-player h5 {
@@ -146,9 +146,9 @@
 
 .fr-tournament-container-input-btn {
     position: absolute;
-    bottom: 0;
+    bottom: 50%;
     right: 50%;
-    transform: translateX(50%);
+    transform: translate(50%, 50%);
 }
 
 .fr-tournament-container-input-btn input {
@@ -172,9 +172,9 @@
 
 .fr-tournament-container-input-btn button {
     position: absolute;
-    right: 0.25em;
+    right: 0.22em;
     top: 0.25em;
-    bottom: 0.25em;
+    bottom: 0.22em;
     aspect-ratio: 1/1;
     border: none;
     border-radius: 50%;
