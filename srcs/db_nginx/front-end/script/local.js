@@ -14,8 +14,10 @@ export const Local = async () => {
 
     let rect = canvas.getBoundingClientRect();
 
-    canvas.width = rect.width * devicePixelRatio;
-    canvas.height = rect.height * devicePixelRatio;
+    if (window.innerWidth > 450) {
+        canvas.width = rect.width * devicePixelRatio;
+        canvas.height = rect.height * devicePixelRatio;
+    }
 
     // Function to trigger modal programmatically
     function showModal() {

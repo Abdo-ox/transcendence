@@ -242,7 +242,9 @@ export const TournamentFr = async () => {
     function setCanvasSize() {
         let rect = canvas.getBoundingClientRect();
 
-        canvas.width = rect.width * devicePixelRatio;
-        canvas.height = rect.height * devicePixelRatio;
+        if (window.innerWidth > 450) {
+            canvas.width = rect.width * devicePixelRatio;
+            canvas.height = rect.height * devicePixelRatio;
+        }
     }
 }
