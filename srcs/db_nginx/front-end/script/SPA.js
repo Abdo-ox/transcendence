@@ -7,7 +7,6 @@ import { Profile } from "https://localhost/profile.js"
 import { ResetPassword } from "https://localhost/resetpassword.js"
 import { Reset } from "https://localhost/reset.js"
 import { Tournament } from "https://localhost/tournament.js"
-import { RemoteTournament } from "https://localhost/remotetournament.js"
 import { Local } from "https://localhost/local.js"
 import { Multi } from "https://localhost/multi.js"
 import { Game } from "https://localhost/game.js"
@@ -82,9 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         case "/tournament":
             NewPage("/tournament", Tournament, false);
-            break;
-        case "/remotetournament":
-            NewPage("/remotetournament", RemoteTournament, false);
             break;
         case "/confirmationMail":
             NewPage("/confirmationMail", ConfirmationMail, false);

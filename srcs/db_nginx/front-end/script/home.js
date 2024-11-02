@@ -2,7 +2,6 @@ import { NewPage, getJWT, printErrorInScreen } from "https://localhost/utils.js"
 import { GamePlaySocket } from "https://localhost/header.js";
 import { Login } from "https://localhost/login.js";
 import { Tournament } from "https://localhost/tournament.js";
-import { RemoteTournament } from "https://localhost/remotetournament.js";
 import { Game } from "https://localhost/game.js";
 import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";

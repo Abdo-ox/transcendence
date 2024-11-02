@@ -1,7 +1,7 @@
 import { NewPage, getJWT, redirectTwoFactor } from "https://localhost/utils.js";
 import { Profile } from "https://localhost/profile.js"
 import { Multi } from "https://localhost/multi.js";
-import {RemoteTournament} from "https://localhost/remotetournament.js"
+import { TournamentFr } from "https://localhost/fr-tournament.js";
 let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
