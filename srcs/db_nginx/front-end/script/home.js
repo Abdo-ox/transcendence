@@ -232,7 +232,7 @@ export async function Home() {
     if(data.suggestions.length)
         suggestionscontainer.innerHTML += `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
-                <input type="text" placeholder="search">
+                <input id="home-searchInput" type="text" placeholder="search">
             </div>`;
     let FriendArray =[];
     data.suggestions.forEach(user => {
@@ -248,6 +248,20 @@ export async function Home() {
                     <button class="home-cancel-btn" username="${user.username}">cancel</button>
             </div>`;
             FriendArray.push(user.username);
+    });
+    document.getElementById("home-searchInput").addEventListener("input", function() {
+        const searchTerm = this.value.toLowerCase(); 
+        const users = document.querySelectorAll(".home-user"); 
+    
+        users.forEach((user) => {
+        const us = user.querySelector(".home-info-user"); 
+            const username  = (us.querySelector("h3").textContent).toLowerCase();
+            if (username.includes(searchTerm)) {
+                user.style.display = "";
+            } else {
+                user.style.display = "none";
+            }
+        });
     });
     let  SuggeSTfriendID= document.querySelectorAll(".home-ImgID");
     SuggeSTfriendID.forEach((elt,index)=>{

@@ -34,6 +34,7 @@ export async function Profile() {
         const data = await response.json();
         console.log("data is :", data);
         document.getElementById("profile-username").innerHTML = data.username;
+        document.getElementById("profile-userWelcome").innerHTML = data.username;
         document.getElementById("profile-coalition").src = data.coalition.image;
         document.getElementById("profile-profileimage").src = data.profile_image;
         document.getElementById("profile-matchScore").innerHTML = data.totalGames;
@@ -88,7 +89,6 @@ export async function Profile() {
             document.getElementById("current-level").innerHTML = currentLevel;
             document.getElementById("current-points").innerHTML = currentPoints;
         }
-        data.score = 12;
         updateProgress(data.score);
 
 
@@ -222,7 +222,7 @@ export async function Profile() {
         if (data.length) {
             document.getElementById("profile-users-list").innerHTML += `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
-                <input type="text" placeholder="search">
+                <input id="searchInput" type="text" placeholder="search">
             </div>`
             data.forEach((element) => {
                 if (element.is_friend) {
@@ -248,6 +248,20 @@ export async function Profile() {
 
 
             })
+            document.getElementById("searchInput").addEventListener("input", function() {
+                const searchTerm = this.value.toLowerCase(); 
+                const users = document.querySelectorAll(".profile-user"); 
+            
+                users.forEach((user) => {
+
+                    const username  = (user.querySelector("h3.friendUserName").textContent).toLowerCase();
+                    if (username.includes(searchTerm)) {
+                        user.style.display = "";
+                    } else {
+                        user.style.display = "none";
+                    }
+                });
+            });
             //   //  <div class="online-indicator"></div> 
             const friendsUserName = document.querySelectorAll(".friendUserName");
             const ChatIcons = document.querySelectorAll(".profile-chat");
