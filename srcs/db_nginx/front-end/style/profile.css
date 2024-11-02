@@ -58,7 +58,10 @@ body
     display: flex;
     flex-direction: column;
 }
-
+#current-points
+{
+    color :#a04698;
+}
 .profile-background {
     z-index: 1;
     position: absolute;
@@ -70,7 +73,7 @@ body
 .profile-half {
     flex: 1;
     display: flex;
-    width: 50%;
+    width: 35%;
     gap: 10px;
     align-items: center;
     /* background-color: #0f70b1; */
@@ -886,7 +889,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     background-color: #1b2141;
     width: 15%;
-    min-width: 220px;
+    min-width: 190px;
     border-radius: 20px;
     margin-right: 20px;
     align-items: center;
@@ -1049,7 +1052,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1120px) {
     .profile-profile-items {
         height: 460px;
         flex-wrap: wrap;
@@ -1095,7 +1098,7 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .profile-content {
-        flex-direction: column;
+        /* flex-direction: column; */
         padding: 10px;
     }
 
