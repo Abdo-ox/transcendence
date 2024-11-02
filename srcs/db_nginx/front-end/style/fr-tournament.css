@@ -25,6 +25,7 @@
     position:absolute;
     height: 100%;
     width: 100%;
+    margin-bottom: 40px;
     /* object-fit: contain; */
 }
 .fr-tournament-part {

@@ -11,86 +11,110 @@
 <body>
     <header id="header">
     </header>
-
-    <!-- start of center container -->
-    <div class="center-container">
-        <div id="nickname-input" class="mb-4" style="display: none;">
-            <div class="input-group">
-                <input type="text" id="nickname" class="form-control" placeholder="Enter nickname 1">
-                <button id="add-nickname" class="btn btn-primary">Add</button>
+    <div>
+        <div id="nickname-input" class="mb-4 center-container" style="display: none;">
+            <div class="fr-tournament-container-input-btn">
+                <input type="text" id="nickname" placeholder="Enter Nickname 1:">
+                <button id="add-nickname">add</button>
             </div>
-            <div id="nickname-error" class="text-danger" style="display: none;"></div>
+            <div id="nickname-error" class="text-danger" style="display: none; z-index: 2; margin-top: 40px;"></div>
         </div>
-        <div id="tournament-bracket" class="tournament-bracket" style="display: none;">
-            <div class="trophy-container">
-                <i class="fas fa-trophy"></i>
-            </div>
-            <div class="winner-box" id="winner3">?</div>
-            <div class="bracket-columns">
-                <div class="bracket-column left-column">
-                    <div class="bracket-box" id="player1"></div>
-                    <div class="bracket-box" id="winner1">?</div>
-                    <div class="bracket-box" id="player2"></div>
+        <div class="fr-tournament-container" style="display: none;" id="tournament-bracket">
+            <!-- <img src="" id="tournament-img"> -->
+            <div class="fr-tournament-part fr-tournament-part1">
+                <div class="fr-tournament-player fr-tournament-player1">
+                    <h5 id="player1">?</h5>
                 </div>
-                <div class="bracket-column right-column">
-                    <div class="bracket-box" id="player3"></div>
-                    <div class="bracket-box" id="winner2">?</div>
-                    <div class="bracket-box" id="player4"></div>
+                <div class="fr-tournament-player fr-tournament-player2">
+                    <h5 id="player2">?</h5>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="play">Play</button>
+            <div class="fr-tournament-part fr-tournament-part2">
+                <div class="fr-tournament-flech1"></div>
+                <div class="fr-tournament-flech2"></div>
+                <div class="fr-tournament-player fr-tournament-player3">
+                    <h5 id="winner1">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part3">
+                <div class="fr-tournament-img">
+                    <img src="/images/acheivements/gold-cup.png">
+                </div>
+                <div class="fr-tournament-player fr-tournament-player4 winner-box">
+                    <h5 id="winner3">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part4">
+                <div class="fr-tournament-flech3"></div>
+                <div class="fr-tournament-flech4"></div>
+                <div class="fr-tournament-player fr-tournament-player5">
+                    <h5 id="winner2">?</h5>
+                </div>
+            </div>
+            <div class="fr-tournament-part fr-tournament-part5">
+                <div class="fr-tournament-player fr-tournament-player6">
+                    <h5 id="player3">?</h5>
+                </div>
+                <div class="fr-tournament-player fr-tournament-player7">
+                    <h5 id="player4">?</h5>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary fr-tournament-btn" id="play-btn">Play</button>
         </div>
         <!-- game -->
-        <div class="game-container" style="display: none;" id="game-container">
-            <div class="players-container">
-                <div class="profile">
-                    <div class="img-bx">
-                        <img src="" alt="Player 1">
-                    </div>
-                    <span class="player-name" id="game-player1"></span>
-                </div>
-                <div class="profile">
-                    <div class="img-bx">
-                        <img src="" alt="Player 2">
-                    </div>
-                    <span class="player-name" id="game-player2">?</span>
-                </div>
-            </div>
-    
-            <canvas id="canvas"></canvas>
-    
-            <!-- The Modal -->
-            <div class="modal fade" id="tournamentgameModal" tabindex="-1" aria-labelledby="tournamentgameModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="tournamentgameModalLabel"></h5>
+        <div class="center-container">
+            <div class="game-container" style="display: none;" id="game-container">
+                <div class="players-container">
+                    <div class="profile">
+                        <div class="img-bx">
+                            <img id="player1-img" src="" alt="Player 1">
                         </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="okay-btn">Okay</button>
+                        <span class="player-name" id="player1-name"></span>
+                    </div>
+                    <div class="profile">
+                        <div class="img-bx">
+                            <img id="player2-img" src="" alt="Player 2">
+                        </div>
+                        <span class="player-name" id="player2-name"></span>
+                    </div>
+                </div>
+
+                <canvas id="canvas"></canvas>
+
+                <!-- The Modal -->
+                <div class="modal fade" id="tournamentGameModal" tabindex="-1" aria-labelledby="tournamentGameModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tournamentGameModalLabel"></h5>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary" id="game-okay-btn">Okay</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- end of modal -->
             </div>
-            <!-- end of modal -->
         </div>
+
         <!-- Modal -->
-        <div class="modal fade" id="tournamentModal" tabindex="-1" aria-labelledby="tournamentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="tournamentModal" tabindex="-1" aria-labelledby="tournamentModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="tournamentModalLabel"></h5>
-                        <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary" id="tournament-play-btn">Play!</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="okay-btn">Okay</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end of center container -->
+
 </body>
 
 </html>

@@ -6,7 +6,7 @@ export const Tournament = async () => {
     let nicknames = JSON.parse(localStorage.getItem('nicknames')) || [];
     let nicknameIndex = 1;
     let tournamentModal = undefined;
-    let tournamentgameModal = undefined;
+    let tournamentGameModal = undefined;
     let winners = JSON.parse(localStorage.getItem('winners')) || [];
 
     if (nicknames.length > 0) {
@@ -33,7 +33,7 @@ export const Tournament = async () => {
                 // Valid nickname
                 nicknames.push(nickname);
                 nicknameInput.value = '';
-                nicknameInput.placeholder = `Enter nickname ${++nicknameIndex}`;
+                nicknameInput.placeholder = `Enter nickname ${++nicknameIndex}:`;
             
                 if (nicknames.length === 4) {
                     localStorage.setItem('nicknames', JSON.stringify(nicknames));
@@ -44,7 +44,7 @@ export const Tournament = async () => {
             }
 
             // Show the error message
-            nicknameError.style.display = 'block';
+            nicknameError.style.display = 'flex';
         });
     }
 
@@ -77,7 +77,7 @@ export const Tournament = async () => {
         }
     };
 
-    document.getElementById('play').addEventListener('click', function() {
+    document.getElementById('play-btn').addEventListener('click', function() {
         if (n >= 3)
             NewPage("/tournament", Tournament);
         else {
@@ -95,17 +95,17 @@ export const Tournament = async () => {
                 player2 = winners[1];
             }
             msg.innerHTML = `${player1} Vs. ${player2}`;
-            showModal();
+            showTournamentModal();
         }
     });
 
     // Function to trigger modal programmatically
-    function showModal() {
+    function showTournamentModal() {
         tournamentModal = new bootstrap.Modal(document.getElementById('tournamentModal'));
         tournamentModal.show();
     };
 
-    document.getElementById('tournament-play-btn').addEventListener('click', function() {
+    document.getElementById('okay-btn').addEventListener('click', function() {
         tournamentModal.hide();
         const bracket = document.getElementById('tournament-bracket');
         bracket.style.display = 'none';
@@ -126,11 +126,11 @@ export const Tournament = async () => {
         }
 
 
-        document.getElementById('game-player1').textContent = player1;
-        document.getElementById('game-player2').textContent = player2;
+        document.getElementById('player1-name').textContent = player1;
+        document.getElementById('player2-name').textContent = player2;
 
-        document.getElementById("okay-btn").addEventListener('click', () => {
-            tournamentgameModal.hide();
+        document.getElementById("game-okay-btn").addEventListener('click', () => {
+            tournamentGameModal.hide();
             NewPage("/tournament", Tournament);
         });
 
@@ -144,8 +144,8 @@ export const Tournament = async () => {
     
         // Function to trigger modal programmatically
         function showModal() {
-            tournamentgameModal = new bootstrap.Modal(document.getElementById('tournamentgameModal'));
-            tournamentgameModal.show();
+            tournamentGameModal = new bootstrap.Modal(document.getElementById('tournamentGameModal'));
+            tournamentGameModal.show();
         }
     
         class Game {
@@ -240,7 +240,7 @@ export const Tournament = async () => {
                     this.ctx.fillText(this.player1.score > this.player2.score ? `${player1} Won!` : `${player2} Won!`, canvas.width / 2, canvas.height / 2);
                     winners.push(this.player1.score > this.player2.score ? player1 : player2)
                     localStorage.setItem('winners', JSON.stringify(winners));
-                    const msg = document.getElementById("tournamentgameModalLabel");
+                    const msg = document.getElementById("tournamentGameModalLabel");
                     msg.innerHTML = this.player1.score > this.player2.score ? `${player1} Won!` : `${player2} Won!`;
                     n += 1;
                     localStorage.setItem('n', JSON.stringify(n));

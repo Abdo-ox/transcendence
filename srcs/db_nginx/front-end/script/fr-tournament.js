@@ -80,7 +80,7 @@ export const TournamentFr = async () => {
                     sessionStorage.setItem('tournament_name', name);
                 }
                 // Show the error message
-                nameError.style.display = 'block';
+                nameError.style.display = 'flex';
             });
 
         } else {
@@ -110,10 +110,9 @@ export const TournamentFr = async () => {
 
     function displayTournamentBracket() {
         const bracket = document.getElementById('tournament-bracket');
-        const img = document.getElementById('tournament-img');
+        // const img = document.getElementById('tournament-img');
 
-        img.src = tournamentState.image;
-        console.log(tournamentState.image);
+        // img.src = tournamentState.image;
         let i = 1;
         tournamentState.players.forEach(element => {
             let box = document.getElementById(`player${i}`);
