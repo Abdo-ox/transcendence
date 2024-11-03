@@ -205,6 +205,8 @@ class Tournament(models.Model):
     Ongoing = models.BooleanField(default=False)
     isOver = models.BooleanField(default=False)
     image = models.TextField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table='tournament'
