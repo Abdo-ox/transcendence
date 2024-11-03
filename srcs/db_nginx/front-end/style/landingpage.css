@@ -133,7 +133,7 @@
           #ff3cac 0%,
           #784ba0 50%,
           #2b86c5 100%);
-  animation: animate 25s linear infinite;
+  animation: landing-animate 25s linear infinite;
   bottom: -150px;
 }
 
@@ -228,7 +228,7 @@
   animation-duration: 11s;
 }
 
-*/ .landing-circles li:nth-child(11) {
+ .landing-circles li:nth-child(11) {
   left: 7%;
   width: 150px;
   height: 150px;
@@ -260,7 +260,21 @@
 }
 
 
+@keyframes landing-animate {
 
+  0%{
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+      border-radius: 0;
+  }
+
+  100%{
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0;
+      border-radius: 50%;
+  }
+
+}
 
 
 
@@ -477,7 +491,7 @@
   margin: 0; /* Adjust margins as needed */
 }
 
-.landing-game-join .landing-content-join a {
+.landing-Joinbtn {
   max-width: 200px;
   text-align: center;
   padding: 10px; /* Adjust padding for better spacing */
@@ -491,7 +505,7 @@
   display: inline-block; /* Ensure proper box model */
 }
 
-.landing-game-join .landing-content-join a:hover {
+.landing-Joinbtn:hover {
   border: none;
   background-color: #1aeeef;
   color: #222;

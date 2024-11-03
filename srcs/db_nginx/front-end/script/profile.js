@@ -1,11 +1,13 @@
 import { NewPage, getJWT } from "https://localhost/utils.js";
 import { Chat } from "https://localhost/chat.js";
+import { UserStatusSock } from "https://localhost/header.js";
 // window.addEventListener('scroll', function () {
 //     var header = document.querySelector('header');
 //     header.classList.toggle('sticky', window.scrollY > 0);
 // });
 
 export async function Profile() {
+
     const params = new URLSearchParams(window.location.search)
     let myuser = params.get('user');
     if (!myuser)
@@ -32,6 +34,8 @@ export async function Profile() {
         const data = await response.json();
         console.log("data is :", data);
         document.getElementById("profile-username").innerHTML = data.username;
+        document.getElementById("profile-userWelcome").innerHTML = data.username;
+        document.getElementById("profile-coalition").src = data.coalition.image;
         document.getElementById("profile-profileimage").src = data.profile_image;
         document.getElementById("profile-matchScore").innerHTML = data.totalGames;
         document.getElementById("profile-tournamentsScore").innerHTML = data.tournaments;
@@ -183,6 +187,7 @@ export async function Profile() {
                             </div>
                         </div>`;
             })
+
         }
         // document.getElementById("profile-arrayHistory")
     }
@@ -213,44 +218,85 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        console.log("data friend :", data[0]);
-
-        data.forEach((element) => {
-            if (element.is_friend) {
-                document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
+        console.log("data friend :", data);
+        if (data.length) {
+            document.getElementById("profile-users-list").innerHTML += `<div class="profile-searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input id="searchInput" type="text" placeholder="search">
+            </div>`
+            data.forEach((element) => {
+                if (element.is_friend) {
+                    document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
                 <div class="profile-info-user">
                     <img id="imgID" class="profile-friendImg" src="${element.profile_image}">
+                    ${data.is_online ? '<div class="decline-indicator" style="background-color: green;"></div>' : '<div class="decline-indicator"></div>'}
                     <h3 class="friendUserName">${element.username}</h3>
                 </div>
                 <img class="profile-chat" src="/images/profile_images/chat1.png">
                 </div>`;
-                if(data.is_online)
-                {
-                    document.getElementById("imgID").style.border = `2px solid green`;
+                }
+                else {
+
+                    document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
+                <div class="profile-info-user">
+                    <img id="imgID" class="profile-friendImg" src="${element.profile_image}">
+                    <div  class="decline-indicator"></div> 
+                    <h3 class="friendUserName">${element.username}</h3>
+                </div>
+                </div>`;
                 }
 
-                
-            }
-            
-        })
 
-
-        const friendsUserName = document.querySelectorAll(".friendUserName");
-        const ChatIcons = document.querySelectorAll(".profile-chat");
-        ChatIcons.forEach((icon, index) => {
-            icon.addEventListener("click", async () => {
-                let query = friendsUserName[index].textContent;
-                console.log("query: ", query);
-                NewPage("/chat", Chat, 1, "?user=" + query);
-            });
-
-        });
-        const profileFriendImg = document.querySelectorAll(".profile-friendImg");
-        profileFriendImg.forEach((friend, j) => {
-            friend.addEventListener("click", async () => {
-                NewPage("/profile", Profile, 1, "?user=" + friendsUserName[j].textContent);
             })
-        })
+            document.getElementById("searchInput").addEventListener("input", function() {
+                const searchTerm = this.value.toLowerCase(); 
+                const users = document.querySelectorAll(".profile-user"); 
+            
+                users.forEach((user) => {
+
+                    const username  = (user.querySelector("h3.friendUserName").textContent).toLowerCase();
+                    if (username.includes(searchTerm)) {
+                        user.style.display = "";
+                    } else {
+                        user.style.display = "none";
+                    }
+                });
+            });
+            //   //  <div class="online-indicator"></div> 
+            const friendsUserName = document.querySelectorAll(".friendUserName");
+            const ChatIcons = document.querySelectorAll(".profile-chat");
+            ChatIcons.forEach((icon, index) => {
+                icon.addEventListener("click", async () => {
+                    let query = friendsUserName[index].textContent;
+                    console.log("query: ", query);
+                    NewPage("/chat", Chat, 1, "?user=" + query);
+                });
+
+            });
+            const frindArray = document.querySelectorAll(".profile-info-user");
+            UserStatusSock.onmessage = (e) => {
+                var d = JSON.parse(e.data);
+                console.log("Received data :", d);
+                frindArray.forEach(friend => {
+                    const friendName = friend.querySelector("h3.friendUserName").textContent;
+                    console.log("Checking friend:", friendName);
+                    if (friendName === d.username) {
+                        console.log(`Updating status for: ${friendName}`);
+                        if (d.is_online == "True")
+                            friend.querySelector("div.decline-indicator").style.backgroundColor = "green";
+                        else
+                            friend.querySelector("div.decline-indicator").style.backgroundColor = "red";
+                    }
+                });
+            };
+
+            const profileFriendImg = document.querySelectorAll(".profile-friendImg");
+            profileFriendImg.forEach((friend, j) => {
+                friend.addEventListener("click", async () => {
+                    NewPage("/profile", Profile, 1, "?user=" + friendsUserName[j].textContent);
+                })
+            })
+        }
 
     }
     // {

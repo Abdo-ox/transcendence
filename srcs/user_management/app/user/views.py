@@ -180,6 +180,7 @@ def updateData(request):
         form.save()
         return JsonResponse({"data":"edited"})   
     else:
+        print("errors", form.errors,flush=True)
         return JsonResponse({"data":"error"})
 
 @api_view(['POST'])

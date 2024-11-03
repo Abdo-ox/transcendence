@@ -6,6 +6,14 @@ import { Game } from "https://localhost/game.js";
 import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";
 import { TournamentFr } from "https://localhost/fr-tournament.js";
+import { UserStatusSock } from "https://localhost/header.js"
+
+function formatNumber(num) {
+    let formatted = num.toFixed(1);
+    if (formatted.endsWith(".0"))
+        return parseInt(formatted);
+    return formatted;
+}
 
 function joinOrContinue(array, action, homeCard) {
     array.forEach(tournament => {
@@ -29,6 +37,8 @@ function joinOrContinue(array, action, homeCard) {
 function tournaments(data) {
     console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
+    if (data.continue.length || data.join.length)
+        homeCard.innerHTML = '';
     joinOrContinue(data.continue, 'Continue', homeCard);
     joinOrContinue(data.join, 'Join', homeCard);
 }
@@ -46,10 +56,10 @@ function pieChart2(data) {
         unknown = 0;
     } else
         document.getElementById("home-nothing-chart-2")?.remove();
-    document.getElementById('home-tournament').style.setProperty('--content', `"${tournament}%"`);
-    document.getElementById('home-ai').style.setProperty('--content', `"${ai}%"`);
-    document.getElementById('home-friend').style.setProperty('--content', `"${friend}%"`);
-    document.getElementById('home-unknown').style.setProperty('--content', `"${unknown}%"`);
+    document.getElementById('home-tournament').style.setProperty('--content', `"${formatNumber(tournament)}%"`);
+    document.getElementById('home-ai').style.setProperty('--content', `"${formatNumber(ai)}%"`);
+    document.getElementById('home-friend').style.setProperty('--content', `"${formatNumber(friend)}%"`);
+    document.getElementById('home-unknown').style.setProperty('--content', `"${formatNumber(unknown)}%"`);
     tournament = (data.tournament * 360) / total;
     ai = (data.ai_match * 360) / total;
     friend = (data.friend_match * 360) / total;
@@ -113,7 +123,6 @@ function coalitionRank(data) {
 }
 
 function pieChart1(data) {
-    console.log(data);
     const piechart1 = document.getElementById("home-pie-chart-1");
     const total = data.reduce((sum, obj) => sum + obj.score, 0);
     const src = [data[0].score / total * 100, data[1].score / total * 100, data[2].score / total * 100];
@@ -123,21 +132,22 @@ function pieChart1(data) {
         const max = Math.max(...src);
         console.log(max);
         const index_max = src.indexOf(max);
-        piechart1.style.setProperty('--percent', `"${max.toFixed(1)}%"`);
+        piechart1.style.setProperty('--percent', `"${formatNumber(max)}%"`);
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
         coalitionRank(data);
     } else
-        src.forEach((coalition, i) => src[i] = (isNaN(coalition) ? 0 : coalition));
+        return
     document.getElementById("home-night-spin-name").innerHTML = data[0].name;
-    document.getElementById("home-night-spin-percent").innerHTML = src[0].toFixed(1) + '%';
+    document.getElementById("home-night-spin-percent").innerHTML = formatNumber(src[0]) + '%';
     document.getElementById("home-ghost-paddle-name").innerHTML = data[1].name;
-    document.getElementById("home-ghost-paddle-percent").innerHTML = src[1].toFixed(1) + '%';
+    document.getElementById("home-ghost-paddle-percent").innerHTML = formatNumber(src[1]) + '%';
     document.getElementById("home-eclipse-pong-name").innerHTML = data[2].name;
-    document.getElementById("home-eclipse-pong-percent").innerHTML = src[2].toFixed(1) + '%';
+    document.getElementById("home-eclipse-pong-percent").innerHTML = formatNumber(src[2]) + '%';
+    src.forEach((element, i) => src[i] = Math.round(element * 3.6));
     document.getElementById("home-pie-chart-1").style.setProperty('background', `conic-gradient(from 30deg,
-        ${colors[0]}  ${Math.round(src[0] * 3.6)}deg,
-        ${colors[1]}  ${Math.round(src[0] * 3.6)}deg ${Math.round(src[1] * 3.6)}deg,
-        ${colors[2]}  ${Math.round(src[1] * 3.6)}deg ${Math.round(src[2] * 3.6)}deg)`);
+        ${colors[0]}  0 ${src[0]}deg,
+        ${colors[1]}  0 ${src[0] + src[1]}deg,
+        ${colors[2]}  0 ${src[0] + src[1] + src[2]}deg)`);
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
@@ -171,18 +181,6 @@ export async function Home() {
     let access_token = await getJWT();
     if (!access_token)
         return;
-    /**** coalition rank** */
-    let t1 = document.getElementById("home-coalFirst");
-    let t2 = document.getElementById("home-coalSecond");
-    let t3 = document.getElementById("home-coalThird");
-    function CompareScore(score1, score2, score3) {
-        let scores = [score1, score2, score3];
-        scores.sort((a, b) => b - a);
-        console.log("first place", scores[0]);
-        console.log("second place", scores[1]);
-        console.log("3 place", scores[2]);
-    }
-
     /*****js of card tournaments***** */
     const stack = document.querySelector(".homeCard-stack");
     const cards = Array.from(stack.children)
@@ -231,20 +229,49 @@ export async function Home() {
 
     const suggestionscontainer = document.getElementById("home-suggestions-items");
     suggestionscontainer.innerHTML = '';
+    if(data.suggestions.length)
+    {
+        suggestionscontainer.innerHTML += `<div class="profile-searchBx">
+                <a href="#"><i class='bx bx-search'></i></a>
+                <input id="home-searchInput" type="text" placeholder="search">
+            </div>`;
+    let FriendArray =[];
     data.suggestions.forEach(user => {
         suggestionscontainer.innerHTML += `
             <div class="home-user" id="home-user-${user.username}">
                     <div class="home-info-user">
                         <div class="home-suggestion-img">
-                            <img src="${user.profile_image}">
+                            <img class="home-ImgID" src="${user.profile_image}">
                         </div>
                         <h3>${user.username}</h3>
                     </div>
                     <button class="home-send-btn" username="${user.username}">send</button>
                     <button class="home-cancel-btn" username="${user.username}">cancel</button>
             </div>`;
+            FriendArray.push(user.username);
     });
+    document.getElementById("home-searchInput").addEventListener("input", function() {
+        const searchTerm = this.value.toLowerCase(); 
+        const users = document.querySelectorAll(".home-user"); 
+    
+        users.forEach((user) => {
+        const us = user.querySelector(".home-info-user"); 
+            const username  = (us.querySelector("h3").textContent).toLowerCase();
+            if (username.includes(searchTerm)) {
+                user.style.display = "";
+            } else {
+                user.style.display = "none";
+            }
+        });
+    });
+    let  SuggeSTfriendID= document.querySelectorAll(".home-ImgID");
+    SuggeSTfriendID.forEach((elt,index)=>{
+        elt.addEventListener("click",async() =>{
+            NewPage("/profile", Profile,true,"?user="+FriendArray[index]);
+        });
 
+    });
+}
     document.querySelectorAll('.home-send-btn').forEach(button => {
         button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['send', 'cancel'], data.currentUser));
     });
@@ -277,6 +304,8 @@ export async function Home() {
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        if (UserStatusSock && UserStatusSock.readyState == WebSocket.OPEN)
+            UserStatusSock.close();
         NewPage("/login", Login, false);
     });
     const token = await getJWT();

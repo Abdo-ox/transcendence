@@ -965,6 +965,8 @@ section {
     transform: translate(-50%, -50%);
     text-align: center;
     margin: 0;
+    font-weight: 800;
+    font-family: monospace;
 }
 
 .home-pie-chart-1::before {
@@ -1129,7 +1131,7 @@ section {
             #ff3cac 0%,
             #784ba0 50%,
             #2b86c5 100%);
-    animation: animate 25s linear infinite;
+    animation: home-animate 25s linear infinite;
     bottom: -150px;
 }
 
