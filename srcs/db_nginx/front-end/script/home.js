@@ -231,6 +231,7 @@ export async function Home() {
     const suggestionscontainer = document.getElementById("home-suggestions-items");
     suggestionscontainer.innerHTML = '';
     if(data.suggestions.length)
+    {
         suggestionscontainer.innerHTML += `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
                 <input id="home-searchInput" type="text" placeholder="search">
@@ -271,6 +272,7 @@ export async function Home() {
         });
 
     });
+}
     document.querySelectorAll('.home-send-btn').forEach(button => {
         button.addEventListener('click', () => buttonsEventHandler(button, GamePlaySocket, ['send', 'cancel'], data.currentUser));
     });

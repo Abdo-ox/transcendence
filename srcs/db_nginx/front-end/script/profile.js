@@ -218,7 +218,7 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        console.log("data friend :", data[0]);
+        console.log("data friend :", data);
         if (data.length) {
             document.getElementById("profile-users-list").innerHTML += `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
@@ -229,7 +229,7 @@ export async function Profile() {
                     document.getElementById("profile-users-list").innerHTML += `<div class="profile-user">
                 <div class="profile-info-user">
                     <img id="imgID" class="profile-friendImg" src="${element.profile_image}">
-                    <div  class="decline-indicator"></div> 
+                    ${data.is_online ? '<div class="decline-indicator" style="background-color: green;"></div>' : '<div class="decline-indicator"></div>'}
                     <h3 class="friendUserName">${element.username}</h3>
                 </div>
                 <img class="profile-chat" src="/images/profile_images/chat1.png">
