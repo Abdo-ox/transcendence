@@ -23,7 +23,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.user = self.scope['user']
         self.game_state = {}
         self.keys = {}
-        # self.ai = init_model()
+        self.ai = init_model()
         self.game = Game(player=self.user)
         self.prediction = 0
         await self.accept()
@@ -111,32 +111,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         vx = self.game_state['ball']['vx']
         y = self.game_state['ball']['y']
         x = self.game_state['ball']['x']
-        features = f'{x},{y},{vx},{v}'
-        r = -1
-        while r < 0:
-            pre_x = x
-            pre_y = y
-            if v < 0:
-                x = x + vx * abs(y / v)
-                y = 0
-            else:
-                x = x + vx * abs((self.game_state['height'] - y) / v)
-                y = self.game_state['height']
-                
-            if vx > 0 and x + self.game_state['ball']['r'] >= self.game_state['paddle2']['x']:
-                y = pre_y + v * abs((self.game_state['paddle2']['x'] - pre_x) / vx)
-                r = y
-            if vx < 0 and x <= self.game_state['paddle1']['x'] + self.game_state['ball']['r']:
-                y = pre_y + v * abs((pre_x - (self.game_state['paddle1']['x'] + self.game_state['ball']['r'])) / vx)
-                x = self.game_state['paddle1']['x'] + self.game_state['ball']['r']
-                vx *= -1
-                v *= -1
-            v *= -1
-        with open('/is_ready/predictions.csv', 'a+') as file:
-            file.write(f'{features},{r}\n')
-        # with torch.no_grad():
-        #     self.prediction = self.ai(torch.tensor([x, y, vx, v]))[0]
-        self.prediction = r
+        with torch.no_grad():
+            self.prediction = self.ai(torch.tensor([x, y, vx, v]))[0] + random.uniform(-0.5, 0.5)
             
     def handle_key(self, key):
         self.keys[key] = not self.keys.get(key, False)

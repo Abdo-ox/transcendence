@@ -37,7 +37,7 @@ async function GameRqEvent(data, notiItem) {
     notiItem.remove()
     if (data['tournament']){
         sessionStorage.setItem('tournament_name', data['tournament'])
-        NewPage("/remotetournament", RemoteTournament)
+        NewPage("/fr-tournament", TournamentFr)
     }
     else {
         GamePlaySocket.send(JSON.stringify({
