@@ -18,6 +18,7 @@ function joinOrContinue(array, action, homeCard) {
                 <button class="home-btn">${action}</button>
             </div>`;
         divTournament.querySelector('button').addEventListener('click', (event) => {
+            event.stopPropagation();
             sessionStorage.setItem("tournament_name", tournament.name);
             NewPage("/fr-tournament", TournamentFr);
         });
