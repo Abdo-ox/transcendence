@@ -7,6 +7,7 @@ import { Game } from "https://localhost/game.js";
 import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";
 import { TournamentFr } from "https://localhost/fr-tournament.js";
+import { UserStatusSock } from "https://localhost/header.js"
 
 function formatNumber(num) {
     let formatted = num.toFixed(1);
@@ -302,6 +303,8 @@ export async function Home() {
     document.getElementById("home-logout-container").addEventListener('click', () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        if (UserStatusSock && UserStatusSock.readyState == WebSocket.OPEN)
+            UserStatusSock.close();
         NewPage("/login", Login, false);
     });
     const token = await getJWT();
