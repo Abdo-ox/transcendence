@@ -12,19 +12,19 @@ class MultiGameHistorySerializer(serializers.ModelSerializer):
     winner = UserSerializer()
     class Meta:
         model = MultiGame
-        fields = ['player1', 'player2', 'winner', 'player1Score', 'player2Score']
+        fields = ['player1', 'player2', 'winner', 'player1Score', 'player2Score', 'created']
 
 class TournamentHistorySerializer(serializers.ModelSerializer):
     games = MultiGameHistorySerializer(many=True)
     winner = UserSerializer()
     class Meta:
         model = Tournament
-        fields = ['winner', 'games']
+        fields = ['winner', 'games', 'created']
 
 class TournamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tournament
-        fields = ['name', 'image']
+        fields = ['name', 'image', 'created']
 
 # win stats
 class WinStatSerializer(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class GameProfileSerializer(serializers.ModelSerializer):
 class AiGameHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = ['playerScore', 'aiScore', 'won']
+        fields = ['playerScore', 'aiScore', 'won', 'created']
 
 class LeaderboardSerializer(serializers.ModelSerializer):
     class Meta:
