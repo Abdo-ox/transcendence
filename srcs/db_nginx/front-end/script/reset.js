@@ -14,8 +14,8 @@ export async function Reset() {
             reseterrorMsg.textContent = 'Code must be exactly 6 digits long';
             return;
         }
-        console.log(password );
-        console.log("confirm ",confirmpass );
+     
+        
         if (password !== confirmpass) {
             reseterrorMsg.textContent = 'password do not match.';
             return;

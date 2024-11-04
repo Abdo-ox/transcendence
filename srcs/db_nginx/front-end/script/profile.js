@@ -12,8 +12,6 @@ export async function Profile() {
     let myuser = params.get('user');
     if (!myuser)
         myuser = '';
-    console.log(myuser, "<_____--- is ");
-
     {
         const ArryImag = ['url("/images/acheivements/firstServe.png")',
             'url("/images/acheivements/paddlemaster.jpeg")',
@@ -248,13 +246,13 @@ export async function Profile() {
 
 
             })
-            document.getElementById("searchInput").addEventListener("input", function() {
-                const searchTerm = this.value.toLowerCase(); 
-                const users = document.querySelectorAll(".profile-user"); 
-            
+            document.getElementById("searchInput").addEventListener("input", function () {
+                const searchTerm = this.value.toLowerCase();
+                const users = document.querySelectorAll(".profile-user");
+
                 users.forEach((user) => {
 
-                    const username  = (user.querySelector("h3.friendUserName").textContent).toLowerCase();
+                    const username = (user.querySelector("h3.friendUserName").textContent).toLowerCase();
                     if (username.includes(searchTerm)) {
                         user.style.display = "";
                     } else {
@@ -299,19 +297,53 @@ export async function Profile() {
         }
 
     }
-    // {
-    //     const response = await fetch('https://localhost:9090/tournamenthistory/', {
-    //         headers: {
-    //             'Authorization': `Bearer ${await getJWT()}`,
 
-    //         }
-    //     })
-    //     if (!response.ok) {
-    //         console.error('Failed to fetch current user:', response.status, response.statusText);
-    //         return;
-    //     }
-    //     const data = await response.json();
-    //     console.log("data tourn:", data);
 
-    // }
+    // tournament history
+    {
+        const response = await fetch('https://localhost:9090/tournamenthistory/', {
+            headers: {
+                'Authorization': `Bearer ${await getJWT()}`,
+
+            }
+        })
+        if (!response.ok) {
+            console.error('Failed to fetch current user:', response.status, response.statusText);
+            return;
+        }
+        const data = await response.json();
+        console.log("data tourn:", data[0]);
+        if (data.length) {
+            data.forEach((elt) => {
+                document.getElementById("profile-history-list").innerHTML += ` <div class="profile-tournament-item">
+                               <img  alt="">
+                                <div class="profile-card-body">
+                                    <h4 class="profile-card-title">Tournament Name</h4>
+                                    <div class="profile-para">
+                                        <p class="profile-card-info">Date: <span>3rd</span></p>
+                                        ${elt.winner && elt.winner.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
+                                    </div>   
+                                </div>
+                            </div>`
+
+            });
+        }
+        else {
+            document.getElementById("profile-history-list").innerHTML = ` <div class="profile-tournament-item">
+                <h4 >No Tournaments played yet</h4>
+         </div>
+            <ul class="settings-circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>`
+}
+    }
 }

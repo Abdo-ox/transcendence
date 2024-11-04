@@ -815,6 +815,7 @@ circle {
     width: 50%;
     background-color: #1b2141;
     border-radius: 20px;
+    
 }
 
 
@@ -938,6 +939,7 @@ circle {
     border-radius: inherit;
     max-height: 1210px;
     overflow-y: hidden;
+    z-index: 10;
 }
 
 .profile-users-list:hover {
