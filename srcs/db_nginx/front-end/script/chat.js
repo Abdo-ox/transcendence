@@ -119,7 +119,7 @@ async  function GamePlay() {
         if (OnlineList && !OnlineList.includes(nameElement.textContent) && data.is_online === false){
           console.log(`the target user is offline`)
           return 0;}
-          console.log(`data is ------------< ${JSON.stringify(data)}`)
+          // console.log(`data is ------------< ${JSON.stringify(data)}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
             GamePlaySocket.send(JSON.stringify({
                 'from': username,
