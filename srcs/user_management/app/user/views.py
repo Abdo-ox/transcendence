@@ -124,6 +124,19 @@ def sendUserData(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def GetUserStatus(request):
+    username = request.query_params.get('username')
+    user = User.objects.get(username=username)
+    print('username is :  ', user.username)
+    print('and status is :  ', user.is_online)
+    if user.is_online == True:
+        is_online = "True"
+    else:
+        is_online = 'False'
+    return JsonResponse({'is_online': user.is_online, 'walid': 'is not hrere'}, status=200)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 @TwoFctor_Decorator
 def sendSuggestionFriend(request):
     users = User.objects.exclude(id=request.user.id)

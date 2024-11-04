@@ -1,6 +1,6 @@
 import { createWebSocket } from '/socketsManager.js';
 import { getJWT } from '/utils.js';
-import { GamePlaySocket } from '/header.js';
+import { GamePlaySocket, OnlineList } from '/header.js';
 let TargetUser = null; // make this variable local
 export async function Chat() {
   const url = new URL(window.location.href);
@@ -95,7 +95,7 @@ async function bodychat(UserData) {
   }
 
   /// handel play event
-  function GamePlay() {
+async  function GamePlay() {
     const profile_container = document.getElementById('profile-container');
     const contact_profile = profile_container.querySelector('.contact-profile');
     const nameElement = contact_profile.querySelector('p');
@@ -105,11 +105,21 @@ async function bodychat(UserData) {
     let clonedGamePlay = gamePlay.cloneNode(true);
     gamePlay.parentNode.replaceChild(clonedGamePlay, gamePlay);
     gamePlay = clonedGamePlay; // reassign the element after cloning
-
-    gamePlay.addEventListener('click', event => {
-        console.log(`game play nameElement is ${nameElement.textContent}`)
-        if (nameElement != "")
-            console.log(`play event happened and nameEl is ${gamePlay.textContent}`)
+    gamePlay.addEventListener('click',  async (e) => {
+      let access_token = await getJWT();
+      const data = await fetch(`https://localhost:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${access_token}`,
+          'Content-Type': 'application/json'  // Optional, but a good practice
+        }
+      })
+        .then(response => response.json()) // Call json() to parse the response
+        .then(data => {
+        if (OnlineList && !OnlineList.includes(nameElement.textContent) && data.is_online === false){
+          console.log(`the target user is offline`)
+          return 0;}
+          console.log(`data is ------------< ${JSON.stringify(data)}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
             GamePlaySocket.send(JSON.stringify({
                 'from': username,
@@ -119,7 +129,7 @@ async function bodychat(UserData) {
                 'img': UserData.profile_image,
                 'playwith': 'null',
                 'block': 'false'
-            }));
+              }));
         }
         if (gamePlay.textContent === "cancel") {
             console.log(`i am inside the condition if (gamePlay.textContent === "cancel")`)
@@ -127,19 +137,21 @@ async function bodychat(UserData) {
                 console.log('WebSocket connection opened');
                 console.log(`inside cancel and from username is ${username}`)
                 GamePlaySocket.send(JSON.stringify({
-                    'from': username,
-                    'to': nameElement.textContent,
-                    'message': `${username} cancel play request.`,
-                    'flag': 'GameR',
+                  'from': username,
+                  'to': nameElement.textContent,
+                  'message': `${username} cancel play request.`,
+                  'flag': 'GameR',
                     'img': UserData.profile_image,
                     'playwith': 'null',
                     'block': 'false'
                 }));
-            }
-            gamePlay.textContent = "play";
+              }
+              gamePlay.textContent = "play";
         } else {
             gamePlay.textContent = "cancel";
         }
+      })
+      .catch(handleError);
     });
 }
 
