@@ -314,6 +314,7 @@ section {
     min-width: 190px;
     padding: 0 0;
     text-align: justify;
+    z-index: 10;
 }
 
 .home-Info p {

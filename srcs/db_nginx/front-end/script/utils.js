@@ -169,11 +169,11 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
             console.error('id: ', id, " error: ", error);
         }
         if (fields[id.substring(id.indexOf("-") + 1)].trim().length == 0) {
-            alert(id, ' is required');
+            printErrorInScreen(id + ' is required');
             return;
         }
         if (id.substring(id.indexOf("-") + 1) == 'password2' && fields[id.substring(id.indexOf("-") + 1)] != fields['password1']) {
-            alert('passwords not equal');
+            printErrorInScreen('passwords not equal');
             return;
         }
     }
