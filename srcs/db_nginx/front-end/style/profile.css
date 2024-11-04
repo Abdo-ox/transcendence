@@ -827,8 +827,13 @@ circle {
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
+    z-index: 10;
+    min-height: 230px;
 }
-
+.profile-history-list h3
+{
+    color: #a04698;
+}
 .profile-tournament-item {
     width: 160px;
     height: 230px;
@@ -837,6 +842,8 @@ circle {
     overflow: hidden;
     border: 6px solid #fff;
     position: relative;
+    z-index: 10;
+
 
 }
 

@@ -231,7 +231,7 @@ export async function Home() {
     suggestionscontainer.innerHTML = '';
     if(data.suggestions.length)
     {
-        suggestionscontainer.innerHTML += `<div class="profile-searchBx">
+        suggestionscontainer.innerHTML = `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
                 <input id="home-searchInput" type="text" placeholder="search">
             </div>`;

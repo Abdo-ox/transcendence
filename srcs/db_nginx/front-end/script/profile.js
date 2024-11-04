@@ -218,7 +218,7 @@ export async function Profile() {
         const data = await response.json();
         console.log("data friend :", data);
         if (data.length) {
-            document.getElementById("profile-users-list").innerHTML += `<div class="profile-searchBx">
+            document.getElementById("profile-users-list").innerHTML = `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
                 <input id="searchInput" type="text" placeholder="search">
             </div>`
@@ -327,10 +327,25 @@ export async function Profile() {
                             </div>`
 
             });
+            document.getElementById("profile-history-list").innerHTML += ` 
+                
+        
+            <ul class="settings-circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>`
         }
         else {
-            document.getElementById("profile-history-list").innerHTML = ` <div class="profile-tournament-item">
-                <h4 >No Tournaments played yet</h4>
+            document.getElementById("profile-history-list").innerHTML = ` <div>
+                <h3>No Tournaments played yet</h3>
          </div>
             <ul class="settings-circles">
             <li></li>

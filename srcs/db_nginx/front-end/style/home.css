@@ -1384,6 +1384,7 @@ input:hover, .home-tournament-form-btn:hover {
 }
 
 .homeCard-stack {
+    z-index: 10;
     position: relative;
     min-width: 50%;
 }
