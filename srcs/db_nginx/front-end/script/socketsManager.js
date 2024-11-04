@@ -26,9 +26,10 @@ export async function createWebSocket(ChatID, username)
     chatSocket.onmessage = (e) => {
       var data = JSON.parse(e.data);
       if (data['command'] === 'messages') {
-        data['messages'].sort((a, b) => {
-        return new Date(a.timestamp) - new Date(b.timestamp);
-        });
+        // data['messages'].sort((a, b) => {
+        // return new Date(a.timestamp) - new Date(b.timestamp);
+        // });
+        data['messages'].reverse()
         for (let i = 0; i < data['messages'].length; i++) {
           // console.log('data obj is', data['messages'][i].timestamp);
           createMessage(data['messages'][i]);

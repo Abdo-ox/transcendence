@@ -19,7 +19,7 @@ class TournamentHistorySerializer(serializers.ModelSerializer):
     winner = UserSerializer()
     class Meta:
         model = Tournament
-        fields = ['winner', 'games', 'created']
+        fields = ['name','image','winner', 'games', 'created']
 
 class TournamentSerializer(serializers.ModelSerializer):
     class Meta:

@@ -5,6 +5,7 @@ import { TournamentFr } from "https://localhost/fr-tournament.js";
 let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
+export let OnlineList = [];
 async function FriendRqEvent(notifItem, endpoint, data) {
     ////
     const token = await getJWT();
@@ -92,12 +93,12 @@ export function displayNotification(data) {
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
     if (data['flag'] === 'GameR') {
-        // const timeout = setTimeout(() => {
-        //     notiItem.remove();
-        //     sendJS(data);
-        //     clearTimeout(timeout);
-        //     console.log('Element removed due to inactivity.');
-        // }, 10000); // 5 seconds
+        const timeout = setTimeout(() => {
+            notiItem.remove();
+            sendJS(data);
+            clearTimeout(timeout);
+            console.log('Element removed due to inactivity.');
+        }, 10000); // 5 seconds
         acceptButton.addEventListener('click', function () {
             GameRqEvent(data, notiItem);
         });
@@ -129,17 +130,18 @@ function declineEvent(data, notiItem){
     const dataFrom = parts[1]; // This gets the part after 'notifItem-'
     
     console.log(`dataFrom isss --- ${dataFrom}`); // Output: someUser
-    if (GamePlaySocket.readyState === WebSocket.OPEN) {
-        GamePlaySocket.send(JSON.stringify({
-            'message': `request removed by ${CurrentUser}`,
-            'block': 'false',
-            'playwith': 'null',
-            'to': CurrentUser,
-            'from': dataFrom,
-            'flag': 'GameR',
-            'img': data['img']
-        }));
-    }
+    sendJS(data)
+    // if (GamePlaySocket.readyState === WebSocket.OPEN) {
+    //     GamePlaySocket.send(JSON.stringify({
+    //         'message': `request removed by ${CurrentUser}`,
+    //         'block': 'false',
+    //         'playwith': 'null',
+    //         'to': CurrentUser,
+    //         'from': dataFrom,
+    //         'flag': 'GameR',
+    //         'img': data['img']
+    //     }));
+    // }
     notiItem.remove()
 }
 
@@ -251,6 +253,10 @@ export async function header() {
     };
     UserStatusSock.onmessage = (e) => {
         var data = JSON.parse(e.data);
+        if (data.is_online == 'True')
+            OnlineList.push(data.username)
+        else
+            OnlineList = OnlineList.filter(item => item !== data.username);
         console.log(`userstatus ----<  ${JSON.stringify(data)}`)
     }
     GamePlaySocket.onmessage = (e) => {
@@ -263,8 +269,7 @@ export async function header() {
         }
         else if (data.block === 'false' && data['from'] === CurrentUser && data['message'].includes("removed")){
             console.log(`inside make gameplay 'cancel' condition`)
-            var gamePlay = "";
-            gamePlay = document.getElementById('game-play');
+            const gamePlay = document.getElementById('game-play');
             if (gamePlay.textContent === "cancel")
                 gamePlay.textContent = "play";
         }
