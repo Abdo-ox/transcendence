@@ -3,6 +3,7 @@ import { Login } from "https://localhost/login.js"
 
 export async function Reset() {
 
+    document.body.style.visibility = 'visible';
     document.getElementById("reset-submit").addEventListener("click", async () => {
         let code = document.getElementById("reset-code").value;
         let password = document.getElementById("reset-new-password").value;
@@ -13,6 +14,8 @@ export async function Reset() {
             reseterrorMsg.textContent = 'Code must be exactly 6 digits long';
             return;
         }
+        console.log(password );
+        console.log("confirm ",confirmpass );
         if (password !== confirmpass) {
             reseterrorMsg.textContent = 'password do not match.';
             return;

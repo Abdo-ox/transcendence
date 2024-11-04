@@ -178,13 +178,13 @@ export async function Settings() {
                 console.log(" feild 2 : ", field);
                 const element = document.getElementById("settings-" + field);
                 if ((element.value).trim() == '') {
-                    alert("field" + field + " should not be empty");
+                    printNoteFor3Seconds("field" + field + " should not be empty");
                     throw "empty field";
                 }
                 if (element.value != userdata[field])
                     {
                         edited = true;
-                    editedData[field] = element.value;
+                        editedData[field] = element.value;
                     }
             });
             if (edited) {
@@ -205,11 +205,16 @@ export async function Settings() {
                 console.log(data);
                 if (data.data == "edited") {
                     console.log(response);
-                    document.getElementById("settings-name").innerHTML = editedData['username'];
-                    document.getElementById("settings-username").value = editedData['username'];
-                    document.getElementById("settings-first_name").value = editedData['first_name'];
-                    document.getElementById("settings-last_name").value = editedData['last_name'];
-
+                    if(editedData['username'])
+                    {
+                        document.getElementById("settings-name").innerHTML = editedData['username'];
+                        document.getElementById("settings-username").value = editedData['username'];
+                    
+                    } 
+                    if(editedData['first_name'])
+                        document.getElementById("settings-first_name").value = editedData['first_name'];
+                    if(editedData['last_name'])
+                        document.getElementById("settings-last_name").value = editedData['last_name'];
                 }
                 else
                 {
@@ -226,11 +231,11 @@ export async function Settings() {
         let actuallpass = document.getElementById("settings-password1").value;
         let newpass = document.getElementById("settings-password2").value;
         if (actuallpass.trim() == '' || newpass.trim() == '') {
-            alert("Password should be a number and letter ");
+            printNoteFor3Seconds("Password should be a number and letter ");
             throw "empty field";
         }
         if (actuallpass == newpass) {
-            alert("type a new password this is the same actual password");
+            printNoteFor3Seconds("type a new password this is the same actual password");
             throw "password not change";
         }
 
@@ -246,9 +251,9 @@ export async function Settings() {
             .then(response => response.json())
             .then(data => {
                 if (data['status'] == 'success')
-                    alert("password updated successfuly");
+                    printNoteFor3Seconds("password updated successfuly");
                 else
-                    alert("Actuall password was not correct ");
+                    printNoteFor3Seconds("Actuall password was not correct ");
             })
             .catch((error) => {
                 console.log("error on change password is ", error);
@@ -291,7 +296,7 @@ export async function Settings() {
         const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
         if (gmailRegex.test(email)) {
-            document.getElementById("resetmail-errorMessage").textContent = ""; // Clear error message
+            document.getElementById("resetmail-errorMessage").textContent = ""; 
             console.log("Valid Gmail address:", email);
         } else {
             document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
@@ -323,6 +328,16 @@ export async function Settings() {
             document.getElementById("resetmail-errorMessage").textContent = "Email is already in use!";
 
     });
+
+    function printNoteFor3Seconds(note) {
+        const noteElement = document.createElement('div');
+        noteElement.textContent = note;
+        noteElement.classList.add('note')
+        document.body.appendChild(noteElement);
+        setTimeout(() => {
+            noteElement.remove();
+        }, 3000);
+    }
     document.getElementById("settings-enable2fa").addEventListener("change", async (event) => {
         const checkbox = event.target;
         let is_2Fa_enabled = checkbox.checked;
@@ -342,10 +357,10 @@ export async function Settings() {
             const data = await response.json();
 
             if (data['status'] === 'success') {
-                alert(`Two Factor Authentication is ${is_2Fa_enabled ? 'enabled' : 'disabled'}`);
+                printNoteFor3Seconds(`Two Factor Authentication is ${is_2Fa_enabled ? 'enabled' : 'disabled'}`)
             } else {
                 checkbox.checked = !is_2Fa_enabled;
-                alert("Failed to update Two Factor state");
+                printNoteFor3Seconds("Failed to update Two Factor state");
             }
         } catch (error) {
             console.error("Enable 2FA error:", error);

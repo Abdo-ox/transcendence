@@ -123,7 +123,7 @@ export function printErrorInScreen(errors) {
 }
 
 export const NewPage = async (url, func, addhistory = true,query='') => {
-    console.log(" new page called for the url ", url ,query);
+    console.error(" new page called for the url ", url ,query);
     const response = await fetch(url + ".html"+query);
     if (response.ok) {
         const data = await response.text();

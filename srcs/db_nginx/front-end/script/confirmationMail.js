@@ -1,11 +1,14 @@
-import { NewPage,getJWT } from "https://localhost/utils.js";
+import { NewPage, getJWT } from "https://localhost/utils.js";
 import { Settings } from "https://localhost/settings.js";
+import { Login } from "https://localhost/login.js";
 
 export async function ConfirmationMail() {
 
+    let acc = await getJWT();
+    if (acc == null || acc == 'undefined')
+        NewPage("/login", Login);
+    document.body.style.visibility = 'visible';
     document.getElementById("confirmMail-submit").addEventListener("click", async () => {
-
-
         try {
             let code = document.getElementById("confirmMail-inputemail").value;
             let trimcode = code.trim();
@@ -20,7 +23,7 @@ export async function ConfirmationMail() {
                     Authorization: `Bearer ${await getJWT()}`,
                     'Content-type': 'application/json',
                 },
-                body: JSON.stringify({ 'code': code , 'newemail':newemail})
+                body: JSON.stringify({ 'code': code, 'newemail': newemail })
 
             });
 
@@ -31,7 +34,7 @@ export async function ConfirmationMail() {
             const data = await response.json();
             console.log("*******data  confirmation  response **** is : ", data);
             if (data.status == 'redirect') {
-                NewPage("/settings",Settings);
+                NewPage("/settings", Settings);
             }
             if (data.status == 'failed')
                 document.getElementById("resetmail-errorMessage").textContent = "code not correct , check your email";

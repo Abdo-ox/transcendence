@@ -1,10 +1,15 @@
 import { getJWT, NewPage, getCsrfToken } from "https://localhost/utils.js"
 import { Home } from "https://localhost/home.js"
+import { Login } from "https://localhost/login.js";
 
 
 export async function Twofactor() {
-    console.log("test");
-    
+
+    let acc = await getJWT();
+    if (acc == null || acc == 'undefined')
+        NewPage("/login", Login);
+    document.body.style.visibility = 'visible';
+
     // const user = localStorage.getItem('username');
     // if(user)
     //     document.getElementById('twofa-user').innerHTML = user;
@@ -15,17 +20,16 @@ export async function Twofactor() {
 
         let code = '';
         digits.forEach(input => {
-            console.log("input :",input.value);
+            console.log("input :", input.value);
             code += input.value;
         })
-        console.log("code : ", code,code.length, isNaN(Number(code)))
+        console.log("code : ", code, code.length, isNaN(Number(code)))
         if (code.length !== 6 || isNaN(Number(code))) {
 
             message.textContent = "Please enter a valid 6-digit numeric code.";
             message.style.color = "red";
         }
-        else 
-        {
+        else {
 
             fetch('https://localhost:8000/verify_2fa_code/', {
                 method: 'POST',
@@ -40,7 +44,7 @@ export async function Twofactor() {
                 .then(data => {
                     console.log("data come here :", data);
                     if (data.status == "success") {
-                        localStorage.setItem('twofa-passed',true);
+                        localStorage.setItem('twofa-passed', true);
                         NewPage("/home", Home, true);
                     } else {
                         message.innerText = 'Verification failed. Please try again.';

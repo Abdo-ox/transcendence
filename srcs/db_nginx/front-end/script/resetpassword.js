@@ -3,9 +3,8 @@ import { Reset } from "https://localhost/reset.js"
 
 export async function ResetPassword() {
 
-    document.getElementById("resetpass-submit").addEventListener("click", async () => {
-
-      
+    document.body.style.visibility = 'visible';
+    document.getElementById("resetpass-submit").addEventListener("click", async () => { 
         try {
             let email = document.getElementById("resetpass-inputemail").value;
             const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;

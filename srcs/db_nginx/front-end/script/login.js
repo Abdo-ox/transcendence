@@ -59,8 +59,16 @@ async function oAuthHandler(ancor, loginButton, event) {
 }
 
 export async function Login() {
-    if (await is_authenticated())
-        return;
+    document.body.style.visibility = 'visible';
+
+    document.getElementById("login-forgotpassword").addEventListener("click", async (event) => {
+        event.preventDefault();
+        NewPage("/resetpassword", ResetPassword, false);
+    });
+    console.log("dlfjdf");
+    
+    // if (await is_authenticated())
+    //     return;
     const csrf_token = await getCsrfToken();
     const ids = ['login-username', 'login-password'];
 
@@ -97,8 +105,5 @@ export async function Login() {
             const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', `width=600,height=700,left=${window.innerWidth / 2 - 300 + window.screenX},top=${window.innerHeight / 2 - 350 + window.screenY}`);
         }
     });
-    document.getElementById("login-forgotpassword").addEventListener("click", async () => {
-        console.log("i am here ****************");
-        NewPage("/resetpassword", ResetPassword, false);
-    });
+    
 }   
