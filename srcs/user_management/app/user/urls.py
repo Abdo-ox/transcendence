@@ -14,12 +14,14 @@ EnableTwoFactor,
 UpdatePassword,
 UpdateisPassed,
 coalitions,
-coalition)
+coalition,
+GetUserStatus)
 
 urlpatterns = [
     path('register/', Register, name='register'),
     path('42/callback/', Oauth_42_callback, name='42'),
     path('user/data/', sendUserData),
+    path('UserStatus/', GetUserStatus),
     path('suggest/friend/', sendSuggestionFriend),
     path('settings/', accountSettings),
     path('upload-profile/', UploadProfile),

@@ -1,7 +1,7 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import Message
+from .models import Message, User
 from django.contrib.auth.models import AnonymousUser
 from .views import get_messages, get_user_contact, get_current_ChatID, get_participants
 
@@ -13,7 +13,7 @@ class UserStatusConsumer(WebsocketConsumer):
         self.room_group_name = 'online_users'
         
         if self.scope['user'] != AnonymousUser():
-            user = get_user_contact(self.scope['user'])
+            user = User.objects.get(username=self.scope['user'])
             user.is_online = True
             user.save()
             print("current status === ", user.is_online, flush=True)
@@ -30,7 +30,7 @@ class UserStatusConsumer(WebsocketConsumer):
             self.close()
 
     def disconnect(self, close_code):
-        user = get_user_contact(self.scope['user'])
+        user = User.objects.get(username=self.scope['user'])
         user.is_online = False
         user.save()
         print("current status === ", user.is_online, flush=True)
