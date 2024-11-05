@@ -154,6 +154,7 @@ export async function Settings() {
 
         ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
         document.getElementById("settings-profile-image1").src = canvas.toDataURL();
+        document.getElementById("header-profile-image").src = canvas.toDataURL();
         document.getElementById("settings-crop-image-container").style.display = "none";
         document.getElementById("settings-SaveImg").style.display = "flex";
         document.getElementById("settings-SaveImg").style.flexDirection = "column";
@@ -182,10 +183,10 @@ export async function Settings() {
                     throw "empty field";
                 }
                 if (element.value != userdata[field])
-                    {
+                    
                         edited = true;
-                        editedData[field] = element.value;
-                    }
+                editedData[field] = element.value;
+                    
             });
             if (edited) {
                 console.log("edited Data : ", editedData);

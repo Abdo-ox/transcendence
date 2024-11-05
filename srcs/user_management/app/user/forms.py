@@ -80,17 +80,54 @@ class LoginForm(forms.ModelForm):
             if not authenticate(username=username, password=password):
                 raise forms.ValidationError("Invalid login")
             
-            
-class EditUserForm(RegisterationForm):
+
+                         
+class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'last_name', 'first_name',)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password1'].required = False
-        self.fields['password2'].required = False
-        self.fields['email'].required = False
+        self.fields['username'].required = False
+        self.fields['last_name'].required = False
+        self.fields['first_name'].required = False
     
-    def clean_password1(self):
-        pass
+    def clean(self):
+        # Use super().clean() to populate cleaned_data first
+        cleaned_data = super().clean()
+        
+        # Check if 'username' is being modified
+        if 'username' in cleaned_data and cleaned_data['username'] != getattr(self.instance, 'username', None):
+            self.clean_username()
+
+        if 'first_name' in cleaned_data and cleaned_data['first_name'] != getattr(self.instance, 'first_name', None):
+            self.clean_first_name()
+
+        if 'last_name' in cleaned_data and cleaned_data['last_name'] != getattr(self.instance, 'last_name', None):
+            self.clean_last_name()
+
+        return cleaned_data
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if username:
+            try:
+                account = User.objects.get(username=username)
+                raise forms.ValidationError(f'Username "{username}" is already in use.')
+            except User.DoesNotExist:
+                if not IsIntranetUser('/' + username):
+                    return username
+        return username
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if first_name and not first_name.isalpha():
+            raise forms.ValidationError('First name must only contain alphabetic characters.')
+        return first_name
+
+    def clean_last_name(self): 
+        last_name = self.cleaned_data.get('last_name')
+        if last_name and not last_name.isalpha():
+            raise forms.ValidationError('Last name must only contain alphabetic characters.')
+        return last_name
