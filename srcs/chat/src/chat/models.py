@@ -218,7 +218,7 @@ class MultiGame(models.Model):
     player2Score = models.IntegerField(default=0)
     player1Score = models.IntegerField(default=0)
     room_name = models.CharField(max_length=255, default='')
-    tournament = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.DO_NOTHING)
+    tournament = models.ForeignKey(Tournament, related_name='games', null=True, blank=True, on_delete=models.CASCADE)
     winner = models.ForeignKey(User, related_name='wonGames', null=True, blank=True, on_delete=models.DO_NOTHING)
     isOver = models.BooleanField(default=False)
     friendMatch = models.BooleanField(default=False)
