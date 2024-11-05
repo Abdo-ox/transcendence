@@ -390,6 +390,7 @@
 }
 
 #frame .content .contact-profile {
+  cursor: pointer;
   width: 100%;
   height: 70px;
   line-height: 70px;
