@@ -1,6 +1,8 @@
 import { createWebSocket } from 'https://localhost/socketsManager.js';
-import { getJWT } from 'https://localhost/utils.js';
+import { NewPage, getJWT } from 'https://localhost/utils.js';
 import { GamePlaySocket, OnlineList } from 'https://localhost/header.js';
+import { Profile } from "https://localhost/profile.js"
+
 let TargetUser = null; // make this variable local
 export async function Chat() {
   const url = new URL(window.location.href);
@@ -74,6 +76,7 @@ async function bodychat(UserData) {
         }
       });
     }
+
 
     document.getElementById('contacts-list').addEventListener('click', async event => {
       const contact = event.target.closest('.contact');
@@ -159,8 +162,8 @@ async  function GamePlay() {
 
   function createmenuPanel(username) {
     let profile_container = document.getElementById('profile-container');
-    const contact_profile = profile_container.querySelector('.contact-profile');
-    const nameElement = contact_profile.querySelector('p');
+    // const contact_profile = profile_container.querySelector('.contact-profile');
+    // const nameElement = contact_profile.querySelector('p');
     let menu = document.getElementById('menu');
     const joingame = document.createElement('button');
     const BlockUser = document.createElement('button');
@@ -344,7 +347,6 @@ async  function GamePlay() {
     }
     console.log('Error Config:', error.config);
   }
-
   function updateProfile(user) {
     const profileContainer = document.getElementById('profile-container');
     profileContainer.innerHTML = '';
@@ -366,7 +368,10 @@ async  function GamePlay() {
     contactProfile.appendChild(name);
     contactProfile.appendChild(VerticalDots);
     profileContainer.appendChild(contactProfile);
-
+    name.addEventListener('click', () => {
+      console.log(`target profile is --------- ${name.textContent}`)
+      NewPage("/profile", Profile,true,"?user="+name.textContent); 
+    });
     const newUrl = `https://localhost/chat?user=${user.username}`
     history.pushState(null, '', newUrl);
     // Add click event listener to the VerticalDots icon
