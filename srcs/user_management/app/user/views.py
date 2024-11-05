@@ -154,7 +154,7 @@ def sendSuggestionFriend(request):
 @TwoFctor_Decorator
 def accountSettings(request):
     currentUser = AccountSerializer(request.user)
-    return JsonResponse({'current':currentUser.data}, safe=False)
+    return JsonResponse(currentUser.data, safe=False)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

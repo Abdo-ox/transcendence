@@ -148,6 +148,17 @@ export async function Profile() {
         })
     }
 
+    function formattedDate(dateString) {
+        const date = new Date();
+        const dateform = date.getFullYear() + '-' +
+            ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+            ('0' + date.getDate()).slice(-2) + ' ' +
+            ('0' + date.getHours()).slice(-2) + ':' +
+            ('0' + date.getMinutes()).slice(-2) + ':' +
+            ('0' + date.getSeconds()).slice(-2);
+        return dateform;
+    }
+
     /***multigame History */
     {
         const response = await fetch('https://localhost:9090/multigamehistory/' + myuser, {
@@ -169,7 +180,8 @@ export async function Profile() {
             data.forEach((element) => {
 
                 document.getElementById("profile-arrayHistory").innerHTML +=
-                    ` <div class="profile-game-entry">
+                    `<p class="dateplayed"> Played : <span>${formattedDate(element.created)}</span></p> 
+                    <div class="profile-game-entry">
                             <div class="profile-player">
                                 <img id="profile-player1" src="${element.player1.profile_image}" alt="Player 1 Profile Picture">
                                 <span class="profile-player-name">${element.player1.username}</span>
@@ -190,20 +202,7 @@ export async function Profile() {
         // document.getElementById("profile-arrayHistory")
     }
 
-    // {
-    //     const response = await fetch('https://localhost:9090/tournaments/' + myuser, {
-    //         headers: {
-    //             'Authorization': `Bearer ${await getJWT()}`,
-
-    //         }
-    //     })
-    //     if (!response.ok) {
-    //         console.error('Failed to fetch current user:', response.status, response.statusText);
-    //         return;
-    //     }
-    //     const data = await response.json();
-    //     console.log("data tournament :", data);
-    // }
+  
     {
         const response = await fetch('https://localhost:8000/friend/userFriends?username=' + myuser, {
             headers: {
@@ -320,7 +319,7 @@ export async function Profile() {
                                 <div class="profile-card-body">
                                     <h4 class="profile-card-title">${elt.name}</h4>
                                     <div class="profile-para">
-                                        <p class="profile-card-info">Date:<br><span>${elt.created}</span></p>
+                                        <p class="profile-card-info">Date:<br><span>${formattedDate(elt.created)}</span></p>
                                         ${elt.winner && elt.winner.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
                                     </div>   
                                 </div>
@@ -359,6 +358,6 @@ export async function Profile() {
             <li></li>
             <li></li>
         </ul>`
-}
+        }
     }
 }

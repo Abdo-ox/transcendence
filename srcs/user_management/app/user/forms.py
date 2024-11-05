@@ -94,40 +94,41 @@ class EditUserForm(forms.ModelForm):
         self.fields['first_name'].required = False
     
     def clean(self):
-        # Use super().clean() to populate cleaned_data first
         cleaned_data = super().clean()
-        
-        # Check if 'username' is being modified
-        if 'username' in cleaned_data and cleaned_data['username'] != getattr(self.instance, 'username', None):
+        print("<<<<<<<<<<<<<<<<CLEANED DATTA",cleaned_data,flush=True)
+        print("<<<<<<<<<<<<<<<<GET DATTA",self.fields,flush=True)
+        modified_fields = []
+        for field in self.fields:
+            if self.cleaned_data.get(field) != getattr(self.instance, field):
+                modified_fields.append(field)
+                print(">>>>>>>>>modified ",modified_fields,flush=True)
+        if 'username' in modified_fields:
             self.clean_username()
 
-        if 'first_name' in cleaned_data and cleaned_data['first_name'] != getattr(self.instance, 'first_name', None):
+        if 'first_name' in modified_fields:
             self.clean_first_name()
 
-        if 'last_name' in cleaned_data and cleaned_data['last_name'] != getattr(self.instance, 'last_name', None):
+        if 'last_name' in modified_fields:
             self.clean_last_name()
 
-        return cleaned_data
-
     def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if username:
-            try:
-                account = User.objects.get(username=username)
-                raise forms.ValidationError(f'Username "{username}" is already in use.')
-            except User.DoesNotExist:
-                if not IsIntranetUser('/' + username):
-                    return username
-        return username
+        username = self.cleaned_data['username']
+        try:
+            account = User.objects.get(username=username)
+        except User.DoesNotExist:
+            if not IsIntranetUser('/' + username):
+                return username
+        raise forms.ValidationError(f'Username "{username}" is already in use.')
 
     def clean_first_name(self):
-        first_name = self.cleaned_data.get('first_name')
-        if first_name and not first_name.isalpha():
-            raise forms.ValidationError('First name must only contain alphabetic characters.')
+        first_name = self.cleaned_data['first_name']
+        if not first_name.isalpha():
+            raise forms.ValidationError('first_name must be alphabet')
         return first_name
 
     def clean_last_name(self): 
-        last_name = self.cleaned_data.get('last_name')
-        if last_name and not last_name.isalpha():
-            raise forms.ValidationError('Last name must only contain alphabetic characters.')
+        last_name = self.cleaned_data['last_name']
+        if not last_name.isalpha():
+            raise forms.ValidationError('last_name must be alphabet')
         return last_name
+                
