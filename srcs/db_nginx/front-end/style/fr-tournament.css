@@ -25,7 +25,7 @@
     position:absolute;
     height: 100%;
     width: 100%;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     /* object-fit: contain; */
 }
 .fr-tournament-part {
@@ -198,4 +198,15 @@
 .fr-tournament-container-input-btn button:hover{
     transition-timing-function: cubic-bezier(0.6, 4, 0.3, 0.8);
     animation: gelatine 0.5s 1;
+}
+
+.fr-tournament-name{
+    color:rgb(3, 77, 236);
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    font-size: 40px;
+    transform: translateX(-50%);
+    /* font-weight: 800; */
+    font-family:  "Abril Fatface", serif;
 }

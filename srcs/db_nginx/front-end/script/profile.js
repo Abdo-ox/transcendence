@@ -312,15 +312,15 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        console.log("data tourn:", data[0]);
+        console.log("data tourn:", data);
         if (data.length) {
             data.forEach((elt) => {
                 document.getElementById("profile-history-list").innerHTML += ` <div class="profile-tournament-item">
-                               <img  alt="">
+                               <img src="${elt.image}" alt="">
                                 <div class="profile-card-body">
-                                    <h4 class="profile-card-title">Tournament Name</h4>
+                                    <h4 class="profile-card-title">${elt.name}</h4>
                                     <div class="profile-para">
-                                        <p class="profile-card-info">Date: <span>3rd</span></p>
+                                        <p class="profile-card-info">Date:<br><span>${elt.created}</span></p>
                                         ${elt.winner && elt.winner.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
                                     </div>   
                                 </div>

@@ -1,4 +1,4 @@
-import { NewPage, getCsrfToken } from "https://localhost/utils.js";
+import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://localhost/utils.js";
 import { Login } from "https://localhost/login.js"
 
 export async function Reset() {
@@ -48,7 +48,7 @@ export async function Reset() {
                 if (data.status == 'success')
                     NewPage('/login', Login);
                 if (data.status == 'failed')
-                    alert(data.message);
+                   printNoteFor3Seconds(data.message);
             })
             .catch((error) => {
                 console.log(" error ", error);

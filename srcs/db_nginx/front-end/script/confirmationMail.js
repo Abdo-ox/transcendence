@@ -32,7 +32,6 @@ export async function ConfirmationMail() {
                 return;
             }
             const data = await response.json();
-            console.log("*******data  confirmation  response **** is : ", data);
             if (data.status == 'redirect') {
                 NewPage("/settings", Settings);
             }

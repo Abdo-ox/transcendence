@@ -829,6 +829,7 @@ circle {
     flex-wrap: wrap;
     z-index: 10;
     min-height: 230px;
+    overflow-x: auto;
 }
 .profile-history-list h3
 {

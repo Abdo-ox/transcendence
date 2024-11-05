@@ -26,7 +26,7 @@ export const redirectTwoFactor = (data, status) => {
                 NewPage("/2faa", Twofactor, true);
             }
             if (status == 500)
-                alert("failed to send email try  again in few secondes ...");
+                printNoteFor3Seconds("failed to send email try  again in few secondes ...");
         }
         return (0);
     }
@@ -91,7 +91,7 @@ export const getJWT = async () => {
 }
 function addErrorDiv() {
     if (document.getElementById('error-container'))
-        return ;
+        return;
     const div = document.createElement('div');
     div.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -110,21 +110,30 @@ function addErrorDiv() {
     document.body.appendChild(div);
 }
 
+export function printNoteFor3Seconds(note) {
+    const noteElement = document.createElement('div');
+    noteElement.textContent = note;
+    noteElement.classList.add('note')
+    document.body.appendChild(noteElement);
+    setTimeout(() => {
+        noteElement.remove();
+    }, 3000);
+}
 export function printErrorInScreen(errors) {
     if (!Array.isArray(errors))
         errors = [errors]
     const diverror = document.getElementById("error-container");
     diverror.innerHTML = '';
     diverror.parentElement.classList.add('show');
-    errors.forEach(error => diverror.innerHTML+= `<p>${error}</p>`);
+    errors.forEach(error => diverror.innerHTML += `<p>${error}</p>`);
     setTimeout(() => {
         diverror.parentElement.classList.remove('show');
-    } ,1500);
+    }, 1500);
 }
 
-export const NewPage = async (url, func, addhistory = true,query='') => {
-    console.error(" new page called for the url ", url ,query);
-    const response = await fetch(url + ".html"+query);
+export const NewPage = async (url, func, addhistory = true, query = '') => {
+    console.log(" new page called for the url ", url, query);
+    const response = await fetch(url + ".html" + query);
     if (response.ok) {
         const data = await response.text();
         const doc = (new DOMParser()).parseFromString(data, 'text/html');
@@ -146,7 +155,7 @@ export const NewPage = async (url, func, addhistory = true,query='') => {
                     return;
             }
         }
-        if (document.querySelector('header')){
+        if (document.querySelector('header')) {
             console.log("hello clear");
             makePageActive(url.substring(1));
         }
@@ -202,7 +211,7 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
 }
 
 const func = {
-    "header-home-btn": () => {console.log("home"); NewPage('/home', Home) },
+    "header-home-btn": () => { console.log("home"); NewPage('/home', Home) },
     "header-chat-btn": () => { NewPage('/chat', Chat) },
     "header-settings-btn": () => { NewPage('/settings', Settings) },
     "header-small-home-btn": () => { NewPage('/home', Home) },
@@ -247,7 +256,7 @@ export const is_authenticated = async () => {
     if (access != 'undefined' && access != null && refresh != null && refresh != 'undefined') {
         NewPage("/home", Home);
         return 1;
-    } 
+    }
     document.body.style.visibility = 'visible';
     return (0);
 }

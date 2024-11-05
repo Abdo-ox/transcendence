@@ -1,6 +1,6 @@
 import { getJWT, getCsrfToken, NewPage} from "https://localhost/utils.js"
 import {ConfirmationMail} from "https://localhost/confirmationMail.js"
-
+import {printNoteFor3Seconds}  from "https://localhost/utils.js"
 export async function Settings() {
 
     let userdata = null;
@@ -329,15 +329,7 @@ export async function Settings() {
 
     });
 
-    function printNoteFor3Seconds(note) {
-        const noteElement = document.createElement('div');
-        noteElement.textContent = note;
-        noteElement.classList.add('note')
-        document.body.appendChild(noteElement);
-        setTimeout(() => {
-            noteElement.remove();
-        }, 3000);
-    }
+
     document.getElementById("settings-enable2fa").addEventListener("change", async (event) => {
         const checkbox = event.target;
         let is_2Fa_enabled = checkbox.checked;
