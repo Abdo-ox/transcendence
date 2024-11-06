@@ -80,17 +80,39 @@ class LoginForm(forms.ModelForm):
             if not authenticate(username=username, password=password):
                 raise forms.ValidationError("Invalid login")
             
-            
-class EditUserForm(RegisterationForm):
+
+                         
+class EditUserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        print(c.r,"Edited data passed to EditUserForm:", args[0],flush=True)
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.extra_data = args[0]
+        print(c.g,"Edited 2 data passed to EditUserForm:", self.extra_data,flush=True)
+        
     class Meta:
         model = User
         fields = ('username', 'last_name', 'first_name',)
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].required = False
-        self.fields['password2'].required = False
-        self.fields['email'].required = False
-    
-    def clean_password1(self):
-        pass
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        print(c.r, "the hello word clear +++++++++++++++++++++++++++>", username, flush=True)
+        if self.instance.username == username:
+            return username
+        try:
+            account = User.objects.get(username=username)
+        except User.DoesNotExist:
+            if not IsIntranetUser('/' + username):
+                return username
+        raise forms.ValidationError(f'Username "{username}" is already in use.')
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        if not first_name.isalpha():
+            raise forms.ValidationError('first_name must be alphabet')
+        return first_name
+
+    def clean_last_name(self): 
+        last_name = self.cleaned_data['last_name']
+        if not last_name.isalpha():
+            raise forms.ValidationError('last_name must be alphabet')
+        return last_name
+                

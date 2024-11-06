@@ -1,6 +1,6 @@
-import { getJWT, getCsrfToken, NewPage} from "https://localhost/utils.js"
-import {ConfirmationMail} from "https://localhost/confirmationMail.js"
-import {printNoteFor3Seconds}  from "https://localhost/utils.js"
+import { getJWT, getCsrfToken, NewPage } from "https://localhost/utils.js"
+import { ConfirmationMail } from "https://localhost/confirmationMail.js"
+import { printNoteFor3Seconds } from "https://localhost/utils.js"
 export async function Settings() {
 
     let userdata = null;
@@ -15,21 +15,23 @@ export async function Settings() {
             return response.json()
         })
         .then((data) => {
-            userdata = data.current;
-            // document.getElementById("settings-name").innerHTML = data.current.username;
-            // document.getElementById("settings-profile-image").src = data.current.profile_image;
-            document.getElementById("settings-profile-image1").src = data.current.profile_image;
-            document.getElementById("setting-nameID").innerHTML = data.current.username;
-            document.getElementById("settings-username").value = data.current.username;
-            document.getElementById("settings-first_name").value = data.current.first_name;
-            document.getElementById("settings-last_name").value = data.current.last_name;
-            document.getElementById("settings-email").value = data.current.email;
-            document.getElementById('settings-enable2fa').checked = data.current.enable2fa;
-            if (data.current.intraNet) {
+            userdata = data;
+            console.log("data : ", data)
+            console.log("data.current.username", data.username)
+            // document.getElementById("settings-name").innerHTML = data.username;
+            // document.getElementById("settings-profile-image").src = data.profile_image;
+            document.getElementById("settings-profile-image1").src = data.profile_image;
+            document.getElementById("setting-nameID").textContent = data.username;
+            document.getElementById("settings-username").value = data.username;
+            document.getElementById("settings-first_name").value = data.first_name;
+            document.getElementById("settings-last_name").value = data.last_name;
+            document.getElementById("settings-email").value = data.email;
+            document.getElementById('settings-enable2fa').checked = data.enable2fa;
+            if (data.intraNet) {
                 document.getElementById("settings-username").readOnly = true;
                 document.getElementById("settings-last_name").readOnly = true;
-                document.getElementById("sett-change-email").style.display="none";
-                document.getElementById("email-label-sett").style.display="none";
+                document.getElementById("sett-change-email").style.display = "none";
+                document.getElementById("email-label-sett").style.display = "none";
                 document.getElementById("settings-change-btn").style.display = "none";
                 document.getElementById("settings-para").style.display = "block";
                 document.getElementById("settings-passText").style.display = "block";
@@ -154,6 +156,7 @@ export async function Settings() {
 
         ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
         document.getElementById("settings-profile-image1").src = canvas.toDataURL();
+        document.getElementById("header-profile-image").src = canvas.toDataURL();
         document.getElementById("settings-crop-image-container").style.display = "none";
         document.getElementById("settings-SaveImg").style.display = "flex";
         document.getElementById("settings-SaveImg").style.flexDirection = "column";
@@ -182,10 +185,10 @@ export async function Settings() {
                     throw "empty field";
                 }
                 if (element.value != userdata[field])
-                    {
-                        edited = true;
-                        editedData[field] = element.value;
-                    }
+                
+                    edited = true;
+                editedData[field] = element.value;      
+
             });
             if (edited) {
                 console.log("edited Data : ", editedData);
@@ -202,25 +205,17 @@ export async function Settings() {
                     return;
                 }
                 const data = await response.json();
-                console.log(data);
                 if (data.data == "edited") {
-                    console.log(response);
-                    if(editedData['username'])
-                    {
-                        document.getElementById("settings-name").innerHTML = editedData['username'];
-                        document.getElementById("settings-username").value = editedData['username'];
-                    
-                    } 
-                    if(editedData['first_name'])
-                        document.getElementById("settings-first_name").value = editedData['first_name'];
-                    if(editedData['last_name'])
-                        document.getElementById("settings-last_name").value = editedData['last_name'];
+                    printNoteFor3Seconds("Data edited succussefely");
+                    document.getElementById("settings-name").innerHTML = editedData['username'];
+                    document.getElementById("settings-username").value = editedData['username'];
+                    document.getElementById("settings-first_name").value = editedData['first_name'];
+                    document.getElementById("settings-last_name").value = editedData['last_name'];
                 }
-                else
-                {
+                else {
                     document.getElementById("resetmail-user-errorMessage").textContent = "username is already in use ";
                     console.log("Failed to update ", response.statusText);
-                } 
+                }
             }
         }
         catch (error) {
@@ -296,7 +291,7 @@ export async function Settings() {
         const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
         if (gmailRegex.test(email)) {
-            document.getElementById("resetmail-errorMessage").textContent = ""; 
+            document.getElementById("resetmail-errorMessage").textContent = "";
             console.log("Valid Gmail address:", email);
         } else {
             document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";

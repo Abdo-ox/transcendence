@@ -3,7 +3,7 @@
 @import url('https://fonts.cdnfonts.com/css/poppins');
 
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     width: 12px;
     background-color: transparent;
 }
@@ -11,6 +11,17 @@
 ::-webkit-scrollbar-thumb {
     background-color: #1aeeef;
     border-radius: 6px;
+} */
+.settting-main
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden auto;
 }
 
 .settings-content {
@@ -18,6 +29,8 @@
     /* visibility: hidden; */
     flex-direction: column;
     margin-top: 180px;
+    justify-content: center;
+    align-items: center;
     margin-left: auto;
     margin-right: auto;
     width: 90%;
@@ -80,11 +93,16 @@
     flex-direction: column;
     border-radius: 10px;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     position: relative;
 }
-
+.dateplayed
+{
+    color: #ad2b89;
+    font-weight: 500;
+}
 .settings-crop-image-container input {
     margin-top: 20px;
     max-width: 300px;
@@ -94,9 +112,11 @@
 
 .settings-image-wrapper {
     position: relative;
-    width: 100%;
-    max-height: 100%;
+    width: 522px;
+    height: 522px;
     overflow: hidden;
+   display: flex;
+   /* align-items: center; */
 }
 
 .settings-btn-primary {
@@ -119,8 +139,12 @@
 
 .settings-img-to-corp {
     display: block;
-    width: 100%;
-    height: auto;
+   border: 3px solid #0ff;
+    width:522px ;
+    height: 522px;
+    object-fit: cover;
+    position: relative;
+
 }
 
 
@@ -434,15 +458,13 @@ input:checked+.settings-slider::before {
         gap: 20px;
     }
 
-    .settings-flip {
-     
-    }
 
 
     .settings-buttons {
         width: 100%;
         position: relative;
         display: flex;
+        flex-direction: row;
         gap: 10px;
     }
 
