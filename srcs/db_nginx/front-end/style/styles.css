@@ -35,6 +35,7 @@ canvas {
     width: 60%;
     max-width: 1000px;
     background-color: #1b2141;
+    z-index: 10;
 }
 
 

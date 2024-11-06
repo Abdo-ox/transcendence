@@ -196,11 +196,14 @@ def updateData(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def EnableTwoFactor(request):
-    print("hello world",flush= True)
     body_data = json.loads(request.body)  # No decoding here
     enable = body_data.get('is_2Fa_enabled')
     request.user.enable2fa = enable
     request.user.save()
+    if( not request.user.is_2fa_passed):
+        request.user.is_2fa_passed = True
+        request.user.save()   
+    print("ENABLE ",request.user.enable2fa,flush= True)
     return JsonResponse({"status" : "success"},status=200)
 
 @api_view(['POST'])

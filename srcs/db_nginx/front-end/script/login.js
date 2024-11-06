@@ -11,8 +11,6 @@ const handle_data = async (data_status) => {
     if (status == 200) {
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
-   
-
         await fetch('https://localhost:8000/api/twoFaCalled/', {
             headers: {
                 Authorization: `Bearer ${data.access}`
@@ -65,7 +63,6 @@ export async function Login() {
         event.preventDefault();
         NewPage("/resetpassword", ResetPassword, false);
     });
-    console.log("dlfjdf");
     
     // if (await is_authenticated())
     //     return;
