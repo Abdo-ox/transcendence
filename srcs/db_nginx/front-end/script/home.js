@@ -3,6 +3,7 @@ import { GamePlaySocket } from "https://localhost/header.js";
 import { Login } from "https://localhost/login.js";
 import { Tournament } from "https://localhost/tournament.js";
 import { Game } from "https://localhost/game.js";
+import { Profile } from "https://localhost/profile.js";
 import { Local } from "https://localhost/local.js";
 import { Multi } from "https://localhost/multi.js";
 import { TournamentFr } from "https://localhost/fr-tournament.js";
