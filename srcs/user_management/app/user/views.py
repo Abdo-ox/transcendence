@@ -184,13 +184,14 @@ def UploadProfile(request):
 @TwoFctor_Decorator
 def updateData(request):
     editedData = request.data
+    print(c.y,"editeData : ",editedData,flush=True)
     form = EditUserForm(editedData,instance=request.user)
     if(form.is_valid()):
         form.save()
         return JsonResponse({"data":"edited"})   
     else:
         print("errors", form.errors,flush=True)
-        return JsonResponse({"data":"error"})
+        return JsonResponse({"data":"error", "error":form.errors })
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

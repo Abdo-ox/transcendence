@@ -83,36 +83,20 @@ class LoginForm(forms.ModelForm):
 
                          
 class EditUserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        print(c.r,"Edited data passed to EditUserForm:", args[0],flush=True)
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.extra_data = args[0]
+        print(c.g,"Edited 2 data passed to EditUserForm:", self.extra_data,flush=True)
+        
     class Meta:
         model = User
         fields = ('username', 'last_name', 'first_name',)
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].required = False
-        self.fields['last_name'].required = False
-        self.fields['first_name'].required = False
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        print("<<<<<<<<<<<<<<<<CLEANED DATTA",cleaned_data,flush=True)
-        print("<<<<<<<<<<<<<<<<GET DATTA",self.fields,flush=True)
-        modified_fields = []
-        for field in self.fields:
-            if self.cleaned_data.get(field) != getattr(self.instance, field):
-                modified_fields.append(field)
-                print(">>>>>>>>>modified ",modified_fields,flush=True)
-        if 'username' in modified_fields:
-            self.clean_username()
-
-        if 'first_name' in modified_fields:
-            self.clean_first_name()
-
-        if 'last_name' in modified_fields:
-            self.clean_last_name()
-
     def clean_username(self):
         username = self.cleaned_data['username']
+        print(c.r, "the hello word clear +++++++++++++++++++++++++++>", username, flush=True)
+        if self.instance.username == username:
+            return username
         try:
             account = User.objects.get(username=username)
         except User.DoesNotExist:

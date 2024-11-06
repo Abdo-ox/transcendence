@@ -12,6 +12,17 @@
     background-color: #1aeeef;
     border-radius: 6px;
 } */
+.settting-main
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden auto;
+}
 
 .settings-content {
     display: flex;
@@ -447,13 +458,13 @@ input:checked+.settings-slider::before {
         gap: 20px;
     }
 
-    .se
 
 
     .settings-buttons {
         width: 100%;
         position: relative;
         display: flex;
+        flex-direction: row;
         gap: 10px;
     }
 

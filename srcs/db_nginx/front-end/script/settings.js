@@ -187,9 +187,7 @@ export async function Settings() {
                 if (element.value != userdata[field])
                 
                     edited = true;
-                editedData[field] = element.value;
-
-                  
+                editedData[field] = element.value;      
 
             });
             if (edited) {
