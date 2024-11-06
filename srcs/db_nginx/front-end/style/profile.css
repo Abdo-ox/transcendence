@@ -404,7 +404,17 @@ circle {
     flex-wrap: wrap;
     ;
 }
-
+.online-indicator
+{
+    position: absolute;
+    top: 12%;
+    left: 12%;
+    width: 12px;
+    height: 12px;
+    background-color:green;
+    border-radius: 50%;
+    border: 2px solid white;
+}
 
 .decline-indicator {
     position: absolute;
@@ -1059,6 +1069,10 @@ circle {
 {
     left: 15%;
 }
+.online-indicator
+{
+    left: 15%;
+}
 } 
 @media screen and (max-width: 1270px) {
     .profile-dashbord {
@@ -1066,6 +1080,10 @@ circle {
         flex-wrap: wrap;
     }
 .decline-indicator
+{
+    left: 20%;
+}
+.online-indicator
 {
     left: 20%;
 }
@@ -1115,6 +1133,10 @@ circle {
     {
         left: 24%;
     }
+    .online-indicator
+{
+    left: 24%;
+}
 }
 
 @media screen and (max-width: 920px) {
