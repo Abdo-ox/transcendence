@@ -68,7 +68,10 @@ export async function createWebSocket(ChatID, username)
       messageSubmit.onclick = function (e) {
         console.log('Submit button clicked');
         const messageInputDom = document.getElementById('chat-message-input');
-        if (messageInputDom.value != "") {
+        if (messageInputDom.value.trim() === ""){
+            console.error('Message input DOM not found when submitting!');
+        }
+        else {
           const message = messageInputDom.value;
           chatSocket.send(JSON.stringify({
             'command': 'new_message',
@@ -77,8 +80,6 @@ export async function createWebSocket(ChatID, username)
             'ChatID': ChatID
           }));
           messageInputDom.value = '';
-        } else {
-          console.error('Message input DOM not found when submitting!');
         }
       };
     } else {
