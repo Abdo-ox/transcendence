@@ -412,7 +412,7 @@ class TournamentLogic:
         self.room_name = room_name
         self.tournament = tournament
         self.channel_layer = get_channel_layer()
-        self.state = {'image':tournament.image}
+        self.state = {'image':tournament.image, 'name':room_name}
         self.n = 0
         self.players = [creator] # user
         self.winners = [] # user

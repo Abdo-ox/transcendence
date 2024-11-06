@@ -110,9 +110,11 @@ export const TournamentFr = async () => {
 
     function displayTournamentBracket() {
         const bracket = document.getElementById('tournament-bracket');
+        const tournament_name = document.getElementById('fr-tournament-name');
         // const img = document.getElementById('tournament-img');
 
         // img.src = tournamentState.image;
+        tournament_name.textContent = tournamentState.name;
         let i = 1;
         tournamentState.players.forEach(element => {
             let box = document.getElementById(`player${i}`);
