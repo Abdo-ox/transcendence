@@ -15,6 +15,7 @@ UpdatePassword,
 UpdateisPassed,
 coalitions,
 coalition,
+rankUser,
 GetUserStatus)
 
 urlpatterns = [
@@ -32,4 +33,5 @@ urlpatterns = [
     path('twoFaCalled/', UpdateisPassed),
     path('coalitions/', coalitions),
     path('coalition/', coalition),
+    path('rank/', rankUser),
 ]

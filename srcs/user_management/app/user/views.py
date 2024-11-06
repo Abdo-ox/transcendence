@@ -241,3 +241,16 @@ def coalitions(request):
 def coalition(request):
     coalition = CoalitionSerializer(request.user.coalition)
     return JsonResponse(coalition.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def rankUser(request):
+    try:
+        username = request.GET.get('username')
+        if not username:
+            return JsonResponse({'error': 'pear username not send at the query string'})
+        user = User.objects.get(username=username)
+        rank = User.objects.filter(score__gt=user.score).count() + 1
+        return JsonResponse({'rank': rank})
+    except User.DoesNotExist:
+        return JsonResponse({'error': f'there is no user ander username {username}'})

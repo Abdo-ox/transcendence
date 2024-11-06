@@ -349,9 +349,11 @@ export async function Home() {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));
-    // fetch("https://localhost:8000/friend/userFriends?ajari", {
-    //     headers:{
-    //         Authorization: `Bearer ${token}`
-    //     }
-    // }).then(response => response.json()).then(data => console.log("data", data));
+    
+    
+    fetch("https://localhost:8000/api/rank?username=Kiarra22", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => response.json()).then(data => console.log("data", data));
 }

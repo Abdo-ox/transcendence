@@ -158,7 +158,30 @@ export async function Profile() {
             ('0' + date.getSeconds()).slice(-2);
         return dateform;
     }
+    /***rank user*/
+    {
+        const response = await fetch('https://localhost:8000/api/rank?username=' + myuser, {
+            headers: {
+                'Authorization': `Bearer ${await getJWT()}`,
 
+            }
+        })
+        if (!response.ok) {
+            console.error('Failed to fetch rank user:', response.status, response.statusText);
+            return;
+        }
+        const data = await response.json();
+        if(data.rank)
+        {
+            document.getElementById("profile-rank").textContent = data.rank;
+        }
+        else
+        {
+            console.log("there is no user ander username");
+        }
+    }
+
+    
     /***multigame History */
     {
         const response = await fetch('https://localhost:9090/multigamehistory/' + myuser, {
@@ -174,8 +197,7 @@ export async function Profile() {
         const data = await response.json();
         console.log("data multi game :", data);
         if (data.length) {
-            // console.log( "0 is ",data[0].player1.username);
-            // console.log("1 is ",data[1]);
+         
             document.getElementById("history-para").style.display = 'none';
             data.forEach((element) => {
 
@@ -215,7 +237,6 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        console.log("data friend :", data);
         if (data.length) {
             document.getElementById("profile-users-list").innerHTML = `<div class="profile-searchBx">
                 <a href="#"><i class='bx bx-search'></i></a>
@@ -265,7 +286,6 @@ export async function Profile() {
             ChatIcons.forEach((icon, index) => {
                 icon.addEventListener("click", async () => {
                     let query = friendsUserName[index].textContent;
-                    console.log("query: ", query);
                     NewPage("/chat", Chat, 1, "?user=" + query);
                 });
 
@@ -273,12 +293,9 @@ export async function Profile() {
             const frindArray = document.querySelectorAll(".profile-info-user");
             UserStatusSock.onmessage = (e) => {
                 var d = JSON.parse(e.data);
-                console.log("Received data :", d);
                 frindArray.forEach(friend => {
                     const friendName = friend.querySelector("h3.friendUserName").textContent;
-                    console.log("Checking friend:", friendName);
                     if (friendName === d.username) {
-                        console.log(`Updating status for: ${friendName}`);
                         if (d.is_online == "True")
                             friend.querySelector("div.decline-indicator").style.backgroundColor = "green";
                         else
@@ -311,7 +328,6 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        console.log("data tourn:", data);
         if (data.length) {
             data.forEach((elt) => {
                 document.getElementById("profile-history-list").innerHTML += ` <div class="profile-tournament-item">

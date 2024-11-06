@@ -119,7 +119,7 @@ def userFriends(request):
         context = {
             'friends': FriendList.objects.get_or_create(user=request.user)[0].friends
         }
-        friends = UserSerializer(FriendList.objects.get_or_create(user=user)[0].friends, many=True, context=context)       
+        friends = UserSerializer(FriendList.objects.get_or_create(user=user)[0].friends.exclude(id=request.user.id), many=True, context=context)       
         return JsonResponse(friends.data, safe=False)
     except User.DoesNotExist:
         return JsonResponse({'error': f'there is no user ander username {username}'})

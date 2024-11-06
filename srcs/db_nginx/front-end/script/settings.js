@@ -16,10 +16,6 @@ export async function Settings() {
         })
         .then((data) => {
             userdata = data;
-            console.log("data : ", data)
-            console.log("data.current.username", data.username)
-            // document.getElementById("settings-name").innerHTML = data.username;
-            // document.getElementById("settings-profile-image").src = data.profile_image;
             document.getElementById("settings-profile-image1").src = data.profile_image;
             document.getElementById("setting-nameID").textContent = data.username;
             document.getElementById("settings-username").value = data.username;
@@ -65,7 +61,6 @@ export async function Settings() {
         profileBtn.classList.remove("settings-active-class");
     });
     document.getElementById("settings-pen").addEventListener("click", () => {
-        console.log("pass by pen");
         profileInfo.style.display = "none";
         securityInfo.style.display = "none";
         document.getElementById("settings-firstShow").style.display = "none";
@@ -78,9 +73,7 @@ export async function Settings() {
     let canvas = null;
     const imageWrapper = document.getElementById("settings-image-wrapper");
     const imageInput = document.getElementById('settings-upload');
-    console.log("find upload id");
     imageInput.addEventListener("change", (event) => {
-        console.log("the event change is triggered");
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -106,7 +99,6 @@ export async function Settings() {
             let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
             element.onmousedown = (event1) => {
                 event1
-                console.log("the onmousedown event triggered");
                 event1.preventDefault();
                 p3 = event1.clientX;
                 p4 = event1.clientY;
@@ -143,14 +135,10 @@ export async function Settings() {
 
         const scaleX = imgElement.naturalWidth / timageRect.width;
         const scaleY = imgElement.naturalHeight / timageRect.height;
-        console.log("cropRect width:", cropRect.width);
-        console.log("cropRect height:", cropRect.height);
         const width = cropRect.width * scaleX;
         const height = cropRect.height * scaleY;
         const X = (cropRect.left - timageRect.left) * scaleX;
         const Y = (cropRect.top - timageRect.top) * scaleY;
-        console.log("X:", X);
-        console.log("Y:", Y);
         canvas.width = width;
         canvas.height = height;
 
@@ -174,24 +162,24 @@ export async function Settings() {
     }
 
     document.getElementById("settings-save-btn").addEventListener("click", async () => {
+        document.getElementById("resetmail-user-errorMessage").style.display = 'none';
+        document.getElementById("resetmail-errorMessage").style.display = 'none';
         let edited = false;
         let editedData = {};
         try {
             fields.forEach(field => {
-                console.log(" feild 2 : ", field);
                 const element = document.getElementById("settings-" + field);
                 if ((element.value).trim() == '') {
                     printNoteFor3Seconds("field" + field + " should not be empty");
                     throw "empty field";
                 }
                 if (element.value != userdata[field])
-                
+
                     edited = true;
-                editedData[field] = element.value;      
+                editedData[field] = element.value;
 
             });
             if (edited) {
-                console.log("edited Data : ", editedData);
                 const response = await fetch('https://localhost:8000/api/update/', {
                     method: 'POST',
                     headers: {
@@ -207,14 +195,18 @@ export async function Settings() {
                 const data = await response.json();
                 if (data.data == "edited") {
                     printNoteFor3Seconds("Data edited succussefely");
+                    document.getElementById("resetmail-errorMessage").style.display = 'none';
+                    document.getElementById("resetmail-user-errorMessage").style.display = 'none';
+
                     document.getElementById("settings-name").innerHTML = editedData['username'];
                     document.getElementById("settings-username").value = editedData['username'];
                     document.getElementById("settings-first_name").value = editedData['first_name'];
                     document.getElementById("settings-last_name").value = editedData['last_name'];
                 }
                 else {
-                    document.getElementById("resetmail-user-errorMessage").textContent = "username is already in use ";
-                    console.log("Failed to update ", response.statusText);
+                    document.getElementById("resetmail-errorMessage").style.display = 'none';
+                    document.getElementById("resetmail-user-errorMessage").style.display = 'block';
+                    document.getElementById("resetmail-user-errorMessage").textContent = " faild update feilds ";
                 }
             }
         }
@@ -287,13 +279,21 @@ export async function Settings() {
 
     });
     document.getElementById("settings-change-btn").addEventListener("click", async () => {
+        document.getElementById("resetmail-errorMessage").style.display = 'none';
+        document.getElementById("resetmail-user-errorMessage").style.display = 'none';
+
         let email = document.getElementById("settings-email").value;
         const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
         if (gmailRegex.test(email)) {
-            document.getElementById("resetmail-errorMessage").textContent = "";
-            console.log("Valid Gmail address:", email);
+            {
+
+                document.getElementById("resetmail-errorMessage").style.display = 'block';
+                document.getElementById("resetmail-errorMessage").textContent = "";
+            }
         } else {
+
+            document.getElementById("resetmail-errorMessage").style.display = 'block';
             document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
             return;
         }
@@ -312,15 +312,23 @@ export async function Settings() {
             return;
         }
         const data = await response.json();
-        console.log("*******data mail response **** is : ", data);
         if (data.status == 'redirect') {
             localStorage.setItem("NewEmail", email)
             NewPage("/confirmationMail", ConfirmationMail);
         }
-        if (data.status == 'failed')
+        if (data.status == 'failed') {
+            document.getElementById("resetmail-errorMessage").style.display = 'block';
+            document.getElementById("resetmail-user-errorMessage").style.display = 'none';
             document.getElementById("resetmail-errorMessage").textContent = "Failed to send email code check again!";
-        if (data.status == 'dublicated')
+
+        }
+        if (data.status == 'dublicated') {
+            document.getElementById("resetmail-errorMessage").style.display = 'block';
+            document.getElementById("resetmail-user-errorMessage").style.display = 'none';
             document.getElementById("resetmail-errorMessage").textContent = "Email is already in use!";
+
+        }
+
 
     });
 
