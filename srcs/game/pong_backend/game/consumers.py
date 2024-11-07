@@ -3,7 +3,6 @@ import asyncio
 import random
 import time
 import csv
-import torch
 from copy import deepcopy
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
@@ -13,7 +12,6 @@ from asgiref.sync import sync_to_async
 from django.db import IntegrityError
 from . models import Game, Tournament
 from . game import GameLogic, TournamentLogic, TournamentLogicInstances
-from . aimodel import init_model
 
 # protect from anonymous user
 
