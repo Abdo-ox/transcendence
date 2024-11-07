@@ -6,6 +6,8 @@ let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
 export let OnlineList = [];
+let NbNotif = 0;
+
 async function FriendRqEvent(notifItem, endpoint, data) {
     ////
     const token = await getJWT();
@@ -26,7 +28,8 @@ async function FriendRqEvent(notifItem, endpoint, data) {
                     'block': 'false'
                 }));
             }
-            console.log("hello");
+            NbNotif--;
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
             notifItem.remove();
         }
         else
@@ -55,6 +58,8 @@ async function GameRqEvent(data, notiItem) {
 }
 
 function createNewNotifItem(data) {
+    NbNotif++;
+    document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
     const notiItem = document.createElement('div');
 
     notiItem.id = 'notifItem-' + data.from;
@@ -70,7 +75,8 @@ function createNewNotifItem(data) {
 
 export function displayNotification(data) {
     console.log(data);
-    if (data['flag'] == 'FriendR') {
+    if (data['flag'] == 'FriendR' && data['to'] == CurrentUser) {
+    console.log(`inside frie 4398423074 0-------------`)
         if (data['message'].includes('decline')) {
             console.log("home-user-" + data['from']);
             const accept = document.getElementById("home-user-" + data['from'])?.querySelector('.home-send-btn');
@@ -82,10 +88,13 @@ export function displayNotification(data) {
             return;
         } else if (data['message'].includes('cancel')) {
             document.getElementById("notifItem-" + data['from'])?.remove();
+            NbNotif--;
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
             return;
         }
         else if (data['message'].includes('accept')) {
             document.getElementById("home-user-" + data['from'])?.remove();
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
             return;
         }
     }
@@ -142,6 +151,9 @@ function declineEvent(data, notiItem){
     //         'img': data['img']
     //     }));
     // }
+
+    NbNotif--;
+    document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
     notiItem.remove()
 }
 
@@ -262,10 +274,11 @@ export async function header() {
     GamePlaySocket.onmessage = (e) => {
         var data = JSON.parse(e.data);
         console.log(`data is   ${JSON.stringify(data)}`)
-        // console.log(`GamePlaySocket onmessage from: "${data['from']} to: ${data['to']} and message is  ${data.message}"`);
         if (data.block === 'false' && data['to'] === CurrentUser && data['message'].includes("cancel")) {
             document.getElementById("notifItem-" + data['from'])?.remove();
             console.log(`request cancled`)
+            NbNotif--;
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
         }
         else if (data.block === 'false' && data['from'] === CurrentUser && data['message'].includes("removed")){
             console.log(`inside make gameplay 'cancel' condition`)
@@ -296,13 +309,9 @@ export async function header() {
                     const chatLog = document.querySelector('#chat-log');
                     const messageInput = document.querySelector('#chat-message-input');
                     const messageSubmit = document.getElementById('submit-button');
-
-                    // Remove elements only if they exist
                     messageSubmit?.remove();
                     messageInput?.remove();
                     profileContainer.remove();
-
-                    // Clear chat log efficiently
                     if (chatLog) chatLog.textContent = '';
                 }
             }
@@ -348,6 +357,7 @@ export async function header() {
                 Authorization: `Bearer ${token}`
             }
         });
+        NbNotif = 0;
         const notif = document.getElementById('header-notif-div');
         if (notif.style.display == 'block')
             notif.style.display = 'none';
@@ -378,9 +388,9 @@ export async function header() {
             declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
             document.getElementById("header-notif-div").appendChild(notiItem);
         });
-        const number = data.filter(item => item.is_read === false).length;
-        if (number)
-            document.body.style.setProperty('--count-notification', `"${number}"`)
+        NbNotif += data.filter(item => item.is_read === false).length;
+        if (NbNotif)
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`)
     }).catch(error => {
         console.log("can't fetch friend requests error accured ", error);
     });

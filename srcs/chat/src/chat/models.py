@@ -84,7 +84,7 @@ class UserManager(BaseUserManager):
             username = username,
             first_name = data['first_name'],
             last_name = data['last_name'],
-            profile_image = data.get('profile_image', 'https://localhost/images/profile_images/unkown.jpg'),
+            profile_image = data.get('profile_image', 'https://images/profile_images/unkown.jpg'),
             intraNet = intra
         )
         if password:

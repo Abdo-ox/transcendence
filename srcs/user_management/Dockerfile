@@ -11,9 +11,12 @@ RUN	rm -rf /var/lib/apt/lists/*
 WORKDIR /usr/src/app
 
 COPY certs certs
-COPY user_management/app .
+
+COPY user_management/app/requirements.txt .
 
 RUN pip install --upgrade pip --root-user-action=ignore && pip  install -r requirements.txt --root-user-action=ignore
+
+COPY user_management/app .
 
 COPY user_management/scripts/buildApp.sh /
 

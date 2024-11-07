@@ -113,10 +113,12 @@
 }
 
 #frame #sidepanel #profile .wrap img {
-  width: 60px;
+
+  width: 55px;
   border-radius: 50%;
   padding: 3px;
-  height: auto;
+  aspect-ratio: 1/1;
+  /* height: 60px; */
   float: left;
   cursor: pointer;
   -moz-transition: 0.3s border ease;
@@ -128,6 +130,7 @@
 @media screen and (max-width: 768px) {
   #frame #sidepanel #profile .wrap img {
     width: 45px;
+    aspect-ratio: 1/1;
     margin-left: 4px;
   }
 }
@@ -299,6 +302,7 @@
 
 #frame #sidepanel #contacts ul li.contact .wrap img {
   width: 50px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   float: left;
   margin-right: 10px;

@@ -28,8 +28,7 @@ SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
+CORS_ALLOW_CREDENTIALS = True
 AUTH_USER_MODEL = 'game.User'
 
 AUTHENTICATION_BACKENDS = [
@@ -93,9 +92,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ALLOWED_HOSTS = [
+    "localhost",
+    f"{os.environ.get('IP')}"
+]
+
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost",
-    "https://127.0.0.1",
+    f"https://localhost",
+    f"https://{os.environ.get('IP')}"
+]
+
+CSRF_TRUSTED_ORIGINS =  [
+    f"https://localhost",
+    f"https://{os.environ.get('IP')}"
 ]
 
 CORS_ALLOW_METHODS = [

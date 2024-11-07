@@ -13,6 +13,7 @@ COPY ./db_nginx/scripts/postgresql.conf /etc/postgresql/15/main
 
 RUN mkdir -p $CRT_PATH
 
+COPY ./db_nginx/front-end /usr/share/nginx/html
 COPY ./db_nginx/scripts/setup.sh .
 COPY certs/ $CRT_PATH
 

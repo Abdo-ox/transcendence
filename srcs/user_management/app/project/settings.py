@@ -12,8 +12,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px'
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = [
@@ -72,9 +70,19 @@ MIDDLEWARE = [
 ]
 
 
+ALLOWED_HOSTS = [
+    "localhost",
+    f"{os.environ.get('IP')}"
+]
+
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost",
-    "https://127.0.0.1",
+    f"https://localhost",
+    f"https://{os.environ.get('IP')}"
+]
+
+CSRF_TRUSTED_ORIGINS =  [
+    f"https://localhost",
+    f"https://{os.environ.get('IP')}"
 ]
 
 CORS_ALLOW_METHODS = [
@@ -86,7 +94,6 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-CSRF_TRUSTED_ORIGINS =  ['https://localhost', 'https://127.0.0.1']
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',
@@ -143,13 +150,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 OAUTH_CONFIG = {
     '42': {
-        'client_id': 'u-s4t2ud-589237e6394550420d14a9a59740b48214effbb5b50d9943c952f85a1e639e46',
-        'client_secret': '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',
-        'redirect_uri': 'https://localhost/loading.html',
-        'base_url': 'https://api.intra.42.fr/oauth/authorize',
-        'token_url': 'https://api.intra.42.fr/oauth/token',
-        'info_url': ' https://api.intra.42.fr/v2/me',
-        'usrs_url': 'https://api.intra.42.fr/v2/users'
+        'client_id': os.environ.get('client_id'),
+        'client_secret': os.environ.get('client_secret'),
+        'redirect_uri': f"https://{os.environ.get('IP')}/loading.html",
+        'base_url': os.environ.get('base_url'),
+        'token_url': os.environ.get('token_url'),
+        'info_url': os.environ.get('info_url'),
+        'usrs_url': os.environ.get('usrs_url'),
     }
 }
 
@@ -175,10 +182,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' 
-EMAIL_PORT = 587 
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'trencenteam@gmail.com' 
-EMAIL_HOST_PASSWORD = 'jprx jsfw vamr vdys'  # your email password
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

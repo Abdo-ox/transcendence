@@ -70,7 +70,7 @@ async function bodychat(UserData) {
           createHtmlPrf();
           updateProfile(friend);
           chatListview(TargetUser);
-          const newUrl = `https://localhost/chat?user=${TargetUser}`
+          const newUrl = `/chat?user=${TargetUser}`
           console.log(`new query --------------- ${newUrl}`)
           history.pushState(null, '', newUrl);
         }
@@ -372,7 +372,7 @@ async  function GamePlay() {
       console.log(`target profile is --------- ${name.textContent}`)
       NewPage("/profile", Profile,true,"?user="+name.textContent); 
     });
-    const newUrl = `https://localhost/chat?user=${user.username}`
+    const newUrl = `/chat?user=${user.username}`
     history.pushState(null, '', newUrl);
     // Add click event listener to the VerticalDots icon
     document.getElementById('VerticalDots').addEventListener('click', event => {

@@ -13,9 +13,9 @@ from django.db import migrations
 from chat.models import Coalition
 
 def create_initial_instances(apps, schema_editor):
-    Coalition.objects.get_or_create(name='NightSpin',image='https://localhost/images/whitwill/coalition5.png')
-    Coalition.objects.get_or_create(name='EclipsePong',image='https://localhost/images/whitwill/coalition4.png')
-    Coalition.objects.get_or_create(name='GhostPaddle',image='https://localhost/images/whitwill/coalition3.png')
+    Coalition.objects.get_or_create(name='NightSpin',image='/images/whitwill/coalition5.png')
+    Coalition.objects.get_or_create(name='EclipsePong',image='/images/whitwill/coalition4.png')
+    Coalition.objects.get_or_create(name='GhostPaddle',image='/images/whitwill/coalition3.png')
 
 class Migration(migrations.Migration):
 

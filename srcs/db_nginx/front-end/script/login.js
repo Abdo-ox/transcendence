@@ -35,7 +35,7 @@ const handle_data = async (data_status) => {
 
 
 async function oAuthHandler(ancor, loginButton, event) {
-
+    console.log("================================================>hello clear");
     const response = await fetch("https://localhost:8000/api/42/callback/", {
         method: 'POST',
         headers: {

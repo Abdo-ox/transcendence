@@ -32,8 +32,7 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/db_nginx/front-end:/usr/share/nginx/html
-      - db_nginx:/var/lib/postgresql/15/main
+      - /var/lib/postgresql/15/main
 
   redis:
     image: redis:latest
@@ -74,11 +73,3 @@ services:
 
 networks:
   net:
-
-volumes:
-        db_nginx:
-                driver: local
-                driver_opts:
-                          type: 'none'
-                          o: 'bind'
-                          device: './db'
