@@ -67,11 +67,12 @@ class UserStatusConsumer(WebsocketConsumer):
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
         content = {
-            'flag': data['flag'],
-            'targetUser': data['targetUser'],
-            'img': data['img'],
-            'message': data['message'],
-            'from': data['from']
+            'flag': data.get('flag'),
+            'targetUser': data.get('targetUser'),
+            'img': data.get('img'),
+            'message': data.get('message'),
+            'from': data.get('from'),
+            'room_name': data.get('room_name')
         }
         self.room_group_name = f"notif_{data['targetUser']}"
         return self.send_chat_message(content)

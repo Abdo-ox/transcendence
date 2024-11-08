@@ -128,10 +128,8 @@ async  function GamePlay() {
                 'from': username,
                 'to': nameElement.textContent,
                 'message': ` invites u to play.`,
-                'flag': 'GameR',
+                'flag': 'GameRq',
                 'img': UserData.profile_image,
-                'playwith': 'null',
-                'block': 'false'
               }));
         }
         if (gamePlay.textContent === "cancel") {
@@ -141,12 +139,10 @@ async  function GamePlay() {
                 console.log(`inside cancel and from username is ${username}`)
                 GamePlaySocket.send(JSON.stringify({
                   'from': username,
-                  'to': nameElement.textContent,
+                  'targetUser': nameElement.textContent,
                   'message': `${username} cancel play request.`,
-                  'flag': 'GameR',
-                    'img': UserData.profile_image,
-                    'playwith': 'null',
-                    'block': 'false'
+                  'flag': 'GameRq',
+                  'img': UserData.profile_image
                 }));
               }
               gamePlay.textContent = "play";

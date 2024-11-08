@@ -7,10 +7,56 @@ export let GamePlaySocket = null;
 export let UserStatusSock = null;
 export let OnlineList = [];
 let NbNotif = 0;
-
+function createNewNotifItem(data){
+    document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
+    
+    const notiItem = document.createElement('div');
+    notiItem.id = 'notifItem-' + data.from;
+    notiItem.innerHTML = `
+        <img src="${data.img}">
+        <p>${data.from} ${data.message}.</p>
+        <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+        <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+    `;
+    notiItem.setAttribute('class', 'notiItem');
+    return notiItem;
+}
+function createGameNotif(data){
+    let notiItem = createNewNotifItem(data)
+    const acceptButton = notiItem.querySelector('#accept');
+    const declineButton = notiItem.querySelector('#decline');
+    const timeout = setTimeout(() => {
+        notiItem.remove();
+        sendJS(data);
+        clearTimeout(timeout);
+        console.log('Element removed due to inactivity.');
+    }, 10000); // 5 seconds
+    acceptButton.addEventListener('click', function () {
+        GameRqEvent(data, notiItem);
+    });
+    declineButton.addEventListener('click', () => declineEvent(data, notiItem));
+}
+async function GameRqEventHanddler(data) {
+    if (data['message'].includes('invites'))
+        createGameNotif(data);
+    else if (data['message'].includes('cancel')){
+        document.getElementById("notifItem-" + data['from'])?.remove();
+    }
+    else if (data['message'].includes('decline')){
+            console.log(`inside make gameplay 'cancel' condition`)
+            const gamePlay = document.getElementById('game-play');
+            if (gamePlay.textContent === "cancel")
+                gamePlay.textContent = "play";
+    }
+    else if(data['message'].includes('accept')){
+            sessionStorage.setItem('room_name', data['room_name']);
+            console.log(`from the sender ${sessionStorage.getItem('room_name')}`)
+            NewPage("/multi", Multi);
+    }
+}
 async function FriendRqEventHanddler(data){
     if (data['message'].includes('send'))
-        createNewNotifItem(data);
+        createFrientRqNotif(data);
     else if (data['message'].includes('cancel')){
         document.getElementById("notifItem-" + data['from'])?.remove();
     }
@@ -43,42 +89,29 @@ async function FriendRqEvent(endpoint) {
 }
 
 async function GameRqEvent(data, notiItem) {
-    // notiItem.remove()
-    // if (data['tournament']){
-    //     sessionStorage.setItem('tournament_name', data['tournament'])
-    //     NewPage("/fr-tournament", TournamentFr)
-    // }
-    // else {
-    //     GamePlaySocket.send(JSON.stringify({
-    //         'flage':'playwith',
-    //         'targetUser': data['targetUser'],
-    //         'room_name': data['to'] + '_' + data['from'],
-    //         'message': `${CurrentUser} want to play with `
-    //     }))
-    //     console.log(`inside Friend event handler`)
-    //     sessionStorage.setItem('room_name', data['to'] + '_' + data['from']);
-    //     console.log(`from target ${sessionStorage.getItem('room_name')}`)
-    //     NewPage("/multi", Multi);
-    // }
-    ////
+    notiItem.remove()
+    if (data['tournament']){
+        sessionStorage.setItem('tournament_name', data['tournament'])
+        NewPage("/fr-tournament", TournamentFr)
+    }
+    else {
+        GamePlaySocket.send(JSON.stringify({
+            'flag': data['flag'],
+            'img': data['img'],
+            'targetUser': data['from'],
+            'room_name': data['to'] + '_' + data['from'],
+            'message': `${CurrentUser} accept`
+        }))
+        console.log(`inside Friend event handler`)
+        sessionStorage.setItem('room_name', data['to'] + '_' + data['from']);
+        console.log(`from target ${sessionStorage.getItem('room_name')}`)
+        NewPage("/multi", Multi);
+    }
+    //
 }
-function createNewNotifItem(data) {
-    NbNotif++;
-    document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
-    
-    const notiItem = document.createElement('div');
-    notiItem.id = 'notifItem-' + data.from;
-    notiItem.innerHTML = `
-        <img src="${data.img}">
-        <p>${data.from} ${data.message}.</p>
-        <svg class="header-svg-accept" id="accept" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#314D1C"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-        <svg class="header-svg-decline" id="decline" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5D0E07"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-    `;
-    notiItem.setAttribute('class', 'notiItem');
-    
-    console.log(`data.from -------------   ${data.from}`);
-    
-    // Accept button event listener
+function createFrientRqNotif(data) {
+    // NbNotif++;
+    let notiItem = createNewNotifItem(data)
     const acceptButton = notiItem.querySelector('#accept');
     if (acceptButton) {
         acceptButton.addEventListener('click', () => {
@@ -93,11 +126,11 @@ function createNewNotifItem(data) {
             } else {
                 console.error("WebSocket is not open or initialized");
             }
-            document.getElementById("notifItem-" + data['from'])?.remove();
+            notiItem.remove();
             FriendRqEvent(`friend/accept/?username=${CurrentUser}`)
         });
     }
-    
+
     // Decline button event listener
     const declineButton = notiItem.querySelector('#decline');
     if (declineButton) {
@@ -113,7 +146,7 @@ function createNewNotifItem(data) {
             } else {
                 console.error("WebSocket is not open or initialized");
             }
-            document.getElementById("notifItem-" + data['from'])?.remove();
+            notiItem.remove();
             FriendRqEvent(`friend/decline/?username=${CurrentUser}`)
         });
     }
@@ -187,21 +220,14 @@ function declineEvent(data, notiItem){
     const dataFrom = parts[1]; // This gets the part after 'notifItem-'
     
     console.log(`dataFrom isss --- ${dataFrom}`); // Output: someUser
-    sendJS(data)
-    // if (GamePlaySocket.readyState === WebSocket.OPEN) {
-    //     GamePlaySocket.send(JSON.stringify({
-    //         'message': `request removed by ${CurrentUser}`,
-    //         'block': 'false',
-    //         'playwith': 'null',
-    //         'to': CurrentUser,
-    //         'from': dataFrom,
-    //         'flag': 'GameR',
-    //         'img': data['img']
-    //     }));
-    // }
+    GamePlaySocket.send(JSON.stringify({
+        'flag': data['flag'],
+        'targetUser': data['from'],
+        'message': `${CurrentUser} decline`
+    }))
 
-    NbNotif--;
-    document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
+    // NbNotif--;
+    // document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
     notiItem.remove()
 }
 
@@ -325,6 +351,7 @@ export async function header() {
         if (data['flag'] === 'FriendR')
             FriendRqEventHanddler(data)
         else if (data['flag'] == " GameRq"){
+            GameRqEventHanddler(data)
 /////     IF THE MESSAGE HAVE REMOVE I NEED TO DO THIS
             console.log(`inside make gameplay 'cancel' condition`)
             const gamePlay = document.getElementById('game-play');
