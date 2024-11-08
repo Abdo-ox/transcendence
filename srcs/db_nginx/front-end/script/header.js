@@ -25,10 +25,11 @@ function createGameNotif(data){
     let notiItem = createNewNotifItem(data)
     const acceptButton = notiItem.querySelector('#accept');
     const declineButton = notiItem.querySelector('#decline');
+    console.log(`inside createGame ----------------- `)
+    document.getElementById('header-notif-div').appendChild(notiItem);
     const timeout = setTimeout(() => {
-        notiItem.remove();
-        sendJS(data);
         clearTimeout(timeout);
+        declineEvent(data, notiItem)
         console.log('Element removed due to inactivity.');
     }, 10000); // 5 seconds
     acceptButton.addEventListener('click', function () {
@@ -37,8 +38,12 @@ function createGameNotif(data){
     declineButton.addEventListener('click', () => declineEvent(data, notiItem));
 }
 async function GameRqEventHanddler(data) {
+    
+    console.log(`----------- message have message iss ---------  ${data.message}`)
     if (data['message'].includes('invites'))
+    {
         createGameNotif(data);
+    }
     else if (data['message'].includes('cancel')){
         document.getElementById("notifItem-" + data['from'])?.remove();
     }
@@ -127,7 +132,8 @@ function createFrientRqNotif(data) {
                 console.error("WebSocket is not open or initialized");
             }
             notiItem.remove();
-            FriendRqEvent(`friend/accept/?username=${CurrentUser}`)
+            console.log(`friend/accept/?username=${CurrentUser} `, CurrentUser)
+            FriendRqEvent(`friend/accept/?username=${data['from']}`)
         });
     }
 
@@ -147,7 +153,8 @@ function createFrientRqNotif(data) {
                 console.error("WebSocket is not open or initialized");
             }
             notiItem.remove();
-            FriendRqEvent(`friend/decline/?username=${CurrentUser}`)
+            console.log("cancel", `friend/decline/?username=${CurrentUser} `, CurrentUser)
+            FriendRqEvent(`friend/decline/?username=${data['from']}`)
         });
     }
 
@@ -155,52 +162,52 @@ function createFrientRqNotif(data) {
     document.getElementById('header-notif-div').appendChild(notiItem);
 }
 
-export function displayNotification(data) {
-    console.log(data);
-    if (data['flag'] == 'FriendR' && data['to'] == CurrentUser) {
-    console.log(`inside frie 4398423074 0-------------`)
-        if (data['message'].includes('decline')) {
-            console.log("home-user-" + data['from']);
-            const accept = document.getElementById("home-user-" + data['from'])?.querySelector('.home-send-btn');
-            const cancel = document.getElementById("home-user-" + data['from'])?.querySelector('.home-cancel-btn');
-            if (accept && cancel) {
-                accept.style.display = 'block';
-                cancel.style.display = 'none';
-            }
-            return;
-        } else if (data['message'].includes('cancel')) {
-            document.getElementById("notifItem-" + data['from'])?.remove();
-            NbNotif--;
-            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
-            return;
-        }
-        else if (data['message'].includes('accept')) {
-            document.getElementById("home-user-" + data['from'])?.remove();
-            document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
-            return;
-        }
-    }
-    var notiItem = createNewNotifItem(data);
-    const acceptButton = notiItem.querySelector('#accept');
-    const declineButton = notiItem.querySelector('#decline');
-    if (data['flag'] === 'GameR') {
-        const timeout = setTimeout(() => {
-            notiItem.remove();
-            sendJS(data);
-            clearTimeout(timeout);
-            console.log('Element removed due to inactivity.');
-        }, 10000); // 5 seconds
-        acceptButton.addEventListener('click', function () {
-            GameRqEvent(data, notiItem);
-        });
-        declineButton.addEventListener('click', () => declineEvent(data, notiItem));
-    }
-    if (data['flag'] === 'FriendR') {
-        acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${data['from']}`, data));
-        declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${data['from']}`, data));
-    }
-    document.getElementById('header-notif-div').appendChild(notiItem);
-}
+// export function displayNotification(data) {
+//     console.log(data);
+//     if (data['flag'] == 'FriendR' && data['to'] == CurrentUser) {
+//     console.log(`inside frie 4398423074 0-------------`)
+//         if (data['message'].includes('decline')) {
+//             console.log("home-user-" + data['from']);
+//             const accept = document.getElementById("home-user-" + data['from'])?.querySelector('.home-send-btn');
+//             const cancel = document.getElementById("home-user-" + data['from'])?.querySelector('.home-cancel-btn');
+//             if (accept && cancel) {
+//                 accept.style.display = 'block';
+//                 cancel.style.display = 'none';
+//             }
+//             return;
+//         } else if (data['message'].includes('cancel')) {
+//             document.getElementById("notifItem-" + data['from'])?.remove();
+//             NbNotif--;
+//             document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
+//             return;
+//         }
+//         else if (data['message'].includes('accept')) {
+//             document.getElementById("home-user-" + data['from'])?.remove();
+//             document.body.style.setProperty('--count-notification', `"${NbNotif}"`);
+//             return;
+//         }
+//     }
+//     var notiItem = createNewNotifItem(data);
+//     const acceptButton = notiItem.querySelector('#accept');
+//     const declineButton = notiItem.querySelector('#decline');
+//     if (data['flag'] === 'GameR') {
+//         const timeout = setTimeout(() => {
+//             notiItem.remove();
+//             sendJS(data);
+//             clearTimeout(timeout);
+//             console.log('Element removed due to inactivity.');
+//         }, 10000); // 5 seconds
+//         acceptButton.addEventListener('click', function () {
+//             GameRqEvent(data, notiItem);
+//         });
+//         declineButton.addEventListener('click', () => declineEvent(data, notiItem));
+//     }
+//     if (data['flag'] === 'FriendR') {
+//         acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${data['from']}`, data));
+//         declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${data['from']}`, data));
+//     }
+//     document.getElementById('header-notif-div').appendChild(notiItem);
+// }
 
 function sendJS(data){
     // if (GamePlaySocket.readyState === WebSocket.OPEN) {
@@ -350,13 +357,13 @@ export async function header() {
         console.log(`data is   ${JSON.stringify(data)}`)
         if (data['flag'] === 'FriendR')
             FriendRqEventHanddler(data)
-        else if (data['flag'] == " GameRq"){
+        else if (data['flag'] === "GameRq"){
             GameRqEventHanddler(data)
 /////     IF THE MESSAGE HAVE REMOVE I NEED TO DO THIS
-            console.log(`inside make gameplay 'cancel' condition`)
-            const gamePlay = document.getElementById('game-play');
-            if (gamePlay.textContent === "cancel")
-                gamePlay.textContent = "play";  
+            // console.log(`inside make gameplay 'cancel' condition`)
+            // const gamePlay = document.getElementById('game-play');
+            // if (gamePlay.textContent === "cancel")
+            //     gamePlay.textContent = "play";  
         }
         // if (data.block === 'false' && data['to'] === CurrentUser && data['message'].includes("cancel")) {
         //     document.getElementById("notifItem-" + data['from'])?.remove();
@@ -455,28 +462,28 @@ export async function header() {
     const access = await getJWT();
     if (!access)
         return;
-    fetch("https://localhost:8000/friend/friendRequests/", {
-        headers: {
-            'Authorization': `Bearer ${access}`,
-        }
-    }).then(response => {
-        if (response.ok)
-            return response.json();
-        console.log("error in fetch friend requests");
-    }).then(data => {
-        data.forEach(sender => {
-            const notiItem = createNewNotifItem({ 'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request' });
-            const acceptButton = notiItem.querySelector('#accept');
-            const declineButton = notiItem.querySelector('#decline');
-            acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
-            declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
-            document.getElementById("header-notif-div").appendChild(notiItem);
-        });
-        NbNotif += data.filter(item => item.is_read === false).length;
-        if (NbNotif)
-            document.body.style.setProperty('--count-notification', `"${NbNotif}"`)
-    }).catch(error => {
-        console.log("can't fetch friend requests error accured ", error);
-    });
+    // fetch("https://localhost:8000/friend/friendRequests/", {
+    //     headers: {
+    //         'Authorization': `Bearer ${access}`,
+    //     }
+    // }).then(response => {
+    //     if (response.ok)
+    //         return response.json();
+    //     console.log("error in fetch friend requests");
+    // }).then(data => {
+    //     data.forEach(sender => {
+    //         // const notiItem = createNewNotifItem({ 'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request' });
+    //         // const acceptButton = notiItem.querySelector('#accept');
+    //         // const declineButton = notiItem.querySelector('#decline');
+    //         // // acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
+    //         // // declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
+    //         // document.getElementById("header-notif-div").appendChild(notiItem);
+    //     });
+    //     NbNotif += data.filter(item => item.is_read === false).length;
+    //     if (NbNotif)
+    //         document.body.style.setProperty('--count-notification', `"${NbNotif}"`)
+    // }).catch(error => {
+    //     console.log("can't fetch friend requests error accured ", error);
+    // });
     return 1;
 }

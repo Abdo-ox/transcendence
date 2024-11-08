@@ -14,6 +14,7 @@ class FriendList(models.Model):
         return self.user.username
 
     def addFriend(self, account):
+        print("before if", flush=True)
         if account not in self.friends.all():
             print("add friend method called", flush=True)
             self.friends.add(account)

@@ -126,7 +126,7 @@ async  function GamePlay() {
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
             GamePlaySocket.send(JSON.stringify({
                 'from': username,
-                'to': nameElement.textContent,
+                'targetUser': nameElement.textContent,
                 'message': ` invites u to play.`,
                 'flag': 'GameRq',
                 'img': UserData.profile_image,
