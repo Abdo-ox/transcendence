@@ -66,34 +66,20 @@ class UserStatusConsumer(WebsocketConsumer):
 
 class NotificationConsumer(WebsocketConsumer):
     def GetParticipants(self, data):
-        # print(f"too is ::: {data['to']}")
-        # print('----------------------------', flush=True)
-        # print(data, flush=True)
-        if data['block'] == 'false' and data['playwith'] == 'null':
-            content = {
-                'message': data['message'],
-                'to': data['to'],
-                'flag': data['flag'],
-                'img': data['img'],
-                'from': data['from'],
-                'block': 'false'
-            }
-        elif data['block'] == 'false' and data['playwith'] != 'null':
-            content = {
-                'playwith': data['playwith'],
-                'room_name': data['room_name'],
-                'block': 'false'
-            }
-        elif data['block'] == 'True':
-            content = {
-                'from': data['from'],
-                'block': 'True',
-                'block_target': data['block_target'],
-            }
+        content = {
+            'flag': data['flag'],
+            'targetUser': data['targetUser'],
+            'img': data['img'],
+            'message': data['message'],
+            'from': data['from']
+        }
+        self.room_group_name = f"notif_{data['targetUser']}"
         return self.send_chat_message(content)
+
     def connect(self):
+        self.room_name = self.scope["url_route"]["kwargs"]["notif_id"]
         # Check if the user is authenticated
-        self.room_group_name = 'notif'
+        self.room_group_name = f"notif_{self.room_name}"
         if self.scope['user'] == AnonymousUser():
             print("anonymousUser", flush=True)
             # If not authenticated, close the connection
@@ -109,11 +95,15 @@ class NotificationConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_discard)(
         self.room_group_name, self.channel_name
         )
+
     def receive(self, text_data):
+        print("#######################recieve method", flush=True)
         data = json.loads(text_data)
         self.GetParticipants(data)
 
     def send_chat_message(self, message):
+        print("send_chat_message called", flush=True)
+        print('--------- ', self.room_group_name, flush=True)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {
             "type": "chat_message",

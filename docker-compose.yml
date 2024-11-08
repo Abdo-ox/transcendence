@@ -33,6 +33,7 @@ services:
       - net
     volumes:
       - /var/lib/postgresql/15/main
+      - ./srcs/db_nginx/front-end:/usr/share/nginx/html
 
   redis:
     image: redis:latest

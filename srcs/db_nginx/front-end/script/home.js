@@ -159,14 +159,13 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
     });
     if (response.status == 200) {
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
+            console.log("hello send in notif websocket            dlkjdfdjfldjflk         fljdlj");
             GamePlaySocket.send(JSON.stringify({
-                'from': currentUser.username,
-                'to': button.getAttribute('username'),
+                'targetUser': button.getAttribute('username'),
                 'message': `${action[0]} friend request.`,
                 'flag': 'FriendR',
                 'img': currentUser.profile_image,
-                'playwith': 'null',
-                'block': 'false'
+                'from': currentUser.username
             }));
         }
         button.style.display = 'none';
