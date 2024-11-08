@@ -14,6 +14,7 @@ from .serializers import UserSerializer
 @permission_classes([IsAuthenticated])
 def acceptFriendRequest(request):
     try:
+        print(c.r, "enter to accept", flush=True)
         username = request.GET.get('username')
         if not username:
             return JsonResponse({'error': 'pear username not send at the query string'})

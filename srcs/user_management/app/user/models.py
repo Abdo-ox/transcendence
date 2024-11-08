@@ -35,6 +35,7 @@ class UserManager(BaseUserManager):
         print(f"\33[31;1mthe superusercreation called\33[0m")
         user = self.create_user(
             username,
+            False,
             password,
             **data
         )

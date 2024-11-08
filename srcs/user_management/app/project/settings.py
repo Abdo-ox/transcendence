@@ -8,6 +8,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+STATIC_URL = '/static/'
+
+# Directory where static files will be collected for production use
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is where `collectstatic` will put all files
+
+# List of directories where Django will look for additional static files (including admin files)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Include your custom static files here
+]
 
 SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px'
 DEBUG = True
