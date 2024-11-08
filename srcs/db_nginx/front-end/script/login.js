@@ -7,7 +7,6 @@ console.log("the login.js called");
 const handle_data = async (data_status) => {
     const data = data_status.data;
     const status = data_status.status;
-    console.log("data access : ",data);
     if (status == 200) {
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
@@ -27,6 +26,7 @@ const handle_data = async (data_status) => {
                 document.getElementById("error-container").innerHTML = `hello world again and again`;
                 console.log("error in login :", error);
             });
+        
     } else {
         console.log("error:", data_status);
         printErrorInScreen([data_status.data.detail]);
@@ -35,7 +35,6 @@ const handle_data = async (data_status) => {
 
 
 async function oAuthHandler(ancor, loginButton, event) {
-    console.log("================================================>hello clear");
     const response = await fetch("https://localhost:8000/api/42/callback/", {
         method: 'POST',
         headers: {
@@ -57,24 +56,27 @@ async function oAuthHandler(ancor, loginButton, event) {
 }
 
 export async function Login() {
-    document.body.style.visibility = 'visible';
 
     document.getElementById("login-forgotpassword").addEventListener("click", async (event) => {
         event.preventDefault();
         NewPage("/resetpassword", ResetPassword, false);
     });
-    
-    // if (await is_authenticated())
-    //     return;
+
+    if (await is_authenticated())
+        return;
     const csrf_token = await getCsrfToken();
-    const ids = ['login-username', 'login-password'];
+    const ids = ['login-username', 'login-password', 'login-rememberMe'];
 
     document.getElementById('login-register-btn').addEventListener('click', () => {
         NewPage("/register", Register, false);
     });
-
-    const ancor = document.getElementById('login-intra-btn'); 
-    const loginButton = document.getElementById('login-login-btn'); 
+    const rememberMeCheckbox = document.getElementById("login-rememberMe");
+    rememberMeCheckbox.checked = localStorage.getItem("rememberMe") === "true";
+    rememberMeCheckbox.addEventListener("change", function () {
+        localStorage.setItem("rememberMe", rememberMeCheckbox.checked)
+    });
+    const ancor = document.getElementById('login-intra-btn');
+    const loginButton = document.getElementById('login-login-btn');
     loginButton.addEventListener('click', async (event) => {
         event.preventDefault();
         loginButton.style.pointerEvents = 'none';
@@ -102,5 +104,5 @@ export async function Login() {
             const popup = window.open(data.base_url + '?' + url.toString(), 'OAuthPopup', `width=600,height=700,left=${window.innerWidth / 2 - 300 + window.screenX},top=${window.innerHeight / 2 - 350 + window.screenY}`);
         }
     });
-    
+
 }   
