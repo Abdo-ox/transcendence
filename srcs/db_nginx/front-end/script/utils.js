@@ -173,7 +173,7 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
         const fieldName = id.substring(id.indexOf("-") + 1);
         try {
             fields[fieldName] = document.getElementById(id).value;
-        }
+        } 
         catch (error) {
             console.error('id: ', id, " error: ", error);
         }
