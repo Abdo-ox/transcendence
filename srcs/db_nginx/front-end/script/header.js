@@ -77,7 +77,7 @@ async function FriendRqEventHanddler(data){
         document.getElementById("home-user-" + data['from'])?.remove();
 }
 
-async function FriendRqEvent(endpoint) {
+async function FriendRqEvent(endpoint, notifItem) {
     ////
     const token = await getJWT();
     fetch(`https://localhost:8000/${endpoint}`, {
@@ -86,6 +86,7 @@ async function FriendRqEvent(endpoint) {
         }
     }).then(response => {
         if (response.ok) {
+            notifItem.remove();
             console.log(`friend request was accepted`)
         }
         else
@@ -131,9 +132,7 @@ function createFrientRqNotif(data) {
             } else {
                 console.error("WebSocket is not open or initialized");
             }
-            notiItem.remove();
-            console.log(`friend/accept/?username=${CurrentUser} `, CurrentUser)
-            FriendRqEvent(`friend/accept/?username=${data['from']}`)
+            FriendRqEvent(`friend/accept/?username=${data['from']}`, notiItem)
         });
     }
 
@@ -152,9 +151,7 @@ function createFrientRqNotif(data) {
             } else {
                 console.error("WebSocket is not open or initialized");
             }
-            notiItem.remove();
-            console.log("cancel", `friend/decline/?username=${CurrentUser} `, CurrentUser)
-            FriendRqEvent(`friend/decline/?username=${data['from']}`)
+            FriendRqEvent(`friend/decline/?username=${data['from']}`, notiItem)
         });
     }
 
@@ -462,28 +459,28 @@ export async function header() {
     const access = await getJWT();
     if (!access)
         return;
-    // fetch("https://localhost:8000/friend/friendRequests/", {
-    //     headers: {
-    //         'Authorization': `Bearer ${access}`,
-    //     }
-    // }).then(response => {
-    //     if (response.ok)
-    //         return response.json();
-    //     console.log("error in fetch friend requests");
-    // }).then(data => {
-    //     data.forEach(sender => {
-    //         // const notiItem = createNewNotifItem({ 'from': sender.username, 'to': CurrentUser.username, 'img': sender.profile_image, message: 'send friend request' });
-    //         // const acceptButton = notiItem.querySelector('#accept');
-    //         // const declineButton = notiItem.querySelector('#decline');
-    //         // // acceptButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/accept/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
-    //         // // declineButton.addEventListener('click', () => FriendRqEvent(notiItem, `friend/decline/?username=${sender.username}`, { 'from': sender.username, 'to': CurrentUser }));
-    //         // document.getElementById("header-notif-div").appendChild(notiItem);
-    //     });
-    //     NbNotif += data.filter(item => item.is_read === false).length;
-    //     if (NbNotif)
-    //         document.body.style.setProperty('--count-notification', `"${NbNotif}"`)
-    // }).catch(error => {
-    //     console.log("can't fetch friend requests error accured ", error);
-    // });
+    fetch("https://localhost:8000/friend/friendRequests/", {
+        headers: {
+            'Authorization': `Bearer ${access}`,
+        }
+    }).then(response => {
+        if (response.ok)
+            return response.json();
+        console.log("error in fetch friend requests");
+    }).then(data => {
+        data.forEach(sender => {
+            const notiItem = createNewNotifItem({ 'from': sender.username, 'img': sender.profile_image, message: 'send friend request' });
+            const acceptButton = notiItem.querySelector('#accept');
+            const declineButton = notiItem.querySelector('#decline');
+            acceptButton.addEventListener('click', () => FriendRqEvent(`friend/accept/?username=${sender.username}`));
+            declineButton.addEventListener('click', () => FriendRqEvent(`friend/decline/?username=${sender.username}`));
+            document.getElementById("header-notif-div").appendChild(notiItem);
+        });
+        NbNotif += data.filter(item => item.is_read === false).length;
+        if (NbNotif)
+            document.body.style.setProperty('--count-notification', `"${NbNotif}"`)
+    }).catch(error => {
+        console.log("can't fetch friend requests error accured ", error);
+    });
     return 1;
 }
