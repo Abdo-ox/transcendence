@@ -1,15 +1,15 @@
-import { removeEvent, header } from "https://localhost/header.js";
-import { Twofactor } from "https://localhost/2faa.js";
-import { Login } from "https://localhost/login.js";
-import { Home } from "https://localhost/home.js";
-import { Settings } from "https://localhost/settings.js";
-import { Chat } from "https://localhost/chat.js";
-import { Profile } from "https://localhost/profile.js";
+import { removeEvent, header } from "https://10.14.60.29/header.js";
+import { Twofactor } from "https://10.14.60.29/2faa.js";
+import { Login } from "https://10.14.60.29/login.js";
+import { Home } from "https://10.14.60.29/home.js";
+import { Settings } from "https://10.14.60.29/settings.js";
+import { Chat } from "https://10.14.60.29/chat.js";
+import { Profile } from "https://10.14.60.29/profile.js";
 
 export let webSockets = [];
 
 export const getCsrfToken = async () => {
-    return await fetch("https://localhost:8000/api/csrf_token/")
+    return await fetch("https://10.14.60.29:8000/api/csrf_token/")
         .then(response => response.json())
         .then(data => data.csrf_token)
         .catch(error => {
@@ -52,7 +52,7 @@ const clear_localStorage = () => {
 
 const is_valid = async (access, refresh) => {
     if (!is_expired(access)) {
-        const response = await fetch("https://localhost:8000/is_authenticated/", {
+        const response = await fetch("https://10.14.60.29:8000/is_authenticated/", {
             headers: { 'Authorization': `Bearer ${access}` }
         });
         if (response.status != 200)
@@ -60,7 +60,7 @@ const is_valid = async (access, refresh) => {
         document.body.style.visibility = 'visible';
         return access;
     }
-    const response1 = await fetch("https://localhost:8000/api/token/refresh/", {
+    const response1 = await fetch("https://10.14.60.29:8000/api/token/refresh/", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ const is_valid = async (access, refresh) => {
     if (response1.status != 200)
         return clear_localStorage();
     const data = await response1.json();
-    const response2 = await fetch("https://localhost:8000/is_authenticated/", {
+    const response2 = await fetch("https://10.14.60.29:8000/is_authenticated/", {
         headers: { 'Authorization': `Bearer ${data.access}` }
     });
     if (response2.status != 200)
@@ -173,7 +173,7 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
         const fieldName = id.substring(id.indexOf("-") + 1);
         try {
             fields[fieldName] = document.getElementById(id).value;
-        }
+        } 
         catch (error) {
             console.error('id: ', id, " error: ", error);
         }

@@ -1,9 +1,9 @@
-import { NewPage, getJWT, webSockets } from "https://localhost/utils.js";
+import { NewPage, getJWT, webSockets } from "https://10.14.60.29/utils.js";
 
 
 export const Multi = async () => {
     let token = await getJWT();
-    fetch('https://localhost:8000/api/currentUser/', {
+    fetch('https://10.14.60.29:8000/api/currentUser/', {
         headers: {
             'Authorization': `Bearer ${token}`,
         }
@@ -27,10 +27,10 @@ export const Multi = async () => {
     const keys = [];
     let socket = undefined
     if (room_name) {
-        socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/${room_name}/?token=${token}`);
+        socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/${room_name}/?token=${token}`);
         sessionStorage.removeItem('room_name');
     } else
-        socket = new WebSocket(`wss://localhost:9090/ws/multiplayer/?token=${token}`);
+        socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/?token=${token}`);
     webSockets.push(socket);
 
     let c = 3; // countdown

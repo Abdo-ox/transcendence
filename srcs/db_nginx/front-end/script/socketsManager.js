@@ -1,4 +1,4 @@
-import { getJWT } from 'https://localhost/utils.js';
+import { getJWT } from 'https://10.14.60.29/utils.js';
 let chatSocket = null
 
 export async function createWebSocket(ChatID, username)
@@ -7,7 +7,7 @@ export async function createWebSocket(ChatID, username)
   if (chatSocket && chatSocket.readyState === WebSocket.OPEN)
     chatSocket.close();
   let token = await getJWT();
-  chatSocket = new WebSocket('wss://localhost:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
+  chatSocket = new WebSocket('wss://10.14.60.29:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
   chatSocket.onopen = () => {
     console.log('WebSocket is open now.');
     

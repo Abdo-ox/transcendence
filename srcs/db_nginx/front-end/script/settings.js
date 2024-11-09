@@ -1,12 +1,12 @@
-import { getJWT, getCsrfToken, NewPage } from "https://localhost/utils.js"
-import { ConfirmationMail } from "https://localhost/confirmationMail.js"
-import { printNoteFor3Seconds } from "https://localhost/utils.js"
+import { getJWT, getCsrfToken, NewPage } from "https://10.14.60.29/utils.js"
+import { ConfirmationMail } from "https://10.14.60.29/confirmationMail.js"
+import { printNoteFor3Seconds } from "https://10.14.60.29/utils.js"
 export async function Settings() {
 
     let userdata = null;
     const fields = ['username', 'first_name', 'last_name'];
     const csrf_token = await getCsrfToken();
-    fetch("https://localhost:8000/api/settings/", {
+    fetch("https://10.14.60.29:8000/api/settings/", {
         headers: {
             Authorization: `Bearer ${await getJWT()}`
         }
@@ -180,7 +180,7 @@ export async function Settings() {
 
             });
             if (edited) {
-                const response = await fetch('https://localhost:8000/api/update/', {
+                const response = await fetch('https://10.14.60.29:8000/api/update/', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
@@ -226,7 +226,7 @@ export async function Settings() {
             throw "password not change";
         }
 
-        fetch('https://localhost:8000/api/ChangePassword/', {
+        fetch('https://10.14.60.29:8000/api/ChangePassword/', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${await getJWT()}`,
@@ -256,7 +256,7 @@ export async function Settings() {
                 formData.append('image', blobimage, 'cropped-image.webp');
             }
             if (!formData.entries().next().done) {
-                fetch('https://localhost:8000/api/upload-profile/', {
+                fetch('https://10.14.60.29:8000/api/upload-profile/', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
@@ -297,7 +297,7 @@ export async function Settings() {
             document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
             return;
         }
-        const response = await fetch('https://localhost:8000/MailConfirmation/', {
+        const response = await fetch('https://10.14.60.29:8000/MailConfirmation/', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${await getJWT()}`,
@@ -339,7 +339,7 @@ export async function Settings() {
         checkbox.disabled = true;
 
         try {
-            const response = await fetch('https://localhost:8000/api/Enable2Fa/', {
+            const response = await fetch('https://10.14.60.29:8000/api/Enable2Fa/', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${await getJWT()}`,

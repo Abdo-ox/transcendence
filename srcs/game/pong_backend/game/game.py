@@ -516,16 +516,17 @@ class TournamentLogic:
             game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
             await database_sync_to_async(game.players.add)(*self.players[2:])
             for username in self.state['players']:
-                await channel_layer.group_send('notif', {
+                noti_group_name = f"notif_{username}"
+                print(noti_group_name, flush=True)
+                await channel_layer.group_send(noti_group_name, {
                     'type': 'chat_message',
                     'message': {
                         'message': f": It's your turn to play!",
-                        'to': username,
+                        'targetUser': username,
                         'from': self.room_name,
                         'img': self.tournament.image,
-                        'block': 'false',
-                        'flag': 'GameR',
                         'tournament': self.room_name,
+                        'flag': 'tournament'
                     },
                 }) 
         elif self.n == 2:
@@ -533,15 +534,17 @@ class TournamentLogic:
             game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
             await database_sync_to_async(game.players.add)(*self.winners)
             for username in self.state['winners']:
-                await channel_layer.group_send('notif', {
+                noti_group_name = f"notif_{username}"
+                print(noti_group_name, flush=True)
+                await channel_layer.group_send(noti_group_name, {
                     'type': 'chat_message',
                     'message': {
                         'message': f": It's your turn to play!",
-                        'to': username,
+                        'targetUser': username,
                         'from': self.room_name,
                         'img': self.tournament.image,
-                        'block': 'false',
                         'tournament': self.room_name,
+                        'flag': 'tournament'
                     },
                 }) 
 

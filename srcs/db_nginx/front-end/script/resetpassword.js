@@ -1,5 +1,5 @@
-import { NewPage } from "https://localhost/utils.js";
-import { Reset } from "https://localhost/reset.js"
+import { NewPage } from "https://10.14.60.29/utils.js";
+import { Reset } from "https://10.14.60.29/reset.js"
 
 export async function ResetPassword() {
 
@@ -16,7 +16,7 @@ export async function ResetPassword() {
                 document.getElementById("resetpass-errorMessage").textContent = "Please enter a valid Gmail address!";
                 return;
             }
-            const response = await fetch('https://localhost:8000/resetpassword/', {
+            const response = await fetch('https://10.14.60.29:8000/resetpassword/', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

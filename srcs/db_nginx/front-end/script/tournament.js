@@ -1,4 +1,4 @@
-import { NewPage, getJWT } from "https://localhost/utils.js";
+import { NewPage, getJWT } from "https://10.14.60.29/utils.js";
 
 export const Tournament = async () => {
     await getJWT();

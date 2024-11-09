@@ -9,8 +9,8 @@ if [ $? -eq 0 ];then
     echo "enter"
     psql -U $DB_USER -c "alter user $DB_USER with password '${DB_PASS}'"
 fi
-sed -i "s/localhost/$IP/g" /usr/share/nginx/html/html/*.html
-sed -i "s/localhost/$IP/g" /usr/share/nginx/html/script/*
+sed -i "s/$OLDIP/$IP/g" /usr/share/nginx/html/html/*.html
+sed -i "s/$OLDIP/$IP/g" /usr/share/nginx/html/script/*
 
 cat << EOF > /etc/nginx/nginx.conf
 user www-data;
@@ -24,7 +24,7 @@ http {
     include       /etc/nginx/mime.types;
     server {
         listen 443 ssl;
-        server_name localhost 10.14.60.29;
+        server_name localhost $IP;
         
         root /usr/share/nginx/html/;
         try_files /html/SPA.html =404;
@@ -33,28 +33,28 @@ http {
         ssl_certificate_key $PATH_CRT/crt.key;
 
         location ~* ^/(landingpage|register|login|home|confirmationMail|profile|settings|2faa|resetpassword|reset|chat|game|multi|local|tournament|remotetournament|fr-tournament)$ {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             root /usr/share/nginx/html/;
             try_files /html/SPA.html =404;
         }
         location ~ \.html$ {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             root  /usr/share/nginx/html/html;
         }
         location ~ \.css$ {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             root  /usr/share/nginx/html/style;
         }
         location ~ \.js$ {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             root  /usr/share/nginx/html/script;
         }
         location /images {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             alias  /usr/share/nginx/html/images;
         }
         location /loading {
-            add_header 'Access-Control-Allow-Origin' 'https://localhost' always; 
+            add_header 'Access-Control-Allow-Origin' '*' always; 
             alias  /usr/share/nginx/html/html;
             index loading.html;
         }
