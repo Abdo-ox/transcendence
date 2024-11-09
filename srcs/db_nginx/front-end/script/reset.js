@@ -1,5 +1,5 @@
-import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://localhost/utils.js";
-import { Login } from "https://localhost/login.js"
+import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://10.32.72.122/utils.js";
+import { Login } from "https://10.32.72.122/login.js"
 
 export async function Reset() {
 
@@ -34,7 +34,7 @@ export async function Reset() {
         } else {
             console.log("No email found in localStorage.");
         }
-        fetch('https://localhost:8000/reset/', {
+        fetch('https://10.32.72.122:8000/reset/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': await getCsrfToken(),

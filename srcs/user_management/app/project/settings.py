@@ -18,7 +18,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Include your custom static files here
 ]
 
-SECRET_KEY = 'django-insecure-_^@m%$xt&8mynfeu4w7c!i4@w7)2f(jegj%vey9v+_-w^yz9px'
+SECRET_KEY = os.environ.get('SECRET_KEY') 
 DEBUG = True
 
 AUTH_USER_MODEL = 'user.User'

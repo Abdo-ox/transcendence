@@ -1,13 +1,13 @@
-import { NewPage, getJWT, printErrorInScreen } from "https://localhost/utils.js";
-import { GamePlaySocket } from "https://localhost/header.js";
-import { Login } from "https://localhost/login.js";
-import { Tournament } from "https://localhost/tournament.js";
-import { Game } from "https://localhost/game.js";
-import { Profile } from "https://localhost/profile.js";
-import { Local } from "https://localhost/local.js";
-import { Multi } from "https://localhost/multi.js";
-import { TournamentFr } from "https://localhost/fr-tournament.js";
-import { UserStatusSock } from "https://localhost/header.js"
+import { NewPage, getJWT, printErrorInScreen } from "https://10.32.72.122/utils.js";
+import { GamePlaySocket } from "https://10.32.72.122/header.js";
+import { Login } from "https://10.32.72.122/login.js";
+import { Tournament } from "https://10.32.72.122/tournament.js";
+import { Game } from "https://10.32.72.122/game.js";
+import { Profile } from "https://10.32.72.122/profile.js";
+import { Local } from "https://10.32.72.122/local.js";
+import { Multi } from "https://10.32.72.122/multi.js";
+import { TournamentFr } from "https://10.32.72.122/fr-tournament.js";
+import { UserStatusSock } from "https://10.32.72.122/header.js"
 
 function formatNumber(num) {
     let formatted = num.toFixed(1);
@@ -152,7 +152,7 @@ function pieChart1(data) {
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
-    const response = await fetch(`https://localhost:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
+    const response = await fetch(`https://10.32.72.122:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
         headers: {
             Authorization: `Bearer ${await getJWT()}`
         }
@@ -216,7 +216,7 @@ export async function Home() {
     });
     /**** add event listener for the nemu bar side ****/
 
-    const response = await fetch('https://localhost:8000/api/suggest/friend/', {
+    const response = await fetch('https://10.32.72.122:8000/api/suggest/friend/', {
         headers: {
             'Authorization': `Bearer ${access_token}`,
         }
@@ -311,7 +311,7 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-    fetch("https://localhost:9090/tournaments/", {
+    fetch("https://10.32.72.122:9090/tournaments/", {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -323,7 +323,7 @@ export async function Home() {
 
     // tournament cards end
 
-    fetch("https://localhost:9090/matchcount/", {
+    fetch("https://10.32.72.122:9090/matchcount/", {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -333,7 +333,7 @@ export async function Home() {
     }).then(data => pieChart2(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
 
-    fetch("https://localhost:9090/leaderboard/", {
+    fetch("https://10.32.72.122:9090/leaderboard/", {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -343,14 +343,14 @@ export async function Home() {
     }).then(data => laederBoard(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
 
-    fetch("https://localhost:8000/api/coalitions/", {
+    fetch("https://10.32.72.122:8000/api/coalitions/", {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));
     
     
-    fetch("https://localhost:8000/api/rank?username=Kiarra22", {
+    fetch("https://10.32.72.122:8000/api/rank?username=Kiarra22", {
         headers:{
             Authorization: `Bearer ${token}`
         }

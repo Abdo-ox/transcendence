@@ -1,8 +1,8 @@
-import { NewPage, getJWT, webSockets } from "https://localhost/utils.js";
+import { NewPage, getJWT, webSockets } from "https://10.32.72.122/utils.js";
 
 export const Game = async () => {
     let token = await getJWT();
-    fetch('https://localhost:8000/api/currentUser/', {
+    fetch('https://10.32.72.122:8000/api/currentUser/', {
         headers: {
             'Authorization': `Bearer ${token}`,
         }
@@ -24,7 +24,7 @@ export const Game = async () => {
     /* ---->  game logic  <---- */
     const canvas = document.getElementById("canvas");
     const keys = [];
-    const socket = new WebSocket(`wss://localhost:9090/ws/game/?token=${token}`);
+    const socket = new WebSocket(`wss://10.32.72.122:9090/ws/game/?token=${token}`);
     webSockets.push(socket);
 
     let rect = canvas.getBoundingClientRect();

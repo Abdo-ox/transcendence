@@ -1,5 +1,5 @@
-import { getCsrfToken, NewPage, submitForm, printErrorInScreen, is_authenticated} from "https://localhost/utils.js";
-import { Login } from "https://localhost/login.js"
+import { getCsrfToken, NewPage, submitForm, printErrorInScreen, is_authenticated} from "https://10.32.72.122/utils.js";
+import { Login } from "https://10.32.72.122/login.js"
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
 
 const handle_data = (data_status) => {
@@ -34,7 +34,7 @@ export async function Register() {
         console.log("hello");
         event.target.style.pointerEvents = 'none';
         registerButton.classList.add('non-active');
-        await submitForm('https://localhost:8000/api/register/', ids, csrf_token, handle_data);
+        await submitForm('https://10.32.72.122:8000/api/register/', ids, csrf_token, handle_data);
         registerButton.style.pointerEvents = 'auto';
         registerButton.classList.remove('non-active');
     });

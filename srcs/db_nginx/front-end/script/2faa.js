@@ -1,6 +1,6 @@
-import { getJWT, NewPage, getCsrfToken } from "https://localhost/utils.js"
-import { Home } from "https://localhost/home.js"
-import { Login } from "https://localhost/login.js";
+import { getJWT, NewPage, getCsrfToken } from "https://10.32.72.122/utils.js"
+import { Home } from "https://10.32.72.122/home.js"
+import { Login } from "https://10.32.72.122/login.js";
 
 
 export async function Twofactor() {
@@ -31,7 +31,7 @@ export async function Twofactor() {
         }
         else {
 
-            fetch('https://localhost:8000/verify_2fa_code/', {
+            fetch('https://10.32.72.122:8000/verify_2fa_code/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

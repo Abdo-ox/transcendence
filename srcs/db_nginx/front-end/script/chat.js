@@ -1,7 +1,7 @@
-import { createWebSocket } from 'https://localhost/socketsManager.js';
-import { NewPage, getJWT } from 'https://localhost/utils.js';
-import { GamePlaySocket, OnlineList } from 'https://localhost/header.js';
-import { Profile } from "https://localhost/profile.js"
+import { createWebSocket } from 'https://10.32.72.122/socketsManager.js';
+import { NewPage, getJWT, printErrorInScreen} from 'https://10.32.72.122/utils.js';
+import { GamePlaySocket, OnlineList } from 'https://10.32.72.122/header.js';
+import { Profile } from "https://10.32.72.122/profile.js"
 
 let TargetUser = null; // make this variable local
 export async function Chat() {
@@ -15,7 +15,7 @@ export async function Chat() {
   }
 
   let access_token = await getJWT();
-  const data = await fetch('https://localhost:8000/api/user/data/', {
+  const data = await fetch('https://10.32.72.122:8000/api/user/data/', {
     headers: {
       'Authorization': `Bearer ${access_token}`,
     }
@@ -110,7 +110,7 @@ async  function GamePlay() {
     gamePlay = clonedGamePlay; // reassign the element after cloning
     gamePlay.addEventListener('click',  async (e) => {
       let access_token = await getJWT();
-      const data = await fetch(`https://localhost:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
+      const data = await fetch(`https://10.32.72.122:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
         method: "GET",
         headers: {
           'Authorization': `Bearer ${access_token}`,
@@ -120,7 +120,7 @@ async  function GamePlay() {
         .then(response => response.json()) // Call json() to parse the response
         .then(data => {
         if (OnlineList && !OnlineList.includes(nameElement.textContent) && data.is_online === false){
-          console.log(`the target user is offline`)
+          printErrorInScreen('the target user is offline');
           return 0;}
           // console.log(`data is ------------< ${JSON.stringify(data)}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
@@ -191,19 +191,15 @@ async  function GamePlay() {
       targetContact.remove()
       profileContainer.remove()
       if (GamePlaySocket.readyState === WebSocket.OPEN) {
-        console.log(`inside send block request =========================`)
         GamePlaySocket.send(JSON.stringify({
-          'block': 'True',
-          'block_target': username,
+          'flag': 'Block',
+          'targetUser': username,
           'from': UserData.username
         }));
       }
-      if (chatLog) {
-        while (chatLog.firstChild)
-          chatLog.removeChild(chatLog.firstChild);
-        }
+      if (chatLog) chatLog.textContent = '';
       const token = await getJWT();
-      fetch(`https://localhost:8000/friend/unfriend/?username=${username}`, {
+      fetch(`https://10.32.72.122:8000/friend/unfriend/?username=${username}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -243,7 +239,7 @@ async  function GamePlay() {
       <div class="wrap">
         <div class="wrap">
           <input id="chat-message-input" type="text" placeholder="  Write your message..." />
-          <img id="submit-button" src="https://localhost/images/send.svg"/>
+          <img id="submit-button" src="https://10.32.72.122/images/send.svg"/>
         </div>
     </div>`;
 
@@ -290,7 +286,7 @@ async  function GamePlay() {
   async function chatListview(user) {
     let access_token = await getJWT();
     console.log(`chatlistview called user is ${user}`)
-    const data = await fetch(`https://localhost:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
+    const data = await fetch(`https://10.32.72.122:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -350,7 +346,7 @@ async  function GamePlay() {
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
-    VerticalDots.src = "https://localhost/images/dots.svg"
+    VerticalDots.src = "https://10.32.72.122/images/dots.svg"
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');

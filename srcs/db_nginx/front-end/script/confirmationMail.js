@@ -1,6 +1,6 @@
-import { NewPage, getJWT } from "https://localhost/utils.js";
-import { Settings } from "https://localhost/settings.js";
-import { Login } from "https://localhost/login.js";
+import { NewPage, getJWT } from "https://10.32.72.122/utils.js";
+import { Settings } from "https://10.32.72.122/settings.js";
+import { Login } from "https://10.32.72.122/login.js";
 
 export async function ConfirmationMail() {
 
@@ -17,7 +17,7 @@ export async function ConfirmationMail() {
                 return;
             }
             let newemail = localStorage.getItem("NewEmail");
-            const response = await fetch('https://localhost:8000/MailValidation/', {
+            const response = await fetch('https://10.32.72.122:8000/MailValidation/', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${await getJWT()}`,
