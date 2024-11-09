@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { NewPage, getJWT } from "https://10.14.60.29/utils.js";
 import { Chat } from "https://10.14.60.29/chat.js";
 import { UserStatusSock } from "https://10.14.60.29/header.js";
+=======
+import { NewPage, getJWT } from "https://10.32.72.122/utils.js";
+import { Chat } from "https://10.32.72.122/chat.js";
+import { UserStatusSock } from "https://10.32.72.122/header.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 // window.addEventListener('scroll', function () {
 //     var header = document.querySelector('header');
 //     header.classList.toggle('sticky', window.scrollY > 0);
@@ -19,7 +25,11 @@ export async function Profile() {
             'url("/images/acheivements/rookie.jpg")']
 
         /**  Endpoint game**/
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:9090/gameprofile/' + myuser, {
+=======
+        const response = await fetch('https://10.32.72.122:9090/gameprofile/' + myuser, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -160,7 +170,11 @@ export async function Profile() {
     }
     /***rank user*/
     {
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:8000/api/rank?username=' + myuser, {
+=======
+        const response = await fetch('https://10.32.72.122:8000/api/rank?username=' + myuser, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -184,7 +198,11 @@ export async function Profile() {
     
     /***multigame History */
     {
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:9090/multigamehistory/' + myuser, {
+=======
+        const response = await fetch('https://10.32.72.122:9090/multigamehistory/' + myuser, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -226,7 +244,11 @@ export async function Profile() {
 
   
     {
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:8000/friend/userFriends?username=' + myuser, {
+=======
+        const response = await fetch('https://10.32.72.122:8000/friend/userFriends?username=' + myuser, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 
@@ -317,7 +339,11 @@ export async function Profile() {
 
     // tournament history
     {
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:9090/tournamenthistory/', {
+=======
+        const response = await fetch('https://10.32.72.122:9090/tournamenthistory/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${await getJWT()}`,
 

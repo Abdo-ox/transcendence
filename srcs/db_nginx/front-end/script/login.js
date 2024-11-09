@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "https://10.14.60.29/utils.js";
 import { Home } from "https://10.14.60.29/home.js";
 import { Register } from "https://10.14.60.29/register.js";
 import { ResetPassword } from "https://10.14.60.29/resetpassword.js";
+=======
+import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen } from "https://10.32.72.122/utils.js";
+import { Home } from "https://10.32.72.122/home.js";
+import { Register } from "https://10.32.72.122/register.js";
+import { ResetPassword } from "https://10.32.72.122/resetpassword.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 console.log("the login.js called");
 
 const handle_data = async (data_status) => {
@@ -10,7 +17,11 @@ const handle_data = async (data_status) => {
     if (status == 200) {
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
+<<<<<<< HEAD
         await fetch('https://10.14.60.29:8000/api/twoFaCalled/', {
+=======
+        await fetch('https://10.32.72.122:8000/api/twoFaCalled/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 Authorization: `Bearer ${data.access}`
             }
@@ -35,7 +46,11 @@ const handle_data = async (data_status) => {
 
 
 async function oAuthHandler(ancor, loginButton, event) {
+<<<<<<< HEAD
     const response = await fetch("https://10.14.60.29:8000/api/42/callback/", {
+=======
+    const response = await fetch("https://10.32.72.122:8000/api/42/callback/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -83,7 +98,11 @@ export async function Login() {
         loginButton.classList.add("non-active");
         ancor.style.pointerEvents = 'none';
         ancor.classList.add("non-active");
+<<<<<<< HEAD
         await submitForm('https://10.14.60.29:8000/api/token/', ids, csrf_token, handle_data);
+=======
+        await submitForm('https://10.32.72.122:8000/api/token/', ids, csrf_token, handle_data);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         loginButton.style.pointerEvents = 'auto';
         loginButton.classList.remove("non-active");
         ancor.style.pointerEvents = 'auto';
@@ -95,7 +114,11 @@ export async function Login() {
         loginButton.classList.remove("non-active");
         ancor.style.pointerEvents = 'none';
         ancor.classList.remove("non-active");
+<<<<<<< HEAD
         const response = await fetch("https://10.14.60.29:8000/api/42/data/");
+=======
+        const response = await fetch("https://10.32.72.122:8000/api/42/data/");
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         if (response.ok) {
             const data = await response.json();
             const url = new URLSearchParams(data.app);

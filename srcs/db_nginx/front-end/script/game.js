@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import { NewPage, getJWT, webSockets } from "https://10.14.60.29/utils.js";
 
 export const Game = async () => {
     let token = await getJWT();
     fetch('https://10.14.60.29:8000/api/currentUser/', {
+=======
+import { NewPage, getJWT, webSockets } from "https://10.32.72.122/utils.js";
+
+export const Game = async () => {
+    let token = await getJWT();
+    fetch('https://10.32.72.122:8000/api/currentUser/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             'Authorization': `Bearer ${token}`,
         }
@@ -24,7 +32,11 @@ export const Game = async () => {
     /* ---->  game logic  <---- */
     const canvas = document.getElementById("canvas");
     const keys = [];
+<<<<<<< HEAD
     const socket = new WebSocket(`wss://10.14.60.29:9090/ws/game/?token=${token}`);
+=======
+    const socket = new WebSocket(`wss://10.32.72.122:9090/ws/game/?token=${token}`);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     webSockets.push(socket);
 
     let rect = canvas.getBoundingClientRect();

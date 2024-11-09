@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { getCsrfToken, NewPage, submitForm, printErrorInScreen, is_authenticated} from "https://10.14.60.29/utils.js";
 import { Login } from "https://10.14.60.29/login.js"
+=======
+import { getCsrfToken, NewPage, submitForm, printErrorInScreen, is_authenticated} from "https://10.32.72.122/utils.js";
+import { Login } from "https://10.32.72.122/login.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 import {faker } from "https://cdn.skypack.dev/@faker-js/faker" //to remove
 
 const handle_data = (data_status) => {
@@ -34,7 +39,11 @@ export async function Register() {
         console.log("hello");
         event.target.style.pointerEvents = 'none';
         registerButton.classList.add('non-active');
+<<<<<<< HEAD
         await submitForm('https://10.14.60.29:8000/api/register/', ids, csrf_token, handle_data);
+=======
+        await submitForm('https://10.32.72.122:8000/api/register/', ids, csrf_token, handle_data);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         registerButton.style.pointerEvents = 'auto';
         registerButton.classList.remove('non-active');
     });

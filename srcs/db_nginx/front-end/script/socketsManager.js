@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { getJWT } from 'https://10.14.60.29/utils.js';
+=======
+import { getJWT } from 'https://10.32.72.122/utils.js';
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 let chatSocket = null
 
 export async function createWebSocket(ChatID, username)
@@ -7,7 +11,11 @@ export async function createWebSocket(ChatID, username)
   if (chatSocket && chatSocket.readyState === WebSocket.OPEN)
     chatSocket.close();
   let token = await getJWT();
+<<<<<<< HEAD
   chatSocket = new WebSocket('wss://10.14.60.29:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
+=======
+  chatSocket = new WebSocket('wss://10.32.72.122:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
   chatSocket.onopen = () => {
     console.log('WebSocket is open now.');
     

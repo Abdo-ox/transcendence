@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import { NewPage, getJWT, redirectTwoFactor } from "https://10.14.60.29/utils.js";
 import { Profile } from "https://10.14.60.29/profile.js"
 import { Multi } from "https://10.14.60.29/multi.js";
 import { TournamentFr } from "https://10.14.60.29/fr-tournament.js";
 import { printErrorInScreen } from "https://10.14.60.29/utils.js";
+=======
+import { NewPage, getJWT, redirectTwoFactor } from "https://10.32.72.122/utils.js";
+import { Profile } from "https://10.32.72.122/profile.js"
+import { Multi } from "https://10.32.72.122/multi.js";
+import { TournamentFr } from "https://10.32.72.122/fr-tournament.js";
+import { printErrorInScreen } from "https://10.32.72.122/utils.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 let CurrentUser = "";
 export let GamePlaySocket = null;
 export let UserStatusSock = null;
@@ -95,7 +103,11 @@ async function FriendRqEventHanddler(data) {
 async function FriendRqEvent(endpoint, notifItem) {
     ////
     const token = await getJWT();
+<<<<<<< HEAD
     fetch(`https://10.14.60.29:8000/${endpoint}`, {
+=======
+    fetch(`https://10.32.72.122:8000/${endpoint}`, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -244,7 +256,11 @@ export async function header() {
         return;
     addheader();
     try {
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:8000/api/currentUser/', {
+=======
+        const response = await fetch('https://10.32.72.122:8000/api/currentUser/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 'Authorization': `Bearer ${access_token}`,
             }
@@ -268,8 +284,13 @@ export async function header() {
 
     if (GamePlaySocket)
         GamePlaySocket.close();
+<<<<<<< HEAD
     UserStatusSock = new WebSocket(`wss://10.14.60.29:9000/ws/status/?token=${access_token}`);
     GamePlaySocket = new WebSocket('wss://10.14.60.29:9000/ws/notif/' + CurrentUser + '/' + `?token=${access_token}`);
+=======
+    UserStatusSock = new WebSocket(`wss://10.32.72.122:9000/ws/status/?token=${access_token}`);
+    GamePlaySocket = new WebSocket('wss://10.32.72.122:9000/ws/notif/' + CurrentUser + '/' + `?token=${access_token}`);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     UserStatusSock.onopen = () => {
         console.log('UserStatusSock');
     }
@@ -397,7 +418,11 @@ export async function header() {
         event.stopPropagation(); // Prevent the event from bubbling up
         document.body.style.setProperty('--count-notification', 'none');
         const token = await getJWT();
+<<<<<<< HEAD
         fetch("https://10.14.60.29:8000/friend/friendRequest/readed/", {
+=======
+        fetch("https://10.32.72.122:8000/friend/friendRequest/readed/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -416,7 +441,11 @@ export async function header() {
     const access = await getJWT();
     if (!access)
         return;
+<<<<<<< HEAD
     fetch("https://10.14.60.29:8000/friend/friendRequests/", {
+=======
+    fetch("https://10.32.72.122:8000/friend/friendRequests/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             'Authorization': `Bearer ${access}`,
         }

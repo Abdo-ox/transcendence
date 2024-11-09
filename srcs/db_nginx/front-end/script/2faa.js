@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { getJWT, NewPage, getCsrfToken } from "https://10.14.60.29/utils.js"
 import { Home } from "https://10.14.60.29/home.js"
 import { Login } from "https://10.14.60.29/login.js";
+=======
+import { getJWT, NewPage, getCsrfToken } from "https://10.32.72.122/utils.js"
+import { Home } from "https://10.32.72.122/home.js"
+import { Login } from "https://10.32.72.122/login.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 
 export async function Twofactor() {
@@ -31,7 +37,11 @@ export async function Twofactor() {
         }
         else {
 
+<<<<<<< HEAD
             fetch('https://10.14.60.29:8000/verify_2fa_code/', {
+=======
+            fetch('https://10.32.72.122:8000/verify_2fa_code/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

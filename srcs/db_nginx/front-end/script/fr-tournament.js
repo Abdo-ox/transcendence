@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { NewPage, getJWT, webSockets } from "https://10.14.60.29/utils.js";
 import { Home } from "https://10.14.60.29/home.js";
+=======
+import { NewPage, getJWT, webSockets } from "https://10.32.72.122/utils.js";
+import { Home } from "https://10.32.72.122/home.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export const TournamentFr = async () => {
     let token = await getJWT();
@@ -9,7 +14,11 @@ export const TournamentFr = async () => {
     let in_game = false
 
     // connect to socket
+<<<<<<< HEAD
     const socket = new WebSocket(`wss://10.14.60.29:9090/ws/tournament/?token=${token}`);
+=======
+    const socket = new WebSocket(`wss://10.32.72.122:9090/ws/tournament/?token=${token}`);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     webSockets.push(socket);
 
     socket.onmessage = function (event) {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { removeEvent, header } from "https://10.14.60.29/header.js";
 import { Twofactor } from "https://10.14.60.29/2faa.js";
 import { Login } from "https://10.14.60.29/login.js";
@@ -5,11 +6,24 @@ import { Home } from "https://10.14.60.29/home.js";
 import { Settings } from "https://10.14.60.29/settings.js";
 import { Chat } from "https://10.14.60.29/chat.js";
 import { Profile } from "https://10.14.60.29/profile.js";
+=======
+import { removeEvent, header } from "https://10.32.72.122/header.js";
+import { Twofactor } from "https://10.32.72.122/2faa.js";
+import { Login } from "https://10.32.72.122/login.js";
+import { Home } from "https://10.32.72.122/home.js";
+import { Settings } from "https://10.32.72.122/settings.js";
+import { Chat } from "https://10.32.72.122/chat.js";
+import { Profile } from "https://10.32.72.122/profile.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export let webSockets = [];
 
 export const getCsrfToken = async () => {
+<<<<<<< HEAD
     return await fetch("https://10.14.60.29:8000/api/csrf_token/")
+=======
+    return await fetch("https://10.32.72.122:8000/api/csrf_token/")
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         .then(response => response.json())
         .then(data => data.csrf_token)
         .catch(error => {
@@ -52,7 +66,11 @@ const clear_localStorage = () => {
 
 const is_valid = async (access, refresh) => {
     if (!is_expired(access)) {
+<<<<<<< HEAD
         const response = await fetch("https://10.14.60.29:8000/is_authenticated/", {
+=======
+        const response = await fetch("https://10.32.72.122:8000/is_authenticated/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: { 'Authorization': `Bearer ${access}` }
         });
         if (response.status != 200)
@@ -60,7 +78,11 @@ const is_valid = async (access, refresh) => {
         document.body.style.visibility = 'visible';
         return access;
     }
+<<<<<<< HEAD
     const response1 = await fetch("https://10.14.60.29:8000/api/token/refresh/", {
+=======
+    const response1 = await fetch("https://10.32.72.122:8000/api/token/refresh/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -70,7 +92,11 @@ const is_valid = async (access, refresh) => {
     if (response1.status != 200)
         return clear_localStorage();
     const data = await response1.json();
+<<<<<<< HEAD
     const response2 = await fetch("https://10.14.60.29:8000/is_authenticated/", {
+=======
+    const response2 = await fetch("https://10.32.72.122:8000/is_authenticated/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: { 'Authorization': `Bearer ${data.access}` }
     });
     if (response2.status != 200)

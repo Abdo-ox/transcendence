@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import { NewPage, getJWT, webSockets } from "https://10.14.60.29/utils.js";
+=======
+import { NewPage, getJWT, webSockets } from "https://10.32.72.122/utils.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 
 export const Multi = async () => {
     let token = await getJWT();
+<<<<<<< HEAD
     fetch('https://10.14.60.29:8000/api/currentUser/', {
+=======
+    fetch('https://10.32.72.122:8000/api/currentUser/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             'Authorization': `Bearer ${token}`,
         }
@@ -27,10 +35,17 @@ export const Multi = async () => {
     const keys = [];
     let socket = undefined
     if (room_name) {
+<<<<<<< HEAD
         socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/${room_name}/?token=${token}`);
         sessionStorage.removeItem('room_name');
     } else
         socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/?token=${token}`);
+=======
+        socket = new WebSocket(`wss://10.32.72.122:9090/ws/multiplayer/${room_name}/?token=${token}`);
+        sessionStorage.removeItem('room_name');
+    } else
+        socket = new WebSocket(`wss://10.32.72.122:9090/ws/multiplayer/?token=${token}`);
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     webSockets.push(socket);
 
     let c = 3; // countdown

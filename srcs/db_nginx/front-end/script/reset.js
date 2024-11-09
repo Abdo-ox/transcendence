@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://10.14.60.29/utils.js";
 import { Login } from "https://10.14.60.29/login.js"
+=======
+import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://10.32.72.122/utils.js";
+import { Login } from "https://10.32.72.122/login.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export async function Reset() {
 
@@ -34,7 +39,11 @@ export async function Reset() {
         } else {
             console.log("No email found in localStorage.");
         }
+<<<<<<< HEAD
         fetch('https://10.14.60.29:8000/reset/', {
+=======
+        fetch('https://10.32.72.122:8000/reset/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             method: 'POST',
             headers: {
                 'X-CSRFToken': await getCsrfToken(),

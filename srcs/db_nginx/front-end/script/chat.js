@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { createWebSocket } from 'https://10.14.60.29/socketsManager.js';
 import { NewPage, getJWT, printErrorInScreen} from 'https://10.14.60.29/utils.js';
 import { GamePlaySocket, OnlineList } from 'https://10.14.60.29/header.js';
 import { Profile } from "https://10.14.60.29/profile.js"
+=======
+import { createWebSocket } from 'https://10.32.72.122/socketsManager.js';
+import { NewPage, getJWT, printErrorInScreen} from 'https://10.32.72.122/utils.js';
+import { GamePlaySocket, OnlineList } from 'https://10.32.72.122/header.js';
+import { Profile } from "https://10.32.72.122/profile.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 let TargetUser = null; // make this variable local
 export async function Chat() {
@@ -15,7 +22,11 @@ export async function Chat() {
   }
 
   let access_token = await getJWT();
+<<<<<<< HEAD
   const data = await fetch('https://10.14.60.29:8000/api/user/data/', {
+=======
+  const data = await fetch('https://10.32.72.122:8000/api/user/data/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     headers: {
       'Authorization': `Bearer ${access_token}`,
     }
@@ -110,7 +121,11 @@ async  function GamePlay() {
     gamePlay = clonedGamePlay; // reassign the element after cloning
     gamePlay.addEventListener('click',  async (e) => {
       let access_token = await getJWT();
+<<<<<<< HEAD
       const data = await fetch(`https://10.14.60.29:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
+=======
+      const data = await fetch(`https://10.32.72.122:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         method: "GET",
         headers: {
           'Authorization': `Bearer ${access_token}`,
@@ -199,7 +214,11 @@ async  function GamePlay() {
       }
       if (chatLog) chatLog.textContent = '';
       const token = await getJWT();
+<<<<<<< HEAD
       fetch(`https://10.14.60.29:8000/friend/unfriend/?username=${username}`, {
+=======
+      fetch(`https://10.32.72.122:8000/friend/unfriend/?username=${username}`, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -239,7 +258,11 @@ async  function GamePlay() {
       <div class="wrap">
         <div class="wrap">
           <input id="chat-message-input" type="text" placeholder="  Write your message..." />
+<<<<<<< HEAD
           <img id="submit-button" src="https://10.14.60.29/images/send.svg"/>
+=======
+          <img id="submit-button" src="https://10.32.72.122/images/send.svg"/>
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         </div>
     </div>`;
 
@@ -286,7 +309,11 @@ async  function GamePlay() {
   async function chatListview(user) {
     let access_token = await getJWT();
     console.log(`chatlistview called user is ${user}`)
+<<<<<<< HEAD
     const data = await fetch(`https://10.14.60.29:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
+=======
+    const data = await fetch(`https://10.32.72.122:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
       method: "GET",
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -346,7 +373,11 @@ async  function GamePlay() {
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
+<<<<<<< HEAD
     VerticalDots.src = "https://10.14.60.29/images/dots.svg"
+=======
+    VerticalDots.src = "https://10.32.72.122/images/dots.svg"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { NewPage } from "https://10.14.60.29/utils.js";
 import { Reset } from "https://10.14.60.29/reset.js"
+=======
+import { NewPage } from "https://10.32.72.122/utils.js";
+import { Reset } from "https://10.32.72.122/reset.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export async function ResetPassword() {
 
@@ -16,7 +21,11 @@ export async function ResetPassword() {
                 document.getElementById("resetpass-errorMessage").textContent = "Please enter a valid Gmail address!";
                 return;
             }
+<<<<<<< HEAD
             const response = await fetch('https://10.14.60.29:8000/resetpassword/', {
+=======
+            const response = await fetch('https://10.32.72.122:8000/resetpassword/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

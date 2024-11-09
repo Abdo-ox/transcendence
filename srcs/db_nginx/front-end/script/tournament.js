@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { NewPage, getJWT } from "https://10.14.60.29/utils.js";
+=======
+import { NewPage, getJWT } from "https://10.32.72.122/utils.js";
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export const Tournament = async () => {
     await getJWT();

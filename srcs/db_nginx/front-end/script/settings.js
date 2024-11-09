@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import { getJWT, getCsrfToken, NewPage } from "https://10.14.60.29/utils.js"
 import { ConfirmationMail } from "https://10.14.60.29/confirmationMail.js"
 import { printNoteFor3Seconds } from "https://10.14.60.29/utils.js"
+=======
+import { getJWT, getCsrfToken, NewPage } from "https://10.32.72.122/utils.js"
+import { ConfirmationMail } from "https://10.32.72.122/confirmationMail.js"
+import { printNoteFor3Seconds } from "https://10.32.72.122/utils.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 export async function Settings() {
 
     let userdata = null;
     const fields = ['username', 'first_name', 'last_name'];
     const csrf_token = await getCsrfToken();
+<<<<<<< HEAD
     fetch("https://10.14.60.29:8000/api/settings/", {
+=======
+    fetch("https://10.32.72.122:8000/api/settings/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${await getJWT()}`
         }
@@ -180,7 +190,11 @@ export async function Settings() {
 
             });
             if (edited) {
+<<<<<<< HEAD
                 const response = await fetch('https://10.14.60.29:8000/api/update/', {
+=======
+                const response = await fetch('https://10.32.72.122:8000/api/update/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
@@ -226,7 +240,11 @@ export async function Settings() {
             throw "password not change";
         }
 
+<<<<<<< HEAD
         fetch('https://10.14.60.29:8000/api/ChangePassword/', {
+=======
+        fetch('https://10.32.72.122:8000/api/ChangePassword/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${await getJWT()}`,
@@ -256,7 +274,11 @@ export async function Settings() {
                 formData.append('image', blobimage, 'cropped-image.webp');
             }
             if (!formData.entries().next().done) {
+<<<<<<< HEAD
                 fetch('https://10.14.60.29:8000/api/upload-profile/', {
+=======
+                fetch('https://10.32.72.122:8000/api/upload-profile/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${await getJWT()}`,
@@ -297,7 +319,11 @@ export async function Settings() {
             document.getElementById("resetmail-errorMessage").textContent = "Please enter a valid Gmail address!";
             return;
         }
+<<<<<<< HEAD
         const response = await fetch('https://10.14.60.29:8000/MailConfirmation/', {
+=======
+        const response = await fetch('https://10.32.72.122:8000/MailConfirmation/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${await getJWT()}`,
@@ -339,7 +365,11 @@ export async function Settings() {
         checkbox.disabled = true;
 
         try {
+<<<<<<< HEAD
             const response = await fetch('https://10.14.60.29:8000/api/Enable2Fa/', {
+=======
+            const response = await fetch('https://10.32.72.122:8000/api/Enable2Fa/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${await getJWT()}`,

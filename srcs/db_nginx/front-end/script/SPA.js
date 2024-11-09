@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Landing } from "https://10.14.60.29/landingpage.js"
 import { Login } from "https://10.14.60.29/login.js"
 import { Register } from "https://10.14.60.29/register.js"
@@ -16,6 +17,26 @@ import { Twofactor } from "https://10.14.60.29/2faa.js"
 import { ConfirmationMail } from "https://10.14.60.29/confirmationMail.js"
 import { TournamentFr } from "https://10.14.60.29/fr-tournament.js"
 import { NotFound } from "https://10.14.60.29/notfound.js"
+=======
+import { Landing } from "https://10.32.72.122/landingpage.js"
+import { Login } from "https://10.32.72.122/login.js"
+import { Register } from "https://10.32.72.122/register.js"
+import { Home } from "https://10.32.72.122/home.js"
+import { Settings } from "https://10.32.72.122/settings.js"
+import { Profile } from "https://10.32.72.122/profile.js"
+import { ResetPassword } from "https://10.32.72.122/resetpassword.js"
+import { Reset } from "https://10.32.72.122/reset.js"
+import { Tournament } from "https://10.32.72.122/tournament.js"
+import { Local } from "https://10.32.72.122/local.js"
+import { Multi } from "https://10.32.72.122/multi.js"
+import { Game } from "https://10.32.72.122/game.js"
+import { NewPage } from "https://10.32.72.122/utils.js"
+import { Chat } from "https://10.32.72.122/chat.js"
+import { Twofactor } from "https://10.32.72.122/2faa.js"
+import { ConfirmationMail } from "https://10.32.72.122/confirmationMail.js"
+import { TournamentFr } from "https://10.32.72.122/fr-tournament.js"
+import { NotFound } from "https://10.32.72.122/notfound.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 const func = {
     "/home": Home,

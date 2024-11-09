@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { NewPage, getJWT, printErrorInScreen } from "https://10.14.60.29/utils.js";
 import { GamePlaySocket } from "https://10.14.60.29/header.js";
 import { Login } from "https://10.14.60.29/login.js";
@@ -8,6 +9,18 @@ import { Local } from "https://10.14.60.29/local.js";
 import { Multi } from "https://10.14.60.29/multi.js";
 import { TournamentFr } from "https://10.14.60.29/fr-tournament.js";
 import { UserStatusSock } from "https://10.14.60.29/header.js"
+=======
+import { NewPage, getJWT, printErrorInScreen } from "https://10.32.72.122/utils.js";
+import { GamePlaySocket } from "https://10.32.72.122/header.js";
+import { Login } from "https://10.32.72.122/login.js";
+import { Tournament } from "https://10.32.72.122/tournament.js";
+import { Game } from "https://10.32.72.122/game.js";
+import { Profile } from "https://10.32.72.122/profile.js";
+import { Local } from "https://10.32.72.122/local.js";
+import { Multi } from "https://10.32.72.122/multi.js";
+import { TournamentFr } from "https://10.32.72.122/fr-tournament.js";
+import { UserStatusSock } from "https://10.32.72.122/header.js"
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 function formatNumber(num) {
     let formatted = num.toFixed(1);
@@ -152,7 +165,11 @@ function pieChart1(data) {
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
+<<<<<<< HEAD
     const response = await fetch(`https://10.14.60.29:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
+=======
+    const response = await fetch(`https://10.32.72.122:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${await getJWT()}`
         }
@@ -216,7 +233,11 @@ export async function Home() {
     });
     /**** add event listener for the nemu bar side ****/
 
+<<<<<<< HEAD
     const response = await fetch('https://10.14.60.29:8000/api/suggest/friend/', {
+=======
+    const response = await fetch('https://10.32.72.122:8000/api/suggest/friend/', {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             'Authorization': `Bearer ${access_token}`,
         }
@@ -311,7 +332,11 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
+<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/tournaments/", {
+=======
+    fetch("https://10.32.72.122:9090/tournaments/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -323,7 +348,11 @@ export async function Home() {
 
     // tournament cards end
 
+<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/matchcount/", {
+=======
+    fetch("https://10.32.72.122:9090/matchcount/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -333,7 +362,11 @@ export async function Home() {
     }).then(data => pieChart2(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
 
+<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/leaderboard/", {
+=======
+    fetch("https://10.32.72.122:9090/leaderboard/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -343,14 +376,22 @@ export async function Home() {
     }).then(data => laederBoard(data)
     ).catch(error => console.log("error in fetch matchcount :", error));
 
+<<<<<<< HEAD
     fetch("https://10.14.60.29:8000/api/coalitions/", {
+=======
+    fetch("https://10.32.72.122:8000/api/coalitions/", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));
     
     
+<<<<<<< HEAD
     fetch("https://10.14.60.29:8000/api/rank?username=Kiarra22", {
+=======
+    fetch("https://10.32.72.122:8000/api/rank?username=Kiarra22", {
+>>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers:{
             Authorization: `Bearer ${token}`
         }
