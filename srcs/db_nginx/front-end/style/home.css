@@ -687,7 +687,7 @@ section {
     overflow: hidden;
     white-space: nowrap;
     margin: 0;
-
+    max-width: 86px;
     font-size: 20px;
 }
 

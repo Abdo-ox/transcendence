@@ -16,8 +16,6 @@ class UserStatusConsumer(WebsocketConsumer):
             user = User.objects.get(username=self.scope['user'])
             user.is_online = True
             user.save()
-            print("current status === ", user.is_online, flush=True)
-
             async_to_sync(self.channel_layer.group_add)(
                 self.room_group_name, self.channel_name
             )
@@ -33,8 +31,6 @@ class UserStatusConsumer(WebsocketConsumer):
         user = User.objects.get(username=self.scope['user'])
         user.is_online = False
         user.save()
-        print("current status === ", user.is_online, flush=True)
-
         self.send_user_status("False")
 
         async_to_sync(self.channel_layer.group_discard)(
@@ -53,8 +49,6 @@ class UserStatusConsumer(WebsocketConsumer):
 
     # Receive message from the group and handle it
     def user_status_message(self, event):
-        print("user_status_message method called", flush=True)
-
         is_online = event["is_online"]
         username = event["username"]
 
@@ -82,15 +76,10 @@ class NotificationConsumer(WebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["notif_id"]
         # Check if the user is authenticated
         UserID = User.objects.get(username=self.room_name).id
-        print(self.room_name, flush=True)
         self.room_group_name = f"notif_{UserID}"
-        print(self.scope['user'], 'want to send mssg to ----- ', ' ==== ', self.room_group_name, flush=True)
         if self.scope['user'] == AnonymousUser():
-            print("anonymousUser", flush=True)
-            # If not authenticated, close the connection
             self.close()
         else:
-            print(f"user is ------------>> {self.scope['user']}", flush=True)
             async_to_sync(self.channel_layer.group_add)(
                 self.room_group_name, self.channel_name
             )
@@ -102,14 +91,10 @@ class NotificationConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data):
-        print('inside receive method', self.scope['user'], 'want to send mssg to ----- ', ' ==== ', self.room_group_name, flush=True)
-        print("#######################recieve method", flush=True)
         data = json.loads(text_data)
         self.GetParticipants(data)
 
     def send_chat_message(self, message):
-        print("send_chat_message called", flush=True)
-        print('when i need to send --------- ', self.room_group_name, flush=True)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {
             "type": "chat_message",
@@ -166,11 +151,9 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
         if self.scope['user'] == AnonymousUser():
-            print("anonymousUser", flush=True)
             self.close()
         # Join room group
         else:
-            print(f"user is ------------>> {self.scope['user']}", flush=True)
             async_to_sync(self.channel_layer.group_add)(
                 self.room_group_name, self.channel_name
             )

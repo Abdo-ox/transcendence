@@ -10,9 +10,6 @@ export async function Chat() {
     const params = new URLSearchParams(url.search);
     TargetUser = params.get('user');
   }
-  else {
-    console.log(`usl path name ${url.pathname}`)
-  }
 
   let access_token = await getJWT();
   const data = await fetch('https://10.14.60.29:8000/api/user/data/', {
@@ -22,7 +19,6 @@ export async function Chat() {
   })
     .then(response => response.json()) // Call json() to parse the response
     .then(data => {
-      console.log(`bodychat is call`, data)
       bodychat(data)
     })
     .catch(error => {
@@ -71,7 +67,6 @@ async function bodychat(UserData) {
           updateProfile(friend);
           chatListview(TargetUser);
           const newUrl = `/chat?user=${TargetUser}`
-          console.log(`new query --------------- ${newUrl}`)
           history.pushState(null, '', newUrl);
         }
       });
@@ -87,13 +82,10 @@ async function bodychat(UserData) {
       if (contact) {
         let imgElement = contact.querySelector('img');
         let user = {username: contact.id, profile_image: imgElement.src};
-        console.log('contact exests')
         createHtmlPrf();
         updateProfile(user);
         chatListview(contact.id);
       }
-      else
-        console.log(`conctact doesn't exests`)
     });
   }
 
@@ -122,7 +114,6 @@ async  function GamePlay() {
         if (OnlineList && !OnlineList.includes(nameElement.textContent) && data.is_online === false){
           printErrorInScreen('the target user is offline');
           return 0;}
-          // console.log(`data is ------------< ${JSON.stringify(data)}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
             GamePlaySocket.send(JSON.stringify({
                 'from': username,
@@ -133,10 +124,7 @@ async  function GamePlay() {
               }));
         }
         if (gamePlay.textContent === "cancel") {
-            console.log(`i am inside the condition if (gamePlay.textContent === "cancel")`)
             if (GamePlaySocket.readyState === WebSocket.OPEN) {
-                console.log('WebSocket connection opened');
-                console.log(`inside cancel and from username is ${username}`)
                 GamePlaySocket.send(JSON.stringify({
                   'from': username,
                   'targetUser': nameElement.textContent,
@@ -222,7 +210,6 @@ async  function GamePlay() {
 
   function fetchData() {
     UserData.friends.forEach(friend => {
-      console.log(`-------------- ${friend.username}  ---------------------`);
       createSuperuser(friend)
     });
   }
@@ -247,7 +234,6 @@ async  function GamePlay() {
   }
 
   function createSuperuser(user) {
-    console.log(`userdata isss ${JSON.stringify(user)}`)
     const li = document.createElement('li');
     li.className = 'contact';
     li.id = user.username;
@@ -258,7 +244,6 @@ async  function GamePlay() {
     // const contactStatus = document.createElement('span');
     // contactStatus.className = 'contact-status busy';
     // ------------------------------- show the user data catched -------------------------------------
-    // console.log(`friend object equal ======= ${JSON.stringify(user)}`)
     const img = document.createElement('img');
     img.src = user.profile_image;
     img.alt = '';
@@ -285,7 +270,6 @@ async  function GamePlay() {
 
   async function chatListview(user) {
     let access_token = await getJWT();
-    console.log(`chatlistview called user is ${user}`)
     const data = await fetch(`https://10.14.60.29:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
       method: "GET",
       headers: {
@@ -295,7 +279,6 @@ async  function GamePlay() {
     })
       .then(response => response.json()) // Call json() to parse the response
       .then(data => {
-        console.log('request send ....', data.ChatID)
           createWebSocket(data.ChatID, user);
       })
       .catch(handleError);
@@ -329,15 +312,7 @@ async  function GamePlay() {
   });
 
   function handleError(error) {
-    if (error.response) {
-      console.log('Error Status Code:', error.response.status);
-      console.log('Error Data:', error.response.data);
-    } else if (error.request) {
-      console.log('No response received:', error.request);
-    } else {
-      console.log('Error:', error.message);
-    }
-    console.log('Error Config:', error.config);
+    
   }
   function updateProfile(user) {
     const profileContainer = document.getElementById('profile-container');
@@ -361,7 +336,6 @@ async  function GamePlay() {
     contactProfile.appendChild(VerticalDots);
     profileContainer.appendChild(contactProfile);
     name.addEventListener('click', () => {
-      console.log(`target profile is --------- ${name.textContent}`)
       NewPage("/profile", Profile,true,"?user="+name.textContent); 
     });
     const newUrl = `/chat?user=${user.username}`

@@ -6,7 +6,7 @@ export async function ConfirmationMail() {
 
     let acc = await getJWT();
     if (acc == null || acc == 'undefined')
-        NewPage("/login", Login);
+        NewPage("/login", Login, false);
     document.body.style.visibility = 'visible';
     document.getElementById("confirmMail-submit").addEventListener("click", async () => {
         try {

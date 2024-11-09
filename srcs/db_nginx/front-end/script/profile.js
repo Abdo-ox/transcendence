@@ -27,11 +27,9 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
-        console.log("data is :", data);
         document.getElementById("profile-username").innerHTML = data.username;
         document.getElementById("profile-userWelcome").innerHTML = data.username;
         document.getElementById("profile-coalition").src = data.coalition.image;
@@ -85,7 +83,6 @@ export async function Profile() {
             let percentage = (currentPoints / 150) * 100;
             const progressBar = document.getElementById('profile-level-progress');
             progressBar.style.width = percentage + '%';
-            console.log(`Current Level: ${currentLevel}`);
             document.getElementById("current-level").innerHTML = currentLevel;
             document.getElementById("current-points").innerHTML = currentPoints;
         }
@@ -169,7 +166,6 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch rank user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
@@ -177,7 +173,6 @@ export async function Profile() {
             document.getElementById("profile-rank").textContent = data.rank;
         }
         else {
-            console.log("there is no user ander username");
         }
     }
 
@@ -191,11 +186,9 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
-        console.log("data multi game :", data);
         if (data.length) {
 
             document.getElementById("history-para").style.display = 'none';
@@ -232,11 +225,9 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
-        console.log("data ------------------------ai game :", data);
         if (data.length) {
 
             document.getElementById("history-para").style.display = 'none';
@@ -274,7 +265,6 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
@@ -366,7 +356,6 @@ export async function Profile() {
             }
         })
         if (!response.ok) {
-            console.error('Failed to fetch current user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
@@ -378,7 +367,7 @@ export async function Profile() {
                                     <h4 class="profile-card-title">${elt.name}</h4>
                                     <div class="profile-para">
                                         <p class="profile-card-info">Date:<br><span>${formattedDate(elt.created)}</span></p>
-                                        ${elt.winner && elt.winner.username.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
+                                        ${elt.winner && elt.winner.username.trim() == myuser ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
                                     </div>   
                                 </div>
                             </div>`

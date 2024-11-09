@@ -36,7 +36,6 @@ function joinOrContinue(array, action, homeCard) {
 }
 
 function tournaments(data) {
-    console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
     if (data.continue.length || data.join.length)
         homeCard.innerHTML = '';
@@ -81,7 +80,6 @@ function fillPhase(target_phase, user_data) {
 }
 
 function laederBoard(data) {
-    console.log("leader board:", data);
     const leaderboardcontainer = document.getElementById('home-leader-board');
     data.sort((a, b) => b.score - a.score);
     if (data.length > 0)
@@ -131,7 +129,6 @@ function pieChart1(data) {
     if (total) {
         document.getElementById("home-nothing-chart-1")?.remove();
         const max = Math.max(...src);
-        console.log(max);
         const index_max = src.indexOf(max);
         piechart1.style.setProperty('--percent', `"${formatNumber(max)}%"`);
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
@@ -159,7 +156,6 @@ const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) 
     });
     if (response.status == 200) {
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
-            console.log("hello send in notif websocket            dlkjdfdjfldjflk         fljdlj");
             GamePlaySocket.send(JSON.stringify({
                 'targetUser': button.getAttribute('username'),
                 'message': `${action[0]} friend request.`,
@@ -222,7 +218,6 @@ export async function Home() {
         }
     })
     if (!response.status) {
-        console.error('Failed to fetch suggest friends.');
         return;
     }
     const data = await response.json();
@@ -331,7 +326,7 @@ export async function Home() {
         if (response.status == 200)
             return response.json();
     }).then(data => pieChart2(data)
-    ).catch(error => console.log("error in fetch matchcount :", error));
+    ).catch(error => printErrorInScreen("error in fetch matchcount :", error));
 
     fetch("https://10.14.60.29:9090/leaderboard/", {
         headers: {
@@ -341,7 +336,7 @@ export async function Home() {
         if (response.status == 200)
             return response.json();
     }).then(data => laederBoard(data)
-    ).catch(error => console.log("error in fetch matchcount :", error));
+    ).catch();
 
     fetch("https://10.14.60.29:8000/api/coalitions/", {
         headers: {
@@ -350,9 +345,4 @@ export async function Home() {
     }).then(response => response.json()).then(data => pieChart1(data));
     
     
-    fetch("https://10.14.60.29:8000/api/rank?username=Kiarra22", {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }).then(response => response.json()).then(data => console.log("data", data));
 }

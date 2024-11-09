@@ -60,16 +60,8 @@ def Register(request):
             all_errors.append(error.get('message'))
     return JsonResponse({'errors': all_errors})
 
-def printJsonData(data):
-    for key, value in data.items():
-        if isinstance(value, dict):
-            print(f"{c.g} {key}:")
-            printJsonData(value)
-        else:
-            print(f"{c.b}{key}: {value}")
 
 def create_jwt_for_Oauth(user):
-    print(c.y, "create jwt token", flush=True)
     refreshToken = RefreshToken.for_user(user)
     accessToken = refreshToken.access_token
     return {'access': str(accessToken),
@@ -126,8 +118,6 @@ def sendUserData(request):
 def GetUserStatus(request):
     username = request.query_params.get('username')
     user = User.objects.get(username=username)
-    print('username is :  ', user.username)
-    print('and status is :  ', user.is_online)
     return JsonResponse({'is_online': user.is_online}, status=200)
 
 @api_view(['GET'])
@@ -171,7 +161,7 @@ def UploadProfile(request):
         uploaded_file = request.FILES['image']
         file_name = get_random_string(6) + "_" + str(request.user.username) + Path(uploaded_file.name).suffix
         file_path = os.path.join(settings.MEDIA_ROOT, file_name)
-        file_url = "https://localhost:8000/media/" + file_name
+        file_url = f"https://{os.environ.get('IP')}:8000/media/" + file_name
         with open(file_path, 'wb+') as destination:
             for chunk in uploaded_file.chunks():
                 destination.write(chunk)
@@ -184,14 +174,17 @@ def UploadProfile(request):
 @TwoFctor_Decorator
 def updateData(request):
     editedData = request.data
-    print(c.y,"editeData : ",editedData,flush=True)
     form = EditUserForm(editedData,instance=request.user)
     if(form.is_valid()):
         form.save()
         return JsonResponse({"data":"edited"})   
     else:
-        print("errors", form.errors,flush=True)
-        return JsonResponse({"data":"error", "error":form.errors })
+        errors = json.loads(form.errors.as_json())
+        all_errors = []
+        for fieldErrors in errors.values():
+            for error in fieldErrors:
+                all_errors.append(error.get('message'))
+                return JsonResponse({'data': 'error','errors': all_errors})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -203,7 +196,6 @@ def EnableTwoFactor(request):
     if( not request.user.is_2fa_passed):
         request.user.is_2fa_passed = True
         request.user.save()   
-    print("ENABLE ",request.user.enable2fa,flush= True)
     return JsonResponse({"status" : "success"},status=200)
 
 @api_view(['POST'])
@@ -222,7 +214,6 @@ def UpdatePassword(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def UpdateisPassed(request):
-    print("is2passed : ",request.user.is_2fa_passed,flush=True )
     if(request.user.is_2fa_passed):
         request.user.is_2fa_passed = False
         request.user.save()

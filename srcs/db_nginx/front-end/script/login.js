@@ -2,7 +2,6 @@ import { getCsrfToken, NewPage, submitForm, is_authenticated, printErrorInScreen
 import { Home } from "https://10.14.60.29/home.js";
 import { Register } from "https://10.14.60.29/register.js";
 import { ResetPassword } from "https://10.14.60.29/resetpassword.js";
-console.log("the login.js called");
 
 const handle_data = async (data_status) => {
     const data = data_status.data;
@@ -19,16 +18,13 @@ const handle_data = async (data_status) => {
                 return response.json()
             })
             .then((data) => {
-                console.log("pathname:", window.location.pathname);
                 NewPage("/home", Home);
             })
             .catch((error) => {
                 document.getElementById("error-container").innerHTML = `hello world again and again`;
-                console.log("error in login :", error);
             });
         
     } else {
-        console.log("error:", data_status);
         printErrorInScreen([data_status.data.detail]);
     }
 }
@@ -46,7 +42,6 @@ async function oAuthHandler(ancor, loginButton, event) {
         const data = await response.json();
         handle_data({ data, status: response.status });
     } else {
-        console.error("response not ok in log with intra");
         printErrorInScreen(['response not ok in log with intra']);
     }
     loginButton.style.pointerEvents = 'auto';

@@ -37,7 +37,6 @@ class GetChatID(APIView):
         chat = Chat.objects.filter(participants=user1_contact).filter(participants=user2_contact).first()
         if chat:
             serializer = ChatSerializer(chat)
-            # print("Chat already exists", flush=True)
             return Response({'ChatID': chat.id}, status=status.HTTP_200_OK)
         else:
             new_chat = Chat.objects.create()

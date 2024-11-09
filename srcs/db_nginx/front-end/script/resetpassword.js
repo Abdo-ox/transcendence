@@ -11,7 +11,6 @@ export async function ResetPassword() {
     
             if (gmailRegex.test(email)) {
                 document.getElementById("resetpass-errorMessage").textContent = ""; // Clear error message
-                console.log("Valid Gmail address:", email);
             } else {
                 document.getElementById("resetpass-errorMessage").textContent = "Please enter a valid Gmail address!";
                 return;
@@ -30,20 +29,19 @@ export async function ResetPassword() {
                 return;
             }
             const data = await response.json();
-            console.log("*******data response **** is : ", data);
             if (data.status == 'redirect') {
                 {
                     localStorage.setItem('email', email);
-                    NewPage('/reset', Reset);
+                    NewPage('/reset', Reset, false);
                 }
             }
             if (data.status == 'failed') {
-                document.getElementById("resetpass-error message").innerHTML = "failed to send code";
-                document.getElementById("resetpass-error message").style.color = 'red';
+                document.getElementById("resetpass-errorMessage").innerHTML = "failed to send code";
+                document.getElementById("resetpass-errorMessage").style.color = 'red';
             }
             else {
-                document.getElementById("resetpass-error message").innerHTML = "No account with this email";
-                document.getElementById("resetpass-error message").style.color = 'red';
+                document.getElementById("resetpass-errorMessage").innerHTML = "No account with this email";
+                document.getElementById("resetpass-errorMessage").style.color = 'red';
             }
         }
         catch (error) { // Catch block should capture the error

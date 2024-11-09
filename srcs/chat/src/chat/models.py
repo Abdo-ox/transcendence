@@ -17,7 +17,6 @@ class FriendList(models.Model):
 
     def addFriend(self, account):
         if account not in self.friends.all():
-            print("add friend method called", flush=True)
             self.friends.add(account)
 
     def removeFriend(self, account):
@@ -74,7 +73,6 @@ class FriendRequest(models.Model):
 
 class UserManager(BaseUserManager):
     def create_user(self,username,intra=False, password=None, **data):
-        print(f"\33[32;1mthe usercreation called\33[0m", flush=True)
         if not username:
             raise ValueError('User must have username')
         if not data or 'email' not in data:
@@ -91,11 +89,9 @@ class UserManager(BaseUserManager):
             user.set_password(password)
         user.save(using=self._db)
         contact, created = Contact.objects.get_or_create(user=user)
-        print(f"Contact created: {created}, Contact: {contact}", flush=True)  # Debugging output
         return user
 
     def create_superuser(self, username, password, **data):
-        print(f"\33[31;1mthe superusercreation called\33[0m")
         user = self.create_user(
             username,
             password,

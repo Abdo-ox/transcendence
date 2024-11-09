@@ -29,11 +29,6 @@ export async function Reset() {
             return false;
         }
         const email = localStorage.getItem('email');
-        if (email) {
-            console.log("Retrieved email from localStorage:", email);
-        } else {
-            console.log("No email found in localStorage.");
-        }
         fetch('https://10.14.60.29:8000/reset/', {
             method: 'POST',
             headers: {
@@ -44,14 +39,12 @@ export async function Reset() {
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(" *** data response ", data);
                 if (data.status == 'success')
-                    NewPage('/login', Login);
+                    NewPage('/login', Login, false);
                 if (data.status == 'failed')
                    printNoteFor3Seconds(data.message);
             })
             .catch((error) => {
-                console.log(" error ", error);
             })
     });
 }

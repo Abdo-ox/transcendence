@@ -996,6 +996,7 @@ circle {
     flex: 1;
     max-width: 40px;
     max-height: 40px;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     object-fit: cover;
     /* border: 4px solid rgb(110, 24, 24); */

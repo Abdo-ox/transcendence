@@ -22,7 +22,11 @@ const func = {
     "/chat": Chat,
     "/settings":  Settings,
     "/profile":  Profile,
-    
+    "/local":  Local,
+    "/tournament": Tournament,
+    "/ft-tournament": TournamentFr,
+    "/game": Game,
+    "/multi": Multi,
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         else 
             NewPage("/notfound", NotFound, false);
     });
-    console.log(pathname)
     switch (pathname) {
         case "/":
             NewPage("/landingpage", Landing, false);

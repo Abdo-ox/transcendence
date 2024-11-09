@@ -25,7 +25,6 @@ export async function Settings() {
             document.getElementById('settings-enable2fa').checked = data.enable2fa;
             if (data.intraNet) {
                 document.getElementById("settings-username").readOnly = true;
-                document.getElementById("settings-last_name").readOnly = true;
                 document.getElementById("sett-change-email").style.display = "none";
                 document.getElementById("email-label-sett").style.display = "none";
                 document.getElementById("settings-change-btn").style.display = "none";
@@ -34,7 +33,7 @@ export async function Settings() {
                 document.getElementById("settings-changePassword").style.display = "none";
             }
         })
-        .catch(errror => console.log("catch_settings", errror));
+        .catch();
 
     const profileBtn = document.getElementById("settings-profile-btn");
     const securityBtn = document.getElementById("settings-security-btn");
@@ -89,7 +88,6 @@ export async function Settings() {
         function createCropBox() {
             cropBox = document.createElement('div');
             cropBox.classList.add('settings-cropBox');
-            console.log("img.offsetleft", imgElement.offsetLeft);
             imageWrapper.appendChild(cropBox);
             boxRect = document.querySelector('.settings-cropBox').getBoundingClientRect();
             makeDraggable(cropBox);
@@ -143,8 +141,6 @@ export async function Settings() {
         canvas.height = height;
 
         ctx.drawImage(imgElement, X, Y, width, height, 0, 0, width, height);
-        document.getElementById("settings-profile-image1").src = canvas.toDataURL();
-        document.getElementById("header-profile-image").src = canvas.toDataURL();
         document.getElementById("settings-crop-image-container").style.display = "none";
         document.getElementById("settings-SaveImg").style.display = "flex";
         document.getElementById("settings-SaveImg").style.flexDirection = "column";
@@ -189,7 +185,6 @@ export async function Settings() {
                     body: JSON.stringify(editedData)
                 })
                 if (!response.ok) {
-                    console.error('Failed to fetch update data:', response.status, response.statusText);
                     return;
                 }
                 const data = await response.json();
@@ -206,12 +201,11 @@ export async function Settings() {
                 else {
                     document.getElementById("resetmail-errorMessage").style.display = 'none';
                     document.getElementById("resetmail-user-errorMessage").style.display = 'block';
-                    document.getElementById("resetmail-user-errorMessage").textContent = " faild update feilds ";
+                    document.getElementById("resetmail-user-errorMessage").textContent = data.errors;
                 }
             }
         }
         catch (error) {
-            console.log("failed to update data in catch : ", error);
         }
     });
     document.getElementById("settings-savapassword").addEventListener("click", async () => {
@@ -243,12 +237,12 @@ export async function Settings() {
                     printNoteFor3Seconds("Actuall password was not correct ");
             })
             .catch((error) => {
-                console.log("error on change password is ", error);
             })
     });
 
     document.getElementById("settings-saveid").addEventListener("click", async () => {
-
+        document.getElementById("settings-profile-image1").src = canvas.toDataURL();
+        document.getElementById("header-profile-image").src = canvas.toDataURL();
         const formData = new FormData();
         try {
             if (canvas) {
@@ -267,14 +261,15 @@ export async function Settings() {
                     .then(response => {
                         if (response.ok) {
                             document.getElementById("settings-profile-image1").src = canvas.toDataURL();
+                            document.getElementById("header-profile-image").src = canvas.toDataURL();
+                            document.getElementById("settings-profile-image1").src = canvas.toDataURL();
                             document.getElementById("settings-SaveImg").style.display = "none";
+                            printNoteFor3Seconds("image changed successfully");
                         }
-
                     }).catch(error => console.error('Error:', error));
             }
         }
         catch {
-            console.log("error uplod pic");
         }
 
     });
@@ -308,13 +303,12 @@ export async function Settings() {
         });
 
         if (!response.ok) {
-            console.error('Failed to confirm user:', response.status, response.statusText);
             return;
         }
         const data = await response.json();
         if (data.status == 'redirect') {
             localStorage.setItem("NewEmail", email)
-            NewPage("/confirmationMail", ConfirmationMail);
+            NewPage("/confirmationMail", ConfirmationMail, false);
         }
         if (data.status == 'failed') {
             document.getElementById("resetmail-errorMessage").style.display = 'block';
@@ -358,7 +352,6 @@ export async function Settings() {
                 printNoteFor3Seconds("Failed to update Two Factor state");
             }
         } catch (error) {
-            console.error("Enable 2FA error:", error);
             checkbox.checked = !is_2Fa_enabled;
         } finally {
             checkbox.disabled = false;
