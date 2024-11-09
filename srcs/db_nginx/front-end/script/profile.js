@@ -8,6 +8,7 @@ import { UserStatusSock } from "https://10.14.60.29/header.js";
 
 export async function Profile() {
 
+    let ProfileImg;
     const params = new URLSearchParams(window.location.search)
     let myuser = params.get('user');
     if (!myuser)
@@ -34,10 +35,11 @@ export async function Profile() {
         document.getElementById("profile-username").innerHTML = data.username;
         document.getElementById("profile-userWelcome").innerHTML = data.username;
         document.getElementById("profile-coalition").src = data.coalition.image;
+        ProfileImg = data.profile_image;
         document.getElementById("profile-profileimage").src = data.profile_image;
         document.getElementById("profile-matchScore").innerHTML = data.totalGames;
         document.getElementById("profile-tournamentsScore").innerHTML = data.tournaments;
-        let sum = data.tournaments + data.totalGames;
+        let sum = data.totalGames;
         if (sum > 0) {
             document.getElementById("profile-lose").innerHTML = ((data.losses / sum) * 100).toFixed(0) + '%';
             document.getElementById("profile-number").innerHTML = ((data.wins / sum) * 100).toFixed(0) + '%';
@@ -171,17 +173,15 @@ export async function Profile() {
             return;
         }
         const data = await response.json();
-        if(data.rank)
-        {
+        if (data.rank) {
             document.getElementById("profile-rank").textContent = data.rank;
         }
-        else
-        {
+        else {
             console.log("there is no user ander username");
         }
     }
 
-    
+
     /***multigame History */
     {
         const response = await fetch('https://10.14.60.29:9090/multigamehistory/' + myuser, {
@@ -197,7 +197,7 @@ export async function Profile() {
         const data = await response.json();
         console.log("data multi game :", data);
         if (data.length) {
-         
+
             document.getElementById("history-para").style.display = 'none';
             data.forEach((element) => {
 
@@ -221,10 +221,51 @@ export async function Profile() {
             })
 
         }
+
         // document.getElementById("profile-arrayHistory")
     }
 
-  
+    {
+        const response = await fetch('https://10.14.60.29:9090/aigamehistory/' + myuser, {
+            headers: {
+                'Authorization': `Bearer ${await getJWT()}`,
+            }
+        })
+        if (!response.ok) {
+            console.error('Failed to fetch current user:', response.status, response.statusText);
+            return;
+        }
+        const data = await response.json();
+        console.log("data ------------------------ai game :", data);
+        if (data.length) {
+
+            document.getElementById("history-para").style.display = 'none';
+            data.forEach((element) => {
+
+                document.getElementById("profile-arrayHistory").innerHTML +=
+                    `<p class="dateplayed"> Played : <span>${formattedDate(element.created)}</span></p> 
+                <div class="profile-game-entry">
+                        <div class="profile-player">
+                            <img id="profile-player1" src="${ProfileImg}" alt="Player 1 Profile Picture">
+                            <span class="profile-player-name">${myuser}</span>
+                        </div>
+                        <div class="profile-points">
+                            <span class="profile-player-points">${element.playerScore}</span>
+                            <span>:</span>
+                            <span class="profile-opponent-points">${element.aiScore}</span>
+                        </div>
+                        <div class="profile-player">
+                            <span   class="profile-player-name">AI</span>
+                         <img  id="profile-player2" src="/images/gameImges/aiplayer.jpeg" alt="Player 2 Profile Picture">
+                        </div>
+                    </div>`;
+             })
+
+        }
+
+        // document.getElementById("profile-arrayHistory")
+    }
+
     {
         const response = await fetch('https://10.14.60.29:8000/friend/userFriends?username=' + myuser, {
             headers: {
@@ -296,9 +337,10 @@ export async function Profile() {
                 frindArray.forEach(friend => {
                     const friendName = friend.querySelector("h3.friendUserName").textContent;
                     if (friendName === d.username) {
-                        if (d.is_online == "True")
+                        const t = friend.querySelector("div.decline-indicator");
+                        if (d.is_online == "True" && t)
                             friend.querySelector("div.decline-indicator").style.backgroundColor = "green";
-                        else
+                        else if (t)
                             friend.querySelector("div.decline-indicator").style.backgroundColor = "red";
                     }
                 });
@@ -336,7 +378,7 @@ export async function Profile() {
                                     <h4 class="profile-card-title">${elt.name}</h4>
                                     <div class="profile-para">
                                         <p class="profile-card-info">Date:<br><span>${formattedDate(elt.created)}</span></p>
-                                        ${elt.winner && elt.winner.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
+                                        ${elt.winner && elt.winner.username.trim() !== '' ? '<p class="profile-card-info"><span>Winner</span></p>' : ''}
                                     </div>   
                                 </div>
                             </div>`

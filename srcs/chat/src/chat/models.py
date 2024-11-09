@@ -160,7 +160,7 @@ class Contact(models.Model):
 
     class Meta:
         db_table = 'contact'
-    user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='user_friends', on_delete=models.CASCADE)
     # friends = models.ManyToManyField('self', blank=True)
     def __str__(self):
         return self.user.username

@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.conf import settings
 import requests
+import re
 from project.settings import C  as c
 
 def IsIntranetUser(username):
@@ -41,6 +42,8 @@ class RegisterationForm(UserCreationForm):
         try:
             account = User.objects.get(username=username)
         except User.DoesNotExist:
+            if not re.match(r'^[a-zA-Z]+([-_][a-zA-Z]+)?$', username):
+                raise forms.ValidationError(f'The username must construct from [a-z, A-Z] and optionall - or _.')
             if not IsIntranetUser('/' + username):
                 return username
         raise forms.ValidationError(f'Username "{username}" is already in use.')

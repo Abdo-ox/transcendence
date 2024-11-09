@@ -74,13 +74,17 @@ class NotificationConsumer(WebsocketConsumer):
             'from': data.get('from'),
             'room_name': data.get('room_name')
         }
-        self.room_group_name = f"notif_{data['targetUser']}"
+        UserID = User.objects.get(username=data['targetUser']).id
+        self.room_group_name = f"notif_{UserID}"
         return self.send_chat_message(content)
 
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["notif_id"]
         # Check if the user is authenticated
-        self.room_group_name = f"notif_{self.room_name}"
+        UserID = User.objects.get(username=self.room_name).id
+        print(self.room_name, flush=True)
+        self.room_group_name = f"notif_{UserID}"
+        print(self.scope['user'], 'want to send mssg to ----- ', ' ==== ', self.room_group_name, flush=True)
         if self.scope['user'] == AnonymousUser():
             print("anonymousUser", flush=True)
             # If not authenticated, close the connection
@@ -98,13 +102,14 @@ class NotificationConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data):
+        print('inside receive method', self.scope['user'], 'want to send mssg to ----- ', ' ==== ', self.room_group_name, flush=True)
         print("#######################recieve method", flush=True)
         data = json.loads(text_data)
         self.GetParticipants(data)
 
     def send_chat_message(self, message):
         print("send_chat_message called", flush=True)
-        print('--------- ', self.room_group_name, flush=True)
+        print('when i need to send --------- ', self.room_group_name, flush=True)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {
             "type": "chat_message",

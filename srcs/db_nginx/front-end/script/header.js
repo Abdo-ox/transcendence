@@ -44,6 +44,10 @@ function createGameNotif(data) {
     const timeout = setTimeout(() => {
         clearTimeout(timeout);
         declineEvent(data, notiItem)
+        if (NbNotif > 0){
+            NbNotif--;
+            remove_notif(notiItem);
+        }
         console.log('Element removed due to inactivity.');
     }, timeOut);
     acceptButton.addEventListener('click', function () {
@@ -63,7 +67,7 @@ async function GameRqEventHanddler(data) {
     else if (data['message'].includes('decline')) {
         console.log(`inside make gameplay 'cancel' condition`)
         const gamePlay = document.getElementById('game-play');
-        if (gamePlay.textContent === "cancel")
+        if (gamePlay && gamePlay.textContent === "cancel")
             gamePlay.textContent = "play";
     }
     else if (data['message'].includes('accept')) {
@@ -129,9 +133,16 @@ async function GameRqEvent(data, notiItem) {
     //
 }
 async function acceptOrDecline(data, action, notiItem, button) {
-    console.log("hello world##############################");
+    console.log("hello world##############################",{
+        'flag': data['flag'],
+        'message': action,
+        'from': CurrentUser,
+        'targetUser': data['from'],
+        'img': data['img']
+    });
     button.style.pointerEvents = 'none';
     if (GamePlaySocket && GamePlaySocket.readyState === WebSocket.OPEN) {
+        console.log(`notif is sended`)
         GamePlaySocket.send(JSON.stringify({
             'flag': data['flag'],
             'message': action,
@@ -161,8 +172,7 @@ function createFrientRqNotif(data) {
 function declineEvent(data, notiItem) {
     remove_notif(notiItem);
     if (data['tournament'])
-        return;
-    console.log(`dataFrom isss --- ${dataFrom}`); // Output: someUser
+        return 0;
     GamePlaySocket.send(JSON.stringify({
         'flag': data['flag'],
         'targetUser': data['from'],
