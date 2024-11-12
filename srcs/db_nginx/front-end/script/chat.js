@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import { createWebSocket } from 'https://10.14.60.29/socketsManager.js';
 import { NewPage, getJWT, printErrorInScreen} from 'https://10.14.60.29/utils.js';
 import { GamePlaySocket, OnlineList } from 'https://10.14.60.29/header.js';
 import { Profile } from "https://10.14.60.29/profile.js"
-=======
-import { createWebSocket } from 'https://10.32.72.122/socketsManager.js';
-import { NewPage, getJWT, printErrorInScreen} from 'https://10.32.72.122/utils.js';
-import { GamePlaySocket, OnlineList } from 'https://10.32.72.122/header.js';
-import { Profile } from "https://10.32.72.122/profile.js"
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 let TargetUser = null; // make this variable local
 export async function Chat() {
@@ -17,23 +10,15 @@ export async function Chat() {
     const params = new URLSearchParams(url.search);
     TargetUser = params.get('user');
   }
-  else {
-    console.log(`usl path name ${url.pathname}`)
-  }
 
   let access_token = await getJWT();
-<<<<<<< HEAD
   const data = await fetch('https://10.14.60.29:8000/api/user/data/', {
-=======
-  const data = await fetch('https://10.32.72.122:8000/api/user/data/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     headers: {
       'Authorization': `Bearer ${access_token}`,
     }
   })
     .then(response => response.json()) // Call json() to parse the response
     .then(data => {
-      console.log(`bodychat is call`, data)
       bodychat(data)
     })
     .catch(error => {
@@ -82,7 +67,6 @@ async function bodychat(UserData) {
           updateProfile(friend);
           chatListview(TargetUser);
           const newUrl = `/chat?user=${TargetUser}`
-          console.log(`new query --------------- ${newUrl}`)
           history.pushState(null, '', newUrl);
         }
       });
@@ -98,13 +82,10 @@ async function bodychat(UserData) {
       if (contact) {
         let imgElement = contact.querySelector('img');
         let user = {username: contact.id, profile_image: imgElement.src};
-        console.log('contact exests')
         createHtmlPrf();
         updateProfile(user);
         chatListview(contact.id);
       }
-      else
-        console.log(`conctact doesn't exests`)
     });
   }
 
@@ -121,11 +102,7 @@ async  function GamePlay() {
     gamePlay = clonedGamePlay; // reassign the element after cloning
     gamePlay.addEventListener('click',  async (e) => {
       let access_token = await getJWT();
-<<<<<<< HEAD
       const data = await fetch(`https://10.14.60.29:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
-=======
-      const data = await fetch(`https://10.32.72.122:8000/api/UserStatus/?username=${encodeURIComponent(nameElement.textContent)}`, {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         method: "GET",
         headers: {
           'Authorization': `Bearer ${access_token}`,
@@ -137,7 +114,6 @@ async  function GamePlay() {
         if (OnlineList && !OnlineList.includes(nameElement.textContent) && data.is_online === false){
           printErrorInScreen('the target user is offline');
           return 0;}
-          // console.log(`data is ------------< ${JSON.stringify(data)}`)
         if (GamePlaySocket.readyState === WebSocket.OPEN && gamePlay.textContent === "play") {
             GamePlaySocket.send(JSON.stringify({
                 'from': username,
@@ -148,10 +124,7 @@ async  function GamePlay() {
               }));
         }
         if (gamePlay.textContent === "cancel") {
-            console.log(`i am inside the condition if (gamePlay.textContent === "cancel")`)
             if (GamePlaySocket.readyState === WebSocket.OPEN) {
-                console.log('WebSocket connection opened');
-                console.log(`inside cancel and from username is ${username}`)
                 GamePlaySocket.send(JSON.stringify({
                   'from': username,
                   'targetUser': nameElement.textContent,
@@ -214,11 +187,7 @@ async  function GamePlay() {
       }
       if (chatLog) chatLog.textContent = '';
       const token = await getJWT();
-<<<<<<< HEAD
       fetch(`https://10.14.60.29:8000/friend/unfriend/?username=${username}`, {
-=======
-      fetch(`https://10.32.72.122:8000/friend/unfriend/?username=${username}`, {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -241,7 +210,6 @@ async  function GamePlay() {
 
   function fetchData() {
     UserData.friends.forEach(friend => {
-      console.log(`-------------- ${friend.username}  ---------------------`);
       createSuperuser(friend)
     });
   }
@@ -258,11 +226,7 @@ async  function GamePlay() {
       <div class="wrap">
         <div class="wrap">
           <input id="chat-message-input" type="text" placeholder="  Write your message..." />
-<<<<<<< HEAD
           <img id="submit-button" src="https://10.14.60.29/images/send.svg"/>
-=======
-          <img id="submit-button" src="https://10.32.72.122/images/send.svg"/>
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         </div>
     </div>`;
 
@@ -270,7 +234,6 @@ async  function GamePlay() {
   }
 
   function createSuperuser(user) {
-    console.log(`userdata isss ${JSON.stringify(user)}`)
     const li = document.createElement('li');
     li.className = 'contact';
     li.id = user.username;
@@ -281,7 +244,6 @@ async  function GamePlay() {
     // const contactStatus = document.createElement('span');
     // contactStatus.className = 'contact-status busy';
     // ------------------------------- show the user data catched -------------------------------------
-    // console.log(`friend object equal ======= ${JSON.stringify(user)}`)
     const img = document.createElement('img');
     img.src = user.profile_image;
     img.alt = '';
@@ -308,12 +270,7 @@ async  function GamePlay() {
 
   async function chatListview(user) {
     let access_token = await getJWT();
-    console.log(`chatlistview called user is ${user}`)
-<<<<<<< HEAD
     const data = await fetch(`https://10.14.60.29:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
-=======
-    const data = await fetch(`https://10.32.72.122:9000/chat/GetChatID/?username1=${encodeURIComponent(username)}&username2=${encodeURIComponent(user)}`, {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
       method: "GET",
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -322,7 +279,6 @@ async  function GamePlay() {
     })
       .then(response => response.json()) // Call json() to parse the response
       .then(data => {
-        console.log('request send ....', data.ChatID)
           createWebSocket(data.ChatID, user);
       })
       .catch(handleError);
@@ -356,15 +312,7 @@ async  function GamePlay() {
   });
 
   function handleError(error) {
-    if (error.response) {
-      console.log('Error Status Code:', error.response.status);
-      console.log('Error Data:', error.response.data);
-    } else if (error.request) {
-      console.log('No response received:', error.request);
-    } else {
-      console.log('Error:', error.message);
-    }
-    console.log('Error Config:', error.config);
+    
   }
   function updateProfile(user) {
     const profileContainer = document.getElementById('profile-container');
@@ -373,11 +321,7 @@ async  function GamePlay() {
     const contactProfile = document.createElement('div');
     contactProfile.className = 'contact-profile';
     const VerticalDots = document.createElement('img');
-<<<<<<< HEAD
     VerticalDots.src = "https://10.14.60.29/images/dots.svg"
-=======
-    VerticalDots.src = "https://10.32.72.122/images/dots.svg"
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
     VerticalDots.className = "VerticalDots"
     VerticalDots.id = "VerticalDots"
     const img = document.createElement('img');
@@ -392,7 +336,6 @@ async  function GamePlay() {
     contactProfile.appendChild(VerticalDots);
     profileContainer.appendChild(contactProfile);
     name.addEventListener('click', () => {
-      console.log(`target profile is --------- ${name.textContent}`)
       NewPage("/profile", Profile,true,"?user="+name.textContent); 
     });
     const newUrl = `/chat?user=${user.username}`

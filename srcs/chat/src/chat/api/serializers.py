@@ -6,19 +6,8 @@ from django.http import Http404
 
 User = get_user_model()
 
-from chat.models import  FriendList
+# from chat.models import  FriendList
 
-class UserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'email'] 
-
-class ChatUserSerializer(serializers.ModelSerializer):
-    friends = UserDetailSerializer(many=True, read_only=True, source='user.friends') 
-
-    class Meta:
-        model = User
-        fields = ['username','profile_image', 'friends']
 
 
 
@@ -34,11 +23,3 @@ class ChatSerializer(serializers.ModelSerializer):
         fields = ('id', 'messages', 'participants')
         read_only_fields = ('id',)
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()

@@ -24,17 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 CORS_ALLOW_CREDENTIALS = True
 AUTH_USER_MODEL = 'game.User'
 
-AUTHENTICATION_BACKENDS = [
-    'user.auth.MyBackend',  
-    'django.contrib.auth.backends.ModelBackend',
-]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),

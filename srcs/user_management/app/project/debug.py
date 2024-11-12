@@ -12,7 +12,6 @@ class CsrfDebugMiddleware:
         csrf_header = request.META.get('HTTP_X_CSRFTOKEN')
         logger.debug(f'CSRF Cookie: {csrf_cookie}')
         logger.debug(f'CSRF Header: {csrf_header}')
-        print(f"{csrf_cookie} | {csrf_header}", flush=True)
         response = self.get_response(request)
         
         return response

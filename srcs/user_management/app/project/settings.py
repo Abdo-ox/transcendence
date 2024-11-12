@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 # Directory where static files will be collected for production use
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is where `collectstatic` will put all files
@@ -19,16 +19,14 @@ STATICFILES_DIRS = [
 ]
 
 SECRET_KEY = os.environ.get('SECRET_KEY') 
+SECRET_KEY = os.environ.get('SECRET_KEY') 
+DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 AUTH_USER_MODEL = 'user.User'
 
-AUTHENTICATION_BACKENDS = [
-    'user.auth.MyBackend',  
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-ASGI_APPLICATION = 'myproject.asgi.application'
+ASGI_APPLICATION = 'project.asgi.application'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
@@ -53,18 +51,15 @@ INSTALLED_APPS = [
     'friendship',
     'rest_framework',
     'rest_framework_simplejwt', 
-    'corsheaders',
-    # 'django_otp',
-    # 'django_otp.plugins.otp_totp',  
-    # 'two_factor', 
-    # 'qrcode',  
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-}  
+} 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -75,7 +70,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_otp.middleware.OTPMiddleware',
-    # 'project.debug.CsrfDebugMiddlewar e',
 ]
 
 
@@ -95,12 +89,8 @@ CSRF_TRUSTED_ORIGINS =  [
 ]
 
 CORS_ALLOW_METHODS = [
-    "DELETE",
     "GET",
-    "OPTIONS",
-    "PATCH",
     "POST",
-    "PUT",
 ]
 
 

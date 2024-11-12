@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { NewPage, getJWT, printErrorInScreen } from "https://10.14.60.29/utils.js";
 import { GamePlaySocket } from "https://10.14.60.29/header.js";
 import { Login } from "https://10.14.60.29/login.js";
@@ -9,18 +8,6 @@ import { Local } from "https://10.14.60.29/local.js";
 import { Multi } from "https://10.14.60.29/multi.js";
 import { TournamentFr } from "https://10.14.60.29/fr-tournament.js";
 import { UserStatusSock } from "https://10.14.60.29/header.js"
-=======
-import { NewPage, getJWT, printErrorInScreen } from "https://10.32.72.122/utils.js";
-import { GamePlaySocket } from "https://10.32.72.122/header.js";
-import { Login } from "https://10.32.72.122/login.js";
-import { Tournament } from "https://10.32.72.122/tournament.js";
-import { Game } from "https://10.32.72.122/game.js";
-import { Profile } from "https://10.32.72.122/profile.js";
-import { Local } from "https://10.32.72.122/local.js";
-import { Multi } from "https://10.32.72.122/multi.js";
-import { TournamentFr } from "https://10.32.72.122/fr-tournament.js";
-import { UserStatusSock } from "https://10.32.72.122/header.js"
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 function formatNumber(num) {
     let formatted = num.toFixed(1);
@@ -49,7 +36,6 @@ function joinOrContinue(array, action, homeCard) {
 }
 
 function tournaments(data) {
-    console.log("tournament:", data);
     const homeCard = document.getElementById("home-card-stack");
     if (data.continue.length || data.join.length)
         homeCard.innerHTML = '';
@@ -94,7 +80,6 @@ function fillPhase(target_phase, user_data) {
 }
 
 function laederBoard(data) {
-    console.log("leader board:", data);
     const leaderboardcontainer = document.getElementById('home-leader-board');
     data.sort((a, b) => b.score - a.score);
     if (data.length > 0)
@@ -144,7 +129,6 @@ function pieChart1(data) {
     if (total) {
         document.getElementById("home-nothing-chart-1")?.remove();
         const max = Math.max(...src);
-        console.log(max);
         const index_max = src.indexOf(max);
         piechart1.style.setProperty('--percent', `"${formatNumber(max)}%"`);
         piechart1.style.setProperty('--percent-color', `${colors[index_max]}`);
@@ -165,18 +149,13 @@ function pieChart1(data) {
 }
 
 const buttonsEventHandler = async (button, GamePlaySocket, action, currentUser) => {
-<<<<<<< HEAD
     const response = await fetch(`https://10.14.60.29:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
-=======
-    const response = await fetch(`https://10.32.72.122:8000/friend/${action[0]}/?username=${button.getAttribute('username')}`, {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${await getJWT()}`
         }
     });
     if (response.status == 200) {
         if (GamePlaySocket.readyState === WebSocket.OPEN) {
-            console.log("hello send in notif websocket            dlkjdfdjfldjflk         fljdlj");
             GamePlaySocket.send(JSON.stringify({
                 'targetUser': button.getAttribute('username'),
                 'message': `${action[0]} friend request.`,
@@ -233,17 +212,12 @@ export async function Home() {
     });
     /**** add event listener for the nemu bar side ****/
 
-<<<<<<< HEAD
     const response = await fetch('https://10.14.60.29:8000/api/suggest/friend/', {
-=======
-    const response = await fetch('https://10.32.72.122:8000/api/suggest/friend/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             'Authorization': `Bearer ${access_token}`,
         }
     })
     if (!response.status) {
-        console.error('Failed to fetch suggest friends.');
         return;
     }
     const data = await response.json();
@@ -332,11 +306,7 @@ export async function Home() {
     const token = await getJWT();
 
     // tournament cards 
-<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/tournaments/", {
-=======
-    fetch("https://10.32.72.122:9090/tournaments/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -348,11 +318,7 @@ export async function Home() {
 
     // tournament cards end
 
-<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/matchcount/", {
-=======
-    fetch("https://10.32.72.122:9090/matchcount/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -360,13 +326,9 @@ export async function Home() {
         if (response.status == 200)
             return response.json();
     }).then(data => pieChart2(data)
-    ).catch(error => console.log("error in fetch matchcount :", error));
+    ).catch(error => printErrorInScreen("error in fetch matchcount :", error));
 
-<<<<<<< HEAD
     fetch("https://10.14.60.29:9090/leaderboard/", {
-=======
-    fetch("https://10.32.72.122:9090/leaderboard/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -374,26 +336,13 @@ export async function Home() {
         if (response.status == 200)
             return response.json();
     }).then(data => laederBoard(data)
-    ).catch(error => console.log("error in fetch matchcount :", error));
+    ).catch();
 
-<<<<<<< HEAD
     fetch("https://10.14.60.29:8000/api/coalitions/", {
-=======
-    fetch("https://10.32.72.122:8000/api/coalitions/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(response => response.json()).then(data => pieChart1(data));
     
     
-<<<<<<< HEAD
-    fetch("https://10.14.60.29:8000/api/rank?username=Kiarra22", {
-=======
-    fetch("https://10.32.72.122:8000/api/rank?username=Kiarra22", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }).then(response => response.json()).then(data => console.log("data", data));
 }

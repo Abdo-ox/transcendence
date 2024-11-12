@@ -1,18 +1,12 @@
-<<<<<<< HEAD
 import { NewPage, getJWT } from "https://10.14.60.29/utils.js";
 import { Settings } from "https://10.14.60.29/settings.js";
 import { Login } from "https://10.14.60.29/login.js";
-=======
-import { NewPage, getJWT } from "https://10.32.72.122/utils.js";
-import { Settings } from "https://10.32.72.122/settings.js";
-import { Login } from "https://10.32.72.122/login.js";
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export async function ConfirmationMail() {
 
     let acc = await getJWT();
     if (acc == null || acc == 'undefined')
-        NewPage("/login", Login);
+        NewPage("/login", Login, false);
     document.body.style.visibility = 'visible';
     document.getElementById("confirmMail-submit").addEventListener("click", async () => {
         try {
@@ -23,11 +17,7 @@ export async function ConfirmationMail() {
                 return;
             }
             let newemail = localStorage.getItem("NewEmail");
-<<<<<<< HEAD
             const response = await fetch('https://10.14.60.29:8000/MailValidation/', {
-=======
-            const response = await fetch('https://10.32.72.122:8000/MailValidation/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${await getJWT()}`,

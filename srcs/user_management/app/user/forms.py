@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.conf import settings
 import requests
+import re
 from project.settings import C  as c
 
 def IsIntranetUser(username):
@@ -41,6 +42,8 @@ class RegisterationForm(UserCreationForm):
         try:
             account = User.objects.get(username=username)
         except User.DoesNotExist:
+            if not re.match(r'^[a-zA-Z]+([-_][a-zA-Z]+)?$', username):
+                raise forms.ValidationError(f'The username must construct from [a-z, A-Z] and optionall - or _.')
             if not IsIntranetUser('/' + username):
                 return username
         raise forms.ValidationError(f'Username "{username}" is already in use.')
@@ -84,20 +87,19 @@ class LoginForm(forms.ModelForm):
                          
 class EditUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        print(c.r,"Edited data passed to EditUserForm:", args[0],flush=True)
         super(EditUserForm, self).__init__(*args, **kwargs)
         self.extra_data = args[0]
-        print(c.g,"Edited 2 data passed to EditUserForm:", self.extra_data,flush=True)
         
     class Meta:
         model = User
         fields = ('username', 'last_name', 'first_name',)
     def clean_username(self):
         username = self.cleaned_data['username']
-        print(c.r, "the hello word clear +++++++++++++++++++++++++++>", username, flush=True)
         if self.instance.username == username:
             return username
         try:
+            if self.instance.intraNet:
+                raise forms.ValidationError('you could not modify your username')
             account = User.objects.get(username=username)
         except User.DoesNotExist:
             if not IsIntranetUser('/' + username):

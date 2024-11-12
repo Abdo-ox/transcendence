@@ -4,13 +4,11 @@ from project.settings import C as c
 
 class UserManager(BaseUserManager):
     def create_user(self,username, intra=False, password=None, **data):
-        print(f"\33[32;1mthe usercreation called\33[0m", flush=True)
         if not username:
             raise ValueError('User must have username')
         if not data or 'email' not in data:
             raise ValueError('User must have email address')
         number, yes = AddCoalition.objects.get_or_create(id=1)
-        print(c.r, "number", Coalition.objects.get(id=number.add).name, flush=True)
         user = self.model(
             email = self.normalize_email(data['email']),
             username = username,
@@ -28,11 +26,9 @@ class UserManager(BaseUserManager):
             user.set_password(password)
         user.save(using=self._db)
         contact, created = Contact.objects.get_or_create(user=user)
-        print(f"Contact created: {created}, Contact: {contact}", flush=True)  # Debugging output
         return user
 
     def create_superuser(self, username, password, **data):
-        print(f"\33[31;1mthe superusercreation called\33[0m")
         user = self.create_user(
             username,
             False,
@@ -95,7 +91,7 @@ class Contact(models.Model):
 
     class Meta:
         db_table = 'contact'
-    user = models.ForeignKey(User, related_name='user_friends', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='user_friends', on_delete=models.CASCADE)
     # friends = models.ManyToManyField('self', blank=True)
     def __str__(self):
         return self.user.username

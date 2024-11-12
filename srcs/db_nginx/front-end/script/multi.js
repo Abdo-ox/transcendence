@@ -27,10 +27,10 @@ export const Multi = async () => {
     const keys = [];
     let socket = undefined
     if (room_name) {
-        socket = new WebSocket(`wss://10.32.72.122:9090/ws/multiplayer/${room_name}/?token=${token}`);
+        socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/${room_name}/?token=${token}`);
         sessionStorage.removeItem('room_name');
     } else
-        socket = new WebSocket(`wss://10.32.72.122:9090/ws/multiplayer/?token=${token}`);
+        socket = new WebSocket(`wss://10.14.60.29:9090/ws/multiplayer/?token=${token}`);
     webSockets.push(socket);
 
     let c = 3; // countdown

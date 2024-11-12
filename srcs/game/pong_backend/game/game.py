@@ -1,4 +1,5 @@
 from channels.layers import get_channel_layer
+from .models import User
 import asyncio
 import random
 import json
@@ -515,14 +516,14 @@ class TournamentLogic:
             await database_sync_to_async(game.players.add)(*self.players[0:2])
             game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['players'][2:]), player1=self.players[2], player2=self.players[3])
             await database_sync_to_async(game.players.add)(*self.players[2:])
-            for username in self.state['players']:
-                noti_group_name = f"notif_{username}"
-                print(noti_group_name, flush=True)
+            for player in self.players:
+                # user = await User.objects.aget(username=username)
+                noti_group_name = f"notif_{player.id}"
                 await channel_layer.group_send(noti_group_name, {
                     'type': 'chat_message',
                     'message': {
                         'message': f": It's your turn to play!",
-                        'targetUser': username,
+                        'targetUser': player.username,
                         'from': self.room_name,
                         'img': self.tournament.image,
                         'tournament': self.room_name,
@@ -533,14 +534,14 @@ class TournamentLogic:
             channel_layer = get_channel_layer()
             game = await MultiGame.objects.acreate(room_name = self.generate_names(self.state['winners']), player1=self.winners[0], player2=self.winners[1])
             await database_sync_to_async(game.players.add)(*self.winners)
-            for username in self.state['winners']:
-                noti_group_name = f"notif_{username}"
-                print(noti_group_name, flush=True)
+            for winner in self.winners:
+                # user = await User.objects.aget(username=username)
+                noti_group_name = f"notif_{winner.id}"
                 await channel_layer.group_send(noti_group_name, {
                     'type': 'chat_message',
                     'message': {
                         'message': f": It's your turn to play!",
-                        'targetUser': username,
+                        'targetUser': winner.username,
                         'from': self.room_name,
                         'img': self.tournament.image,
                         'tournament': self.room_name,

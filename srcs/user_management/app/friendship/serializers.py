@@ -31,6 +31,5 @@ class FriendRequestSerializer(CurrentSerializer):
     def get_is_read(self, obj):
         user = self.context['user']
         friendrequest = FriendRequest.objects.get(receiver=user, sender=obj)
-        print(c.y, "user:", flush=True)
         
         return friendrequest.is_read

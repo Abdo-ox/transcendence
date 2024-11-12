@@ -19,18 +19,15 @@ def resetpassword(request):
     try:
         user = User.objects.get(email=user_email)
     except User.DoesNotExist:
-        print("User not found.")
         return JsonResponse({"status": "no"},status=404)
     confirmation_code = str(random.randint(100000,999999))
     user.reset_Code = confirmation_code 
     user.save()
-    print("verfication code",confirmation_code,flush=True)
     subject = 'Your confirmation Code '
     message = f'Yourconfirmation code is :{confirmation_code}'
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user_email]
     try:
-        print(" email recipion is : ",recipient_list," email from email is : ",from_email)
         send_mail(subject,message,from_email,recipient_list)
         return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
     except Exception as e:
@@ -42,13 +39,10 @@ def reset(request):
     code = body_data.get('code')
     psw  = body_data.get('password')
     user_email = body_data.get('email')
-    print("user email :",user_email)
     try:
         user = User.objects.get(email=user_email)
     except User.DoesNotExist:
         return JsonResponse({"status": "failed", "message": "User not found"})
-    print("user resetcode  : ",user.reset_Code ,flush=True)
-    print("user name : ",user.username ,flush=True)
     if str(user.reset_Code) == code:
         user.set_password(psw)
         user.save()
@@ -62,12 +56,9 @@ def verify_2fa_code(request):
     if request.method == 'POST':
         body_data = json.loads(request.body)  # No decoding here
         submitted_code = body_data.get('code') 
-        print("Submitted_code : ", submitted_code, flush=True)
         user_email = request.user.email
-        print("email: ", user_email, flush=True)
         if not submitted_code:
             return JsonResponse({"status":"error","error": " Code not provided"}, status=400)
-        print("two factor code : ",request.user.Twofa_Code,flush=True)
         if submitted_code == str(request.user.Twofa_Code):
             request.user.is_2fa_passed = True
             request.user.save()
@@ -80,7 +71,6 @@ def verify_2fa_code(request):
 @api_view(['GET'])
 def getCsrfToken(request):
     token = get_token(request)
-    print(f"csrf_token:{token}", flush=True)
     return JsonResponse({'csrf_token': token})
 
 @api_view(['GET'])
@@ -110,11 +100,9 @@ def MailConfirmationfunc(request):
     try:
          user = User.objects.get(email=user_newemail)
     except User.DoesNotExist:
-        print("User not found.",flush=True) 
         confirmation_code = str(random.randint(100000,999999))
         request.user.MailConfirmation = confirmation_code
         request.user.save()
-        print("mailconfirmation code",confirmation_code,flush=True)
         subject = 'Your email  confirmation Code '
         message = f'''Hi,To confirm your new email address, please use the following verification code:
         {confirmation_code}If you didn’t request this change, please ignore this email.
@@ -122,7 +110,6 @@ def MailConfirmationfunc(request):
         from_email = settings.DEFAULT_FROM_EMAIL
         recipient_list = [user_newemail]
         try:
-            print(" email recipion is : ",recipient_list," email from email is : ",from_email)
             send_mail(subject,message,from_email,recipient_list)
             return JsonResponse({"status": "redirect", "message" : "code   send"},status=200)
         except Exception as e:
@@ -136,7 +123,6 @@ def EmailValidation(request):
     body_data = json.loads(request.body) 
     code = body_data.get('code')
     newemail = body_data.get('newemail')
-    print("user code email :",code)
     if str(request.user.MailConfirmation) == code:
         request.user.email = newemail
         request.user.save()

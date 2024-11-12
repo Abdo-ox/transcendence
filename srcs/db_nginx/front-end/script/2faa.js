@@ -1,19 +1,13 @@
-<<<<<<< HEAD
 import { getJWT, NewPage, getCsrfToken } from "https://10.14.60.29/utils.js"
 import { Home } from "https://10.14.60.29/home.js"
 import { Login } from "https://10.14.60.29/login.js";
-=======
-import { getJWT, NewPage, getCsrfToken } from "https://10.32.72.122/utils.js"
-import { Home } from "https://10.32.72.122/home.js"
-import { Login } from "https://10.32.72.122/login.js";
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 
 export async function Twofactor() {
 
     let acc = await getJWT();
     if (acc == null || acc == 'undefined')
-        NewPage("/login", Login);
+        NewPage("/login", Login, false);
     document.body.style.visibility = 'visible';
 
     // const user = localStorage.getItem('username');
@@ -26,10 +20,8 @@ export async function Twofactor() {
 
         let code = '';
         digits.forEach(input => {
-            console.log("input :", input.value);
             code += input.value;
         })
-        console.log("code : ", code, code.length, isNaN(Number(code)))
         if (code.length !== 6 || isNaN(Number(code))) {
 
             message.textContent = "Please enter a valid 6-digit numeric code.";
@@ -37,11 +29,7 @@ export async function Twofactor() {
         }
         else {
 
-<<<<<<< HEAD
             fetch('https://10.14.60.29:8000/verify_2fa_code/', {
-=======
-            fetch('https://10.32.72.122:8000/verify_2fa_code/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +40,6 @@ export async function Twofactor() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("data come here :", data);
                     if (data.status == "success") {
                         localStorage.setItem('twofa-passed', true);
                         NewPage("/home", Home, true);
@@ -61,7 +48,6 @@ export async function Twofactor() {
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     message.innerText = 'An error occurred. Please try again later.';
                 });
 
@@ -69,15 +55,4 @@ export async function Twofactor() {
 
     });
 }
-
-
-
-
-// // // Handle form submission for verifying the code
-// // document.getElementById('2fa-form').addEventListener('submit', (e) => {
-// //     e.preventDefault();
-// //     const code = document.getElementById('verification-code').value;
-// //     // Here you can send the verification code to the backend for validation
-// //     // Add the necessary logic for validation (e.g., making another API call to verify the code)
-// // });
 

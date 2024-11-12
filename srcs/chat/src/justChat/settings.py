@@ -30,11 +30,6 @@ DEBUG = False
 
 AUTH_USER_MODEL = 'chat.User'
 
-AUTHENTICATION_BACKENDS = [
-    'user.auth.MyBackend',  
-    'django.contrib.auth.backends.ModelBackend',
-]
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(seconds=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),

@@ -33,7 +33,6 @@ services:
       - net
     volumes:
       - /var/lib/postgresql/15/main
-      - ./srcs/db_nginx/front-end:/usr/share/nginx/html
 
   redis:
     image: redis:latest
@@ -68,9 +67,6 @@ services:
       - .env
     networks:
       - net
-    volumes:
-      - ./srcs/game/pong_backend:/game
-      - ./srcs/is_ready:/is_ready
 
 networks:
   net:

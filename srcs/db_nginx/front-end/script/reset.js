@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://10.14.60.29/utils.js";
 import { Login } from "https://10.14.60.29/login.js"
-=======
-import { NewPage, getCsrfToken, printNoteFor3Seconds} from "https://10.32.72.122/utils.js";
-import { Login } from "https://10.32.72.122/login.js"
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export async function Reset() {
 
@@ -34,16 +29,7 @@ export async function Reset() {
             return false;
         }
         const email = localStorage.getItem('email');
-        if (email) {
-            console.log("Retrieved email from localStorage:", email);
-        } else {
-            console.log("No email found in localStorage.");
-        }
-<<<<<<< HEAD
         fetch('https://10.14.60.29:8000/reset/', {
-=======
-        fetch('https://10.32.72.122:8000/reset/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             method: 'POST',
             headers: {
                 'X-CSRFToken': await getCsrfToken(),
@@ -53,14 +39,12 @@ export async function Reset() {
         })
             .then(response => response.json())
             .then((data) => {
-                console.log(" *** data response ", data);
                 if (data.status == 'success')
-                    NewPage('/login', Login);
+                    NewPage('/login', Login, false);
                 if (data.status == 'failed')
                    printNoteFor3Seconds(data.message);
             })
             .catch((error) => {
-                console.log(" error ", error);
             })
     });
 }

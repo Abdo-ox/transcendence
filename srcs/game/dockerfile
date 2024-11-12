@@ -6,6 +6,7 @@ COPY    game/requirements.txt .
 RUN     pip install -r requirements.txt
 
 COPY    certs certs
+COPY    game/pong_backend /game
 COPY    game/script/script.sh .
 
 CMD ["bash","script.sh"]

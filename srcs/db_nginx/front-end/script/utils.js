@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { removeEvent, header } from "https://10.14.60.29/header.js";
 import { Twofactor } from "https://10.14.60.29/2faa.js";
 import { Login } from "https://10.14.60.29/login.js";
@@ -6,28 +5,14 @@ import { Home } from "https://10.14.60.29/home.js";
 import { Settings } from "https://10.14.60.29/settings.js";
 import { Chat } from "https://10.14.60.29/chat.js";
 import { Profile } from "https://10.14.60.29/profile.js";
-=======
-import { removeEvent, header } from "https://10.32.72.122/header.js";
-import { Twofactor } from "https://10.32.72.122/2faa.js";
-import { Login } from "https://10.32.72.122/login.js";
-import { Home } from "https://10.32.72.122/home.js";
-import { Settings } from "https://10.32.72.122/settings.js";
-import { Chat } from "https://10.32.72.122/chat.js";
-import { Profile } from "https://10.32.72.122/profile.js";
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export let webSockets = [];
 
 export const getCsrfToken = async () => {
-<<<<<<< HEAD
     return await fetch("https://10.14.60.29:8000/api/csrf_token/")
-=======
-    return await fetch("https://10.32.72.122:8000/api/csrf_token/")
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         .then(response => response.json())
         .then(data => data.csrf_token)
         .catch(error => {
-            console.log("can't get the csrf token :", error);
         });
 }
 
@@ -37,7 +22,7 @@ export const redirectTwoFactor = (data, status) => {
         if (data.status == "redirect") {
             if (status == 200) {
                 localStorage.setItem('username', data.username);
-                NewPage("/2faa", Twofactor, true);
+                NewPage("/2faa", Twofactor, false);
             }
             if (status == 500)
                 printNoteFor3Seconds("failed to send email try  again in few secondes ...");
@@ -60,17 +45,13 @@ const is_expired = (access) => {
 const clear_localStorage = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    NewPage("/login", Login);
+    NewPage("/login", Login, false);
     return null;
 }
 
 const is_valid = async (access, refresh) => {
     if (!is_expired(access)) {
-<<<<<<< HEAD
         const response = await fetch("https://10.14.60.29:8000/is_authenticated/", {
-=======
-        const response = await fetch("https://10.32.72.122:8000/is_authenticated/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
             headers: { 'Authorization': `Bearer ${access}` }
         });
         if (response.status != 200)
@@ -78,11 +59,7 @@ const is_valid = async (access, refresh) => {
         document.body.style.visibility = 'visible';
         return access;
     }
-<<<<<<< HEAD
     const response1 = await fetch("https://10.14.60.29:8000/api/token/refresh/", {
-=======
-    const response1 = await fetch("https://10.32.72.122:8000/api/token/refresh/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -92,11 +69,7 @@ const is_valid = async (access, refresh) => {
     if (response1.status != 200)
         return clear_localStorage();
     const data = await response1.json();
-<<<<<<< HEAD
     const response2 = await fetch("https://10.14.60.29:8000/is_authenticated/", {
-=======
-    const response2 = await fetch("https://10.32.72.122:8000/is_authenticated/", {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
         headers: { 'Authorization': `Bearer ${data.access}` }
     });
     if (response2.status != 200)
@@ -158,7 +131,6 @@ export function printErrorInScreen(errors) {
 }
 
 export const NewPage = async (url, func, addhistory = true, query = '') => {
-    console.log(" new page called for the url ", url, query);
     const response = await fetch(url + ".html" + query);
     if (response.ok) {
         const data = await response.text();
@@ -182,15 +154,13 @@ export const NewPage = async (url, func, addhistory = true, query = '') => {
             }
         }
         if (document.querySelector('header')) {
-            console.log("hello clear");
             makePageActive(url.substring(1));
         }
         if (addhistory)
             history.pushState({}, '', url + query);
         await func();
         addErrorDiv();
-    } else
-        console.log("error in fetch the new page '", url, "'.");
+    }
 }
 
 export const submitForm = async (url, ids, csrf_token, handle_data) => {
@@ -201,7 +171,6 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
             fields[fieldName] = document.getElementById(id).value;
         } 
         catch (error) {
-            console.error('id: ', id, " error: ", error);
         }
         if (fields[id.substring(id.indexOf("-") + 1)].trim().length == 0) {
             printErrorInScreen(id + ' is required');
@@ -230,14 +199,13 @@ export const submitForm = async (url, ids, csrf_token, handle_data) => {
     }).then(data => {
         handle_data(data);
     }).catch(error => {
-        console.log("catch fetch:can't submit data error:", error, "|");
     });
     // }
 
 }
 
 const func = {
-    "header-home-btn": () => { console.log("home"); NewPage('/home', Home) },
+    "header-home-btn": () => { NewPage('/home', Home) },
     "header-chat-btn": () => { NewPage('/chat', Chat) },
     "header-settings-btn": () => { NewPage('/settings', Settings) },
     "header-small-home-btn": () => { NewPage('/home', Home) },
@@ -247,7 +215,6 @@ const func = {
 }
 
 export const makePageActive = (page) => {
-    console.log("page", page);
     //remove all event listener for home chat settings in the header
     for (const key in func)
         document.getElementById(key).removeEventListener('click', func[key]);

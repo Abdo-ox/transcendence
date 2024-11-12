@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { NewPage } from "https://10.14.60.29/utils.js";
 import { Reset } from "https://10.14.60.29/reset.js"
-=======
-import { NewPage } from "https://10.32.72.122/utils.js";
-import { Reset } from "https://10.32.72.122/reset.js"
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 
 export async function ResetPassword() {
 
@@ -16,16 +11,11 @@ export async function ResetPassword() {
     
             if (gmailRegex.test(email)) {
                 document.getElementById("resetpass-errorMessage").textContent = ""; // Clear error message
-                console.log("Valid Gmail address:", email);
             } else {
                 document.getElementById("resetpass-errorMessage").textContent = "Please enter a valid Gmail address!";
                 return;
             }
-<<<<<<< HEAD
             const response = await fetch('https://10.14.60.29:8000/resetpassword/', {
-=======
-            const response = await fetch('https://10.32.72.122:8000/resetpassword/', {
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -39,20 +29,19 @@ export async function ResetPassword() {
                 return;
             }
             const data = await response.json();
-            console.log("*******data response **** is : ", data);
             if (data.status == 'redirect') {
                 {
                     localStorage.setItem('email', email);
-                    NewPage('/reset', Reset);
+                    NewPage('/reset', Reset, false);
                 }
             }
             if (data.status == 'failed') {
-                document.getElementById("resetpass-error message").innerHTML = "failed to send code";
-                document.getElementById("resetpass-error message").style.color = 'red';
+                document.getElementById("resetpass-errorMessage").innerHTML = "failed to send code";
+                document.getElementById("resetpass-errorMessage").style.color = 'red';
             }
             else {
-                document.getElementById("resetpass-error message").innerHTML = "No account with this email";
-                document.getElementById("resetpass-error message").style.color = 'red';
+                document.getElementById("resetpass-errorMessage").innerHTML = "No account with this email";
+                document.getElementById("resetpass-errorMessage").style.color = 'red';
             }
         }
         catch (error) { // Catch block should capture the error

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { getJWT } from 'https://10.14.60.29/utils.js';
-=======
-import { getJWT } from 'https://10.32.72.122/utils.js';
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
 let chatSocket = null
 
 export async function createWebSocket(ChatID, username)
@@ -11,23 +7,16 @@ export async function createWebSocket(ChatID, username)
   if (chatSocket && chatSocket.readyState === WebSocket.OPEN)
     chatSocket.close();
   let token = await getJWT();
-<<<<<<< HEAD
   chatSocket = new WebSocket('wss://10.14.60.29:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
-=======
-  chatSocket = new WebSocket('wss://10.32.72.122:9000/ws/chat/' + ChatID + '/' + `?token=${token}`);
->>>>>>> e91eeb378735dd762cba6a600a6538a34ef40320
   chatSocket.onopen = () => {
-    console.log('WebSocket is open now.');
     
     var chatLog = document.querySelector('#chat-log');
     if (chatLog) {
       while (chatLog.firstChild) {
         chatLog.removeChild(chatLog.firstChild);
       }
-      console.log(`fetch data method called`)
       fetchMessages();
     } else {
-      console.error('Chat log element not found!');
     }
   };
   
@@ -39,45 +28,35 @@ export async function createWebSocket(ChatID, username)
         // });
         data['messages'].reverse()
         for (let i = 0; i < data['messages'].length; i++) {
-          // console.log('data obj is', data['messages'][i].timestamp);
           createMessage(data['messages'][i]);
         }
       } else if (data['command'] === 'new_message') {
-        console.log('command is new_message')
         createMessage(data['message']);
       }
     };
   
     chatSocket.onclose = () => {
-      console.error('Chat socket closed');
     };
   
     const messageInput = document.querySelector('#chat-message-input');
     const messageSubmit = document.getElementById('submit-button');
   
     if (messageInput) {
-      console.log('messageInput pressed')
       messageInput.onkeyup = function (e) {
-        console.log('User pressed a key');
         if (e.key === 'Enter') {
-          console.log('User pressed Enter');
           if (messageSubmit) {
             messageSubmit.click();
           } else {
-            console.error('Submit button not found!');
           }
         }
       };
     } else {
-      console.error('Message input element not found!');
     }
   
     if (messageSubmit) {
       messageSubmit.onclick = function (e) {
-        console.log('Submit button clicked');
         const messageInputDom = document.getElementById('chat-message-input');
         if (messageInputDom.value.trim() === ""){
-            console.error('Message input DOM not found when submitting!');
         }
         else {
           const message = messageInputDom.value;
@@ -91,7 +70,6 @@ export async function createWebSocket(ChatID, username)
         }
       };
     } else {
-      console.error('Message submit button not found!');
     }
   
     function fetchMessages() {
