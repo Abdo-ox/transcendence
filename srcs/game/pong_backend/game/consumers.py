@@ -129,7 +129,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 v *= -1
             v *= -1
 
-        self.prediction = r + random.uniform(-0.3, 0.3)
+        self.prediction = r + random.uniform(-0.2, 0.2)
             
     def handle_key(self, key):
         self.keys[key] = not self.keys.get(key, False)

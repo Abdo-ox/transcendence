@@ -24,7 +24,7 @@ const func = {
     "/profile":  Profile,
     "/local":  Local,
     "/tournament": Tournament,
-    "/ft-tournament": TournamentFr,
+    "/fr-tournament": TournamentFr,
     "/game": Game,
     "/multi": Multi,
 }
