@@ -19,4 +19,7 @@ also the game include an AI oponent that act as a human.
     ```
     docker-compose up
     ```
-     
+  - you have to allow the certificate in your browser because we worked with self signed one in allow them for all this ports
+    `
+    443 8000 9090 9000
+    ` 
