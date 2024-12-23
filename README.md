@@ -15,4 +15,5 @@ also the game include an AI oponent that act as a human.
   - docker compose
 ### installation
   - clone the repo at your machine or download its zip file and decompress it
-  - run this command ```docker-compose up inside the root directory of the project
+  - run this command ```docker-compose up``` inside the root directory of the project
+  - <tab><tab>test/hello
