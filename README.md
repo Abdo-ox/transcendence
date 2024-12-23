@@ -21,5 +21,5 @@ also the game include an AI oponent that act as a human.
     ```
   - you have to allow the certificate in your browser because we worked with self signed one in allow them for all this ports
     `
-    443 8000 9090 9000
+    https://localhost/ https://localhost/8000 https://localhost/9090 https://localhost/9000
     ` 
