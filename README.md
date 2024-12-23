@@ -5,9 +5,9 @@ the projec is about pingpong game where the users can create thier account in a 
 forcing the user to set a strong passeword), connect to thier account also in a safe mode by utilising the latest technologie JWT 
 that assure the safe navigation and protect the user data from leak, also user have the ability to message each other and make
 a friendship between each other and play with each other as a friend 
-also the game include an AI oponent that act as a human
-Proejct requirement:
-- docker and docker compose
+also the game include an AI oponent that act as a human.
+- Proejct requirement:
+  docker and docker compose
 For Run the project:
 run this command in the root directory of the proejct:
   docker-compose up
