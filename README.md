@@ -17,6 +17,6 @@ also the game include an AI oponent that act as a human.
   - clone the repo at your machine or download its zip file and decompress it
   - run this command inside the root directory of the project
     ```
-    docker-compose up @github/clipboard-copy-element
+    docker-compose up
     ```
      
